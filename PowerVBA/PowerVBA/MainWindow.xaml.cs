@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Threading;
-using PowerVBA.Core.AvalonEdit.Indentation;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -73,13 +72,6 @@ namespace PowerVBA
             #endregion
 
 
-            #region [  Indent  ]
-
-            codeEditor.TextArea.IndentationStrategy = new VBAIndentationStrategy();
-
-            #endregion
-
-
             #region [  하이라이팅 연결  ]
 
             using (Stream s = new MemoryStream(PowerVBA.Properties.Resources.VBA_Highlight))
@@ -132,7 +124,7 @@ namespace PowerVBA
             
         }
 
-        string lineStartPattern = @"^(public|private) (sub|type|function) ([_|a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_|a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)$";
+       string lineStartPattern = @"^(?i)(public|private) (?i)(sub|type|function) ([_|a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_|a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)$";
 
         private void prevKeyDown(object sender, KeyEventArgs e)
         {
@@ -155,7 +147,7 @@ namespace PowerVBA
                     string Type = m.Groups[2].Value;
                     string Name = m.Groups[3].Value;
 
-                    tmp = codeEditor.Text.Insert(line.Offset + line.Length, "\r\n\t\r\nEnd " + Type);
+                    tmp = codeEditor.Text.Insert(line.Offset + line.Length, "\r\n\t\r\nEnd " + ConvertType(Type));
 
                     tmp = tmp.Change(line.Offset, line.Length, $"{ConvertAccessor(Accessor)} {ConvertType(Type)} {Name}");
 

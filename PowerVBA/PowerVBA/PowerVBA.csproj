@@ -86,9 +86,6 @@
     </Compile>
     <Compile Include="Core\AvalonEdit\Convert\StringConverter.cs" />
     <Compile Include="Core\AvalonEdit\Folding\VBAFoldingStrategy.cs" />
-    <Compile Include="Core\AvalonEdit\Indentation\IndentationSettings.cs" />
-    <Compile Include="Core\AvalonEdit\Indentation\IndentReformatter.cs" />
-    <Compile Include="Core\AvalonEdit\Indentation\VBAIndentationStrategy.cs" />
     <Compile Include="Core\AvalonEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
     <Compile Include="Core\Extension\stringEx.cs" />
     <Compile Include="Core\Interface\IWrappingClass.cs" />
@@ -135,6 +132,7 @@
   <ItemGroup>
     <Folder Include="Control\Customize\" />
     <Folder Include="Core\AvalonEdit\Highlight\" />
+    <Folder Include="Core\AvalonEdit\Substitution\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
