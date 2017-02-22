@@ -1,0 +1,16 @@
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.exe.config
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.exe
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.pdb
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\ICSharpCode.AvalonEdit.dll
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\ICSharpCode.AvalonEdit.xml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csprojResolveAssemblyReference.cache
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA_MarkupCompile.cache
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA_MarkupCompile.lref
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.g.resources
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.Properties.Resources.resources
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.GenerateResource.Cache
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.exe
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.pdb
