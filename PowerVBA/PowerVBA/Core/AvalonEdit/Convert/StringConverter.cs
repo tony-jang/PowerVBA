@@ -8,6 +8,11 @@ namespace PowerVBA.Core.AvalonEdit.Convert
 {
     static class StringConverter
     {
+        /// <summary>
+        /// 선언 타입 (Sub, Function, Type 등) 들을 원래 포맷으로 변경해줍니다.
+        /// </summary>
+        /// <param name="Type"></param>
+        /// <returns></returns>
         public static string ConvertType(string Type)
         {
             switch (Type.ToLower())
@@ -26,6 +31,11 @@ namespace PowerVBA.Core.AvalonEdit.Convert
             }
         }
 
+        /// <summary>
+        /// 엑세서 (Public, Private, Dim 등) 들을 원래 포맷으로 변경해줍니다.
+        /// </summary>
+        /// <param name="Accessor"></param>
+        /// <returns></returns>
         public static string ConvertAccessor(string Accessor)
         {
             switch (Accessor.ToLower())
@@ -34,6 +44,8 @@ namespace PowerVBA.Core.AvalonEdit.Convert
                     return "Public";
                 case "private":
                     return "Private";
+                case "dim":
+                    return "Dim";
                 default: return Accessor;
             }
         }

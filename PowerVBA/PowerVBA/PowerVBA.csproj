@@ -76,6 +76,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Control\Design\ErrorToolTipDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,21 +88,42 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Control\Customize\ErrorToolTip.cs" />
+    <Compile Include="Control\Design\ErrorToolTipDesign.xaml.cs">
+      <DependentUpon>ErrorToolTipDesign.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Core\AvalonEdit\Convert\StringConverter.cs" />
+    <Compile Include="Core\AvalonEdit\Folding\LineType.cs" />
     <Compile Include="Core\AvalonEdit\Folding\VBAFoldingStrategy.cs" />
+    <Compile Include="Core\AvalonEdit\Indentation\CodeIndentation.cs" />
     <Compile Include="Core\AvalonEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
+    <Compile Include="Core\AvalonEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\Base\BaseSubstitution.cs" />
+    <Compile Include="Core\Error\CodeError.cs" />
+    <Compile Include="Core\Error\ErrorType.cs" />
+    <Compile Include="Global\Regex\CustomRegexVariables.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\MethodSubstitution.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\VariableSubstitution.cs" />
+    <Compile Include="Core\Extension\HighlightingRuleEx.cs" />
     <Compile Include="Core\Extension\stringEx.cs" />
+    <Compile Include="Core\Interface\ISubstitution.cs" />
     <Compile Include="Core\Interface\IWrappingClass.cs" />
+    <Compile Include="Core\Library\LibraryLoader.cs" />
     <Compile Include="Core\Wrap\WrapClass\PresentationWrapping.cs" />
     <Compile Include="Core\Wrap\WrapClass\ShapeWrapping.cs" />
     <Compile Include="Core\Wrap\WrapClass\SlideWrapping.cs" />
     <Compile Include="Core\Wrap\WrapClass\VBProjectWrapping.cs" />
     <Compile Include="Core\Wrap\WrappedAttribute.cs" />
     <Compile Include="Core\Wrap\WrappingExtension.cs" />
+    <Compile Include="Global\Globals.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\ControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -124,15 +149,33 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\VBA_Highlight.xshd" />
+    <None Include="Resources\VBA_Highlight.xshd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Control\Customize\" />
-    <Folder Include="Core\AvalonEdit\Highlight\" />
-    <Folder Include="Core\AvalonEdit\Substitution\" />
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,7 +5,7 @@
 <!-- Converted to AvalonEdit format by Daniel Grunwald in 2010 -->
 <!-- Updated 2010 by Siegfried Oleg Pammer for VB.NET 9 and 10 -->
 <!-- Updated 2011 by Siegfried Oleg Pammer for VB 11 CTP -->
-<SyntaxDefinition name="VBNET" extensions=".vb" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+<SyntaxDefinition name="VBA" extensions=".cls;.bas;.frm" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
 	<Color name="Comment" foreground="Green" exampleText="' comment" />
 	<Color name="String" foreground="#A92525" exampleText="text = &quot;Hello, World!&quot;" />
 	
@@ -18,6 +18,7 @@
 	<Color name="FunctionKeywords" foreground="Blue" exampleText="CInt(a)" />
 	<Color name="ContextKeywords" foreground="Blue" exampleText="Declare Unicode Sub SomeMethod" />
   <Color name="TODOColor" foreground="#06ABF6" fontWeight="bold"/>
+  <Color name="ClassTypes" foreground="#2B91AF" exampleText="Dim c as ClassName"/>
 	
   <!--fontStyle="italic"-->
   
@@ -34,6 +35,7 @@
 		<Span color="Preprocessor" ruleSet="PreprocessorSet">
 			<Begin>(?&lt;=(^\s*))\#</Begin>
 		</Span>
+    
 		<Span color="DateLiteral">
 			<Begin>(?&lt;!(^\s*))\#</Begin>
 			<End>\#</End>
@@ -66,6 +68,14 @@
 			<Word>UShort</Word>
 			<Word>Variant</Word>
 		</Keywords>
+    
+    
+    <!--클래스 또는 커스텀 타입 키워드-->
+    <Keywords color="ClassTypes">
+      <Word>EventArgs</Word>
+    </Keywords>
+    
+    <!--연산자 키워드-->
 		<Keywords color="Operators">
 			<Word>AddressOf</Word>
 			<Word>And</Word>
@@ -81,14 +91,16 @@
 			<Word>OrElse</Word>
 			<Word>Xor</Word>
 		</Keywords>
+    
+    <!--상수 키워드-->
 		<Keywords color="Constants">
 			<Word>False</Word>
-			<Word>Me</Word>
-			<Word>MyBase</Word>
-			<Word>MyClass</Word>
+      <Word>True</Word>
+			<Word>Null</Word>
 			<Word>Nothing</Word>
-			<Word>True</Word>
 		</Keywords>
+    
+    <!--함수 키워드-->
 		<Keywords color="FunctionKeywords">
 			<Word>CBool</Word>
 			<Word>CByte</Word>
@@ -104,16 +116,10 @@
 			<Word>CSng</Word>
 			<Word>CStr</Word>
 			<Word>CType</Word>
-			<Word>CUInt</Word>
-			<Word>CULng</Word>
-			<Word>CUShort</Word>
-			<Word>DirectCast</Word>
-			<Word>GetType</Word>
-			<Word>GetXmlNamespace</Word>
 			<Word>IIf</Word>
-			<Word>TryCast</Word>
-			<Word>TypeOf</Word>
 		</Keywords>
+    
+    <!--예약된 키워드 리스트-->
 		<Keywords color="Keywords">
 			<Word>AddHandler</Word>
 			<Word>Alias</Word>
@@ -151,31 +157,20 @@
 			<Word>GoTo</Word>
 			<Word>Handles</Word>
 			<Word>If</Word>
-			<Word>Implements</Word>
-			<Word>Imports</Word>
 			<Word>In</Word>
-			<Word>Inherits</Word>
-			<Word>Interface</Word>
 			<Word>Let</Word>
 			<Word>Lib</Word>
 			<Word>Loop</Word>
 			<Word>Module</Word>
-			<Word>MustInherit</Word>
-			<Word>MustOverride</Word>
 			<Word>Namespace</Word>
 			<Word>Narrowing</Word>
 			<Word>New</Word>
 			<Word>Next</Word>
-			<Word>NotInheritable</Word>
-			<Word>NotOverridable</Word>
 			<Word>Of</Word>
 			<Word>On</Word>
 			<Word>Operator</Word>
 			<Word>Option</Word>
 			<Word>Optional</Word>
-			<Word>Overloads</Word>
-			<Word>Overridable</Word>
-			<Word>Overrides</Word>
 			<Word>ParamArray</Word>
 			<Word>Partial</Word>
 			<Word>Private</Word>
@@ -202,6 +197,7 @@
 			<Word>Throw</Word>
 			<Word>To</Word>
 			<Word>Try</Word>
+      <Word>Type</Word>
 			<Word>Using</Word>
 			<Word>Wend</Word>
 			<Word>When</Word>
@@ -241,7 +237,6 @@
 			<Word>Unicode</Word>
 			<Word>Until</Word>
 			<Word>Where</Word>
-			<Word>Yield</Word>
 		</Keywords>
 	</RuleSet>
 	<RuleSet name="PreprocessorSet" ignoreCase="true" >

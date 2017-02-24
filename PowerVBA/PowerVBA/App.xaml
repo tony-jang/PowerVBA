@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:PowerVBA"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+         <ResourceDictionary Source="Themes/ControlStyle.xaml"/>
     </Application.Resources>
 </Application>

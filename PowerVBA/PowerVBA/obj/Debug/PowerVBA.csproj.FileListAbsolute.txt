@@ -30,3 +30,9 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.Properties
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.GenerateResource.Cache
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.exe
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.pdb
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.ResolveComReference.cache
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\GeneratedInternalTypeHelper.g.cs

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <av:TextEditor x:Name="codeEditor" FontFamily="Dotum" FontSize="13"/>
+        <av:TextEditor x:Name="codeEditor" Text="이것으로 모든 것을 확실히 하겠다." FontFamily="DotumChe" ShowLineNumbers="True" FontSize="13.333333333333333"  SnapsToDevicePixels="True"/>
         
     </Grid>
 </Window>
