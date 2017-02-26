@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:av="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:c="clr-namespace:PowerVBA.Control.Customize"
         xmlns:local="clr-namespace:PowerVBA"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <av:TextEditor x:Name="codeEditor" Text="이것으로 모든 것을 확실히 하겠다." FontFamily="DotumChe" ShowLineNumbers="True" FontSize="13.333333333333333"  SnapsToDevicePixels="True"/>
-        
+        <av:TextEditor x:Name="codeEditor" Text="1라인 테스트" FontFamily="DotumChe" ShowLineNumbers="True" FontSize="13.333333333333333"  SnapsToDevicePixels="True"/>
     </Grid>
 </Window>

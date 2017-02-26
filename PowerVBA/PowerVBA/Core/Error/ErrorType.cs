@@ -8,8 +8,17 @@ namespace PowerVBA.Core.Error
 {
     enum ErrorType
     {
+        /// <summary>
+        /// 오류
+        /// </summary>
         Error,
-        Wraning,
+        /// <summary>
+        /// 경고 메세지
+        /// </summary>
+        Warning,
+        /// <summary>
+        /// 안내 메세지
+        /// </summary>
         Message
     }
 }

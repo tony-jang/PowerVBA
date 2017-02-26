@@ -1,5 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit.Folding;
-using PowerVBA.Core.AvalonEdit.Folding;
+using PowerVBA.Core.CodeEdit.Folding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +22,20 @@ using System.Xml;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Rendering;
-using PowerVBA.Core.AvalonEdit.Renderer;
+using PowerVBA.Core.CodeEdit.Renderer;
 using ICSharpCode.AvalonEdit.Document;
-using PowerVBA.Core.AvalonEdit.Substitution;
-using PowerVBA.Core.AvalonEdit.Substitution.Base;
+using PowerVBA.Core.CodeEdit.Substitution;
+using PowerVBA.Core.CodeEdit.Substitution.Base;
 using System.Text.RegularExpressions;
 using static PowerVBA.Global.Globals;
 using PowerVBA.Core.Extension;
-using PowerVBA.Core.AvalonEdit.Indentation;
+using PowerVBA.Core.CodeEdit.Indentation;
 using PowerVBA.Global.Regex;
 using PowerVBA.Core.Error;
 using PowerVBA.Control.Customize;
+using PowerVBA.Core.CodeEdit.Parser;
+using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace PowerVBA
 {
@@ -62,6 +65,8 @@ namespace PowerVBA
 
         ErrorToolTip errToolTip;
 
+        double LineHeight;
+
         #endregion
 
         
@@ -73,6 +78,7 @@ namespace PowerVBA
         {
             InitializeComponent();
             
+
             #region [  코드 폴딩  ]
 
             foldingManager = FoldingManager.Install(codeEditor.TextArea);
@@ -113,11 +119,13 @@ namespace PowerVBA
             }
 
             // TODO : 위치 변경
-            Type[] typelist = GetTypesInNamespace(Assembly.LoadFile(@"F:\장유탁 파일\Github Project\PowerVBA\packages\Microsoft.Office.Interop.PowerPoint.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.PowerPoint.dll")
-                                                    , "Microsoft.Office.Interop.PowerPoint");
-            
+            Type[] typelist = GetTypesInNamespace(Assembly.Load(PowerVBA.Properties.Resources.LibPowerPoint), "Microsoft.Office.Interop.PowerPoint");
+
             foreach (var t in typelist)
-                if (t.IsInterface || t.IsEnum) codeEditor.SyntaxHighlighting.MainRuleSet.Rules[1].Add(t.Name);
+                if (t.IsInterface || t.IsEnum)
+                {
+                    codeEditor.SyntaxHighlighting.MainRuleSet.Rules[1].Add(t.Name);
+                }
 
 
             #endregion
@@ -147,6 +155,10 @@ namespace PowerVBA
 
             #endregion
 
+            #region [  CodeParser 초기화  ]
+            CodeParser codeParser = new CodeParser(codeEditor, CodeErrors);
+            #endregion
+
             #region [  이벤트 핸들러 연결  ]
 
             // MainWindow
@@ -160,24 +172,28 @@ namespace PowerVBA
 
             codeEditor.TextArea.SelectionChanged += codeSelChanged;
             codeEditor.TextArea.Caret.PositionChanged += codeCaretChanged;
+            codeEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+            codeEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
+
 
             codeEditor.MouseMove += codeMouseMove;
             codeEditor.MouseLeave += codeMouseLeave;
             
 
             #endregion
-
+            
             #region [  TextEditor 옵션/설정 변경  ]
 
             codeEditor.Options.InheritWordWrapIndentation = false;
             errToolTip = new ErrorToolTip();
+
+            LineHeight = codeEditor.TextArea.TextView.DefaultLineHeight;
 
             #endregion
 
 
             CodeErrors.Add(new CodeError(1, ErrorType.Error, "string 값을 할당할 수 없습니다."));
             CodeErrors.Add(new CodeError(2, ErrorType.Error, "Dim A As String과 같은 형태는 사용할 수 없습니다."));
-
         }
         
         #endregion
@@ -188,14 +204,12 @@ namespace PowerVBA
         int lastindex = 0;
         private void codeMouseMove(object sender, MouseEventArgs e)
         {
-            for (int ctr = 1; ctr <= codeEditor.TextArea.TextView.VisualLines.Count; ctr++){
+            bool Handled = false;
+
+            for (int ctr = 1; ctr <= codeEditor.LineCount; ctr++){
                 double lineTop = codeEditor.TextArea.TextView.GetVisualTopByDocumentLine(ctr);
                 double MouseY = Mouse.GetPosition(codeEditor).Y;
-
-                VisualLine line = codeEditor.TextArea.TextView.GetVisualLineFromVisualTop(lineTop);
-
-                double LineHeight = line.Height;
-
+                
                 if (MouseY >= lineTop && MouseY < LineHeight + lineTop)
                 {
                     string d = string.Join("\r\n", CodeErrors.Where((err) => err.LineNumber == ctr)
@@ -203,9 +217,10 @@ namespace PowerVBA
 
                     int count = CodeErrors.Where((err) => err.LineNumber == ctr).Count();
 
-
+                    // 현재 라인에 오류가 있을 경우
                     if (!string.IsNullOrEmpty(d))
                     {
+                        
                         if (lastindex != ctr)
                         {
                             errToolTip.IsOpen = false;
@@ -218,21 +233,23 @@ namespace PowerVBA
                     else
                     {
                         errToolTip.IsOpen = false;
+                        
                     }
-
-
+                    Handled = true;
                     lastindex = ctr;
+                    break;
                 }
-                else
+            }
+            
+            if (!Handled)
+            {
                 {
                     errToolTip.IsOpen = false;
                     lastindex = -1;
                 }
-
             }
-            
 
-            this.Title = DateTime.Now.ToString() + " :: " + Mouse.GetPosition(codeEditor).Y;
+            this.Title = DateTime.Now.ToString() + " :: " + Mouse.GetPosition(codeEditor).Y + " :: " + lastindex;
         }
 
 
@@ -241,6 +258,96 @@ namespace PowerVBA
             errToolTip.IsOpen = false;
             lastindex = -1;
         }
+
+
+        public class MyCompletionData : ICompletionData
+        {
+            public MyCompletionData(string d)
+            {
+                text = d;
+            }
+            public object Content
+            {
+                get
+                {
+                    return "AA";
+                }
+            }
+
+            public object Description
+            {
+                get
+                {
+                    return "ABC";
+                }
+            }
+
+            public ImageSource Image
+            {
+                get
+                {
+                    return null;
+                }
+            }
+
+            public double Priority
+            {
+                get
+                {
+                    return 1;
+                }
+            }
+
+            public string text { get; set; }
+            public string Text
+            {
+                get
+                {
+                    return text;
+                }
+            }
+
+            public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
+            {
+                textArea.Document.Replace(completionSegment, this.text);
+            }
+        }
+
+        CompletionWindow completionWindow;
+
+        void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text == ".")
+            {
+                // Open code completion after the user has pressed dot:
+                completionWindow = new CompletionWindow(codeEditor.TextArea);
+                IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+                data.Add(new MyCompletionData("Item1"));
+                data.Add(new MyCompletionData("Item2"));
+                data.Add(new MyCompletionData("Item3"));
+                completionWindow.Show();
+                completionWindow.Closed += delegate {
+                    completionWindow = null;
+                };
+            }
+        }
+
+        void textEditor_TextArea_TextEntering(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text.Length > 0 && completionWindow != null)
+            {
+                if (!char.IsLetterOrDigit(e.Text[0]))
+                {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    completionWindow.CompletionList.RequestInsertion(e);
+                }
+            }
+            // Do not set e.Handled=true.
+            // We still want to insert the character that was typed.
+        }
+
+
 
 
         internal string GetIndentation(int Indentation)
@@ -268,7 +375,7 @@ namespace PowerVBA
 
             if (LastLine != line)
             {
-                codeIndentation.Indent();
+                //codeIndentation.Indent();
                 // 선택된 라인이 바뀌었을때 (예 : 선택된 라인이 4였다가 5나 7로 바뀌었을때)
                 LastLine = line;
             }

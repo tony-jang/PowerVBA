@@ -70,6 +70,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFExtension.1.0.1\lib\net45\WPFExtension.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -92,18 +96,22 @@
     <Compile Include="Control\Design\ErrorToolTipDesign.xaml.cs">
       <DependentUpon>ErrorToolTipDesign.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\AvalonEdit\Convert\StringConverter.cs" />
-    <Compile Include="Core\AvalonEdit\Folding\LineType.cs" />
-    <Compile Include="Core\AvalonEdit\Folding\VBAFoldingStrategy.cs" />
-    <Compile Include="Core\AvalonEdit\Indentation\CodeIndentation.cs" />
-    <Compile Include="Core\AvalonEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
-    <Compile Include="Core\AvalonEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\Base\BaseSubstitution.cs" />
+    <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletion.cs" />
+    <Compile Include="Core\CodeEdit\CodeEditor.cs" />
+    <Compile Include="Core\CodeEdit\Convert\StringConverter.cs" />
+    <Compile Include="Core\CodeEdit\Folding\LineType.cs" />
+    <Compile Include="Core\CodeEdit\Folding\VBAFoldingStrategy.cs" />
+    <Compile Include="Core\CodeEdit\Indentation\CodeIndentation.cs" />
+    <Compile Include="Core\CodeEdit\Parser\CodeParser.cs" />
+    <Compile Include="Core\CodeEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
+    <Compile Include="Core\CodeEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\Base\BaseSubstitution.cs" />
     <Compile Include="Core\Error\CodeError.cs" />
     <Compile Include="Core\Error\ErrorType.cs" />
+    <Compile Include="Core\TypeManage\TypeConverter.cs" />
     <Compile Include="Global\Regex\CustomRegexVariables.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\MethodSubstitution.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\VariableSubstitution.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\MethodSubstitution.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\VariableSubstitution.cs" />
     <Compile Include="Core\Extension\HighlightingRuleEx.cs" />
     <Compile Include="Core\Extension\stringEx.cs" />
     <Compile Include="Core\Interface\ISubstitution.cs" />
@@ -156,7 +164,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Microsoft.Office.Interop.PowerPoint.dll" />
+  </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>

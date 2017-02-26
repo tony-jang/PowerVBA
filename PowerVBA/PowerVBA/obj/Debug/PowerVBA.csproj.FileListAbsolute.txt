@@ -36,3 +36,10 @@ F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.ResolveComReference.cache
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.g.cs
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.baml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\WPFExtension.dll
