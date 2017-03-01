@@ -21,10 +21,18 @@ namespace PowerVBA.Global.Regex
 
         public static string blnkOnLast { get; } = @"(\t|\f|\v| |\b)+";
 
+
+        public static string blnkOrNull { get; } = @"(\t|\f|\v| |)+";
+
         /// <summary>
         /// 프로퍼티 또는 메소드의 이름을 체크합니다. 1개의 그룹을 가지고 있습니다.
         /// </summary>
         public static string name { get; } = @"([_|a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_|a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)";
+
+        /// <summary>
+        /// a-zA-Z의 알파벳 문자를 가지고 있습니다.
+        /// </summary>
+        public static string Alphabet { get; } = "[a-zA-Z]";
 
         #endregion
     }
@@ -68,7 +76,7 @@ namespace PowerVBA.Global.Regex
 
         #endregion
 
-        #region 약한 체크 패턴 (Weak Check Pattern)
+        #region [  약한 체크 패턴 (Weak Check Pattern)  ]
 
         /// <summary>
         /// g1:any g2:blank g3:any g4:blank g5:name g6:blank g7:parameter g8:parameter(Withoutbracket)
@@ -78,5 +86,35 @@ namespace PowerVBA.Global.Regex
         public static string g_lineEndPattern { get; } = $@"(.+){Var.blnkChk}(.+)";
 
         #endregion
+
+
+        #region [  띄울수 있는 패턴  ]
+
+        // 특화된 것부터 배치
+
+
+        /// <summary>
+        /// [(dim|with)][blank]
+        /// </summary>
+        public static string pattern1 { get; } = $@"(?i)^{Var.blnkOrNull}(dim|with){Var.blnkChk}$";
+        /// <summary>
+        /// [(public|private)][blank]
+        /// </summary>
+        public static string pattern1_1 { get; } = $@"(?i)^{Var.blnkOrNull}(public|private){Var.blnkChk}$";
+        public static string pattern1_2 { get; } = $@"(?i)^{Var.blnkOrNull}({Var.Alphabet}+)$";
+        public static string pattern1_3 { get; } = $@"(?i)^(\t|\f|\v| |)+(dim|public|private)(\t|\f|\v| )+{Var.name}(?<!function|sub|type|enum){Var.blnkChk}$";
+        /// <summary>
+        /// [blank]
+        /// </summary>
+        public static string pattern2 { get; } = $@"^{Var.blnkOrNull}$";
+        
+        /// <summary>
+        /// [private/public/null][blank][class/enum/type][blank]
+        /// </summary>
+        public static string pattern3 { get; } = $@"(?i)^{Var.blnkOrNull}(public|private|){Var.blnkOrNull}(class|enum|type){Var.blnkChk}$";
+        public static string pattern4 { get; } = $@"(?i)(\t|\f|\v| |)+(dim|public|private)(\t|\f|\v| )+{Var.name}(?<!function|sub|type|enum){Var.blnkChk}As{Var.blnkChk}";
+        #endregion
+
+
     }
 }

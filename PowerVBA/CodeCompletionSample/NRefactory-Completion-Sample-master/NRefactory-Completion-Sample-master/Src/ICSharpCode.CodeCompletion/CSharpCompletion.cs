@@ -11,6 +11,7 @@ using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.NRefactory.Documentation;
 using System.IO;
+using System.Windows;
 
 namespace ICSharpCode.CodeCompletion
 {
@@ -168,6 +169,9 @@ namespace ICSharpCode.CodeCompletion
 
                 if (char.IsLetterOrDigit(completionChar) || completionChar == '_')
                 {
+
+                    //MessageBox.Show(char.IsLetterOrDigit(completionContext.Document.GetCharAt(startPos - 2)).ToString() 
+                    //    + " :: " + completionContext.Document.GetCharAt(startPos - 2));
                     if (startPos > 1 && char.IsLetterOrDigit(completionContext.Document.GetCharAt(startPos - 2)))
                         return result;
                     completionData = cce.GetCompletionData(startPos, false);

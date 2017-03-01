@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PowerVBA</RootNamespace>
     <AssemblyName>PowerVBA</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,13 +50,20 @@
       <HintPath>C:\WINDOWS\assembly\GAC_MSIL\Microsoft.Vbe.Interop\15.0.0.0__71e9bce111e9429c\Microsoft.Vbe.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Windows.Shell.3.0.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OFFICE, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\WINDOWS\assembly\GAC_MSIL\OFFICE\15.0.0.0__71e9bce111e9429c\OFFICE.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -80,7 +88,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Control\Design\ErrorToolTipDesign.xaml">
+    <Compile Include="Command\WindowsSystemCommand.cs" />
+    <Compile Include="Controls\Customize\ImageButton.cs" />
+    <Compile Include="Controls\Customize\PathButton.cs" />
+    <Compile Include="Controls\Customize\wpfPropertyGrid.cs" />
+    <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Core\CodeEdit\CodeCompletion\CompletionFlag.cs" />
+    <Compile Include="Core\CodeEdit\Parser\Data\Accessor.cs" />
+    <Compile Include="Core\CodeEdit\Parser\Data\BaseData.cs" />
+    <Compile Include="Core\CodeEdit\Parser\Data\EnumData.cs" />
+    <Compile Include="Core\CodeEdit\Parser\Data\TypeData.cs" />
+    <Compile Include="Core\CodeEdit\Parser\Data\VariableData.cs" />
+    <Compile Include="Core\CodeEdit\Parser\ProjectResource.cs" />
+    <Compile Include="Interop\Constats.cs" />
+    <Compile Include="Interop\ExternDll.cs" />
+    <Compile Include="Interop\NativeMethods.cs" />
+    <Compile Include="Interop\UnsafeNativeMethods.cs" />
+    <Compile Include="Resources\ResourceImage.cs" />
+    <Compile Include="Windows\ChromeWindow.cs" />
+    <Page Include="Controls\Design\ErrorToolTipDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -92,11 +118,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Control\Customize\ErrorToolTip.cs" />
-    <Compile Include="Control\Design\ErrorToolTipDesign.xaml.cs">
+    <Compile Include="Controls\Customize\ErrorToolTip.cs" />
+    <Compile Include="Controls\Design\ErrorToolTipDesign.xaml.cs">
       <DependentUpon>ErrorToolTipDesign.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Core\CodeEdit\CodeCompletion\CodeCompletionResult.cs" />
+    <Compile Include="Core\CodeEdit\CodeCompletion\CompletionData.cs" />
+    <Compile Include="Core\CodeEdit\CodeCompletion\MiniLexer.cs" />
     <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletion.cs" />
+    <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletionEngine.cs" />
     <Compile Include="Core\CodeEdit\CodeEditor.cs" />
     <Compile Include="Core\CodeEdit\Convert\StringConverter.cs" />
     <Compile Include="Core\CodeEdit\Folding\LineType.cs" />
@@ -186,6 +216,44 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ClassIcon.png" />
+    <Resource Include="Resources\Icon\EventIcon.png" />
+    <Resource Include="Resources\Icon\MethodIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\DeclaratorIcon.png" />
+    <Resource Include="Resources\Icon\PropertyIcon.png" />
+    <Resource Include="Resources\Icon\VariableIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ProgramIcon\PowerVBA BigLogo.ico" />
+    <Resource Include="Resources\ProgramIcon\PowerVBA MiddleLogo.ico" />
+    <Resource Include="Resources\ProgramIcon\PowerVBA SmallLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ModuleIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MethodSubIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MouseClickIcon.png" />
+    <Resource Include="Resources\Icon\MouseOverIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\EnumIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ClipboardIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\CopyIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\RedoIcon.png" />
+    <Resource Include="Resources\Icon\UndoIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

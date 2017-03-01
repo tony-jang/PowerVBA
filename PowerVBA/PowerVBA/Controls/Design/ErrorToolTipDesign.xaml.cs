@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PowerVBA.Control.Design
+namespace PowerVBA.Controls.Design
 {
     /// <summary>
     /// ErrorToolTipDesign.xaml에 대한 상호 작용 논리

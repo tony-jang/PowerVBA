@@ -1,10 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:PowerVBA.Themes"
-                    xmlns:c="clr-namespace:PowerVBA.Control.Customize">
+                    xmlns:cm="clr-namespace:PowerVBA.Commands"
+                    xmlns:w="clr-namespace:PowerVBA.Windows"
+                    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
+                    xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+                    xmlns:h="clr-namespace:PowerVBA.Controls.Helper">
 
 
-    <!--Height="auto" d:DesignWidth="250" Background="White">-->
+    <StreamGeometry x:Key="EndPath">M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z</StreamGeometry>
+    <StreamGeometry x:Key="RestorePath">M22.648111,106.91675 L22.648111,220.45862 181.18489,220.45862 181.18489,106.91675 z M64.648109,45.416747 L64.648109,61.499999 181.18489,61.499999 C193.75459,61.499999 203.83299,71.718764 203.83299,84.208373 L203.83299,158.95862 223.18488,158.95862 223.18488,45.416747 z M64.648109,0 L223.18488,0 C235.75458,1.3930173E-07 245.83299,10.218769 245.83299,22.708375 L245.83299,158.95862 C245.83299,171.44823 235.64134,181.66699 223.18488,181.66699 L203.83299,181.66699 203.83299,220.45862 C203.83299,232.94823 193.64136,243.16701 181.18489,243.16701 L22.648111,243.16701 C10.078409,243.16701 0,232.94823 0,220.45862 L0,84.208373 C0,71.718764 10.078409,61.499999 22.648111,61.499999 L42.000001,61.499999 42.000001,22.708375 C41.999999,10.218769 52.078409,1.3930173E-07 64.648109,0 z</StreamGeometry>
+    <StreamGeometry x:Key="MaximizePath">M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.89-2-2-2zm0 14H5V8h14v10z</StreamGeometry>
+    <StreamGeometry x:Key="MiniMizePath">M0.5,0.5 L47.5,0.5 L47.5,12.5 L0.5,12.5 z</StreamGeometry>
+
+
+
+    <!--ErrorToolTip Style-->
     <Style x:Name="ErrorToolTipStyle" TargetType="{x:Type c:ErrorToolTip}">
         <Setter Property="Height" Value="Auto"/>
         <Setter Property="Width" Value="250"/>
@@ -30,6 +40,314 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!--ChromeWindow Style-->
+    <Style x:Key="ChromeWindowStyle" TargetType="{x:Type w:ChromeWindow}">
+        <Setter Property="shell:WindowChrome.WindowChrome">
+            <Setter.Value>
+                <shell:WindowChrome CaptionHeight="32" CornerRadius="0" GlassFrameThickness="1" ResizeBorderThickness="5"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type w:ChromeWindow}">
+
+                    <Grid x:Name="ContentGrid" Margin="3" Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.Effect>
+                            <DropShadowEffect Direction="230" ShadowDepth="0"/>
+                        </Grid.Effect>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="90"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Margin="3" Source="{TemplateBinding Icon}" IsHitTestVisible="False"/>
+                            <TextBlock Margin="5,0" Grid.Column="1" TextAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Title}" IsHitTestVisible="False"/>
+
+                            <Grid Grid.Column="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <c:PathButton x:Name="MiniButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="0"
+                                              Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}" Background="#00000000" />
+                                <c:PathButton x:Name="MiniButt" Data="{StaticResource MiniMizePath}" Margin="8,17,8,8" Background="#FF919191" Grid.Column="0"
+                                                                 shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}"/>
+
+                                <c:PathButton x:Name="RestoreButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="1"
+                                              Command="{x:Static cm:WindowSystemCommand.RestoreCommand}" Background="#00000000" />
+                                <c:PathButton x:Name="RestoreButt" Data="{StaticResource MaximizePath}" Margin="8" Background="#FF919191" Grid.Column="1"
+                                                                 shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.RestoreCommand}"/>
+
+                                <c:PathButton x:Name="EndButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="2"
+                                              Command="{x:Static cm:WindowSystemCommand.CloseCommand}" Background="#00000000" />
+                                <c:PathButton x:Name="EndButt" Data="{StaticResource EndPath}" Margin="8" Background="#FF919191" Grid.Column="2"
+                                                                 shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.CloseCommand}"/>
+
+                            </Grid>
+                        </Grid>
+                        <Border Grid.RowSpan="2" BorderBrush="#FFD24726" BorderThickness="1" IsHitTestVisible="False"/>
+                        <ContentPresenter Margin="1" Content="{TemplateBinding Content}" Grid.Row="1"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter Property="Margin" TargetName="ContentGrid" Value="0"/>
+                            <Setter Property="Data" TargetName="RestoreButt" Value="{StaticResource RestorePath}"/>
+                        </Trigger>
+
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter Property="Visibility" TargetName="RestoreButt" Value="Hidden"/>
+                            <Setter Property="Visibility" TargetName="RestoreButt_t" Value="Hidden"/>
+
+                            <Setter Property="Grid.Column" TargetName="MiniButt" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="MiniButt_t" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--PathButton Style-->
+    <Style TargetType="{x:Type c:PathButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:PathButton}">
+                    <Border x:Name="border" Background="#00000000">
+                        <Path x:Name="pth" Data="{TemplateBinding Data}"
+                                  Fill="{TemplateBinding Background}"
+                                  Width="{TemplateBinding Width}"
+                                  Height="{TemplateBinding Height}"
+                                  Stretch="Fill">
+                        </Path>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--TabItem Style-->
+    <Style x:Key="TabItemStyle" TargetType="{x:Type TabItem}">
+
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}" >
+                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True" Margin="1,0">
+                        <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1,1,1,0"
+                                Background="{TemplateBinding Background}" Margin="0">
+
+                        </Border>
+                        <ContentPresenter Margin="15,5" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                          ContentSource="Header" Focusable="False"
+                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="#FFDB6D52"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="#FFDB6D52"/>
+                            <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
+                            <Setter Property="Margin" Value="0,0,0,-1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CodeTabItemStyle" TargetType="{x:Type TabItem}">
+
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}" >
+                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True" Margin="1,0">
+                        <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1,1,1,0"
+                                Background="{TemplateBinding Background}" Margin="0">
+
+                        </Border>
+                        <ContentPresenter Margin="10,2" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                          ContentSource="Header" Focusable="False"
+                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFD24726"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FFD24726"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
-    
+    <!--TabItem (File) Style-->
+    <Style x:Key="FileTabItemStyle" TargetType="{x:Type TabItem}">
+        <Setter Property="Background" Value="#FFD24726"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="#FFD24726"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}" >
+                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True" Margin="1,0">
+                        <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1,1,1,0"
+                                Background="{TemplateBinding Background}" Margin="0">
+
+                        </Border>
+                        <ContentPresenter Margin="15,5" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                          ContentSource="Header" Focusable="False"
+                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFF0623E"/>
+                        </Trigger>
+                        <!--<Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
+                            <Setter Property="Margin" Value="0,0,0,-1"/>
+                        </Trigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--GroupBox Style-->
+    <Style x:Key="GroupBoxStyle" TargetType="{x:Type GroupBox}">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Height" Value="105"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ContentPresenter Margin="5"/>
+                        <TextBlock Grid.Row="1" Text="{TemplateBinding Header}" TextAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="ImageButtonStyle" TargetType="{x:Type c:ImageButton}">
+        <Setter Property="MinWidth" Value="50"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="h:MouseDownHelper.IsEnabled" Value="True"/>
+        <Style.Triggers>
+            <Trigger Property="buttonMode" Value="Default">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type c:ImageButton}">
+                            <Grid Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border x:Name="SimpleButton" Background="Transparent" Grid.RowSpan="2"/>
+                                <Image IsHitTestVisible="False" Width="40" Source="{TemplateBinding BackImage}" 
+                                       Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+
+                                <ContentPresenter Margin="2,0" Grid.Row="1" VerticalAlignment="Top"
+                                                  TextBlock.TextAlignment="Center" IsHitTestVisible="False"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="SimpleButton" Value="#FCE4DC"/>
+                                </Trigger>
+                                <Trigger Property="h:MouseDownHelper.IsMouseLeftButtonDown" Value="True">
+                                    <Setter Property="Background" TargetName="SimpleButton" Value="#F5BA9D"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="buttonMode" Value="ButtonWithDetails">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type c:ImageButton}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Image Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Border x:Name="SimpleButton" Background="{TemplateBinding Background}"/>
+                                <Border x:Name="ExButton" Background="Aqua" Grid.Row="1"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="buttonMode" Value="OnlyDetails">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type c:ImageButton}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Image Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Border x:Name="SimpleButton" Background="{TemplateBinding Background}"/>
+                                <Border x:Name="ExButton" Background="Aqua" Grid.Row="1"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

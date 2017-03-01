@@ -17,6 +17,18 @@ namespace PowerVBA.Core.CodeEdit.Renderer
         public CurrentLineBackgroundRenderer(TextEditor editor)
         {
             _editor = editor;
+            editor.GotFocus += Editor_GotFocus;
+            editor.LostFocus += Editor_LostFocus;
+        }
+        bool Focused = false;
+        private void Editor_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Focused = false;
+        }
+
+        private void Editor_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Focused = true;
         }
 
         public KnownLayer Layer
@@ -26,7 +38,7 @@ namespace PowerVBA.Core.CodeEdit.Renderer
 
         public void Draw(TextView textView, DrawingContext drawingContext)
         {
-            if (_editor.Document == null)
+            if ((_editor.Document == null) || !Focused)
                 return;
 
             textView.EnsureVisualLines();

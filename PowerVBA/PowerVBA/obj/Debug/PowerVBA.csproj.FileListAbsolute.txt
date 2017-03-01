@@ -31,8 +31,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.Gen
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.exe
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.pdb
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.ResolveComReference.cache
-F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.g.cs
-F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\GeneratedInternalTypeHelper.g.cs
@@ -43,3 +41,8 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control\Design\ErrorToolTipDesign.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\WPFExtension.dll
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\WPFExtension.dll
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\Microsoft.Windows.Shell.dll
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\Microsoft.Windows.Shell.pdb
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.baml

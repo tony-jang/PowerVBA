@@ -16,33 +16,20 @@ namespace PowerVBA.Core.CodeEdit.Substitution
     {
         
         public MethodSubstitution(TextEditor editor) : base(editor) { }
-
-
-        #region [  Pattern  ]
         
-        
-
-        #endregion
-
-
         public override void Convert()
         {
 
             int d = Editor.CaretOffset;
             
             DocumentLine line = Editor.Document.GetLineByOffset(Editor.CaretOffset);
-
             
             string clonestr = Editor.Text.Clone().ToString();
             string codeText = (clonestr.Substring(line.Offset, Editor.CaretOffset - line.Offset));
             string anotherText = clonestr.Substring(line.Offset + codeText.Length, line.EndOffset - (codeText.Length + line.Offset));
 
             if (!Regex.IsMatch(anotherText, Pattern.blankCheckPattern)) return;
-
-
-            List<ICompletionData> data;
             
-
             int Offset = line.Offset;
 
             if (Regex.IsMatch(codeText.Trim(), Pattern.lineStartPattern))

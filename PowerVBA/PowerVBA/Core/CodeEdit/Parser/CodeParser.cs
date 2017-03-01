@@ -17,7 +17,7 @@ namespace PowerVBA.Core.CodeEdit.Parser
             this.Editor = editor;
             this.Errors = errors;
 
-            errors.Add(new CodeError(1, ErrorType.Error, "ABC"));
+            
         }
         public TextEditor Editor { get; }
         public List<CodeError> Errors { get; }
