@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Core.CodeEdit.Folding
 {
-    enum LineType
+    enum FoldingLineType
     {
         Method,
         Remark,

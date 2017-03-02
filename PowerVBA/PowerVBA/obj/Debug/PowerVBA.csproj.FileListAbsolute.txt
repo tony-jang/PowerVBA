@@ -46,3 +46,5 @@ F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\Microso
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\Microsoft.Windows.Shell.pdb
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.g.cs
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.baml

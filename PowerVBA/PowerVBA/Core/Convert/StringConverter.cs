@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.Core.CodeEdit.Convert
+namespace PowerVBA.Core.Convert
 {
     static class StringConverter
     {

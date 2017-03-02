@@ -1,15 +1,16 @@
 ﻿using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Editing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.Core.Interface
+namespace PowerVBA.Core.CodeEdit.Substitution
 {
     interface ISubstitution
     {
-        TextEditor Editor { get; }
+        TextArea TextArea { get; }
 
         bool Handled { get; set; }
 

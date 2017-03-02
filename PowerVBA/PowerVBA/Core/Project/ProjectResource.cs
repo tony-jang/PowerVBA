@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.Core.CodeEdit.Parser
+namespace PowerVBA.Core.Project
 {
     class ProjectResource
     {
@@ -13,9 +13,11 @@ namespace PowerVBA.Core.CodeEdit.Parser
         {
             Variables = new List<VariableData>();
             Enums = new List<EnumData>();
+            Lines = new List<ILineInfo>();
         }
         public List<VariableData> Variables;
         public List<EnumData> Enums;
+        public List<ILineInfo> Lines;
 
     }
 }

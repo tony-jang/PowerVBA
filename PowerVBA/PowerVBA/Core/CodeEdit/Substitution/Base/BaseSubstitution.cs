@@ -1,21 +1,21 @@
-﻿using PowerVBA.Core.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace PowerVBA.Core.CodeEdit.Substitution.Base
 {
     abstract class BaseSubstitution : ISubstitution
     {
-        public BaseSubstitution(TextEditor editor)
+        public BaseSubstitution(TextArea TextArea)
         {
-            this.Editor = editor;
+            this.TextArea = TextArea;
         }
 
-        public TextEditor Editor { get; set; }
+        public TextArea TextArea { get; set; }
 
         public bool Handled { get; set; } = false;
 

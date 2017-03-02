@@ -7,7 +7,7 @@ using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Document;
 using System.Text.RegularExpressions;
 using System.Windows;
-using PowerVBA.Global.Regex;
+using PowerVBA.RegexPattern;
 
 namespace PowerVBA.Core.CodeEdit.Folding
 {
@@ -56,7 +56,7 @@ namespace PowerVBA.Core.CodeEdit.Folding
             string eRegionPattern = @"'#(?i)endregion";
 
 
-            var stacks = new Stack<Tuple<Match, int, LineType>>();
+            var stacks = new Stack<Tuple<Match, int, FoldingLineType>>();
 
             int Index = 0, counter = 0;
 
@@ -67,21 +67,21 @@ namespace PowerVBA.Core.CodeEdit.Folding
                 counter++;
 
                 #region [ 선언 패턴 확인 ]
-                if (Regex.IsMatch(line, sPattern))
+                if (System.Text.RegularExpressions.Regex.IsMatch(line, sPattern))
                 {
-                    Match m = Regex.Match(line, sPattern);
+                    Match m = System.Text.RegularExpressions.Regex.Match(line, sPattern);
 
-                    stacks.Push(new Tuple<Match,int, LineType>(m, Index, LineType.Method));
+                    stacks.Push(new Tuple<Match, int, FoldingLineType>(m, Index, FoldingLineType.Method));
                 }
-                else if (Regex.IsMatch(line, sPattern2))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(line, sPattern2))
                 {
-                    Match m = Regex.Match(line, sPattern2);
+                    Match m = System.Text.RegularExpressions.Regex.Match(line, sPattern2);
 
-                    stacks.Push(new Tuple<Match, int, LineType>(m, Index, LineType.Method));
+                    stacks.Push(new Tuple<Match, int, FoldingLineType>(m, Index, FoldingLineType.Method));
                 }
-                else if (Regex.IsMatch(line, ePattern))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(line, ePattern))
                 {
-                    Match Match = Regex.Match(line, ePattern);
+                    Match Match = System.Text.RegularExpressions.Regex.Match(line, ePattern);
 
                     if (stacks.Count == 0) goto Last;
 
@@ -103,16 +103,16 @@ namespace PowerVBA.Core.CodeEdit.Folding
                 #endregion
 
                 
-                else if (Regex.IsMatch(line, sRegionPattern))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(line, sRegionPattern))
                 {
-                    Match m = Regex.Match(line, sRegionPattern);
+                    Match m = System.Text.RegularExpressions.Regex.Match(line, sRegionPattern);
 
-                    stacks.Push(new Tuple<Match, int, LineType>(m, Index, LineType.Region));
+                    stacks.Push(new Tuple<Match, int, FoldingLineType>(m, Index, FoldingLineType.Region));
                 }
-                else if (Regex.IsMatch(line, eRegionPattern))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(line, eRegionPattern))
                 {
                     if (stacks.Count == 0) goto Last;
-                    if (!(stacks.Peek().Item3 == LineType.Region)) goto Last;
+                    if (!(stacks.Peek().Item3 == FoldingLineType.Region)) goto Last;
 
                     var stack = stacks.Pop();
 
@@ -120,9 +120,9 @@ namespace PowerVBA.Core.CodeEdit.Folding
                     newFolding.Name = stack.Item1.Groups[3].Value;
                     foldings.Add(newFolding);
                 }
-                else if (Regex.IsMatch(line, commPattern))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(line, commPattern))
                 {
-                    Match m = Regex.Match(line, commPattern);
+                    Match m = System.Text.RegularExpressions.Regex.Match(line, commPattern);
 
                     string value = m.Groups[2].Value;
 
@@ -130,15 +130,15 @@ namespace PowerVBA.Core.CodeEdit.Folding
                     if (stacks.Count != 0)
                     {
                         var stack = stacks.Peek();
-                        if (!(stack.Item3 == LineType.Remark)) goto Last;
+                        if (!(stack.Item3 == FoldingLineType.Remark)) goto Last;
                     }
 
 
-                    stacks.Push(new Tuple<Match, int, LineType>(m, Index, LineType.Remark));
+                    stacks.Push(new Tuple<Match, int, FoldingLineType>(m, Index, FoldingLineType.Remark));
                 }
 
 
-                if (counter == lines.Count() || !Regex.IsMatch(line, commPattern))
+                if (counter == lines.Count() || !System.Text.RegularExpressions.Regex.IsMatch(line, commPattern))
                 {
                     if (stacks.Count != 0)
                     {
@@ -157,7 +157,7 @@ namespace PowerVBA.Core.CodeEdit.Folding
                             }
 
                             var stack = stacks.Peek();
-                            if (stack.Item3 != LineType.Remark) break;
+                            if (stack.Item3 != FoldingLineType.Remark) break;
 
                             stack = stacks.Pop();
 

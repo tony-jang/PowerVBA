@@ -14,7 +14,6 @@ using PowerVBA.Core.CodeEdit.Renderer;
 using PowerVBA.Core.CodeEdit.Substitution;
 using PowerVBA.Core.CodeEdit.Substitution.Base;
 using PowerVBA.Core.Error;
-using PowerVBA.Core.Extension;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,16 +26,19 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
+
 using static PowerVBA.Global.Globals;
+using static PowerVBA.Core.Extension.HighlightingRuleEx;
 
 namespace PowerVBA.Core.CodeEdit
 {
     class CodeEditor : TextEditor
     {
         #region [  전역 변수  ]
+
         protected List<BaseSubstitution> Substitutions = new List<BaseSubstitution>();
 
-        protected CompletionWindow compWindow;
+        protected CustomCompletionWindow compWindow;
         protected OverloadInsightWindow insightWindow;
         protected Thread thr;
 
@@ -126,15 +128,10 @@ namespace PowerVBA.Core.CodeEdit
 
             #endregion
 
-            #region [  Substitution 초기화  ]
+            #region [  Substititions 초기화  ]
 
-
-            MethodSubstitution methodSubstitution = new MethodSubstitution(this);
-            VariableSubstitution variableSubstitution = new VariableSubstitution(this);
-
-
-            Substitutions.Add(methodSubstitution);
-            Substitutions.Add(variableSubstitution);
+            Substitutions.Add(new VariableSubstitution(TextArea));
+            Substitutions.Add(new MethodSubstitution(TextArea));
 
             #endregion
 
@@ -166,16 +163,15 @@ namespace PowerVBA.Core.CodeEdit
 
             this.TextArea.TextEntering += OnTextEntering;
             this.TextArea.TextEntered += OnTextEntered;
+            this.TextArea.SelectionChanged += codeSelChanged;
 
             this.TextArea.Caret.PositionChanged += (sender, e) => this.TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-            this.PreviewKeyDown += prevKeyDown;
-
-            this.TextArea.SelectionChanged += codeSelChanged;
             this.TextArea.Caret.PositionChanged += codeCaretChanged;
             
             this.MouseMove += codeMouseMove;
             this.MouseLeave += codeMouseLeave;
-
+            this.PreviewKeyDown += PrevKeyDown;
+            
             Application.Current.Exit += Current_Exit;
 
             #endregion
@@ -190,6 +186,55 @@ namespace PowerVBA.Core.CodeEdit
 
             #endregion
         }
+
+        private void PrevKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                bool? b = compWindow?.IsVisible;
+                bool booleanData;
+                if (b.HasValue) booleanData = true;
+                else booleanData = false;
+                bool Handled = false;
+                if (!booleanData)
+                {
+                    foreach (BaseSubstitution substitution in Substitutions)
+                    {
+                        substitution.Handled = false;
+                        substitution.Convert();
+
+                        if (substitution.Handled)
+                        {
+                            Handled = true;
+                            break;
+                        }
+                    }
+                }
+
+                e.Handled = Handled;
+            }
+        }
+
+        private void compWindow_InsertionCompleted(object sender, ICompletionData data)
+        {
+            compWindow?.Close();
+            compWindow = null;
+            //bool Handled = false;
+
+            foreach (BaseSubstitution substitution in Substitutions)
+            {
+                substitution.Handled = false;
+                substitution.Convert();
+
+                if (substitution.Handled)
+                {
+                    //Handled = true;
+                    break;
+                }
+            }
+        }
+
+
 
         private void Current_Exit(object sender, ExitEventArgs e)
         {
@@ -284,29 +329,6 @@ namespace PowerVBA.Core.CodeEdit
             }
         }
 
-        private void prevKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                compWindow?.Close();
-                compWindow = null;
-                bool Handled = false;
-
-                foreach (BaseSubstitution substitution in Substitutions)
-                {
-                    substitution.Handled = false;
-                    substitution.Convert();
-
-                    if (substitution.Handled)
-                    {
-                        Handled = true;
-                        break;
-                    }
-                }
-                e.Handled = Handled;
-            }
-        }
-
         
         public VBACompletion Completion { get; set; }
         
@@ -367,9 +389,11 @@ namespace PowerVBA.Core.CodeEdit
                     if (lexer.IsInString || lexer.IsInSingleComment || lexer.IsInVerbatimString) return;
                     if (enteredText == "\r" || enteredText == "\n") return;
                     // Open code completion after the user has pressed dot:
-                    compWindow = new CompletionWindow(TextArea);
+                    compWindow = new CustomCompletionWindow(TextArea);
                     compWindow.CloseWhenCaretAtBeginning = controlSpace;
-                    
+
+                    this.compWindow.InsertionCompleted += compWindow_InsertionCompleted;
+
                     compWindow.StartOffset -= results.TriggerWordLength;
                     //compWindow.EndOffset -= results.TriggerWordLength;
 

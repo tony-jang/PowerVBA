@@ -30,6 +30,8 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
+            
+
 
             MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
 

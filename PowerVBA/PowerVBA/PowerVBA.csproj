@@ -35,9 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <HintPath>..\packages\AvalonEdit.5.0.3\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=0.0.0.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\PowerVBA\PowerVBA\bin\Debug\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -92,21 +92,43 @@
     <Compile Include="Controls\Customize\ImageButton.cs" />
     <Compile Include="Controls\Customize\PathButton.cs" />
     <Compile Include="Controls\Customize\wpfPropertyGrid.cs" />
+    <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
+    <Compile Include="Controls\Design\RecentFileListViewItemDesign.xaml.cs">
+      <DependentUpon>RecentFileListViewItemDesign.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Core\CodeEdit\CodeCompletion\CustomCompletionWindow.cs" />
+    <Compile Include="Core\CodeEdit\Parser\LineParser.cs" />
+    <Compile Include="Core\CodeEdit\Parser\LineType.cs" />
+    <Compile Include="Core\Convert\StringConverter.cs" />
     <Compile Include="Core\CodeEdit\CodeCompletion\CompletionFlag.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\Accessor.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\BaseData.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\EnumData.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\TypeData.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\VariableData.cs" />
-    <Compile Include="Core\CodeEdit\Parser\ProjectResource.cs" />
+    <Compile Include="Core\Project\ILineInfo.cs" />
+    <Compile Include="Core\Project\MultiLineInfo.cs" />
+    <Compile Include="Core\Project\ProjectResource.cs" />
+    <Compile Include="Core\Extension\HighlightingRuleEx.cs" />
+    <Compile Include="Core\Extension\stringEx.cs" />
+    <Compile Include="Core\Project\SignleLineInfo.cs" />
+    <Compile Include="Global\Regex\RegexExp.cs" />
     <Compile Include="Interop\Constats.cs" />
     <Compile Include="Interop\ExternDll.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Interop\UnsafeNativeMethods.cs" />
     <Compile Include="Resources\ResourceImage.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\Base\BaseSubstitution.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\ISubstitution.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\MethodSubstitution.cs" />
+    <Compile Include="Core\CodeEdit\Substitution\VariableSubstitution.cs" />
     <Compile Include="Windows\ChromeWindow.cs" />
     <Page Include="Controls\Design\ErrorToolTipDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Design\RecentFileListViewItemDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,23 +150,15 @@
     <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletion.cs" />
     <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletionEngine.cs" />
     <Compile Include="Core\CodeEdit\CodeEditor.cs" />
-    <Compile Include="Core\CodeEdit\Convert\StringConverter.cs" />
-    <Compile Include="Core\CodeEdit\Folding\LineType.cs" />
+    <Compile Include="Core\CodeEdit\Folding\FoldingLineType.cs" />
     <Compile Include="Core\CodeEdit\Folding\VBAFoldingStrategy.cs" />
     <Compile Include="Core\CodeEdit\Indentation\CodeIndentation.cs" />
     <Compile Include="Core\CodeEdit\Parser\CodeParser.cs" />
     <Compile Include="Core\CodeEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
     <Compile Include="Core\CodeEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\Base\BaseSubstitution.cs" />
     <Compile Include="Core\Error\CodeError.cs" />
     <Compile Include="Core\Error\ErrorType.cs" />
     <Compile Include="Core\TypeManage\TypeConverter.cs" />
-    <Compile Include="Global\Regex\CustomRegexVariables.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\MethodSubstitution.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\VariableSubstitution.cs" />
-    <Compile Include="Core\Extension\HighlightingRuleEx.cs" />
-    <Compile Include="Core\Extension\stringEx.cs" />
-    <Compile Include="Core\Interface\ISubstitution.cs" />
     <Compile Include="Core\Interface\IWrappingClass.cs" />
     <Compile Include="Core\Library\LibraryLoader.cs" />
     <Compile Include="Core\Wrap\WrapClass\PresentationWrapping.cs" />
@@ -255,6 +269,7 @@
     <Resource Include="Resources\Icon\RedoIcon.png" />
     <Resource Include="Resources\Icon\UndoIcon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

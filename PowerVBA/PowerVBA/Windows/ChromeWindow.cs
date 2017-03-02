@@ -16,14 +16,15 @@ namespace PowerVBA.Windows
 {
     public class ChromeWindow : Window
     {
-        //public DependencyProperty IsEnableMoveProperty = DependencyProperty.Register("IsEnableMove",
-        //    typeof(bool), typeof(ChromeWindow), new PropertyMetadata(true));
 
-        //public bool IsEnableMove
-        //{
-        //    get { return (bool)GetValue(IsEnableMoveProperty); }
-        //    set { SetValue(IsEnableMoveProperty, value); }
-        //}
+        public static DependencyProperty NoTitleProperty = DependencyProperty.Register("NoTitle",
+            typeof(bool), typeof(ChromeWindow), new PropertyMetadata(false));
+
+        public bool NoTitle
+        {
+            get { return (bool)GetValue(NoTitleProperty); }
+            set { SetValue(NoTitleProperty, value); }
+        }
 
         private bool _IsEnableMove = true;
         public bool IsEnableMove

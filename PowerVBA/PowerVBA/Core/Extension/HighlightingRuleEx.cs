@@ -23,13 +23,13 @@ namespace PowerVBA.Core.Extension
             {
                 strs = Regex.Split(realData, @"\|").ToList();
             }
-            
+
             if (!strs.Contains(data)) strs.Add(data);
 
             strs.Sort();
 
-            highlightrule.Regex = new Regex($@"\b({string.Join("|", strs)})\b", RegexOptions.IgnoreCase | 
-                                                                                      RegexOptions.ExplicitCapture | 
+            highlightrule.Regex = new Regex($@"\b({string.Join("|", strs)})\b", RegexOptions.IgnoreCase |
+                                                                                      RegexOptions.ExplicitCapture |
                                                                                       RegexOptions.CultureInvariant);
         }
         public static void Remove(this HighlightingRule highlightrule, string data)

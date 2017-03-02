@@ -1,40 +1,39 @@
 ﻿using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using System.Text.RegularExpressions;
-using PowerVBA.Core.Extension;
-using PowerVBA.Global.Regex;
-using static PowerVBA.Core.CodeEdit.Convert.StringConverter;
+using PowerVBA.RegexPattern;
 using PowerVBA.Core.CodeEdit.Substitution.Base;
+using static PowerVBA.Core.Convert.StringConverter;
 using System;
-using ICSharpCode.AvalonEdit.CodeCompletion;
 using System.Collections;
 using System.Collections.Generic;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace PowerVBA.Core.CodeEdit.Substitution
 {
     class MethodSubstitution : BaseSubstitution
     {
         
-        public MethodSubstitution(TextEditor editor) : base(editor) { }
+        public MethodSubstitution(TextArea tArea) : base(tArea) { }
         
         public override void Convert()
         {
 
-            int d = Editor.CaretOffset;
+            int CaretOffset = TextArea.Caret.Offset;
             
-            DocumentLine line = Editor.Document.GetLineByOffset(Editor.CaretOffset);
+            DocumentLine line = TextArea.Document.GetLineByOffset(CaretOffset);
             
-            string clonestr = Editor.Text.Clone().ToString();
-            string codeText = (clonestr.Substring(line.Offset, Editor.CaretOffset - line.Offset));
+            string clonestr = TextArea.Document.Text.ToString();
+            string codeText = (clonestr.Substring(line.Offset, CaretOffset - line.Offset));
             string anotherText = clonestr.Substring(line.Offset + codeText.Length, line.EndOffset - (codeText.Length + line.Offset));
 
-            if (!Regex.IsMatch(anotherText, Pattern.blankCheckPattern)) return;
+            if (!System.Text.RegularExpressions.Regex.IsMatch(anotherText, Pattern.blankCheckPattern)) return;
             
             int Offset = line.Offset;
 
-            if (Regex.IsMatch(codeText.Trim(), Pattern.lineStartPattern))
+            if (System.Text.RegularExpressions.Regex.IsMatch(codeText.Trim(), Pattern.lineStartPattern))
             {
-                Match m = Regex.Match(codeText.Trim(), Pattern.lineStartPattern);
+                Match m = System.Text.RegularExpressions.Regex.Match(codeText.Trim(), Pattern.lineStartPattern);
 
                 string Accessor = m.Groups[1].Value;
                 string Type = m.Groups[3].Value;
@@ -50,10 +49,10 @@ namespace PowerVBA.Core.CodeEdit.Substitution
                 string eMethodPart = "End " + ConvertType(Type);
 
 
-                Editor.TextArea.Document.Replace(line.Offset, line.Length, 
+                TextArea.Document.Replace(line.Offset, line.Length, 
                                                  sMethodPart + "\r\n" + GetIndentation() + "\t" + "\r\n" + eMethodPart);
 
-                Editor.TextArea.Caret.Offset = Offset + sMethodPart.Length + 3;
+                TextArea.Caret.Offset = Offset + sMethodPart.Length + 3;
 
                 Handled = true;
             }
