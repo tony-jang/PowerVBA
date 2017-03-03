@@ -91,6 +91,7 @@
     <Compile Include="Command\WindowsSystemCommand.cs" />
     <Compile Include="Controls\Customize\ImageButton.cs" />
     <Compile Include="Controls\Customize\PathButton.cs" />
+    <Compile Include="Controls\Customize\ScrollBarEx.cs" />
     <Compile Include="Controls\Customize\wpfPropertyGrid.cs" />
     <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
     <Compile Include="Controls\Design\RecentFileListViewItemDesign.xaml.cs">
@@ -269,7 +270,15 @@
     <Resource Include="Resources\Icon\RedoIcon.png" />
     <Resource Include="Resources\Icon\UndoIcon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icon\NewSlideIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\DeleteSlideIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\FolderOpenIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

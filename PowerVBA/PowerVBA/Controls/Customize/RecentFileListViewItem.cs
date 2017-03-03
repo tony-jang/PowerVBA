@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFExtension;
@@ -19,12 +20,61 @@ namespace PowerVBA.Controls.Customize
 
     class RecentFileListViewItem : ListViewItem
     {
-        
+        public delegate void BlankEventHandler();
+        public event BlankEventHandler OpenRequest;
+        public event BlankEventHandler CopyOpenRequest;
+        public event BlankEventHandler CopyPathRequest;
+        public event BlankEventHandler DeleteRequest;
+
         public RecentFileListViewItem()
         {
             this.Style = FindResource("RecentFileListViewItemStyle") as Style;
-            
+
+            MenuItem menuOpen = new MenuItem() { Header = "열기" };
+            MenuItem menuCopyOpen = new MenuItem() { Header = "복사본 열기" };
+            MenuItem menuCopyPath = new MenuItem() { Header = "클립보드에 경로 복사" };
+            MenuItem menuDelete = new MenuItem() { Header = "목록에서 제거" };
+
+            ContextMenu = new ContextMenu();
+
+            menuOpen.Click += MenuOpen_Click;
+            menuCopyOpen.Click += MenuCopyOpen_Click;
+            menuCopyPath.Click += MenuCopyPath_Click;
+            menuDelete.Click += MenuDelete_Click;
+
+            ContextMenu.Items.Add(menuOpen);
+            ContextMenu.Items.Add(menuCopyOpen);
+            ContextMenu.Items.Add(menuCopyPath);
+            ContextMenu.Items.Add(menuDelete);
         }
+
+        #region [  이벤트 연결  ]
+
+
+
+        private void MenuDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteRequest();
+        }
+
+        private void MenuCopyPath_Click(object sender, RoutedEventArgs e)
+        {
+            CopyPathRequest();
+        }
+
+        private void MenuCopyOpen_Click(object sender, RoutedEventArgs e)
+        {
+            CopyOpenRequest();
+        }
+
+        private void MenuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenRequest();
+        }
+
+        #endregion
+
+
         TextBlock tbfn, tbfl;
         public override void OnApplyTemplate()
         {

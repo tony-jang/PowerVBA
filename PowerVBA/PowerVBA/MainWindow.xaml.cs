@@ -33,14 +33,14 @@ namespace PowerVBA
             
 
 
-            MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
+            //MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
 
             DebuggingAdd();
         }
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;
+            //if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;
         }
 
 
@@ -48,17 +48,37 @@ namespace PowerVBA
 
         public void DebuggingAdd()
         {
-            int index = 0;
-            foreach(string d in CodeEditor.Classes)
-            {
-                TextBlock tb = new TextBlock { Text = d , ToolTip = d };
-                HighlightingClassesListBox.Items.Add(tb);
-                tb.Width = 110;
-                index++;
-            }
+            //int index = 0;
+            //foreach(string d in CodeEditor.Classes)
+            //{
+            //    TextBlock tb = new TextBlock { Text = d , ToolTip = d };
+            //    HighlightingClassesListBox.Items.Add(tb);
+            //    tb.Width = 110;
+            //    index++;
+            //}
             
         }
 
         #endregion
+        
+
+        private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TBOpenAnotherPpt.FontStyle = FontStyles.Normal;
+            while (TBOpenAnotherPpt.TextDecorations.Count != 0)
+            {
+                TBOpenAnotherPpt.TextDecorations.RemoveAt(0);
+            }
+        }
+
+        private void GridOpenAnotherPpt_MouseMove(object sender, MouseEventArgs e)
+        {
+            TBOpenAnotherPpt.TextDecorations.Add(TextDecorations.Underline);
+        }
+
+        private void GridOpenAnotherPpt_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("다른 프레젠테이션 열기!");
+        }
     }
 }
