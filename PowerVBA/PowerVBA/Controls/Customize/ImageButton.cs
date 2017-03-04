@@ -9,12 +9,16 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
+using static PowerVBA.Global.Globals;
+using System.ComponentModel;
 
 namespace PowerVBA.Controls.Customize
 {
     [TemplatePart(Name = "SimpleButton", Type = typeof(Border))]
     [TemplatePart(Name = "ExButton", Type = typeof(Border))]
+    [TemplatePart(Name = "Image")]
     [ContentProperty("Content")]
+    [DefaultEvent("SimpleButtonClicked")]
     public class ImageButton : System.Windows.Controls.Control
     {
         public ImageButton()
@@ -46,7 +50,8 @@ namespace PowerVBA.Controls.Customize
 
         private Border SimpleBtn;
         private Border ExBtn;
-
+        public event BlankEventHandler SimpleButtonClicked;
+        public event BlankEventHandler ExButtonClicked;
 
         public override void OnApplyTemplate()
         {
@@ -61,16 +66,13 @@ namespace PowerVBA.Controls.Customize
             {
                 ExBtn.MouseLeftButtonDown += ExBtn_LeftButtonDown;
                 ExBtn.MouseLeftButtonUp += ExBtn_LeftButtonUp;
-            }
-            
-            
+            }   
         }
 
         bool ExDown, SimpleDown;
 
         private void ExBtn_LeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
             ExDown = true;
         }
 
@@ -91,9 +93,7 @@ namespace PowerVBA.Controls.Customize
             if (SimpleDown && SimpleButtonClicked != null) SimpleButtonClicked();
             SimpleDown = false;
         }
-        public delegate void BlankEventHandler();
-        public event BlankEventHandler SimpleButtonClicked;
-        public event BlankEventHandler ExButtonClicked;
+        
 
 
 

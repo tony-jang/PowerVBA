@@ -10,12 +10,14 @@ using System.Windows.Media;
 using System.Globalization;
 using System.Windows.Controls;
 using ICSharpCode.AvalonEdit;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace PowerVBA.Global
 {
-    static class Globals
+    public static class Globals
     {
-        
+        public delegate void BlankEventHandler();
         public static IHighlightingDefinition highlightingDefintion;
 
         
@@ -40,6 +42,17 @@ namespace PowerVBA.Global
             if (size.Width == 0) size.Width = 5;
 
             return size;
+        }
+
+        private static FormatConvertedBitmap ConvertToGrayScale(BitmapImage source)
+        {
+            FormatConvertedBitmap grayBitmap = new FormatConvertedBitmap();
+            grayBitmap.BeginInit();
+            grayBitmap.Source = source;
+            grayBitmap.DestinationFormat = PixelFormats.Gray8;
+            grayBitmap.EndInit();
+
+            return grayBitmap;
         }
     }
 }

@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="PowerVBA.Controls.Tools.SolutionExplorer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+             xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="250">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="솔루션 탐색기" Margin="15,10" FontSize="20"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="클래스 목록" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+
+                <ListBox x:Name="LBClass" Grid.Row="1" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="ListBoxes_SelectionChanged">
+                    <ListBox.Template>
+                        <ControlTemplate>
+                            <ItemsPresenter />
+                        </ControlTemplate>
+                    </ListBox.Template>
+                    <c:ImageListViewItem Content="Class1" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
+                    <c:ImageListViewItem Content="Class2" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
+                </ListBox>
+
+                <TextBlock Grid.Row="2" Text="모듈 목록" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+
+                <ListBox x:Name="LBModule" Grid.Row="3" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                          SelectionChanged="ListBoxes_SelectionChanged">
+                    <c:ImageListViewItem Content="Module1" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png"/>
+                    <c:ImageListViewItem Content="Module2" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png"/>
+                </ListBox>
+
+                <TextBlock Grid.Row="4" Text="폼 목록" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+
+                <ListBox x:Name="LBForms" Grid.Row="5" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                          SelectionChanged="ListBoxes_SelectionChanged">
+                </ListBox>
+
+            </Grid>
+        </ScrollViewer>
+
+        <Grid Grid.Row="2">
+            <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+            <StackPanel Margin="0,10">
+                <TextBlock Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+                <TextBlock Grid.Row="2" Text="개체 브라우저" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -185,7 +185,15 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CodeTabItemStyle" TargetType="{x:Type TabItem}">
+    <Style x:Key="BlankTabItemStyle" TargetType="{x:Type TabItem}">
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Height" Value="0"/>
+    </Style>
+
+    <!--CanCloseTabItem Style-->
+
+    <Style x:Key="CodeTabItemStyle" TargetType="{x:Type c:CanCloseTabItem}">
 
         <Setter Property="Background" Value="White"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -194,10 +202,14 @@
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TabItem}" >
-                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True" Margin="1,0">
+                <ControlTemplate TargetType="{x:Type c:CanCloseTabItem}" >
+                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition x:Name="ColumnD" Width="Auto"/>
+                        </Grid.ColumnDefinitions>
                         <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="1,1,1,0"
+                                BorderThickness="1,1,1,0" Grid.ColumnSpan="2"
                                 Background="{TemplateBinding Background}" Margin="0">
 
                         </Border>
@@ -207,6 +219,7 @@
                                           HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
                                           RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                           VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                        <c:PathButton x:Name="EndBtn" Command="{x:Static cm:TabItemCommand.DeleteCommand}" Visibility="Hidden" Grid.Column="1" Background="White" Data="{StaticResource EndPath}" Width="10" Height="10" Margin="0,0,5,0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -217,6 +230,12 @@
                             <Setter Property="Background" Value="#FFD24726"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="EndBtn"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFD24726"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="EndBtn"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -224,12 +243,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="BlankTabItemStyle" TargetType="{x:Type TabItem}">
-        <Setter Property="Background" Value="{x:Null}"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Height" Value="0"/>
-    </Style>
-    
     <!--TabItem (File) Style-->
     <Style x:Key="FileTabItemStyle" TargetType="{x:Type TabItem}">
         <Setter Property="Background" Value="#FFD24726"/>
@@ -301,7 +314,7 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Border x:Name="SimpleButton" Background="Transparent" Grid.RowSpan="2"/>
-                                <Image IsHitTestVisible="False" Width="40" Source="{TemplateBinding BackImage}" 
+                                <Image x:Name="BtnImg" IsHitTestVisible="False" Width="40" Source="{TemplateBinding BackImage}" 
                                        Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
@@ -539,6 +552,70 @@
         </Setter>
     </Style>
 
-    <!---->
+    <!--ProjectTemplateButton Style-->
+    <Style x:Key="ProjectListViewItemStyle" TargetType="{x:Type c:ProjectTemplateButton}">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:ProjectTemplateButton}">
+                    <Grid Width="Auto" Height="180">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle x:Name="BgRect" Grid.RowSpan="2" Grid.ColumnSpan="3" Fill="White"/>
+                        <Rectangle Margin="10" Fill="White" Stroke="#FFACACAD" StrokeThickness="1"/>
+                        <Image Source="{TemplateBinding Source}" Width="202" Height="113" Margin="11"/>
+                        <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Left" Grid.Row="1" Margin="10" VerticalAlignment="Top" FontWeight="Bold"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="BgRect" Value="#FFFCE4DC"/>
+                        </Trigger>
+                        
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Fill" TargetName="BgRect" Value="#FFFCCDB6"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
+    <!--ImageListViewItem Style-->
+    <Style x:Key="ImageListViewItemStyle" TargetType="{x:Type c:ImageListViewItem}">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:ImageListViewItem}">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{TemplateBinding Source}"/>
+                            <ContentPresenter Grid.Column="2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FFD24726"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
 </ResourceDictionary>

@@ -5,243 +5,331 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:av="clr-namespace:PowerVBA.Core.CodeEdit"
         xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+        xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
         xmlns:local="clr-namespace:PowerVBA"
         mc:Ignorable="d"
         x:Name="ThisWindow" Title="Untitle Presentation - PowerVBA" Height="800" Width="1300"
                 Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico"
-                WindowStyle="None" AllowsTransparency="True" IsEnableMove="True" NoTitle="True">
+                WindowStyle="None" AllowsTransparency="True" IsEnableMove="True" NoTitle="True" WindowStartupLocation="CenterScreen">
     <w:ChromeWindow.Resources>
-
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#1F26A0DA"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#a826A0Da"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#3D26A0DA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#FF26A0DA"/>
+        
     </w:ChromeWindow.Resources>
 
-    <!--<Grid x:Name="MainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-
-        <Grid>
-
-            <TabControl x:Name="MainTabControl" SelectedIndex="1" BorderBrush="#FFD4D4D4" Style="{StaticResource TabControlStyle}">
-                <TabControl.Resources>
-                    <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxStyle}"/>
-                    <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemStyle}"/>
-                </TabControl.Resources>
-                <TabItem Header="파일" Style="{StaticResource FileTabItemStyle}"/>
-                <TabItem Header="홈">
-                    <WrapPanel>
-                        <GroupBox Header="클립보드">
-                            <WrapPanel>
-                                <c:ImageButton Content="붙여넣기" BackImage="Resources/Icon/ClipboardIcon.png" />
-                                <c:ImageButton Content="복사" BackImage="Resources/Icon/CopyIcon.png"/>
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                        <GroupBox Header="작업">
-                            <WrapPanel>
-                                <c:ImageButton Content="실행 취소" BackImage="Resources/Icon/UndoIcon.png"/>
-                                <c:ImageButton Content="다시 실행" BackImage="Resources/Icon/RedoIcon.png"/>
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                    </WrapPanel>
-                </TabItem>
-                <TabItem Header="삽입">
-                    <WrapPanel>
-                        <GroupBox Header="파일 삽입">
-                            <WrapPanel>
-                                <c:ImageButton Content="클래스 추가" BackImage="Resources/Icon/ClassIcon.png" />
-                                <c:ImageButton Content="모듈 추가" BackImage="Resources/Icon/ModuleIcon.png" />
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                        <GroupBox Header="함수 삽입">
-                            <WrapPanel>
-                                <c:ImageButton Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" />
-                                <c:ImageButton Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" />
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                        <GroupBox Header="트리거 삽입">
-                            <WrapPanel>
-                                <c:ImageButton Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" />
-                                <c:ImageButton Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" />
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                        <GroupBox Header="열거형 삽입">
-                            <WrapPanel>
-                                <c:ImageButton Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" />
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                        <GroupBox Header="타입 삽입">
-                            <WrapPanel>
-                                <c:ImageButton Content="타입 추가" BackImage="Resources/Icon/ModuleIcon.png" />
-                            </WrapPanel>
-                        </GroupBox>
-                    </WrapPanel>
-                </TabItem>
-                <TabItem Header="슬라이드">
-                    <WrapPanel>
-                        <GroupBox Header="슬라이드 관리">
-                            <WrapPanel>
-                                <c:ImageButton Content="새 슬라이드" BackImage="Resources/Icon/NewSlideIcon.png"/>
-                                <c:ImageButton Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png"/>
-                            </WrapPanel>
-                        </GroupBox>
-                        <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                    </WrapPanel>
-                </TabItem>
-                <TabItem Header="개발">
-
-                </TabItem>
-            </TabControl>
-        </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" x:Name="DebugPanel">
-                <StackPanel Margin="10"/>
-            </Grid>
-            <Grid Grid.Column="1">
-                <TabControl>
-                    <TabItem Header="NonSaveFile.bas" Height="20" Style="{StaticResource CodeTabItemStyle}">
-                        <av:CodeEditor x:Name="codeEditor" Text="1라인 테스트" FontFamily="DotumChe" ShowLineNumbers="True" FontSize="13.333333333333333"  SnapsToDevicePixels="True"/>
-                    </TabItem>
-                    <TabItem Header="Class1.bas" Height="20" Style="{StaticResource CodeTabItemStyle}">
-                        <av:CodeEditor x:Name="codeEditor2" Text="1라인 테스트" FontFamily="DotumChe" ShowLineNumbers="True" FontSize="13.333333333333333"  SnapsToDevicePixels="True"/>
-                    </TabItem>
-                    <TabItem Header="Class2.bas" Height="20" Style="{StaticResource CodeTabItemStyle}">
-                        <av:CodeEditor x:Name="codeEditor3" Text="1라인 테스트" FontFamily="DotumChe" ShowLineNumbers="True" FontSize="13.333333333333333"  SnapsToDevicePixels="True"/>
-                    </TabItem>
-                </TabControl>
-
-            </Grid>
-
-        </Grid>
-    </Grid>-->
-
-
-    <Grid x:Name="RecentFileGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="343"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Border HorizontalAlignment="Left" Background="#FFD24726">
-            <Grid>
+    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
+        <TabControl.Style>
+            <Style TargetType="{x:Type TabControl}">
+                <!--<Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabControl}">
+                            <Grid x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="ColumnDefinition0"/>
+                                    <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition x:Name="RowDefinition0" Height="0"/>
+                                    <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TabPanel x:Name="HeaderPanel" Background="Transparent" Visibility="Hidden" Grid.Column="0" IsItemsHost="True" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                                <Border x:Name="ContentPanel" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                                    <ContentPresenter x:Name="PART_SelectedContentHost" ContentTemplate="{TemplateBinding SelectedContentTemplate}" Content="{TemplateBinding SelectedContent}" ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" ContentSource="SelectedContent" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>-->
+            </Style>
+        </TabControl.Style>
+        <TabItem Foreground="Black" Style="{StaticResource BlankTabItemStyle}">
+            <Grid x:Name="MainGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="140"/>
                     <RowDefinition/>
-                    <RowDefinition Height="80"/>
                 </Grid.RowDefinitions>
-                <StackPanel>
-                    <TextBlock Text="PowerVBA" Margin="20,35,0,0" FontSize="40" Foreground="White"/>
 
-                    <TextBlock Text="최근에 사용한 항목" Margin="20,20,0,0" FontSize="20" Foreground="White"/>
+                <Grid>
 
-                </StackPanel>
-                <TextBlock x:Name="NoRecentInfoTB" Grid.Row="1" Visibility="Hidden" TextWrapping="Wrap" Margin="30" Foreground="White" VerticalAlignment="Top"  FontSize="13" Text="최근에 열었던 프레젠테이션이(가) 없습니다. 프레젠테이션을(를) 찾아보려면 다른 프로젠테이션 열기을(를) 클릭하여 시작합니다."/>
-                <ListView Grid.Row="1" Margin="15,20,15,0" Background="{x:Null}" BorderBrush="{x:Null}"
+                    <TabControl x:Name="MainTabControl" SelectedIndex="1" BorderBrush="#FFD4D4D4" Style="{StaticResource TabControlStyle}">
+                        <TabControl.Resources>
+                            <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxStyle}"/>
+                            <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemStyle}"/>
+                        </TabControl.Resources>
+                        <TabItem Header="파일" Style="{StaticResource FileTabItemStyle}"/>
+                        <TabItem Header="홈">
+                            <WrapPanel>
+                                
+                                <GroupBox Header="클립보드">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnCopy" Content="복사" BackImage="Resources/Icon/CopyIcon.png" SimpleButtonClicked="BtnCopy_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnPaste" Content="붙여넣기" BackImage="Resources/Icon/ClipboardIcon.png" SimpleButtonClicked="BtnPaste_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="작업">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnUndo" Content="실행 취소" BackImage="Resources/Icon/UndoIcon.png" SimpleButtonClicked="BtnUndo_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnRedo" Content="다시 실행" BackImage="Resources/Icon/RedoIcon.png" SimpleButtonClicked="BtnRedo_SimpleButtonClicked"/>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                            </WrapPanel>
+                        </TabItem>
+                        <TabItem Header="삽입">
+                            <WrapPanel>
+                                <GroupBox Header="파일 삽입">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnAddClass" Content="클래스 추가" BackImage="Resources/Icon/ClassIcon.png" SimpleButtonClicked="BtnAddClass_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddModule" Content="모듈 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddModule_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="함수 삽입">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="변수/상수 삽입">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="트리거 삽입">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="열거형 삽입">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnAddEnum" Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="BtnAddEnum_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="타입 삽입">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnAddType" Content="타입 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" />
+                                    </WrapPanel>
+                                </GroupBox>
+                            </WrapPanel>
+                        </TabItem>
+                        <TabItem Header="슬라이드">
+                            <WrapPanel>
+                                <GroupBox Header="슬라이드 관리">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnNewSlide" Content="새 슬라이드" BackImage="Resources/Icon/NewSlideIcon.png" SimpleButtonClicked="BtnNewSlide_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked"/>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                            </WrapPanel>
+                        </TabItem>
+                        <TabItem Header="디버그">
+                            <WrapPanel>
+                                <GroupBox Header="디버그">
+                                    <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico"/>
+                                </GroupBox>
+                            </WrapPanel>
+
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" x:Name="DebugPanel">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="총 슬라이드 : 0 슬라이드"/>
+                            <TextBlock Text="총 도형수 : 0개"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TabControl x:Name="CodeTabControls">
+                            <TabControl.Resources>
+                                <Style TargetType="{x:Type c:CanCloseTabItem}" BasedOn="{StaticResource CodeTabItemStyle}">
+
+                                </Style>
+                            </TabControl.Resources>
+                            <c:CanCloseTabItem Header="Module1.bas" Height="20">
+                                <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
+                            </c:CanCloseTabItem>
+                            <c:CanCloseTabItem  Header="Class1.cls" Height="20">
+                                <av:CodeEditor x:Name="codeEditor2" Text="Dim B As Presentation" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
+                            </c:CanCloseTabItem>
+                            <c:CanCloseTabItem  Header="Class2.cls" Height="20">
+                                <av:CodeEditor x:Name="codeEditor3" Text="Dim C As String" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
+                            </c:CanCloseTabItem>
+                            <c:CanCloseTabItem  Header="개체 브라우저" Height="20">
+                                <Grid>
+                                    
+                                </Grid>
+                            </c:CanCloseTabItem>
+                        </TabControl>
+
+                    </Grid>
+                    <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch"/>
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <t:SolutionExplorer/>
+                        <c:WpfPropertyGrid x:Name="PropGrid" Grid.Row="1"/>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Foreground="Black" Style="{StaticResource BlankTabItemStyle}">
+            <Grid x:Name="RecentFileGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="343"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border HorizontalAlignment="Left" Background="#FFD24726">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="80"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="PowerVBA" Margin="20,35,0,0" FontSize="40" Foreground="White"/>
+
+                            <TextBlock Text="최근에 사용한 항목" Margin="20,20,0,0" FontSize="20" Foreground="White"/>
+
+                        </StackPanel>
+                        <TextBlock x:Name="NoRecentInfoTB" Grid.Row="1" Visibility="Hidden" TextWrapping="Wrap" Margin="30" Foreground="White" VerticalAlignment="Top"  FontSize="13" Text="최근에 열었던 프레젠테이션이(가) 없습니다. 프레젠테이션을(를) 찾아보려면 다른 프로젠테이션 열기을(를) 클릭하여 시작합니다."/>
+                        <ListView Grid.Row="1" Margin="15,20,15,0" Background="{x:Null}" BorderBrush="{x:Null}"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">
-                            <Style.Resources>
-                                <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
-                                    <GradientStop Color="#FFF1FBFF" Offset="0"/>
-                                    <GradientStop Color="#FFD5F1FE" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Style.Resources>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                        <Border CornerRadius="2" SnapsToDevicePixels="True"  
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Resources>
+                                        <LinearGradientBrush x:Key="ListItemHoverFill" EndPoint="0,1" StartPoint="0,0">
+                                            <GradientStop Color="#FFF1FBFF" Offset="0"/>
+                                            <GradientStop Color="#FFD5F1FE" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Style.Resources>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border CornerRadius="2" SnapsToDevicePixels="True"  
                                 BorderThickness="{TemplateBinding BorderThickness}"   
                                 BorderBrush="{TemplateBinding BorderBrush}"   
                                 Background="{TemplateBinding Background}">
-                                            <Border Name="InnerBorder" CornerRadius="1" BorderThickness="1">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition MaxHeight="11" />
-                                                        <RowDefinition />
-                                                    </Grid.RowDefinitions>
+                                                    <Border Name="InnerBorder" CornerRadius="1" BorderThickness="1">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition MaxHeight="11" />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
 
-                                                    <Rectangle Name="UpperHighlight" Visibility="Collapsed" Fill="#75FFFFFF" />
-                                                    <GridViewRowPresenter Grid.RowSpan="2"   
+                                                            <Rectangle Name="UpperHighlight" Visibility="Collapsed" Fill="#75FFFFFF" />
+                                                            <GridViewRowPresenter Grid.RowSpan="2"   
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"   
                                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                                </Grid>
-                                            </Border>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <c:RecentFileListViewItem Content="매크로 테스트.pptm" FolderLocation="바탕화면" Source="Resources/Icon/EventIcon.png"/>
-                    <c:RecentFileListViewItem Content="Macro Test.pptm" FolderLocation="바탕화면" Source="Resources/Icon/EventIcon.png"/>
-                    <c:RecentFileListViewItem Content="기이이이인 파일 이름 테스트입니다아아아.pptm" FolderLocation="바탕화면 >> Looooooooooong Folder Location" Source="Resources/Icon/EventIcon.png"/>
-                    <c:RecentFileListViewItem Content="Test1.pptm" FolderLocation="바탕화면 >> Test Folders" Source="Resources/Icon/EventIcon.png"/>
-                </ListView>
+                                                        </Grid>
+                                                    </Border>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <c:RecentFileListViewItem Content="매크로 테스트.pptm" FolderLocation="바탕화면" Source="Resources/Icon/EventIcon.png"/>
+                            <c:RecentFileListViewItem Content="Macro Test.pptm" FolderLocation="바탕화면" Source="Resources/Icon/EventIcon.png"/>
+                            <c:RecentFileListViewItem Content="기이이이인 파일 이름 테스트입니다아아아.pptm" FolderLocation="바탕화면 >> Looooooooooong Folder Location" Source="Resources/Icon/EventIcon.png"/>
+                            <c:RecentFileListViewItem Content="Test1.pptm" FolderLocation="바탕화면 >> Test Folders" Source="Resources/Icon/EventIcon.png"/>
+                        </ListView>
 
-                <Grid Grid.Row="2">
-                    <Rectangle Margin="25,0" Height="1" VerticalAlignment="Top" Fill="#FFE48F7B"/>
-                    <Button x:Name="GridOpenAnotherPpt" Margin="25,15,0,35" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid Background="{TemplateBinding Background}">
-                                                <ContentPresenter Content="{TemplateBinding Content}"/>
-                                            </Grid>
-                                            
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="Resources/Icon/FolderOpenIcon.png" IsHitTestVisible="False"/>
-                            <TextBlock x:Name="TBOpenAnotherPpt" VerticalAlignment="Center" Grid.Column="2" Foreground="White" FontSize="15" Text="다른 프레젠테이션 열기" IsHitTestVisible="False"/>
+                        <Grid Grid.Row="2">
+                            <Rectangle Margin="25,0" Height="1" VerticalAlignment="Top" Fill="#FFE48F7B"/>
+                            <Button x:Name="GridOpenAnotherPpt" Margin="25,15,0,35" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                                                    </Grid>
+
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="Resources/Icon/FolderOpenIcon.png" IsHitTestVisible="False"/>
+                                    <TextBlock x:Name="TBOpenAnotherPpt" VerticalAlignment="Center" Grid.Column="2" Foreground="White" FontSize="15" Text="다른 프레젠테이션 열기" IsHitTestVisible="False"/>
+                                </Grid>
+                            </Button>
+
                         </Grid>
-                    </Button>
-                    
+                    </Grid>
+                </Border>
+                <Grid Grid.Column="1" Margin="0,40,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="프레젠테이션 템플릿 선택" Foreground="#FFDA6C51" Margin="20,0,0,0"/>
+                    <ScrollViewer Margin="20" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <WrapPanel>
+                            <c:ProjectTemplateButton x:Name="BtnNewPPT" Content="새 프레젠테이션" Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다."
+                                       Padding="10" Click="BtnNewPPT_Click" />
+                            <c:ProjectTemplateButton x:Name="BtnNewAssistPPT" Content="보조 파일을 사용하는 새 프레젠테이션" Padding="10"
+                                       Description="보조 파일을 사용한 상태로 새 프레젠테이션을 만들게 되면 항상 프레젠테이션과 이름이 같은 .vba 파일이 생성됩니다.
+&#x0a;해당 파일이 같이 있는 상태에선 보조 문법을 사용할 수 있습니다. 보조 문법이란 기존 VBA 문법을 더 확장시킨 것으로 기존보다 더 효율적인 문법 사용이 가능합니다." Click="BtnNewAssistPPT_Click" Source="Resources/Icon/AssistProjectIcon.png"/>
+                            <c:ProjectTemplateButton x:Name="BtnNewVirtualPPT" Content="가상 프레젠테이션" Padding="10"
+                                       Description="가상 프레젠테이션은 .pptx를 사용하지 않고 가상으로 슬라이드에 도형이 있다고 가정한 상태에서 코드만 작성하는 것을 말합니다.&#x0a;PPT 프레젠테이션과 연결하여 사용하지 않습니다." Click="BtnNewVirtualPPT_Click" 
+                                                     Source="Resources/Icon/VirtualProjectIcon.png"/>
+                        </WrapPanel>
+                    </ScrollViewer>
+
+                    <Grid Grid.Row="2">
+                        <TextBlock x:Name="tbProcessInfoTB" Text="PowerVBA에서 처리를 기다리고 있습니다.&#x0a;PowerPoint에서 대화 상자가 열려있거나 다른 처리로 인해서 지연되는 것일 수도 있습니다." 
+                                   TextWrapping="Wrap" Visibility="Hidden" Margin="20"/>
+                    </Grid>
                 </Grid>
+
             </Grid>
-        </Border>
-        <Grid Grid.Column="1">
-            <StackPanel Margin="20,40,20,20">
-                <TextBlock Text="※ 서식 (템플릿)을 지정한 새 프레젠테이션을 만들고 싶으시다면 PowerPoint를 통해 만드신 다음 PowerVBA로 열어주시기 바랍니다." TextWrapping="Wrap"/>
-                <TextBlock Text="※ .pptx 같은 파일은 작업은 정상적으로 할 수 있으나 저장할때 매크로 포함 프레젠테이션(.pptm)등으로 저장되어야 합니다." Margin="0,5,0,0" TextWrapping="Wrap"/>
-                <Button Margin="0,12,0,0" Padding="10" Content="보조 파일이 포함된 프로젝트 새로 만들기"/>
-                <Button Margin="0,12,0,0" Padding="10" Content="새 프레젠테이션"/>
-            </StackPanel>
-        </Grid>
-
-    </Grid>
-
-
-    <!--<TabControl BorderBrush="Transparent" SelectedIndex="0" Margin="0" Style="{DynamicResource TabControlStyle1}">
-        <TabItem Foreground="Black" Style="{StaticResource BlankTabItemStyle}">
-            
         </TabItem>
-        <TabItem Foreground="Black" Style="{StaticResource BlankTabItemStyle}">
-            
-        </TabItem>
-    </TabControl>-->
+    </TabControl>
 </w:ChromeWindow>

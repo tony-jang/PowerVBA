@@ -59,6 +59,20 @@ namespace PowerVBA.Core.CodeEdit
         static CodeEditor()
         {
             Classes = new List<string>();
+
+            if (!IsInitLibRead)
+            {
+                Type[] typelist = GetTypesInNamespace(Assembly.Load(PowerVBA.Properties.Resources.LibPowerPoint), "Microsoft.Office.Interop.PowerPoint");
+
+                foreach (var t in typelist)
+                    if (t.IsInterface || t.IsEnum)
+                    {
+                        if (t.Name.StartsWith("_")) continue;
+                        Classes.Add(t.Name);
+                        
+                    }
+                IsInitLibRead = true;
+            }
         }
         public CodeEditor()
         {
@@ -102,21 +116,10 @@ namespace PowerVBA.Core.CodeEdit
                 }
             }
 
-            // TODO : 위치 변경
-            if (!IsInitLibRead)
+            foreach(string ClassName in Classes)
             {
-                Type[] typelist = GetTypesInNamespace(Assembly.Load(PowerVBA.Properties.Resources.LibPowerPoint), "Microsoft.Office.Interop.PowerPoint");
-
-                foreach (var t in typelist)
-                    if (t.IsInterface || t.IsEnum)
-                    {
-                        if (t.Name.StartsWith("_")) continue;
-                        Classes.Add(t.Name);
-                        this.SyntaxHighlighting.MainRuleSet.Rules[1].Add(t.Name);
-                    }
-                IsInitLibRead = true;
+                this.SyntaxHighlighting.MainRuleSet.Rules[1].Add(ClassName);
             }
-            
 
 
             #endregion
@@ -154,6 +157,8 @@ namespace PowerVBA.Core.CodeEdit
 
             this.Options.InheritWordWrapIndentation = false;
             errToolTip = new ErrorToolTip();
+
+            this.FontSize = 13.333333333333333;
 
             LineHeight = this.TextArea.TextView.DefaultLineHeight;
 

@@ -48,3 +48,9 @@ F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.g.cs
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ProjectListViewItemDesign.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ProjectListViewItemDesign.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddFileWindow.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddFileWindow.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SolutionExplorer.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SolutionExplorer.baml

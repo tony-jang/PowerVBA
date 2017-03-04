@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Vbe.Interop;
+using System.Windows.Controls;
 
 namespace PowerVBA.Core.Wrap.WrapClass
 {
     [Wrapped(typeof(Presentation))]
-    class PresentationWrapping : IWrappingClass
+    public class PresentationWrapping : IWrappingClass
     {
         public Presentation Presentation { get; }
 
@@ -150,7 +151,8 @@ namespace PowerVBA.Core.Wrap.WrapClass
 
         public void Close()
         {
-            Presentation.Close();
+            try { Presentation.Close(); } catch (Exception) { }
+            
         }
 
         public void Convert()

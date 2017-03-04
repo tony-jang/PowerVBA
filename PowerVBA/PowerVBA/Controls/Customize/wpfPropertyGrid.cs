@@ -15,8 +15,11 @@ using System.Activities.Presentation.View;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Data;
+using System.Windows.Controls;
+using System.Windows;
+using System;
 
-namespace System.Windows.Controls
+namespace PowerVBA.Controls.Customize
 {
     public enum PropertySort
     {
@@ -232,20 +235,20 @@ namespace System.Windows.Controls
             this.Designer = new WorkflowDesigner();
             TextBlock title = new TextBlock()
             {
-                Visibility = Windows.Visibility.Visible,
+                Visibility = Visibility.Visible,
                 TextWrapping = TextWrapping.NoWrap,
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 FontWeight = FontWeights.Bold
             };
             TextBlock descrip = new TextBlock()
             {
-                Visibility = Windows.Visibility.Visible,
+                Visibility = Visibility.Visible,
                 TextWrapping = TextWrapping.Wrap,
                 TextTrimming = TextTrimming.CharacterEllipsis
             };
             DockPanel dock = new DockPanel()
             {
-                Visibility = Windows.Visibility.Visible,
+                Visibility = Visibility.Visible,
                 LastChildFill = true,
                 Margin = new Thickness(3, 0, 3, 0)
             };
@@ -255,7 +258,7 @@ namespace System.Windows.Controls
             dock.Children.Add(descrip);
             this.HelpText = new Border()
             {
-                Visibility = Windows.Visibility.Visible,
+                Visibility = Visibility.Visible,
                 BorderBrush = SystemColors.ActiveBorderBrush,
                 Background = SystemColors.ControlBrush,
                 BorderThickness = new Thickness(1),
@@ -263,10 +266,10 @@ namespace System.Windows.Controls
             };
             this.Splitter = new GridSplitter()
             {
-                Visibility = Windows.Visibility.Visible,
+                Visibility = Visibility.Visible,
                 ResizeDirection = GridResizeDirection.Rows,
                 Height = 5,
-                HorizontalAlignment = Windows.HorizontalAlignment.Stretch
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             var inspector = Designer.PropertyInspectorView;
@@ -288,24 +291,24 @@ namespace System.Windows.Controls
             this.Children.Add(this.HelpText);
 
             Type inspectorType = inspector.GetType();
-            var props = inspectorType.GetProperties(Reflection.BindingFlags.Public | Reflection.BindingFlags.NonPublic | Reflection.BindingFlags.Instance |
-                Reflection.BindingFlags.DeclaredOnly);
+            var props = inspectorType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
+                BindingFlags.DeclaredOnly);
 
-            var methods = inspectorType.GetMethods(Reflection.BindingFlags.Public | Reflection.BindingFlags.NonPublic | Reflection.BindingFlags.Instance |
-                Reflection.BindingFlags.DeclaredOnly);
+            var methods = inspectorType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
+                BindingFlags.DeclaredOnly);
 
             this.RefreshMethod = inspectorType.GetMethod("RefreshPropertyList",
-                Reflection.BindingFlags.NonPublic | Reflection.BindingFlags.Instance | Reflection.BindingFlags.DeclaredOnly);
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             this.IsInAlphaViewMethod = inspectorType.GetMethod("set_IsInAlphaView",
-                Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance | Reflection.BindingFlags.DeclaredOnly);
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             this.OnSelectionChangedMethod = inspectorType.GetMethod("OnSelectionChanged",
-                Reflection.BindingFlags.Public | Reflection.BindingFlags.Instance | Reflection.BindingFlags.DeclaredOnly);
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             this.SelectionTypeLabel = inspectorType.GetMethod("get_SelectionTypeLabel",
-                Reflection.BindingFlags.Public | Reflection.BindingFlags.NonPublic | Reflection.BindingFlags.Instance |
-                Reflection.BindingFlags.DeclaredOnly).Invoke(inspector, new object[0]) as TextBlock;
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
+                BindingFlags.DeclaredOnly).Invoke(inspector, new object[0]) as TextBlock;
             this.PropertyToolBar = inspectorType.GetMethod("get_PropertyToolBar",
-                Reflection.BindingFlags.Public | Reflection.BindingFlags.NonPublic | Reflection.BindingFlags.Instance |
-                Reflection.BindingFlags.DeclaredOnly).Invoke(inspector, new object[0]) as Control;
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
+                BindingFlags.DeclaredOnly).Invoke(inspector, new object[0]) as Control;
             inspectorType.GetEvent("GotFocus").AddEventHandler(this,
                 Delegate.CreateDelegate(typeof(RoutedEventHandler), this, "GotFocusHandler", false));
 

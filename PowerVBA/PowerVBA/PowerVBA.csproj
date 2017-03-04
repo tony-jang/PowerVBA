@@ -88,19 +88,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Command\WindowsSystemCommand.cs" />
+    <Compile Include="Commands\TabItemCommand.cs" />
+    <Compile Include="Commands\WindowsSystemCommand.cs" />
+    <Compile Include="Controls\Customize\CanCloseTabItem.cs" />
     <Compile Include="Controls\Customize\ImageButton.cs" />
+    <Compile Include="Controls\Customize\ImageListViewItem.cs" />
+    <Compile Include="Controls\Customize\ImageRadioButton.cs" />
     <Compile Include="Controls\Customize\PathButton.cs" />
+    <Compile Include="Controls\Customize\ProjectListViewItem.cs" />
     <Compile Include="Controls\Customize\ScrollBarEx.cs" />
     <Compile Include="Controls\Customize\wpfPropertyGrid.cs" />
     <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
+    <Compile Include="Controls\Design\ProjectListViewItemDesign.xaml.cs">
+      <DependentUpon>ProjectListViewItemDesign.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Design\RecentFileListViewItemDesign.xaml.cs">
       <DependentUpon>RecentFileListViewItemDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Controls\Tools\SolutionExplorer.xaml.cs">
+      <DependentUpon>SolutionExplorer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Core\CodeEdit\CodeCompletion\CustomCompletionWindow.cs" />
     <Compile Include="Core\CodeEdit\Parser\LineParser.cs" />
     <Compile Include="Core\CodeEdit\Parser\LineType.cs" />
+    <Compile Include="Core\Connector\PPTConnector.cs" />
     <Compile Include="Core\Convert\StringConverter.cs" />
     <Compile Include="Core\CodeEdit\CodeCompletion\CompletionFlag.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\Accessor.cs" />
@@ -108,12 +120,15 @@
     <Compile Include="Core\CodeEdit\Parser\Data\EnumData.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\TypeData.cs" />
     <Compile Include="Core\CodeEdit\Parser\Data\VariableData.cs" />
+    <Compile Include="Core\Extension\boolEx.cs" />
     <Compile Include="Core\Project\ILineInfo.cs" />
     <Compile Include="Core\Project\MultiLineInfo.cs" />
     <Compile Include="Core\Project\ProjectResource.cs" />
     <Compile Include="Core\Extension\HighlightingRuleEx.cs" />
     <Compile Include="Core\Extension\stringEx.cs" />
     <Compile Include="Core\Project\SignleLineInfo.cs" />
+    <Compile Include="Core\Wrap\WrapClass\ApplicationWrapping.cs" />
+    <Compile Include="Core\Wrap\WrapClass\VBComponentWrapping.cs" />
     <Compile Include="Global\Regex\RegexExp.cs" />
     <Compile Include="Interop\Constats.cs" />
     <Compile Include="Interop\ExternDll.cs" />
@@ -124,12 +139,23 @@
     <Compile Include="Core\CodeEdit\Substitution\ISubstitution.cs" />
     <Compile Include="Core\CodeEdit\Substitution\MethodSubstitution.cs" />
     <Compile Include="Core\CodeEdit\Substitution\VariableSubstitution.cs" />
+    <Compile Include="Windows\AddWindows\AddFileWindow.xaml.cs">
+      <DependentUpon>AddFileWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ChromeWindow.cs" />
     <Page Include="Controls\Design\ErrorToolTipDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Design\ProjectListViewItemDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Design\RecentFileListViewItemDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\SolutionExplorer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +200,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Themes\ControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddWindows\AddFileWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -278,6 +308,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\FolderOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ConstIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\AssistProjectIcon.png" />
+    <Resource Include="Resources\Icon\VirtualProjectIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

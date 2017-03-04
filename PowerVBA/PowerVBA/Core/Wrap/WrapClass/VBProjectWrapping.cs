@@ -9,9 +9,14 @@ using System.Threading.Tasks;
 namespace PowerVBA.Core.Wrap.WrapClass
 {
     [Wrapped(typeof(VBProject))]
-    class VBProjectWrapping : IWrappingClass
+    public class VBProjectWrapping : IWrappingClass
     {
         public VBProject VBProject { get; }
+
+        public VBProjectWrapping(VBProject VBProject)
+        {
+            this.VBProject = VBProject;
+        }
 
         public Application Application => VBProject.Application;
         public string BuildFileName { set { VBProject.BuildFileName = value; } get { return VBProject.BuildFileName; } }
