@@ -28,7 +28,7 @@
         <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
         <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#3D26A0DA"/>
         <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#FF26A0DA"/>
-        
+
     </w:ChromeWindow.Resources>
 
     <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
@@ -60,7 +60,7 @@
             <Grid x:Name="MainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="140"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Grid>
@@ -73,7 +73,7 @@
                         <TabItem Header="파일" Style="{StaticResource FileTabItemStyle}"/>
                         <TabItem Header="홈">
                             <WrapPanel>
-                                
+
                                 <GroupBox Header="클립보드">
                                     <WrapPanel>
                                         <c:ImageButton x:Name="BtnCopy" Content="복사" BackImage="Resources/Icon/CopyIcon.png" SimpleButtonClicked="BtnCopy_SimpleButtonClicked"/>
@@ -101,34 +101,34 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="함수 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked" />
-                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked" IsEnabled="False" />
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="변수/상수 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" />
-                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="트리거 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked" />
-                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked" IsEnabled="False" />
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="열거형 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddEnum" Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="BtnAddEnum_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddEnum" Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="BtnAddEnum_SimpleButtonClicked" IsEnabled="False" />
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="타입 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddType" Content="타입 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddType" Content="타입 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
                                     </WrapPanel>
                                 </GroupBox>
                             </WrapPanel>
@@ -147,27 +147,24 @@
                         <TabItem Header="디버그">
                             <WrapPanel>
                                 <GroupBox Header="디버그">
-                                    <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico"/>
+                                    <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" IsEnabled="False"/>
                                 </GroupBox>
                             </WrapPanel>
 
                         </TabItem>
                     </TabControl>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="250"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" x:Name="DebugPanel">
-                        <StackPanel Margin="10">
-                            <TextBlock Text="총 슬라이드 : 0 슬라이드"/>
-                            <TextBlock Text="총 도형수 : 0개"/>
-                        </StackPanel>
-                    </Grid>
-                    <Grid Grid.Column="1">
+                    <t:PresentationAnalyzer/>
+                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+                    <Grid Grid.Column="2">
                         <TabControl x:Name="CodeTabControls">
                             <TabControl.Resources>
                                 <Style TargetType="{x:Type c:CanCloseTabItem}" BasedOn="{StaticResource CodeTabItemStyle}">
@@ -185,19 +182,19 @@
                             </c:CanCloseTabItem>
                             <c:CanCloseTabItem  Header="개체 브라우저" Height="20">
                                 <Grid>
-                                    
+
                                 </Grid>
                             </c:CanCloseTabItem>
                         </TabControl>
 
                     </Grid>
-                    <GridSplitter Grid.Column="2" HorizontalAlignment="Stretch"/>
-                    <Grid Grid.Column="3">
+                    <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch"/>
+                    <Grid Grid.Column="4">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <t:SolutionExplorer/>
+                        <t:SolutionExplorer x:Name="solutionExplorer"/>
                         <c:WpfPropertyGrid x:Name="PropGrid" Grid.Row="1"/>
                     </Grid>
 

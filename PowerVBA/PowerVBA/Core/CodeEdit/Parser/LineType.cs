@@ -9,6 +9,11 @@ namespace PowerVBA.Core.CodeEdit.Parser
     enum LineType
     {
         /// <summary>
+        /// 알 수 없는 줄입니다.
+        /// </summary>
+        Unknown,
+
+        /// <summary>
         /// 주석
         /// </summary>
         Remark,
@@ -40,11 +45,11 @@ namespace PowerVBA.Core.CodeEdit.Parser
         /// <summary>
         /// Type 선언 시작
         /// </summary>
-        StartType,
+        TypeStart,
         /// <summary>
         /// Type 선언 종료
         /// </summary>
-        EndType,
+        TypeEnd,
 
 
         /// <summary>

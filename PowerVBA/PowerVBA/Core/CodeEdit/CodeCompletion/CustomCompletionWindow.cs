@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace PowerVBA.Core.CodeEdit.CodeCompletion
 {
@@ -46,6 +47,9 @@ namespace PowerVBA.Core.CodeEdit.CodeCompletion
             this.MinHeight = 15;
             this.MinWidth = 30;
 
+            this.Background = Brushes.Gray;
+
+            this.ResizeMode = ResizeMode.NoResize;
 
 
             toolTip.PlacementTarget = this;

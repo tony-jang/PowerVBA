@@ -24,6 +24,7 @@ using PowerVBA.Core.Connector;
 using Microsoft.Win32;
 using System.Windows.Threading;
 using PowerVBA.Windows.AddWindows;
+using static PowerVBA.Global.Globals;
 
 namespace PowerVBA
 {
@@ -39,7 +40,9 @@ namespace PowerVBA
 
             this.Closing += MainWindow_Closing;
             MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
-            
+
+            MainDispatcher = Dispatcher;
+
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -206,6 +209,13 @@ namespace PowerVBA
             Environment.Exit(0);
         }
 
+
+        private void ProjectFileChange()
+        {
+            solutionExplorer.Update(Connector);
+        }
+
+
         #endregion
 
 
@@ -245,6 +255,7 @@ namespace PowerVBA
                     
                     Connector = new PPTConnector(ofd.FileName);
                     Connector.PPTClosed += PPTCloseDetect;
+                    Connector.VBComponentChange += ProjectFileChange;
 
                     PropGrid.SelectedObject = Connector.Presentation;
 
@@ -267,6 +278,7 @@ namespace PowerVBA
                 
                 Connector = new PPTConnector(true);
                 Connector.PPTClosed += PPTCloseDetect;
+                Connector.VBComponentChange += ProjectFileChange;
 
                 PropGrid.SelectedObject = Connector.Presentation;
 

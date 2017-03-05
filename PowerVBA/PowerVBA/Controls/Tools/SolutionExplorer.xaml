@@ -25,34 +25,46 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="클래스 목록" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+                <TextBlock Grid.Row="0" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    클래스 목록 (<Run x:Name="ClassRun" Text="0"/>개)
+                </TextBlock>
 
                 <ListBox x:Name="LBClass" Grid.Row="1" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
-                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="ListBoxes_SelectionChanged">
+                         SelectionChanged="ListBoxes_SelectionChanged">
                     <ListBox.Template>
                         <ControlTemplate>
                             <ItemsPresenter />
                         </ControlTemplate>
                     </ListBox.Template>
-                    <c:ImageListViewItem Content="Class1" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
-                    <c:ImageListViewItem Content="Class2" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
                 </ListBox>
 
-                <TextBlock Grid.Row="2" Text="모듈 목록" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+                <TextBlock Grid.Row="2" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    모듈 목록 (<Run x:Name="ModuleRun" Text="0"/>개)
+                </TextBlock>
 
                 <ListBox x:Name="LBModule" Grid.Row="3" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
-                    <c:ImageListViewItem Content="Module1" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png"/>
-                    <c:ImageListViewItem Content="Module2" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png"/>
+                    <ListBox.Template>
+                        <ControlTemplate>
+                            <ItemsPresenter />
+                        </ControlTemplate>
+                    </ListBox.Template>
                 </ListBox>
 
-                <TextBlock Grid.Row="4" Text="폼 목록" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+                <TextBlock Grid.Row="4" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    폼 목록 (<Run x:Name="FormRun" Text="0"/>개)
+                </TextBlock>
 
                 <ListBox x:Name="LBForms" Grid.Row="5" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
+                    <ListBox.Template>
+                        <ControlTemplate>
+                            <ItemsPresenter />
+                        </ControlTemplate>
+                    </ListBox.Template>
                 </ListBox>
 
             </Grid>
@@ -61,8 +73,8 @@
         <Grid Grid.Row="2">
             <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
             <StackPanel Margin="0,10">
-                <TextBlock Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
-                <TextBlock Grid.Row="2" Text="개체 브라우저" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+                <TextBlock Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
+                <TextBlock Grid.Row="2" Text="개체 브라우저" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
             </StackPanel>
         </Grid>
     </Grid>

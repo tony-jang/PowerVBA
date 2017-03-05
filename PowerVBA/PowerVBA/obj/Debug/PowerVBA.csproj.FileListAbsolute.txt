@@ -54,3 +54,5 @@ F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddFileWindow.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SolutionExplorer.g.cs
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SolutionExplorer.baml
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PresentationAnalyzer.g.cs
+F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PresentationAnalyzer.baml

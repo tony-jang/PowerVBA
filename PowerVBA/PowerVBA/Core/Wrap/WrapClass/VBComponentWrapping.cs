@@ -9,7 +9,7 @@ namespace PowerVBA.Core.Wrap.WrapClass
 
 {
     [Wrapped(typeof(VBComponent))]
-    class VBComponentWrapping : IWrappingClass
+    public class VBComponentWrapping : IWrappingClass
     {
         public VBComponent VBComponent { get; }
         public VBComponentWrapping(VBComponent vbcomponent)

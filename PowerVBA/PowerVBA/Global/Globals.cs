@@ -12,6 +12,8 @@ using System.Windows.Controls;
 using ICSharpCode.AvalonEdit;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Windows.Threading;
+using System.Collections.ObjectModel;
 
 namespace PowerVBA.Global
 {
@@ -54,5 +56,44 @@ namespace PowerVBA.Global
 
             return grayBitmap;
         }
+
+        public static Dispatcher MainDispatcher;
+
+
+
+        public static List<T> Copy<T>(this List<T> list)
+        {
+            List<T> returnlist = new List<T>();
+            foreach (T data in list)
+            {
+                returnlist.Add(data);
+            }
+
+            return returnlist;
+        }
+
+        public static List<T> Copy<T>(this Collection<T> list)
+        {
+            List<T> returnlist = new List<T>();
+            foreach (T data in list)
+            {
+                returnlist.Add(data);
+            }
+
+            return returnlist;
+        }
+
+
+        public static List<T> Copy<T>(this IEnumerable<T> list)
+        {
+            List<T> returnlist = new List<T>();
+            foreach (T data in list)
+            {
+                returnlist.Add(data);
+            }
+
+            return returnlist;
+        }
+
     }
 }

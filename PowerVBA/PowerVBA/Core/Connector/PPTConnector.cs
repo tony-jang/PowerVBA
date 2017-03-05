@@ -51,17 +51,68 @@ namespace PowerVBA.Core.Connector
                 do
                 {
                     Thread.Sleep(100);
-                    try { string name = Presentation.Presentation.Name; }
+                    
+                    try
+                    {
+                        if (VBProject.VBComponents.Count != Count)
+                        {
+                            Count = VBProject.VBComponents.Count;
+                            MainDispatcher.Invoke(() =>
+                            {
+                                OnVBComponentChange();
+                            });
+
+                        }
+                    }
                     catch (Exception ex)
                     {
                         // 확인된 버전 : PPT 2013
+
                         // 프로그램이 사용중인 상태입니다. (인식되는 곳 : 종료 요청 등)
                         if (ex.HResult == -2147417846) continue;
-                        PPTClosed();
+                        // 피호출자가 호출을 거부 했습니다. (인식되는 곳 : 프로젝트 탐색기에서 마우스 우클릭 시)
+                        if (ex.HResult == -2147418111) continue;
+                        if (ex.HResult == -2146827864)
+                        {
+
+                            MessageBox.Show(ex.HResult + " :: 종료 요청(개채가 존재하지 않습니다)");
+                        }
+                        MessageBox.Show(ex.HResult.ToString());
+                        MessageBox.Show(ex.ToString());
+                        OnPPTClosed();
                     }
+
                 } while (true);
             });
+
+            thr.SetApartmentState(ApartmentState.STA);
         }
+
+        #region [  이벤트 체크용 변수  ]
+
+        int Count = 0;
+
+        #endregion
+
+
+        #region [  이벤트  ]
+
+
+
+        public event BlankEventHandler PPTClosed;
+        public event BlankEventHandler VBComponentChange;
+        public void OnPPTClosed()
+        {
+            if (PPTClosed != null) PPTClosed();
+        }
+        public void OnVBComponentChange()
+        {
+            if (VBComponentChange != null) VBComponentChange();
+        }
+
+        #endregion
+
+
 
         #endregion
 
@@ -78,7 +129,7 @@ namespace PowerVBA.Core.Connector
 
         public bool AddModule(string name)
         {
-            if (!Regex.IsMatch(name, RegexPattern.Var.name)) return false;
+            if (!Regex.IsMatch(name, RegexPattern.Pattern.NamePattern)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_StdModule));
 
@@ -89,7 +140,7 @@ namespace PowerVBA.Core.Connector
 
         public bool AddClass(string name)
         {
-            if (!Regex.IsMatch(name, RegexPattern.Var.name)) return false;
+            if (!Regex.IsMatch(name, RegexPattern.Pattern.NamePattern)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardClass = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_ClassModule));
 
@@ -111,13 +162,6 @@ namespace PowerVBA.Core.Connector
         }
 
 
-
-        public event BlankEventHandler PPTClosed;
-
-        public void OnPPTClosed()
-        {
-            if (PPTClosed != null) PPTClosed();
-        }
 
 
         public void Dispose()

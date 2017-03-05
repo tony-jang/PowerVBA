@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static PowerVBA.Core.Extension.stringEx;
 using System.Collections;
+using System.Windows;
 
 namespace PowerVBA.Core.CodeEdit.Parser
 {
@@ -36,17 +37,14 @@ namespace PowerVBA.Core.CodeEdit.Parser
                 string code = Editor.Text.Substring(line.Offset, line.Length);
 
                 Match m;
-                if (Regex.IsMatch(code, Pattern.g_lineStartPattern))
-                {
-                    m = Regex.Match(code, Pattern.g_lineStartPattern);
-
-                    foreach(string StrLine in Editor.Text.SplitByNewLine())
-                    {
-                        LineParser lparser = new LineParser(StrLine, this, new AnchorSegment(Editor.Document, line.Offset, line.Length));
-                        lparser.Parse();
-                    }
-                }
+                m = Regex.Match(code, Pattern.g_lineStartPattern);
+                
+                LineParser lparser = new LineParser(code, this, new AnchorSegment(Editor.Document, line.Offset, line.Length));
+                var itm = lparser.Parse();
+                //MessageBox.Show(itm.LineType.ToString());
             }
+
+            
         }
 
 

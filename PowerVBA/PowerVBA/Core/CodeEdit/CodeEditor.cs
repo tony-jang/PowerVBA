@@ -51,6 +51,8 @@ namespace PowerVBA.Core.CodeEdit
         protected List<CodeError> CodeErrors = new List<CodeError>();
         protected ErrorToolTip errToolTip;
         protected double LineHeight;
+        protected CodeParser codeParser;
+
 
         public static List<string> Classes;
         public static bool IsInitLibRead = false;
@@ -100,6 +102,7 @@ namespace PowerVBA.Core.CodeEdit
             this.TextChanged += delegate (object sender, EventArgs e)
             {
                 sw.Restart();
+                codeParser.Seek();
             };
 
             #endregion
@@ -147,7 +150,7 @@ namespace PowerVBA.Core.CodeEdit
             #region [  변수 초기화  ]
 
             Completion = new VBACompletion();
-            CodeParser codeParser = new CodeParser(this, CodeErrors);
+            codeParser = new CodeParser(this, CodeErrors);
 
             #endregion
             
