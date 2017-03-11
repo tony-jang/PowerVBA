@@ -193,7 +193,7 @@
 
     <!--CanCloseTabItem Style-->
 
-    <Style x:Key="CodeTabItemStyle" TargetType="{x:Type c:CanCloseTabItem}">
+    <Style x:Key="CodeTabItemStyle" TargetType="{x:Type c:CloseableTabItem}">
 
         <Setter Property="Background" Value="White"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -202,7 +202,7 @@
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type c:CanCloseTabItem}" >
+                <ControlTemplate TargetType="{x:Type c:CloseableTabItem}" >
                     <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>

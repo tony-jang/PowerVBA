@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:av="clr-namespace:PowerVBA.Core.CodeEdit"
+        xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit"
         xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
@@ -31,7 +31,7 @@
 
     </w:ChromeWindow.Resources>
 
-    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
+    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="0" Margin="0" Padding="0" BorderThickness="0">
         <TabControl.Style>
             <Style TargetType="{x:Type TabControl}">
                 <!--<Setter Property="Template">
@@ -163,28 +163,28 @@
                         <ColumnDefinition Width="250"/>
                     </Grid.ColumnDefinitions>
                     <t:PresentationAnalyzer/>
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+                    <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
                     <Grid Grid.Column="2">
                         <TabControl x:Name="CodeTabControls">
                             <TabControl.Resources>
-                                <Style TargetType="{x:Type c:CanCloseTabItem}" BasedOn="{StaticResource CodeTabItemStyle}">
+                                <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}">
 
                                 </Style>
                             </TabControl.Resources>
-                            <c:CanCloseTabItem Header="Module1.bas" Height="20">
+                            <c:CloseableTabItem Header="Module1.bas" Height="20">
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CanCloseTabItem>
-                            <c:CanCloseTabItem  Header="Class1.cls" Height="20">
+                            </c:CloseableTabItem>
+                            <c:CloseableTabItem  Header="Class1.cls" Height="20">
                                 <av:CodeEditor x:Name="codeEditor2" Text="Dim B As Presentation" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CanCloseTabItem>
-                            <c:CanCloseTabItem  Header="Class2.cls" Height="20">
+                            </c:CloseableTabItem>
+                            <c:CloseableTabItem  Header="Class2.cls" Height="20">
                                 <av:CodeEditor x:Name="codeEditor3" Text="Dim C As String" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CanCloseTabItem>
-                            <c:CanCloseTabItem  Header="개체 브라우저" Height="20">
+                            </c:CloseableTabItem>
+                            <c:CloseableTabItem  Header="개체 브라우저" Height="20">
                                 <Grid>
 
                                 </Grid>
-                            </c:CanCloseTabItem>
+                            </c:CloseableTabItem>
                         </TabControl>
 
                     </Grid>
@@ -192,10 +192,12 @@
                     <Grid Grid.Column="4">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <t:SolutionExplorer x:Name="solutionExplorer"/>
-                        <c:WpfPropertyGrid x:Name="PropGrid" Grid.Row="1"/>
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF9C9C9C"/>
+                        <c:WpfPropertyGrid Grid.Row="2" x:Name="PropGrid"/>
                     </Grid>
 
                 </Grid>

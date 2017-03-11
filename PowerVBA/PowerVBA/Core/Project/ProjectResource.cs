@@ -1,4 +1,4 @@
-﻿using PowerVBA.Core.CodeEdit.Parser.Data;
+﻿using PowerVBA.Core.AvalonEdit.Parser.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

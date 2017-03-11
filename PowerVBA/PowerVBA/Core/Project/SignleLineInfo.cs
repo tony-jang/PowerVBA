@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PowerVBA.Core.CodeEdit.Parser;
+using PowerVBA.Core.AvalonEdit.Parser;
 
 namespace PowerVBA.Core.Project
 {

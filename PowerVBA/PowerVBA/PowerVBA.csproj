@@ -64,6 +64,9 @@
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -90,7 +93,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\TabItemCommand.cs" />
     <Compile Include="Commands\WindowsSystemCommand.cs" />
-    <Compile Include="Controls\Customize\CanCloseTabItem.cs" />
+    <Compile Include="Controls\Customize\CloseableTabItem.cs" />
     <Compile Include="Controls\Customize\ImageButton.cs" />
     <Compile Include="Controls\Customize\ImageListViewItem.cs" />
     <Compile Include="Controls\Customize\ImageRadioButton.cs" />
@@ -112,17 +115,18 @@
     <Compile Include="Controls\Tools\SolutionExplorer.xaml.cs">
       <DependentUpon>SolutionExplorer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\CodeEdit\CodeCompletion\CustomCompletionWindow.cs" />
-    <Compile Include="Core\CodeEdit\Parser\LineParser.cs" />
-    <Compile Include="Core\CodeEdit\Parser\LineType.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\CustomCompletionWindow.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\VBACompletions.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\LineParser.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\LineType.cs" />
     <Compile Include="Core\Connector\PPTConnector.cs" />
     <Compile Include="Core\Convert\StringConverter.cs" />
-    <Compile Include="Core\CodeEdit\CodeCompletion\CompletionFlag.cs" />
-    <Compile Include="Core\CodeEdit\Parser\Data\Accessor.cs" />
-    <Compile Include="Core\CodeEdit\Parser\Data\BaseData.cs" />
-    <Compile Include="Core\CodeEdit\Parser\Data\EnumData.cs" />
-    <Compile Include="Core\CodeEdit\Parser\Data\TypeData.cs" />
-    <Compile Include="Core\CodeEdit\Parser\Data\VariableData.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\CompletionFlag.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\Data\Accessor.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\Data\BaseData.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\Data\EnumData.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\Data\TypeData.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\Data\VariableData.cs" />
     <Compile Include="Core\Extension\boolEx.cs" />
     <Compile Include="Core\Project\ILineInfo.cs" />
     <Compile Include="Core\Project\MultiLineInfo.cs" />
@@ -132,16 +136,17 @@
     <Compile Include="Core\Project\SignleLineInfo.cs" />
     <Compile Include="Core\Wrap\WrapClass\ApplicationWrapping.cs" />
     <Compile Include="Core\Wrap\WrapClass\VBComponentWrapping.cs" />
-    <Compile Include="Global\Regex\RegexExp.cs" />
+    <Compile Include="Global\RegexExpressions\CodePattern.cs" />
+    <Compile Include="Global\RegexExpressions\RegexExp.cs" />
     <Compile Include="Interop\Constats.cs" />
     <Compile Include="Interop\ExternDll.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Interop\UnsafeNativeMethods.cs" />
     <Compile Include="Resources\ResourceImage.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\Base\BaseSubstitution.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\ISubstitution.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\MethodSubstitution.cs" />
-    <Compile Include="Core\CodeEdit\Substitution\VariableSubstitution.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\Base\BaseSubstitution.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\ISubstitution.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\MethodSubstitution.cs" />
+    <Compile Include="Core\AvalonEdit\Substitution\VariableSubstitution.cs" />
     <Compile Include="Windows\AddWindows\AddFileWindow.xaml.cs">
       <DependentUpon>AddFileWindow.xaml</DependentUpon>
     </Compile>
@@ -178,18 +183,18 @@
     <Compile Include="Controls\Design\ErrorToolTipDesign.xaml.cs">
       <DependentUpon>ErrorToolTipDesign.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\CodeEdit\CodeCompletion\CodeCompletionResult.cs" />
-    <Compile Include="Core\CodeEdit\CodeCompletion\CompletionData.cs" />
-    <Compile Include="Core\CodeEdit\CodeCompletion\MiniLexer.cs" />
-    <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletion.cs" />
-    <Compile Include="Core\CodeEdit\CodeCompletion\VBACompletionEngine.cs" />
-    <Compile Include="Core\CodeEdit\CodeEditor.cs" />
-    <Compile Include="Core\CodeEdit\Folding\FoldingLineType.cs" />
-    <Compile Include="Core\CodeEdit\Folding\VBAFoldingStrategy.cs" />
-    <Compile Include="Core\CodeEdit\Indentation\CodeIndentation.cs" />
-    <Compile Include="Core\CodeEdit\Parser\CodeParser.cs" />
-    <Compile Include="Core\CodeEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
-    <Compile Include="Core\CodeEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\CodeCompletionResult.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\CompletionData.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\MiniLexer.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\VBACompletion.cs" />
+    <Compile Include="Core\AvalonEdit\CodeCompletion\VBACompletionEngine.cs" />
+    <Compile Include="Core\AvalonEdit\CodeEditor.cs" />
+    <Compile Include="Core\AvalonEdit\Folding\FoldingLineType.cs" />
+    <Compile Include="Core\AvalonEdit\Folding\VBAFoldingStrategy.cs" />
+    <Compile Include="Core\AvalonEdit\Indentation\CodeIndentation.cs" />
+    <Compile Include="Core\AvalonEdit\Parser\CodeParser.cs" />
+    <Compile Include="Core\AvalonEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
+    <Compile Include="Core\AvalonEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
     <Compile Include="Core\Error\CodeError.cs" />
     <Compile Include="Core\Error\ErrorType.cs" />
     <Compile Include="Core\TypeManage\TypeConverter.cs" />
@@ -322,6 +327,9 @@
   <ItemGroup>
     <Resource Include="Resources\Icon\AssistProjectIcon.png" />
     <Resource Include="Resources\Icon\VirtualProjectIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\CodeBlockIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

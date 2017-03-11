@@ -1,5 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit.Folding;
-using PowerVBA.Core.CodeEdit.Folding;
+using PowerVBA.Core.AvalonEdit.Folding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ using System.Diagnostics;
 using System.Threading;
 using PowerVBA.Windows;
 using ICSharpCode.AvalonEdit;
-using PowerVBA.Core.CodeEdit;
+using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Core.Wrap.WrapClass;
 using PowerVBA.Core.Connector;
 using Microsoft.Win32;
@@ -42,8 +42,11 @@ namespace PowerVBA
             MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
 
             MainDispatcher = Dispatcher;
-
+            
         }
+        
+
+
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -52,7 +55,7 @@ namespace PowerVBA
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;
+            if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;            
         }
 
 
@@ -243,8 +246,10 @@ namespace PowerVBA
 
         private void GridOpenAnotherPpt_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm";
+            OpenFileDialog ofd = new OpenFileDialog()
+            {
+                Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
+            };
             if (ofd.ShowDialog().Value)
             {
                 tbProcessInfoTB.Visibility = Visibility.Visible;
