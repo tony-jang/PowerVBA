@@ -55,6 +55,16 @@ namespace PowerVBA.Global.RegexExpressions
         /// </summary>
         public static string Digit = @"(-\d+|\d+)";
 
+        public static string GetNegativeLookBehind(string[] strings)
+        {
+            return $"(?<!{string.Join("|", strings)})";
+        }
+        public static string GetNegativeLookBehind(string String)
+        {
+            return $"(?<!{String})";
+        }
+
+
         #endregion
 
         #region [  기본 패턴  ]
@@ -111,26 +121,26 @@ namespace PowerVBA.Global.RegexExpressions
         /// [For Ex] As 전까지 인식시킵니다.
         /// </summary>
         // Group 1 : Name(Ref Var)
-        public static RegexString ForBeforeAs_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{Blank}";
+        public static RegexString ForBeforeAs_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{GetNegativeLookBehind("Each")}{Blank}";
 
 
         /// <summary>
         /// [For Ex] Type 전까지 인식시킵니다.
         /// </summary>
         // Group 1 : Name(Ref Var)
-        public static RegexString ForBeforeType_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{Blank}As{Blank}";
+        public static RegexString ForBeforeType_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{GetNegativeLookBehind("Each")}{Blank}As{Blank}";
 
         /// <summary>
         /// [For Ex] To 전까지 인식시킵니다.
         /// </summary>
         // Group 1 : Name(Ref Var) Group 2 : Name(Type) Group 3 : Digit (StartPos)
-        public static RegexString ForBeforeTo_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}";
+        public static RegexString ForBeforeTo_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{GetNegativeLookBehind("Each")}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}";
 
         /// <summary>
         /// [For Ex] Step 전까지 인식시킵니다.
         /// </summary>
         // Group 1 : Name(Ref Var) Group 2 : Name(Type) Group 3 : Digit (StartPos) Group 4 : Digit (EndPos)
-        public static RegexString ForBeforeStep_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}To{Blank}{Digit}{Blank}";
+        public static RegexString ForBeforeStep_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{GetNegativeLookBehind("Each")}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}To{Blank}{Digit}{Blank}";
 
 
         /// <summary>
@@ -140,7 +150,7 @@ namespace PowerVBA.Global.RegexExpressions
         // To VBA Grammer :
         // Dim i As Integer
         // For i = 1 to 10
-        public static RegexString ForStandard_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}To{Blank}{Digit}{BlankNull}";
+        public static RegexString ForStandard_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{GetNegativeLookBehind("Each")}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}To{Blank}{Digit}{BlankNull}";
 
 
         /// <summary>
@@ -150,11 +160,16 @@ namespace PowerVBA.Global.RegexExpressions
         // To VBA Grammer :
         // Dim i As Integer
         // For i = 1 to 10 Step 2
-        public static RegexString ForStep_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}To{Blank}{Digit}{Blank}Step{Blank}{Digit}{BlankNull}";
+        public static RegexString ForStep_Ex { get; } = $@"{BlankNull}For{Blank}{Name}{GetNegativeLookBehind("Each")}{Blank}As{Blank}{Name}{Blank}={Blank}{Digit}{Blank}To{Blank}{Digit}{Blank}Step{Blank}{Digit}{BlankNull}";
 
 
         #endregion
 
+        #region [  For Each  ]
+
+        public static RegexString ForEach_BeforeEach { get; } = $@"For{Blank}";
+
+        #endregion
 
 
         #region [  Select Case  ]
@@ -274,18 +289,18 @@ namespace PowerVBA.Global.RegexExpressions
 
         #region [  While  ]
 
-        public static RegexString WhileBeforeExp = $"While{Blank}";
+        public static RegexString WhileBeforeExp { get; } = $"While{Blank}";
 
         /// <summary>
         /// [While Ex] End While문을 인식합니다. (단, 보조 VBA 파일 사용 프로젝트 일시에만 가능)
         /// </summary>
         // To VBA Grammer : Wend
-        public static RegexString EndWhile_Ex = $"End While{BlankNull}";
+        public static RegexString EndWhile_Ex { get; } = $"End While{BlankNull}";
 
         /// <summary>
         /// [While] Wend문을 인식합니다.
         /// </summary>
-        public static RegexString Wend = $"Wend{BlankNull}";
+        public static RegexString Wend { get; } = $"Wend{BlankNull}";
 
         #endregion
 

@@ -48,23 +48,29 @@ namespace PowerVBA.Core.AvalonEdit.CodeCompletion
             
             DocumentLine dl = (DocumentLine)document.GetLineByOffset(offset);
             string s = document.Text.Substring(dl.Offset, dl.Length);
-            string prevS = document.Text.Substring(dl.Offset, dl.Length - 1);
+            string prevS = "";
+
+            if (dl.Length >= 2)
+            {
+                prevS = document.Text.Substring(dl.Offset, dl.Length - 1);
+            }
+            
+            // 빈칸 또는 
             if (CodePattern.Default.IsMatch(s) || CodePattern.BlankNullPattern.IsMatch(s))
             {
-                data.Add(VBACompletions.Comp_Dim);
-                data.Add(VBACompletions.Comp_Public);
-                data.Add(VBACompletions.Comp_Private);
-                data.Add(VBACompletions.Comp_Do);
-                data.Add(VBACompletions.Comp_For);
-                data.Add(VBACompletions.Comp_ForEach);
-                data.Add(VBACompletions.Comp_Select);
-                data.Add(VBACompletions.Comp_SelectCase);
+                var CompletionDatas = 
+                    new List<CompletionData>() { VBACompletions.Comp_Dim, VBACompletions.Comp_Public, VBACompletions.Comp_Private, VBACompletions.Comp_Do,
+                        VBACompletions.Comp_For, VBACompletions.Comp_ForEach, VBACompletions.Comp_Select, VBACompletions.Comp_SelectCase, VBACompletions.Comp_End };
+                data.AddRange(CompletionDatas);
             }
 
-            if (CodePattern.ForBeforeAs_Ex.IsMatch(s))
-            {
-                data.Add(VBACompletions.Comp_As);
-            }
+            if (CodePattern.ForBeforeTo.IsMatch(s) || CodePattern.ForBeforeTo_Ex.IsMatch(s)) { data.Add(VBACompletions.Comp_To); }
+            if (CodePattern.ForBeforeStep.IsMatch(s) || CodePattern.ForBeforeStep_Ex.IsMatch(s)) { data.Add(VBACompletions.Comp_Step); }
+            if (CodePattern.SCBeforeCase.IsMatch(s)) data.Add(VBACompletions.Comp_Case);
+            if (CodePattern.ForBeforeAs_Ex.IsMatch(s) || CodePattern.VarBefore_As.IsMatch(s)) { data.Add(VBACompletions.Comp_As); }
+            
+
+            if (CodePattern.ForEach_BeforeEach.IsMatch(s)) { data.Add(VBACompletions.Comp_Each); }
 
             //if (CodePattern.Second.IsMatch(s))
             //{

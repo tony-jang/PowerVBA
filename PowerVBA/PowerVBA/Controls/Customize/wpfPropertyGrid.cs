@@ -18,6 +18,7 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows;
 using System;
+using System.Windows.Media;
 
 namespace PowerVBA.Controls.Customize
 {
@@ -228,11 +229,24 @@ namespace PowerVBA.Controls.Customize
         public WpfPropertyGrid()
         {
             this.ColumnDefinitions.Add(new ColumnDefinition());
+            this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0) });
             this.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0) });
 
             this.Designer = new WorkflowDesigner();
+
+            TextBlock Info = new TextBlock()
+            {
+                Text = "속성 편집",
+                Margin = new Thickness(15, 10, 15, 10),
+                FontSize = 20,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Foreground = new BrushConverter().ConvertFromString("#FFD34B2A") as Brush
+            };
+
+            this.Children.Add(Info);
+
             TextBlock title = new TextBlock()
             {
                 Visibility = Visibility.Visible,
@@ -240,12 +254,17 @@ namespace PowerVBA.Controls.Customize
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 FontWeight = FontWeights.Bold
             };
+            
+
             TextBlock descrip = new TextBlock()
             {
                 Visibility = Visibility.Visible,
                 TextWrapping = TextWrapping.Wrap,
                 TextTrimming = TextTrimming.CharacterEllipsis
             };
+
+
+
             DockPanel dock = new DockPanel()
             {
                 Visibility = Visibility.Visible,
@@ -253,14 +272,15 @@ namespace PowerVBA.Controls.Customize
                 Margin = new Thickness(3, 0, 3, 0)
             };
 
+            dock.SetValue(Grid.RowProperty, 1);
+            dock.SetValue(Grid.ColumnProperty, 0);
+
             title.SetValue(DockPanel.DockProperty, Dock.Top);
             dock.Children.Add(title);
             dock.Children.Add(descrip);
             this.HelpText = new Border()
             {
                 Visibility = Visibility.Visible,
-                BorderBrush = SystemColors.ActiveBorderBrush,
-                Background = SystemColors.ControlBrush,
                 BorderThickness = new Thickness(1),
                 Child = dock
             };
@@ -276,10 +296,12 @@ namespace PowerVBA.Controls.Customize
             inspector.Visibility = Visibility.Visible;
             inspector.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Stretch);
 
-            this.Splitter.SetValue(Grid.RowProperty, 1);
+            inspector.SetValue(Grid.RowProperty, 1);
+
+            this.Splitter.SetValue(Grid.RowProperty, 2);
             this.Splitter.SetValue(Grid.ColumnProperty, 0);
 
-            this.HelpText.SetValue(Grid.RowProperty, 2);
+            this.HelpText.SetValue(Grid.RowProperty, 3);
             this.HelpText.SetValue(Grid.ColumnProperty, 0);
 
             Binding binding = new Binding("Parent.Background");
