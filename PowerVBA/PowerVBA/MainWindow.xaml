@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit"
+        xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
         xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
@@ -31,7 +31,7 @@
 
     </w:ChromeWindow.Resources>
 
-    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="0" Margin="0" Padding="0" BorderThickness="0">
+    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
         <TabControl.Style>
             <Style TargetType="{x:Type TabControl}">
                 <!--<Setter Property="Template">
@@ -162,7 +162,17 @@
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="250"/>
                     </Grid.ColumnDefinitions>
-                    <t:PresentationAnalyzer/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <t:PresentationAnalyzer/>
+                        
+                        
+                    </Grid>
+                    
                     <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
                     <Grid Grid.Column="2">
                         <TabControl x:Name="CodeTabControls">
@@ -182,7 +192,7 @@
                             </c:CloseableTabItem>
                             <c:CloseableTabItem  Header="개체 브라우저" Height="20">
                                 <Grid>
-
+                                    
                                 </Grid>
                             </c:CloseableTabItem>
                         </TabControl>
@@ -217,7 +227,9 @@
                             <RowDefinition Height="80"/>
                         </Grid.RowDefinitions>
                         <StackPanel>
-                            <TextBlock Text="PowerVBA" Margin="20,35,0,0" FontSize="40" Foreground="White"/>
+                            <TextBlock Margin="20,35,0,0" FontSize="40" Foreground="White">
+                                PowerVBA   <Run FontSize="20" Text="2013"/>
+                            </TextBlock>
 
                             <TextBlock Text="최근에 사용한 항목" Margin="20,20,0,0" FontSize="20" Foreground="White"/>
 
@@ -242,7 +254,7 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListViewItem}">
                                                 <Border CornerRadius="2" SnapsToDevicePixels="True"  
-                                BorderThickness="{TemplateBinding BorderThickness}"   
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}"   
                                 Background="{TemplateBinding Background}">
                                                     <Border Name="InnerBorder" CornerRadius="1" BorderThickness="1">

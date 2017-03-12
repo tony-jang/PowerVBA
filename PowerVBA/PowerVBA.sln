@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA", "PowerVBA\PowerVBA.csproj", "{703A6E9D-5899-4C73-AC71-3589900B1ABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA.V2013", "PowerVBA.V2013\PowerVBA.V2013.csproj", "{4540C84D-9CD2-4F40-8477-F31C61757F1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA.Core", "PowerVBA.Core\PowerVBA.Core.csproj", "{4D02935E-9F9A-4B75-AE11-2539229E53E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA.V2010", "PowerVBA.V2010\PowerVBA.V2010.csproj", "{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{703A6E9D-5899-4C73-AC71-3589900B1ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703A6E9D-5899-4C73-AC71-3589900B1ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{703A6E9D-5899-4C73-AC71-3589900B1ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4540C84D-9CD2-4F40-8477-F31C61757F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4540C84D-9CD2-4F40-8477-F31C61757F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4540C84D-9CD2-4F40-8477-F31C61757F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4540C84D-9CD2-4F40-8477-F31C61757F1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D02935E-9F9A-4B75-AE11-2539229E53E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D02935E-9F9A-4B75-AE11-2539229E53E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D02935E-9F9A-4B75-AE11-2539229E53E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D02935E-9F9A-4B75-AE11-2539229E53E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

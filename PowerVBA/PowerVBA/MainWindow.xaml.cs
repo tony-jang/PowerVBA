@@ -1,30 +1,16 @@
-﻿using ICSharpCode.AvalonEdit.Folding;
-using PowerVBA.Core.AvalonEdit.Folding;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using System.Threading;
 using PowerVBA.Windows;
-using ICSharpCode.AvalonEdit;
-using PowerVBA.Core.AvalonEdit;
-using PowerVBA.Core.Wrap.WrapClass;
 using PowerVBA.Core.Connector;
 using Microsoft.Win32;
 using System.Windows.Threading;
+using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Windows.AddWindows;
 using static PowerVBA.Global.Globals;
+using PowerVBA.V2013.Connector;
 
 namespace PowerVBA
 {
@@ -33,7 +19,7 @@ namespace PowerVBA
     /// </summary>
     public partial class MainWindow : ChromeWindow
     {
-        PPTConnector Connector;
+        IPPTConnector Connector;
         public MainWindow()
         {
             InitializeComponent();
@@ -46,8 +32,6 @@ namespace PowerVBA
         }
         
 
-
-
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Connector?.Dispose();
@@ -57,10 +41,7 @@ namespace PowerVBA
         {
             if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;            
         }
-
-
-
-
+        
 
         #region [  코드 에디터(CodeEditor) 부분 코드  ]
 
@@ -167,20 +148,38 @@ namespace PowerVBA
         {
             int SlideNumber = 0;
 
-            if (Connector.Presentation.Slides.Count != 0) SlideNumber = Connector.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
 
-            Connector.Presentation.Slides.AddSlide(SlideNumber + 1, Connector.Presentation.SlideMaster.CustomLayouts[1]);
-            Connector.Presentation.Application.ActiveWindow.View.GotoSlide(SlideNumber + 1);
+            switch (Connector.Version)
+            {
+                case Core.Interface.PPTVersion.PPT2010:
+
+                    break;
+                case Core.Interface.PPTVersion.PPT2013:
+                    PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+                    if (conn2013.Presentation.Slides.Count != 0) SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+
+                    conn2013.Presentation.Slides.AddSlide(SlideNumber + 1, conn2013.Presentation.SlideMaster.CustomLayouts[1]);
+                    conn2013.Presentation.Application.ActiveWindow.View.GotoSlide(SlideNumber + 1);
+                    break;
+                case Core.Interface.PPTVersion.PPT2016:
+
+                    break;
+            }
+
+            
         }
 
         private void BtnDelSlide_SimpleButtonClicked()
         {
-            int SlideNumber = Connector.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+            PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+            int SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
             if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
                 MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                Connector.Presentation.Slides[SlideNumber].Delete();
-            }   
+                conn2013.Presentation.Slides[SlideNumber].Delete();
+            }
         }
         #endregion
 
@@ -194,8 +193,10 @@ namespace PowerVBA
         {
             if (Connector != null)
             {
-                this.Title = Connector.Presentation.Name + " - PowerVBA";
-                if (Connector.Presentation.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
+                PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+                this.Title = conn2013.Presentation.Name + " - PowerVBA";
+                if (conn2013.Presentation.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
                     this.Title += " [읽기 전용]";
                 }
@@ -257,12 +258,15 @@ namespace PowerVBA
                 Dispatcher.Invoke(new Action(() =>
                 {
                     this.NoTitle = false;
-                    
-                    Connector = new PPTConnector(ofd.FileName);
-                    Connector.PPTClosed += PPTCloseDetect;
-                    Connector.VBComponentChange += ProjectFileChange;
 
-                    PropGrid.SelectedObject = Connector.Presentation;
+                    var tmpConn = new PPTConnector2013(ofd.FileName);
+                    tmpConn.PresentationClosed += PPTCloseDetect;
+                    tmpConn.VBAComponentChange += ProjectFileChange;
+
+
+                    Connector = tmpConn;
+
+                    PropGrid.SelectedObject = tmpConn.Presentation;
 
                     tbProcessInfoTB.Visibility = Visibility.Hidden;
 
@@ -280,14 +284,16 @@ namespace PowerVBA
             Dispatcher.Invoke(new Action(() =>
             {
                 this.NoTitle = false;
-                
-                Connector = new PPTConnector(true);
-                Connector.PPTClosed += PPTCloseDetect;
-                Connector.VBComponentChange += ProjectFileChange;
 
-                PropGrid.SelectedObject = Connector.Presentation;
+                var tmpConn = new PPTConnector2013(true);
+                tmpConn.PresentationClosed += PPTCloseDetect;
+                tmpConn.VBAComponentChange += ProjectFileChange;
 
-                tbProcessInfoTB.Visibility = Visibility.Hidden;                
+                PropGrid.SelectedObject = tmpConn.Presentation;
+
+                Connector = tmpConn;
+
+                tbProcessInfoTB.Visibility = Visibility.Hidden;
                 ProgramTabControl.SelectedIndex = 0;
                 SetName();
             }), DispatcherPriority.Background);

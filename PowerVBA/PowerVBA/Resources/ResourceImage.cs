@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace PowerVBA.Resources
 {
-    static class ResourceImage
+    public static class ResourceImage
     {
         private static string BaseURL = "/PowerVBA;Component/Resources/Icon/";
         public static BitmapImage GetIconImage(string filename)

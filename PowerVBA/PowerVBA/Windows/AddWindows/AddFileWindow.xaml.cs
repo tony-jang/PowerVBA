@@ -20,7 +20,7 @@ namespace PowerVBA.Windows.AddWindows
     /// </summary>
     public partial class AddFileWindow : ChromeWindow
     {
-        public AddFileWindow(PPTConnector connector, bool IsClass)
+        public AddFileWindow(IPPTConnector connector, bool IsClass)
         {
             InitializeComponent();
             if (IsClass) btnClass.IsChecked = true;
@@ -29,7 +29,7 @@ namespace PowerVBA.Windows.AddWindows
             conn = connector;
         }
 
-        PPTConnector conn;
+        IPPTConnector conn;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

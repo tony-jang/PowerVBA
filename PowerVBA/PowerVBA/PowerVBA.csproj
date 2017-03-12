@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PowerVBA</RootNamespace>
     <AssemblyName>PowerVBA</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -42,7 +42,7 @@
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\PowerVBA\packages\Microsoft.Office.Interop.PowerPoint.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.PowerPoint.dll</HintPath>
+      <HintPath>C:\Users\uutak\Desktop\PowerVBA 2013 Dll\a\Microsoft.Office.Interop.PowerPoint.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,11 +97,15 @@
     <Compile Include="Controls\Customize\ImageButton.cs" />
     <Compile Include="Controls\Customize\ImageListViewItem.cs" />
     <Compile Include="Controls\Customize\ImageRadioButton.cs" />
+    <Compile Include="Controls\Customize\ImageTreeViewItem.cs" />
     <Compile Include="Controls\Customize\PathButton.cs" />
     <Compile Include="Controls\Customize\ProjectListViewItem.cs" />
+    <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
     <Compile Include="Controls\Customize\ScrollBarEx.cs" />
     <Compile Include="Controls\Customize\wpfPropertyGrid.cs" />
-    <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
+    <Compile Include="Controls\Design\ErrorToolTipDesign.xaml.cs">
+      <DependentUpon>ErrorToolTipDesign.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Design\ProjectListViewItemDesign.xaml.cs">
       <DependentUpon>ProjectListViewItemDesign.xaml</DependentUpon>
     </Compile>
@@ -115,61 +119,40 @@
     <Compile Include="Controls\Tools\SolutionExplorer.xaml.cs">
       <DependentUpon>SolutionExplorer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\AvalonEdit\CodeCompletion\CustomCompletionWindow.cs" />
-    <Compile Include="Core\AvalonEdit\CodeCompletion\VBACompletions.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\LineParser.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\LineType.cs" />
-    <Compile Include="Core\Connector\PPTConnector.cs" />
-    <Compile Include="Core\Convert\StringConverter.cs" />
-    <Compile Include="Core\AvalonEdit\CodeCompletion\CompletionFlag.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\Data\Accessor.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\Data\BaseData.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\Data\EnumData.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\Data\TypeData.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\Data\VariableData.cs" />
-    <Compile Include="Core\Extension\boolEx.cs" />
-    <Compile Include="Core\Project\ILineInfo.cs" />
-    <Compile Include="Core\Project\MultiLineInfo.cs" />
-    <Compile Include="Core\Project\ProjectResource.cs" />
-    <Compile Include="Core\Extension\HighlightingRuleEx.cs" />
-    <Compile Include="Core\Extension\stringEx.cs" />
-    <Compile Include="Core\Project\SignleLineInfo.cs" />
-    <Compile Include="Core\Wrap\WrapClass\ApplicationWrapping.cs" />
-    <Compile Include="Core\Wrap\WrapClass\VBComponentWrapping.cs" />
-    <Compile Include="Global\RegexExpressions\CodePattern.cs" />
-    <Compile Include="Global\RegexExpressions\RegexExp.cs" />
     <Compile Include="Interop\Constats.cs" />
     <Compile Include="Interop\ExternDll.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Interop\UnsafeNativeMethods.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ResourceImage.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\Base\BaseSubstitution.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\ISubstitution.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\MethodSubstitution.cs" />
-    <Compile Include="Core\AvalonEdit\Substitution\VariableSubstitution.cs" />
     <Compile Include="Windows\AddWindows\AddFileWindow.xaml.cs">
       <DependentUpon>AddFileWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ChromeWindow.cs" />
+    <Compile Include="Wrap\WrappedClassManager.cs" />
     <Page Include="Controls\Design\ErrorToolTipDesign.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Design\ProjectListViewItemDesign.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Design\RecentFileListViewItemDesign.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Tools\PresentationAnalyzer.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Tools\SolutionExplorer.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -179,34 +162,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\Customize\ErrorToolTip.cs" />
-    <Compile Include="Controls\Design\ErrorToolTipDesign.xaml.cs">
-      <DependentUpon>ErrorToolTipDesign.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Core\AvalonEdit\CodeCompletion\CodeCompletionResult.cs" />
-    <Compile Include="Core\AvalonEdit\CodeCompletion\CompletionData.cs" />
-    <Compile Include="Core\AvalonEdit\CodeCompletion\MiniLexer.cs" />
-    <Compile Include="Core\AvalonEdit\CodeCompletion\VBACompletion.cs" />
-    <Compile Include="Core\AvalonEdit\CodeCompletion\VBACompletionEngine.cs" />
-    <Compile Include="Core\AvalonEdit\CodeEditor.cs" />
-    <Compile Include="Core\AvalonEdit\Folding\FoldingLineType.cs" />
-    <Compile Include="Core\AvalonEdit\Folding\VBAFoldingStrategy.cs" />
-    <Compile Include="Core\AvalonEdit\Indentation\CodeIndentation.cs" />
-    <Compile Include="Core\AvalonEdit\Parser\CodeParser.cs" />
-    <Compile Include="Core\AvalonEdit\Renderer\CurrentLineBackgroundRenderer.cs" />
-    <Compile Include="Core\AvalonEdit\Renderer\ErrorLineBackgroundRenderer.cs" />
-    <Compile Include="Core\Error\CodeError.cs" />
-    <Compile Include="Core\Error\ErrorType.cs" />
-    <Compile Include="Core\TypeManage\TypeConverter.cs" />
-    <Compile Include="Core\Interface\IWrappingClass.cs" />
-    <Compile Include="Core\Library\LibraryLoader.cs" />
-    <Compile Include="Core\Wrap\WrapClass\PresentationWrapping.cs" />
-    <Compile Include="Core\Wrap\WrapClass\ShapeWrapping.cs" />
-    <Compile Include="Core\Wrap\WrapClass\SlideWrapping.cs" />
-    <Compile Include="Core\Wrap\WrapClass\VBProjectWrapping.cs" />
-    <Compile Include="Core\Wrap\WrappedAttribute.cs" />
-    <Compile Include="Core\Wrap\WrappingExtension.cs" />
-    <Compile Include="Global\Globals.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -224,11 +179,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -244,15 +194,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\VBA_Highlight.xshd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Microsoft.Office.Interop.PowerPoint.dll" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -275,61 +219,89 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\ClassIcon.png" />
-    <Resource Include="Resources\Icon\EventIcon.png" />
-    <Resource Include="Resources\Icon\MethodIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\DeclaratorIcon.png" />
-    <Resource Include="Resources\Icon\PropertyIcon.png" />
-    <Resource Include="Resources\Icon\VariableIcon.png" />
+    <ProjectReference Include="..\PowerVBA.Core\PowerVBA.Core.csproj">
+      <Project>{4d02935e-9f9a-4b75-ae11-2539229e53e4}</Project>
+      <Name>PowerVBA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerVBA.V2013\PowerVBA.V2013.csproj">
+      <Project>{4540c84d-9cd2-4f40-8477-f31c61757f1b}</Project>
+      <Name>PowerVBA.V2013</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ProgramIcon\PowerVBA BigLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\ProgramIcon\PowerVBA MiddleLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\ProgramIcon\PowerVBA SmallLogo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\ModuleIcon.png" />
+    <Resource Include="Resources\Icon\AssistProjectIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\MethodSubIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\MouseClickIcon.png" />
-    <Resource Include="Resources\Icon\MouseOverIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\EnumIcon.png" />
+    <Resource Include="Resources\Icon\ClassIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\ClipboardIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\CopyIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\RedoIcon.png" />
-    <Resource Include="Resources\Icon\UndoIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\NewSlideIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\DeleteSlideIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\FolderOpenIcon.png" />
+    <Resource Include="Resources\Icon\CodeBlockIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\ConstIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\AssistProjectIcon.png" />
-    <Resource Include="Resources\Icon\VirtualProjectIcon.png" />
+    <Resource Include="Resources\Icon\CopyIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\CodeBlockIcon.png" />
+    <Resource Include="Resources\Icon\DeclaratorIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\DeleteSlideIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\EnumIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\EventIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\FolderOpenIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MethodIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MethodSubIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ModuleIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MouseClickIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MouseOverIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\NewSlideIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\PropertyIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\RedoIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\UndoIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\VariableIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\VirtualProjectIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,24 +1,15 @@
 ﻿using PowerVBA.Core.Connector;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Office.Interop.PowerPoint;
 using VBA = Microsoft.Vbe.Interop;
-using PowerVBA.Core.Wrap.WrapClass;
 using PowerVBA.Controls.Customize;
 using PowerVBA.Resources;
 using PowerVBA.Global;
+using PowerVBA.V2013.Wrap.WrapClass;
+using PowerVBA.Core.Wrap.WrapBase;
+using static PowerVBA.Wrap.WrappedClassManager;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -59,9 +50,10 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
-        public void AddItem(VBComponentWrapping comp)
+        public void AddItem(VBComponentWrappingBase comp)
         {
-            var t = comp.Type;
+            
+            var t = comp.ToVBComponent2013().Type;
 
             ListBox AddLB = null;
             ImageSource img = null;
@@ -70,10 +62,10 @@ namespace PowerVBA.Controls.Tools
             else if (t == VBA.vbext_ComponentType.vbext_ct_StdModule) { AddLB = LBModule; img = ResourceImage.GetIconImage("ModuleIcon"); }
             else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = null; }
 
-            AddLB?.Items.Add(new ImageListViewItem() { Content = comp.Name, Tag = comp, Source = img });
+            AddLB?.Items.Add(new ImageListViewItem() { Content = comp.ToVBComponent2013().Name, Tag = comp, Source = img });
         }
 
-        public void RemoveItem(VBComponentWrapping comp)
+        public void RemoveItem(VBComponentWrappingBase comp)
         {
             
             foreach(ListBox lb in ListBoxes)
@@ -91,17 +83,27 @@ namespace PowerVBA.Controls.Tools
         }
 
 
-        public void Update(PPTConnector pptConn)
+        public void Update(IPPTConnector pptConn)
         {
-            IEnumerable<VBComponentWrapping> AddComp = new List<VBComponentWrapping>();
-            IEnumerable<VBComponentWrapping> RemoveComp = new List<VBComponentWrapping>();
+            IEnumerable<VBComponentWrappingBase> AddComp = new List<VBComponentWrappingBase>();
+            IEnumerable<VBComponentWrappingBase> RemoveComp = new List<VBComponentWrappingBase>();
             
             var LocalItm = LBClass.Items.Cast<ImageListViewItem>()
                 .Concat(LBForms.Items.Cast<ImageListViewItem>())
                 .Concat(LBModule.Items.Cast<ImageListViewItem>())
-                .Select(i => (VBComponentWrapping)i.Tag);
+                .Select(i => (VBComponentWrappingBase)i.Tag);
 
-            var PPTItm = pptConn.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new VBComponentWrapping(i));
+
+            // 버전별 분류
+            IEnumerable<VBComponentWrappingBase> PPTItm = null;
+
+            if (pptConn.GetType() == typeof(PowerVBA.V2013.Connector.PPTConnector2013))
+            {
+                var Conn2013 = (V2013.Connector.PPTConnector2013)pptConn;
+                PPTItm = Conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new VBComponentWrapping(i));
+            }
+
+            
 
             AddComp = PPTItm.Where((i) => !LocalItm.Contains(i)).Copy();
             RemoveComp = LocalItm.Where(i => !PPTItm.Contains(i)).Copy();

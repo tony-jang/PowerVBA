@@ -1,0 +1,10 @@
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.V2010.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.V2010.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\obj\Debug\PowerVBA.V2010.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\obj\Debug\PowerVBA.V2010.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\obj\Debug\PowerVBA.V2010.csprojResolveAssemblyReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Core.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\ICSharpCode.AvalonEdit.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\System.ValueTuple.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Core.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\ICSharpCode.AvalonEdit.xml

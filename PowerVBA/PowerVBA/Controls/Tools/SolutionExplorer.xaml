@@ -7,16 +7,30 @@
              xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="250">
+    <UserControl.Resources>
+        <Style x:Key="TreeViewItemFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="솔루션 탐색기" Margin="15,10" FontSize="20"
+        <TextBlock Text="솔루션 탐색기 (확장)" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <Grid>
+        <Grid Grid.Row="1">
+            <Grid Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -68,7 +82,32 @@
                 </ListBox>
 
             </Grid>
-        </ScrollViewer>
+
+            <Grid>
+                <TreeView VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" BorderBrush="{x:Null}">
+                    <TreeView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </TreeView.ItemsPanel>
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" Padding="{TemplateBinding Control.Padding}" BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True">
+                                <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <c:ImageTreeViewItem Header="프레젠테이션 1" Source="/PowerVBA;component/Resources/Icon/CodeBlockIcon.png">
+                        <c:ImageTreeViewItem Header="프레젠테이션 2" Source="/PowerVBA;component/Resources/Icon/CodeBlockIcon.png" />
+                    </c:ImageTreeViewItem>
+                </TreeView>
+
+            </Grid>
+        </Grid>
+
 
         <Grid Grid.Row="2">
             <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>

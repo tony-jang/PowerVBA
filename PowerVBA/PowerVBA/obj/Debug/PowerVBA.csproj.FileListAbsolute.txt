@@ -91,3 +91,7 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Deb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.pdb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.ValueTuple.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csprojResolveAssemblyReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2013.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2013.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Core.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Core.pdb
