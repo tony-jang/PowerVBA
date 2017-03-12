@@ -151,10 +151,10 @@ namespace PowerVBA
 
             switch (Connector.Version)
             {
-                case Core.Interface.PPTVersion.PPT2010:
+                case PPTVersion.PPT2010:
 
                     break;
-                case Core.Interface.PPTVersion.PPT2013:
+                case PPTVersion.PPT2013:
                     PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
 
                     if (conn2013.Presentation.Slides.Count != 0) SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
@@ -162,7 +162,7 @@ namespace PowerVBA
                     conn2013.Presentation.Slides.AddSlide(SlideNumber + 1, conn2013.Presentation.SlideMaster.CustomLayouts[1]);
                     conn2013.Presentation.Application.ActiveWindow.View.GotoSlide(SlideNumber + 1);
                     break;
-                case Core.Interface.PPTVersion.PPT2016:
+                case PPTVersion.PPT2016:
 
                     break;
             }
@@ -279,6 +279,15 @@ namespace PowerVBA
 
         private void BtnNewPPT_Click(object sender, RoutedEventArgs e)
         {
+
+            PPTVersion ver = VersionSelector.GetPPTVersion();
+
+            if (ver != PPTVersion.PPT2013 && ver != PPTVersion.PPT2010)
+            {
+                MessageBox.Show($"죄송합니다. {ver.ToString()}는 지원하지 않는 버전입니다.");
+                return;
+            }
+
             tbProcessInfoTB.Visibility = Visibility.Visible;
 
             Dispatcher.Invoke(new Action(() =>

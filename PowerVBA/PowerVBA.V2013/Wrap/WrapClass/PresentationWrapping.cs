@@ -9,6 +9,7 @@ using Microsoft.Vbe.Interop;
 using PowerVBA.Core.Wrap;
 using PowerVBA.Core.Interface;
 using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.Core.Connector;
 
 namespace PowerVBA.V2013.Wrap.WrapClass
 {

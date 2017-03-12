@@ -31,7 +31,7 @@
 
     </w:ChromeWindow.Resources>
 
-    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="0" Margin="0" Padding="0" BorderThickness="0">
+    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
         <TabControl.Style>
             <Style TargetType="{x:Type TabControl}">
                 <!--<Setter Property="Template">
@@ -184,10 +184,10 @@
                             <c:CloseableTabItem Header="Module1.bas" Height="20">
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
-                            <c:CloseableTabItem  Header="Class1.cls" Height="20">
+                            <c:CloseableTabItem Header="Class1.cls" Height="20">
                                 <av:CodeEditor x:Name="codeEditor2" Text="Dim B As Presentation" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
-                            <c:CloseableTabItem  Header="Class2.cls" Height="20">
+                            <c:CloseableTabItem Header="Class2.cls" Height="20">
                                 <av:CodeEditor x:Name="codeEditor3" Text="Dim C As String" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
                             <c:CloseableTabItem  Header="개체 브라우저" Height="20">

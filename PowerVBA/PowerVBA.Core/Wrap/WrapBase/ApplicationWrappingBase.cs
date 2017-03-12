@@ -1,4 +1,5 @@
-﻿using PowerVBA.Core.Interface;
+﻿using PowerVBA.Core.Connector;
+using PowerVBA.Core.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

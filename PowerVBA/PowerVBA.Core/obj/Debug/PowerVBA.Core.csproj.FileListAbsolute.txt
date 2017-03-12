@@ -1,4 +1,3 @@
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.csprojResolveAssemblyReference.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.g.resources
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.Properties.Resources.resources
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.csproj.GenerateResource.Cache

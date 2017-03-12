@@ -179,20 +179,22 @@
                     <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
+                            <ColumnDefinition x:Name="ColumnC" Width="Auto"/>
                             <ColumnDefinition x:Name="ColumnD" Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="1,1,1,0" Grid.ColumnSpan="2"
+                                BorderThickness="1,1,1,0" Grid.ColumnSpan="3"
                                 Background="{TemplateBinding Background}" Margin="0">
 
                         </Border>
-                        <ContentPresenter Margin="10,2" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                        <ContentPresenter Margin="10,2,0,2" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
                                           Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                           ContentSource="Header" Focusable="False"
                                           HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
                                           RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                           VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
-                        <c:PathButton x:Name="EndBtn" Command="{x:Static cm:TabItemCommand.DeleteCommand}" Visibility="Hidden" Grid.Column="1" Background="White" Data="{StaticResource EndPath}" Width="10" Height="10" Margin="0,0,5,0"/>
+                        <TextBlock x:Name="TBChanged" Margin="0,2,10,2" Grid.Column="1" Text="*"/>
+                        <c:PathButton x:Name="EndBtn" Command="{x:Static cm:TabItemCommand.DeleteCommand}" Visibility="Hidden" Grid.Column="2" Background="White" Data="{StaticResource EndPath}" Width="10" Height="10" Margin="0,0,5,0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -209,6 +211,9 @@
                             <Setter Property="Background" Value="#FFD24726"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="Visibility" Value="Visible" TargetName="EndBtn"/>
+                        </Trigger>
+                        <Trigger Property="Changed" Value="False">
+                            <Setter Property="Text" Value="" TargetName="TBChanged"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

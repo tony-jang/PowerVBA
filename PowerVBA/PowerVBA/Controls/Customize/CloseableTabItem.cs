@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPFExtension;
 
 namespace PowerVBA.Controls.Customize
 {
@@ -14,6 +16,14 @@ namespace PowerVBA.Controls.Customize
         public CloseableTabItem()
         {
             CommandBindings.Add(new CommandBinding(TabItemCommand.DeleteCommand, OnDelete, OnDeleteExecute));
+        }
+
+        public static DependencyProperty ChangedProperty = DependencyHelper.Register(new PropertyMetadata(false));
+
+        public bool Changed
+        {
+            get { return (bool)GetValue(ChangedProperty); }
+            set { SetValue(ChangedProperty, value); }
         }
 
         private void OnDelete(object sender, ExecutedRoutedEventArgs e)

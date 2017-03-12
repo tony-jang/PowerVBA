@@ -1,4 +1,5 @@
 ﻿using Microsoft.Vbe.Interop;
+using PowerVBA.Core.Connector;
 using PowerVBA.Core.Interface;
 using PowerVBA.Core.Wrap;
 using PowerVBA.Core.Wrap.WrapBase;
