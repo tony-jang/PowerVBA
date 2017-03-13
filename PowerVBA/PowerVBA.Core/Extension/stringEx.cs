@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace PowerVBA.Core.Extension
 {
-    public static class stringEx
+    public static class StringEx
     {
         public static string Change(this string str, int startIndex, int Length, string text)
         {

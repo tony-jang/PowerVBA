@@ -3,7 +3,7 @@
                     xmlns:cm="clr-namespace:PowerVBA.Commands"
                     xmlns:w="clr-namespace:PowerVBA.Windows"
                     xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
-                    xmlns:c="clr-namespace:PowerVBA.Core.AvalonEdit.Controls"
+                    xmlns:c="clr-namespace:PowerVBA.Core.Controls"
                     xmlns:h="clr-namespace:PowerVBA.Controls.Helper">
     <!--PathButton Style-->
     <Style TargetType="{x:Type c:PathButton}">

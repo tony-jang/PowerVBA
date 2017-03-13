@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static PowerVBA.Core.Extension.stringEx;
+using static PowerVBA.Core.Extension.StringEx;
 using System.Collections;
 using System.Windows;
 

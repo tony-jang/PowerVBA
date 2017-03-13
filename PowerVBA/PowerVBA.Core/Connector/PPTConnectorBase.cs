@@ -18,16 +18,17 @@ namespace PowerVBA.Core.Connector
 
         public event BlankDelegate VBAComponentChange;
         public event BlankDelegate PresentationClosed;
-
-
-        public void OnPPTClosed()
-        {
-            PresentationClosed?.Invoke();
-        }
-        public void OnVBComponentChange()
-        {
-            VBAComponentChange?.Invoke();
-        }
+        public event BlankDelegate ShapeChanged;
+        public event BlankDelegate SlideChanged;
+        public event BlankDelegate SectionChanged;
+        
+        public void OnVBAComponentChange() { VBAComponentChange?.Invoke(); }
+        public void OnPPTClosed() { PresentationClosed?.Invoke(); }
+        public void OnShapeChanged() { ShapeChanged?.Invoke(); }
+        public void OnSlideChanged() { SlideChanged?.Invoke(); }
+        public void OnSectionChanged() { SectionChanged?.Invoke(); }
+        
+        
 
 
 

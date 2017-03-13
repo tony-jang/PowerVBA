@@ -28,7 +28,7 @@ using System.Xml;
 
 using static PowerVBA.Global.Globals;
 using static PowerVBA.Core.Extension.HighlightingRuleEx;
-using PowerVBA.Core.AvalonEdit.Controls;
+using PowerVBA.Core.Controls;
 
 namespace PowerVBA.Core.AvalonEdit
 {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Core.Extension
 {
-    public static class boolEx
+    public static class BoolEx
     {
         public static MsoTriState BoolToState(this bool Data)
         {

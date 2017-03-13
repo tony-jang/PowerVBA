@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="PowerVBA.Core.Controls.CodeTabEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit"
+             xmlns:local="clr-namespace:PowerVBA.Core.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid>
+        <TabControl TabStripPlacement="Bottom" BorderBrush="{x:Null}">
+            <TabItem Header="VBA 편집기">
+                <av:CodeEditor FontSize="13.333333333" FontFamily="GulimChe" SnapsToDevicePixels="True"/>
+            </TabItem>
+            <TabItem Header="파트별 편집기">
+                <StackPanel>
+                    <local:CodeBlock/>
+                    <local:CodeBlock/>
+                    <local:CodeBlock/>
+                    <local:CodeBlock/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        
+    </Grid>
+</UserControl>

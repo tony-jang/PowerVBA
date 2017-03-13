@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="PowerVBA.Core.Controls.CodeBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit"
+             xmlns:local="clr-namespace:PowerVBA.Core.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="300">
+    <Grid>
+        <Rectangle Fill="White" Stroke="Gray"/>
+        <Grid VerticalAlignment="Top" Margin="5,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Width="20" Margin="0,0,5,0" Source="/PowerVBA.Core;component/Resources/Icon/MethodIcon.png" />
+            <TextBlock Text="메소드 블록 :" Grid.Column="1" FontSize="13" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock Text="Slide1_Load" Grid.Column="2" FontSize="13" VerticalAlignment="Center"/>
+        </Grid>
+
+        <av:CodeEditor SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" BorderBrush="{x:Null}" FontSize="13.333333333333333" VerticalScrollBarVisibility="Disabled" Margin="5,25,5,5" BorderThickness="1" FontFamily="GulimChe"/>
+    </Grid>
+</UserControl>

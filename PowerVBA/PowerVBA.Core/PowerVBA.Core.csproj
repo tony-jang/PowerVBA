@@ -77,8 +77,14 @@
     <Compile Include="AvalonEdit\CodeCompletion\VBACompletionEngine.cs" />
     <Compile Include="AvalonEdit\CodeCompletion\VBACompletions.cs" />
     <Compile Include="AvalonEdit\CodeEditor.cs" />
-    <Compile Include="AvalonEdit\Controls\ErrorToolTip.cs" />
-    <Compile Include="AvalonEdit\Controls\PathButton.cs" />
+    <Compile Include="Controls\CodeBlock.xaml.cs">
+      <DependentUpon>CodeBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CodeTabEditor.xaml.cs">
+      <DependentUpon>CodeTabEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ErrorToolTip.cs" />
+    <Compile Include="Controls\PathButton.cs" />
     <Compile Include="AvalonEdit\Folding\FoldingLineType.cs" />
     <Compile Include="AvalonEdit\Folding\VBAFoldingStrategy.cs" />
     <Compile Include="AvalonEdit\Indentation\CodeIndentation.cs" />
@@ -105,9 +111,10 @@
     <Compile Include="Convert\StringConverter.cs" />
     <Compile Include="Error\CodeError.cs" />
     <Compile Include="Error\ErrorType.cs" />
-    <Compile Include="Extension\boolEx.cs" />
+    <Compile Include="Extension\BoolEx.cs" />
+    <Compile Include="Extension\EnumEx.cs" />
     <Compile Include="Extension\HighlightingRuleEx.cs" />
-    <Compile Include="Extension\stringEx.cs" />
+    <Compile Include="Extension\StringEx.cs" />
     <Compile Include="Global\Globals.cs" />
     <Compile Include="Global\RegexExpressions\CodePattern.cs" />
     <Compile Include="Global\RegexExpressions\RegexExp.cs" />
@@ -145,11 +152,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AvalonEdit\Controls\ErrorToolTip.xaml">
+    <Page Include="Controls\CodeBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AvalonEdit\Controls\PathButton.xaml">
+    <Page Include="Controls\CodeTabEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ErrorToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PathButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

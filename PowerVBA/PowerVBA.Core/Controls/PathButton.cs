@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace PowerVBA.Core.AvalonEdit.Controls
+namespace PowerVBA.Core.Controls
 {
     class PathButton : Button
     {

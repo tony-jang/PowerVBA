@@ -23,7 +23,19 @@ namespace PowerVBA.Core.Connector
         /// PPT Prensentation이 종료되었습니다.
         /// </summary>
         event BlankDelegate PresentationClosed;
-        
+        /// <summary>
+        /// Shape (도형) 이 변경되었습니다.
+        /// </summary>
+        event BlankDelegate ShapeChanged;
+        /// <summary>
+        /// Slide (슬라이드) 가 변경되었습니다.
+        /// </summary>
+        event BlankDelegate SlideChanged;
+        /// <summary>
+        /// Section (섹션) 이 변경되었습니다.
+        /// </summary>
+        event BlankDelegate SectionChanged;
+
 
         /// <summary>
         /// 모듈을 추가합니다.

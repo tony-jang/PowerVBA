@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace PowerVBA.Core.AvalonEdit.Controls
+namespace PowerVBA.Core.Controls
 {
     public class ErrorToolTip : ToolTip
     {

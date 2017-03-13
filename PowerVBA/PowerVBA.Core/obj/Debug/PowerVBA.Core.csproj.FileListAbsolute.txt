@@ -14,5 +14,10 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\ob
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\GeneratedInternalTypeHelper.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core_MarkupCompile.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core_MarkupCompile.lref
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Controls\ErrorToolTip.baml
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Controls\PathButton.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.csprojResolveAssemblyReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\ErrorToolTip.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\PathButton.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeBlock.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeTabEditor.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeBlock.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeTabEditor.baml

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
+        xmlns:corec="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
         xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
@@ -181,20 +182,21 @@
 
                                 </Style>
                             </TabControl.Resources>
-                            <c:CloseableTabItem Header="Module1.bas" Height="20">
+                            <!--<c:CloseableTabItem Header="Module1.bas" Height="20">
+                                
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
                             <c:CloseableTabItem Header="Class1.cls" Height="20">
                                 <av:CodeEditor x:Name="codeEditor2" Text="Dim B As Presentation" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
                             <c:CloseableTabItem Header="Class2.cls" Height="20">
-                                <av:CodeEditor x:Name="codeEditor3" Text="Dim C As String" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
+                                <corec:CodeTabEditor/>
                             </c:CloseableTabItem>
                             <c:CloseableTabItem  Header="개체 브라우저" Height="20">
                                 <Grid>
                                     
                                 </Grid>
-                            </c:CloseableTabItem>
+                            </c:CloseableTabItem>-->
                         </TabControl>
 
                     </Grid>
@@ -206,7 +208,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <t:SolutionExplorer x:Name="solutionExplorer"/>
-                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF9C9C9C"/>
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFF0F0F0"/>
                         <c:WpfPropertyGrid Grid.Row="2" x:Name="PropGrid"/>
                     </Grid>
 
@@ -228,7 +230,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel>
                             <TextBlock Margin="20,35,0,0" FontSize="40" Foreground="White">
-                                PowerVBA   <Run FontSize="20" Text="2013"/>
+                                PowerVBA <Run x:Name="RunVersion" FontSize="20" Text="2013"/>
                             </TextBlock>
 
                             <TextBlock Text="최근에 사용한 항목" Margin="20,20,0,0" FontSize="20" Foreground="White"/>
@@ -351,7 +353,7 @@
                     
                     <Grid Grid.Row="3" Background="#FFD24726" Margin="0,0,0,0">
                         <TextBlock Margin="5,0" x:Name="tbProcessInfoTB" Text="사용하실 템플릿을 선택해주세요." Foreground="White"
-                                   TextWrapping="Wrap" Visibility="Visible" VerticalAlignment="Center" />
+                                   TextWrapping="Wrap" VerticalAlignment="Center" />
                     </Grid>
                 </Grid>
 

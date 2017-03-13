@@ -11,6 +11,11 @@ using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Windows.AddWindows;
 using static PowerVBA.Global.Globals;
 using PowerVBA.V2013.Connector;
+using PowerVBA.Core.Extension;
+using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.Wrap;
+using PowerVBA.Controls.Customize;
+using PowerVBA.Core.Controls;
 
 namespace PowerVBA
 {
@@ -23,26 +28,21 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
-
+            
             this.Closing += MainWindow_Closing;
             MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
+            CodeTabControls.SelectionChanged += CodeTabControls_SelectionChanged;
 
             MainDispatcher = Dispatcher;
-            
-        }
-        
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Connector?.Dispose();
-        }
 
-        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;            
-        }
-        
+            RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
 
+            AddTab();
+            AddTab();
+            AddTab();
+            AddTab();
+        }
         #region [  코드 에디터(CodeEditor) 부분 코드  ]
 
         #endregion
@@ -85,12 +85,20 @@ namespace PowerVBA
 
         private void BtnUndo_SimpleButtonClicked()
         {
-
+            CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+            if (editor.CanUndo) editor.Undo();
+            BtnUndo.IsEnabled = editor.CanUndo;
+            BtnRedo.IsEnabled = editor.CanRedo;
+            editor.Focus();
         }
 
         private void BtnRedo_SimpleButtonClicked()
         {
-
+            CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+            if (editor.CanRedo) editor.Redo();
+            BtnUndo.IsEnabled = editor.CanUndo;
+            BtnRedo.IsEnabled = editor.CanRedo;
+            editor.Focus();
         }
 
         #endregion
@@ -188,6 +196,48 @@ namespace PowerVBA
 
         #region [  윈도우 코드  ]
 
+        public void AddTab()
+        {
+            CodeTabEditor codeTabEditor = new CodeTabEditor();
+
+            CloseableTabItem codeTab = new CloseableTabItem()
+            {
+                Header = "ABC",
+                Content = codeTabEditor
+            };
+            CodeTabControls.Items.Add(codeTab);
+        }
+        public void AddTab(VBComponentWrappingBase component)
+        {
+            switch (component.ClassVersion)
+            {
+                case PPTVersion.PPT2010:
+                    break;
+                case PPTVersion.PPT2013:
+                    var comp2013 = component.ToVBComponent2013();
+
+                    CodeTabEditor codeTabEditor = new CodeTabEditor();
+
+                    CloseableTabItem codeTab = new CloseableTabItem()
+                    {
+                        Header = comp2013.Name,
+                        Content = codeTabEditor
+                    };
+                    CodeTabControls.Items.Add(codeTab);
+                    break;
+                case PPTVersion.PPT2016:
+
+                    break;
+            }
+            
+        }
+
+        public void RemoveTab()
+        {
+
+        }
+
+
 
         public void SetName()
         {
@@ -220,6 +270,26 @@ namespace PowerVBA
         }
 
 
+        private void CodeTabControls_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            return;
+
+            CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+
+
+            BtnUndo.IsEnabled = editor.CanUndo;
+            BtnRedo.IsEnabled = editor.CanRedo;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Connector?.Dispose();
+        }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;
+        }
         #endregion
 
 
@@ -253,8 +323,8 @@ namespace PowerVBA
             };
             if (ofd.ShowDialog().Value)
             {
-                tbProcessInfoTB.Visibility = Visibility.Visible;
-                
+                tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
+
                 Dispatcher.Invoke(new Action(() =>
                 {
                     this.NoTitle = false;
@@ -267,8 +337,6 @@ namespace PowerVBA
                     Connector = tmpConn;
 
                     PropGrid.SelectedObject = tmpConn.Presentation;
-
-                    tbProcessInfoTB.Visibility = Visibility.Hidden;
 
                     ProgramTabControl.SelectedIndex = 0;
                     SetName();
@@ -288,7 +356,7 @@ namespace PowerVBA
                 return;
             }
 
-            tbProcessInfoTB.Visibility = Visibility.Visible;
+            tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
 
             Dispatcher.Invoke(new Action(() =>
             {
@@ -301,8 +369,7 @@ namespace PowerVBA
                 PropGrid.SelectedObject = tmpConn.Presentation;
 
                 Connector = tmpConn;
-
-                tbProcessInfoTB.Visibility = Visibility.Hidden;
+                
                 ProgramTabControl.SelectedIndex = 0;
                 SetName();
             }), DispatcherPriority.Background);
