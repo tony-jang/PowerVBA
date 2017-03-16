@@ -24,5 +24,41 @@ namespace PowerVBA.Controls.Tools
         {
             InitializeComponent();
         }
+
+        private int _SlideCount;
+        public int SlideCount
+        {
+            get { return _SlideCount; }
+            set
+            {
+                _SlideCount = value;
+
+                SlideRun.Text = _SlideCount.ToString();
+            }
+        }
+
+        private int _ShapeCount;
+        public int ShapeCount
+        {
+            get { return _ShapeCount; }
+            set
+            {
+                _ShapeCount = value;
+
+                ShapeRun.Text = _ShapeCount.ToString();
+            }
+        }
+
+        private int _SectionCount;
+        public int SectionCount
+        {
+            get { return _SectionCount; }
+            set
+            {
+                _SectionCount = value;
+
+                SectionRun.Text = _SectionCount.ToString();
+            }
+        }
     }
 }

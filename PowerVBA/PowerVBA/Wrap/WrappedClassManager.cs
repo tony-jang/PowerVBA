@@ -1,4 +1,6 @@
-﻿using PowerVBA.Core.Wrap.WrapBase;
+﻿using PowerVBA.Core.Connector;
+using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.V2013.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,11 @@ namespace PowerVBA.Wrap
         public static V2013.Wrap.WrapClass.ShapeWrapping ToShape2013(this ShapeWrappingBase shapebase)
         {
             return (V2013.Wrap.WrapClass.ShapeWrapping)shapebase;
+        }
+
+        public static PPTConnector2013 ToConnector2013(this PPTConnectorBase connbase)
+        {
+            return ((PPTConnector2013)connbase);
         }
 
         #endregion

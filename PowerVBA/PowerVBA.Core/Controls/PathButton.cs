@@ -11,6 +11,7 @@ namespace PowerVBA.Core.Controls
 {
     class PathButton : Button
     {
+
         public static DependencyProperty DataProperty =
             DependencyProperty.Register(nameof(Data), typeof(Geometry), typeof(PathButton));
 

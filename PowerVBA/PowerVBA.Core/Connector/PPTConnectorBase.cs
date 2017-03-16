@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PowerVBA.Global.Globals;
 
 namespace PowerVBA.Core.Connector
 {
@@ -22,13 +23,30 @@ namespace PowerVBA.Core.Connector
         public event BlankDelegate SlideChanged;
         public event BlankDelegate SectionChanged;
         
-        public void OnVBAComponentChange() { VBAComponentChange?.Invoke(); }
-        public void OnPPTClosed() { PresentationClosed?.Invoke(); }
-        public void OnShapeChanged() { ShapeChanged?.Invoke(); }
-        public void OnSlideChanged() { SlideChanged?.Invoke(); }
-        public void OnSectionChanged() { SectionChanged?.Invoke(); }
+        public void OnVBAComponentChange()
+        {
+            try { MainDispatcher.Invoke(new Action(() => { VBAComponentChange?.Invoke(); })); } catch (Exception) { }    
+        }
+        public void OnPPTClosed()
+        {
+            try { MainDispatcher.Invoke(new Action(() => { PresentationClosed?.Invoke(); })); } catch (Exception) {}
+        }
+        public void OnShapeChanged()
+        {
+            try { MainDispatcher.Invoke(new Action(() => { ShapeChanged?.Invoke(); })); } catch (Exception) { }
+        }
         
+        public void OnSlideChanged()
+        {
+            try { MainDispatcher.Invoke(new Action(() => { SlideChanged?.Invoke(); })); } catch (Exception) { }    
+        }
         
+        public void OnSectionChanged()
+        {
+            try { MainDispatcher.Invoke(new Action(() => { SectionChanged?.Invoke(); })); } catch (Exception) { }
+        }
+
+
 
 
 

@@ -24,7 +24,7 @@ namespace PowerVBA
     /// </summary>
     public partial class MainWindow : ChromeWindow
     {
-        IPPTConnector Connector;
+        PPTConnectorBase Connector;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +34,10 @@ namespace PowerVBA
             CodeTabControls.SelectionChanged += CodeTabControls_SelectionChanged;
 
             MainDispatcher = Dispatcher;
+
+            // Menu 초기화
+
+            FileMenu.Items.Add(new MenuItem() { Header = "asdf" });
 
 
             RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
@@ -239,9 +243,13 @@ namespace PowerVBA
 
 
 
-        public void SetName()
+        public void SetName(string customName = "")
         {
-            if (Connector != null)
+            if (customName!= "")
+            {
+                this.Title = $"{customName} - PowerVBA";
+            }
+            else if (Connector != null)
             {
                 PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
 
@@ -260,7 +268,18 @@ namespace PowerVBA
 
         private void PPTCloseDetect()
         {
-            Environment.Exit(0);
+            var result = MessageBox.Show("프레젠테이션이 PowerVBA의 코드가 저장되지 않은 상태에서 닫혔습니다.\r\n코드는 저장한 상태에서 다시 여시겠습니까?\r\n이대로 닫게 되면 코드는 저장되지 않습니다.", "PowerVBA", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
+            
         }
 
 
@@ -285,15 +304,13 @@ namespace PowerVBA
         {
             Connector?.Dispose();
         }
-
+        ContextMenu FileMenu = new ContextMenu();
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            FileMenu.IsOpen = true;
             if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;
         }
         #endregion
-
-
-
 
         #endregion
 
@@ -325,22 +342,7 @@ namespace PowerVBA
             {
                 tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
 
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    this.NoTitle = false;
-
-                    var tmpConn = new PPTConnector2013(ofd.FileName);
-                    tmpConn.PresentationClosed += PPTCloseDetect;
-                    tmpConn.VBAComponentChange += ProjectFileChange;
-
-
-                    Connector = tmpConn;
-
-                    PropGrid.SelectedObject = tmpConn.Presentation;
-
-                    ProgramTabControl.SelectedIndex = 0;
-                    SetName();
-                }), DispatcherPriority.Background);
+                InitalizeConnector(ofd.FileName);
             }
             
         }
@@ -358,22 +360,56 @@ namespace PowerVBA
 
             tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
 
+            InitalizeConnector();
+
+        }
+
+        public void InitalizeConnector(string FileLocation = "")
+        {
             Dispatcher.Invoke(new Action(() =>
             {
                 this.NoTitle = false;
+                PPTConnectorBase tmpConn;
+                if (FileLocation == "")
+                {
+                    tmpConn = new PPTConnector2013();
+                }
+                else
+                {
+                    tmpConn = new PPTConnector2013(FileLocation);
+                }
 
-                var tmpConn = new PPTConnector2013(true);
                 tmpConn.PresentationClosed += PPTCloseDetect;
                 tmpConn.VBAComponentChange += ProjectFileChange;
+                tmpConn.SlideChanged += SlideChangedDetect;
+                tmpConn.ShapeChanged += ShapeChangedDetect;
+                tmpConn.SectionChanged += SectionChangedDetect;
 
-                PropGrid.SelectedObject = tmpConn.Presentation;
 
                 Connector = tmpConn;
-                
+
+                PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
+
                 ProgramTabControl.SelectedIndex = 0;
                 SetName();
             }), DispatcherPriority.Background);
+        }
 
+        private void SectionChangedDetect()
+        {
+            projAnalyzer.SectionCount = Connector.ToConnector2013().Presentation.SectionCount;
+        }
+
+        private void ShapeChangedDetect()
+        {
+            int count = 0;
+            Connector.ToConnector2013().Presentation.Slides.Cast<Microsoft.Office.Interop.PowerPoint.Slide>().ToList().ForEach((i) => count += i.Shapes.Count);
+            projAnalyzer.ShapeCount = count;
+        }
+
+        private void SlideChangedDetect()
+        {
+            projAnalyzer.SlideCount = Connector.ToConnector2013().Presentation.Slides.Count;
         }
 
         private void BtnNewAssistPPT_Click(object sender, RoutedEventArgs e)
@@ -383,7 +419,9 @@ namespace PowerVBA
 
         private void BtnNewVirtualPPT_Click(object sender, RoutedEventArgs e)
         {
-
+            this.NoTitle = false;
+            ProgramTabControl.SelectedIndex = 0;
+            SetName("가상 프레젠테이션 1");
         }
         #endregion
         

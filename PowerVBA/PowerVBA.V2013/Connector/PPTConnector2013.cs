@@ -22,7 +22,7 @@ namespace PowerVBA.V2013.Connector
 
         internal Thread EventConnectThread;
 
-        public PPTConnector2013()
+        private PPTConnector2013()
         {
             Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
 
@@ -33,6 +33,8 @@ namespace PowerVBA.V2013.Connector
                 int LastComponentCount = 0;
                 int LastShapeCount = 0;
                 int LastSlideCount = 0;
+
+                int DelayCounter = 0;
 
                 while (true)
                 {
@@ -51,54 +53,71 @@ namespace PowerVBA.V2013.Connector
                             OnVBAComponentChange();
                         }
 
-                        // 슬라이드 변경 인식
-                        List<SlideWrapping> Slides = new List<SlideWrapping>();
-                        Presentation.Slides.Cast<Slide>().ToList().ForEach((i) => Slides.Add(new SlideWrapping(i)));
+                        DelayCounter++;
 
-                        if (Slides.Count != LastSlideCount)
+                        if (DelayCounter > 4)
                         {
-                            LastSlideCount = Slides.Count;
-                            OnSlideChanged();
-                        }
+                            // 슬라이드 변경 인식
+                            List<SlideWrapping> Slides = new List<SlideWrapping>();
+                            Presentation.Slides.Cast<Slide>().ToList().ForEach((i) => Slides.Add(new SlideWrapping(i)));
 
-                        // 도형 변경 인식
-                        List<ShapeWrapping> Shapes = new List<ShapeWrapping>();
-                        Presentation.Slides.Cast<Slide>().ToList().ForEach((i) =>
-                        {
-                            foreach(Microsoft.Office.Interop.PowerPoint.Shape s in i.Shapes)
+                            if (Slides.Count != LastSlideCount)
                             {
-                                Shapes.Add(new ShapeWrapping(s));
+                                LastSlideCount = Slides.Count;
+                                OnSlideChanged();
                             }
-                        });
 
-                        if (Shapes.Count != LastShapeCount)
-                        {
-                            LastShapeCount = Shapes.Count;
-                            OnShapeChanged();
+                            // 도형 변경 인식
+                            int TempShapeCount = 0;
+
+                            Presentation.Slides.Cast<Slide>().Select((i) => new SlideWrapping(i)).ToList()
+                                                                                                 .ForEach((i) =>
+                            {
+                                TempShapeCount += i.Shapes.Count;
+                            });
+
+                            if (TempShapeCount != LastShapeCount)
+                            {
+                                LastShapeCount = TempShapeCount;
+                                OnShapeChanged();
+                            }
+
+                            //Presentation.Slides.Cast<Slide>().Select((i) => new SlideWrapping(i)).ToList().ForEach((i) =>
+                            //{
+                            //    foreach (Microsoft.Office.Interop.PowerPoint.Shape s in i.Shapes)
+                            //    {
+                            //        Shapes.Add(new ShapeWrapping(s));
+                            //    }
+                            //});
+
+
+
+
+                            DelayCounter = 0;
                         }
-
-                        
 
                         //OnSectionChanged();
 
                     }
                     catch (Exception e)
                     {
-                        Tuple<int, string>[] Errors = { new Tuple<int, string>(-2147417846, "응용 프로그램이 사용 중입니다."),
-                                                        new Tuple<int, string>(-2147188720, "오브젝트가 존재하지 않습니다.") };
+                        // 발생하는 예외 상황 : Modelless 창이 떴을 경우
+                        (int, string)[] Errors = { (-2147417846, "응용 프로그램이 사용 중입니다."),
+                                                   // 발생하는 예외 상황 : 프레젠테이션 창이 하나는 있지만 현재 연결되어 있던 PowerPoint 창이 닫혔을때
+                                                   (-2147188720, "오브젝트가 존재하지 않습니다."),
+                                                   // 발생하는 예외 상황 : 연결된 PowerPoint 창이 닫히면서 프레제텐이션 창 자체가 닫혔을때
+                                                   (-2146827864, "애플리케이션이 종료된 것 같습니다.")};
 
-                        var Error = Errors.Where((i) => i.Item1 == e.HResult).First();
+                        var Error = Errors.Where((i) => i.Item1 == e.HResult).FirstOrDefault();
 
-                        if (Error != null)
+                        if (Error.Item2 != null)
                         {
                             Console.WriteLine($"\"{Error.Item2}\" 라는 알려진 예외가 발생했습니다.");
+                            if (Error.Equals(Errors[1]) || Error.Equals(Errors[2])) OnPPTClosed();
                         }
                         else
                         {
                             MessageBox.Show($"알려지지 않은 예외가 발생했습니다. ({e.HResult})" + Environment.NewLine + Environment.NewLine + e.ToString());
-
-                            if (Error == Errors[1]) OnPPTClosed();
-
                         }
                     }
 

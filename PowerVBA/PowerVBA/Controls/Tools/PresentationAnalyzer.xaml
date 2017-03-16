@@ -26,17 +26,17 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Margin="15,5" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    총 도형 갯수 (<Run x:Name="ClassRun" Text="0"/>개)
+                    총 도형 갯수 (<Run x:Name="ShapeRun" Text="0"/>개)
                 </TextBlock>
 
                 <TextBlock Grid.Row="2" Margin="15,5" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    슬라이드 갯수 (<Run x:Name="ModuleRun" Text="0"/>개)
+                    슬라이드 갯수 (<Run x:Name="SlideRun" Text="0"/>개)
                 </TextBlock>
 
                 <TextBlock Grid.Row="4" Margin="15,5" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    섹션 갯수 (<Run x:Name="FormRun" Text="0"/>개)
+                    섹션 갯수 (<Run x:Name="SectionRun" Text="0"/>개)
                 </TextBlock>
             </Grid>
         </ScrollViewer>
