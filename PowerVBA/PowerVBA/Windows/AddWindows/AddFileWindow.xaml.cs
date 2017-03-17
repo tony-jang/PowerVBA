@@ -20,30 +20,52 @@ namespace PowerVBA.Windows.AddWindows
     /// </summary>
     public partial class AddFileWindow : ChromeWindow
     {
-        public AddFileWindow(IPPTConnector connector, bool IsClass)
+        public AddFileWindow(IPPTConnector connector, AddType AddType)
         {
             InitializeComponent();
-            if (IsClass) btnClass.IsChecked = true;
-            else btnModule.IsChecked = true;
+            if (AddType == AddType.Class) btnClass.IsChecked = true;
+            else if (AddType == AddType.Module) btnModule.IsChecked = true;
+            else if(AddType == AddType.Form) btnForm.IsChecked = true;
 
             conn = connector;
         }
 
         IPPTConnector conn;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
+            bool Result = false;
             if (btnClass.IsChecked.Value)
-            { conn.AddClass(TBName.Text); }
-            else
-            { conn.AddModule(TBName.Text); }
-            
-            this.Close();
+            { Result = conn.AddClass(TBName.Text); }
+            else if (btnModule.IsChecked.Value)
+            { Result = conn.AddModule(TBName.Text); }
+            else if (btnForm.IsChecked.Value)
+            { Result = conn.AddForm(TBName.Text); }
+
+            if (!Result)
+            { MessageBox.Show("파일 추가에 실패했습니다. 명명 규칙이 잘못 되었습니다.\r\n명명 규칙은 다음과 같습니다.\r\n - 이름의 시작은 문자만 올 수 있습니다.\r\n - 이외에는 빈칸을 제외한 _이나 문자 또는 숫자가 올 수 있습니다."); }
+            else this.Close();
+        }
+
+        public enum AddType
+        {
+            /// <summary>
+            /// Class를 추가합니다.
+            /// </summary>
+            Class,
+            /// <summary>
+            /// 모듈을 추가합니다.
+            /// </summary>
+            Module,
+            /// <summary>
+            /// 사용자 폼을 추가합니다.
+            /// </summary>
+            Form
         }
     }
 }

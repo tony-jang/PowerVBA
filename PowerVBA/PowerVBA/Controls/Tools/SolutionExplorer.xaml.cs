@@ -110,6 +110,11 @@ namespace PowerVBA.Controls.Tools
 
             foreach(var itm in AddComp) AddItem(itm);
             foreach (var itm in RemoveComp) RemoveItem(itm);
+
+
+            ClassRun.Text = LBClass.Items.Count.ToString();
+            ModuleRun.Text = LBForms.Items.Count.ToString();
+            FormRun.Text = LBForms.Items.Count.ToString();
         }
     }
 }

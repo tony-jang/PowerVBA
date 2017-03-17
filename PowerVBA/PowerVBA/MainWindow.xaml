@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
         xmlns:corec="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
         xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
@@ -11,7 +10,7 @@
         xmlns:local="clr-namespace:PowerVBA"
         mc:Ignorable="d"
         x:Name="ThisWindow" Title="Untitle Presentation - PowerVBA" Height="800" Width="1300"
-                Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico"
+                Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico" IsSubWindow="false"
                 WindowStyle="None" AllowsTransparency="True" IsEnableMove="True" NoTitle="True" WindowStartupLocation="CenterScreen">
     <w:ChromeWindow.Resources>
         <Style x:Key="FocusVisual">
@@ -32,7 +31,7 @@
 
     </w:ChromeWindow.Resources>
 
-    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="2" Margin="0" Padding="0" BorderThickness="0">
+    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
         <TabControl.Style>
             <Style TargetType="{x:Type TabControl}">
                 <!--<Setter Property="Template">
@@ -66,7 +65,7 @@
 
                 <Grid>
 
-                    <TabControl x:Name="MainTabControl" SelectedIndex="1" BorderBrush="#FFD4D4D4" Style="{StaticResource TabControlStyle}">
+                    <TabControl x:Name="MenuTabControl" SelectedIndex="1" BorderBrush="#FFD4D4D4" Style="{StaticResource TabControlStyle}">
                         <TabControl.Resources>
                             <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxStyle}"/>
                             <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemStyle}"/>
@@ -89,6 +88,13 @@
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="슬라이드 관리">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnNewSlide" Content="새 슬라이드" BackImage="Resources/Icon/NewSlideIcon.png" SimpleButtonClicked="BtnNewSlide_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked"/>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                             </WrapPanel>
                         </TabItem>
                         <TabItem Header="삽입">
@@ -97,13 +103,15 @@
                                     <WrapPanel>
                                         <c:ImageButton x:Name="BtnAddClass" Content="클래스 추가" BackImage="Resources/Icon/ClassIcon.png" SimpleButtonClicked="BtnAddClass_SimpleButtonClicked" />
                                         <c:ImageButton x:Name="BtnAddModule" Content="모듈 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddModule_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddForm" Content="사용자 폼&#x0a;추가" BackImage="Resources/Icon/FormIcon.png" SimpleButtonClicked="BtnAddForm_SimpleButtonClicked" />
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                                <GroupBox Header="함수 삽입">
+                                <GroupBox Header="프로시져 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked" IsEnabled="False" />
-                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
@@ -132,23 +140,13 @@
                                         <c:ImageButton x:Name="BtnAddType" Content="타입 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
                                     </WrapPanel>
                                 </GroupBox>
-                            </WrapPanel>
-                        </TabItem>
-                        <TabItem Header="슬라이드">
-                            <WrapPanel>
-                                <GroupBox Header="슬라이드 관리">
-                                    <WrapPanel>
-                                        <c:ImageButton x:Name="BtnNewSlide" Content="새 슬라이드" BackImage="Resources/Icon/NewSlideIcon.png" SimpleButtonClicked="BtnNewSlide_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked"/>
-                                    </WrapPanel>
-                                </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                             </WrapPanel>
                         </TabItem>
                         <TabItem Header="디버그">
                             <WrapPanel>
                                 <GroupBox Header="디버그">
-                                    <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" IsEnabled="False"/>
+                                    <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
                                 </GroupBox>
                             </WrapPanel>
 
@@ -181,7 +179,7 @@
                             <RowDefinition Height="5"/>
                             <RowDefinition Height="150"/>
                         </Grid.RowDefinitions>
-                        <TabControl x:Name="CodeTabControls">
+                        <TabControl x:Name="CodeTabControl">
                             <TabControl.Resources>
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
@@ -370,8 +368,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Rectangle Grid.Column="0" Fill="#FFD24726"/>
-                
-                <TabControl Grid.ColumnSpan="2" Padding="0" Background="#00000000" BorderBrush="Transparent" TabStripPlacement="Left">
+                <TextBlock Text="{Binding ElementName=ThisWindow, Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                <TabControl Grid.ColumnSpan="2" Margin="0,20,0,0" Padding="0" Background="#00000000" BorderBrush="Transparent" TabStripPlacement="Left">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type TabControl}">
                             <Setter Property="Template">
@@ -382,7 +380,7 @@
                                                 <ColumnDefinition Width="120"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TabPanel Grid.Column="0" Panel.ZIndex="1" Margin="0,70,0,-1" IsItemsHost="True" Background="Transparent" />
+                                            <TabPanel Grid.Column="0" Panel.ZIndex="1" Margin="0,50,0,-1" IsItemsHost="True" Background="Transparent" />
                                             <Border Grid.Column="1">
                                                 <ContentPresenter ContentSource="SelectedContent" />
                                             </Border>
@@ -408,11 +406,11 @@
                                           VerticalAlignment="Center"/>
                                         </Grid>
                                         <ControlTemplate.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="#FFF0623E"/>
-                                            </Trigger>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="Background" Value="#FFB83B1D"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#FFF0623E"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -422,42 +420,74 @@
                     </TabControl.Resources>
                     <TabItem Header="정보">
                         <Grid>
-                            <StackPanel Margin="30,60">
+                            <StackPanel Margin="30,50,30,0">
                                 <TextBlock Text="정보" Foreground="Black" FontSize="30"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <WrapPanel>
+                                        <c:ImageButton Padding="5" Content="프레젠테이션&#xd;보호" Foreground="Black"  BackImage="Resources/Icon/ClassIcon.png" BorderBrush="#FFABABAB" BorderThickness="1"/>
+                                    </WrapPanel>
+                                    
+                                </Grid>
                             </StackPanel>
                         </Grid>
                     </TabItem>
                     <TabItem Header="새로 만들기">
                         <Grid>
-                            <StackPanel Margin="30,60">
+                            <StackPanel Margin="30,50,30,0">
                                 <TextBlock Text="새로 만들기" Foreground="Black" FontSize="30"/>
+                                <Grid Grid.Column="1" Margin="0,40,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="프로젝트 템플릿 선택" Foreground="#FFDA6C51" Margin="20,0,0,0"/>
+                                    <ScrollViewer Margin="15" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                        <WrapPanel>
+                                            <c:ProjectTemplateButton x:Name="BtnNewPPT2" Content="새 프레젠테이션" Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다."
+                                       Padding="10" Click="BtnNewPPT_Click" />
+                                            <c:ProjectTemplateButton x:Name="BtnNewAssistPPT2" Content="보조 파일을 사용하는 새 프레젠테이션" Padding="10"
+                                       Description="보조 파일을 사용한 상태로 새 프레젠테이션을 만들게 되면 항상 프레젠테이션과 이름이 같은 .vba 파일이 생성됩니다.
+&#x0a;해당 파일이 같이 있는 상태에선 보조 문법을 사용할 수 있습니다. 보조 문법이란 기존 VBA 문법을 더 확장시킨 것으로 기존보다 더 효율적인 문법 사용이 가능합니다." Click="BtnNewAssistPPT_Click" Source="Resources/Icon/AssistProjectIcon.png"/>
+                                            <c:ProjectTemplateButton x:Name="BtnNewVirtualPPT2" Content="가상 프레젠테이션" Padding="10"
+                                       Description="가상 프레젠테이션은 .pptx를 사용하지 않고 가상으로 슬라이드에 도형이 있다고 가정한 상태에서 코드만 작성하는 것을 말합니다.&#x0a;PPT 프레젠테이션과 연결하여 사용하지 않습니다." Click="BtnNewVirtualPPT_Click" 
+                                                     Source="Resources/Icon/VirtualProjectIcon.png"/>
+                                        </WrapPanel>
+                                    </ScrollViewer>
+                                </Grid>
                             </StackPanel>
                         </Grid>
                     </TabItem>
                     <TabItem Header="열기">
                         <Grid>
-                            <StackPanel Margin="30,60">
+                            <StackPanel Margin="30,50,30,0">
                                 <TextBlock Text="열기" Foreground="Black" FontSize="30"/>
+                                
                             </StackPanel>
                         </Grid>
                     </TabItem>
                     <TabItem Header="저장">
                         <Grid>
-                            <StackPanel Margin="30,60">
+                            <StackPanel Margin="30,50,30,0">
                                 <TextBlock Text="저장" Foreground="Black" FontSize="30"/>
                             </StackPanel>
                         </Grid>
                     </TabItem>
                     <TabItem Header="다른 이름으로&#xd;저장">
                         <Grid>
-                            <StackPanel Margin="30,60">
+                            <StackPanel Margin="30,50,30,0">
                                 <TextBlock Text="다른 이름으로 저장" Foreground="Black" FontSize="30"/>
                             </StackPanel>
                         </Grid>
                     </TabItem>
+                    <TabItem Header="닫기"/>
+                    
                 </TabControl>
 
-                <c:PathButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="35" Height="35" Data="m 17.063876 33.589905 c -0.157138 -0.0036 -0.268059 -0.0094 -0.246491 -0.01303 0.02235 -0.0037 -0.01138 -0.0073 -0.07843 -0.0084 -0.275553 -0.0043 -0.896765 -0.04955 -1.326842 -0.0967 C 12.551266 33.158181 9.8179773 32.158914 7.4507403 30.561215 5.6290459 29.331714 4.049767 27.758261 2.8386624 25.966149 1.437936 23.893449 0.53511795 21.564854 0.18564234 19.123344 0.10671306 18.571928 0.0365974 17.80325 0.03228675 17.442109 0.03144478 17.37157 0.02804557 17.34316 0.02297 17.36424 0.01231634 17.40849 0.00444051 16.874948 0.01023155 16.501283 c 0.0025462 -0.164294 0.008252 -0.28378 0.01267954 -0.265525 0.0051485 0.02123 0.0085278 -0.0068 0.0093757 -0.07787 C 0.0365974 15.796748 0.10671306 15.02807 0.18564234 14.476654 0.61765709 11.458509 1.8978513 8.6136349 3.8922113 6.2398416 5.6452348 4.1532998 7.8798965 2.5053734 10.41423 1.4302516 c 1.725624 -0.7320487 3.589487 -1.19215814 5.456407 -1.34695767 0.278509 -0.02309311 0.726864 -0.04968754 0.868319 -0.05150478 0.0777 -9.9826e-4 0.104331 -0.0041156 0.07843 -0.0091823 -0.05309 -0.01038601 0.509651 -0.01817856 0.893529 -0.01237301 0.171003 0.0025861 0.293268 0.008154 0.2717 0.01237301 -0.0259 0.0050667 7.28e-4 0.008184 0.07843 0.0091823 0.268277 0.0034465 0.893152 0.04883938 1.326842 0.09638607 2.971398 0.32576214 5.798924 1.38924928 8.230273 3.09556478 1.32157 0.9274754 2.518916 2.0497182 3.53075 3.3092856 1.767328 2.2000347 2.944034 4.8087104 3.403508 7.5453404 0.11348 0.67589 0.209627 1.604564 0.215296 2.079523 8.4e-4 0.07054 0.0042 0.09895 0.0093 0.07787 0.01065 -0.04425 0.01853 0.489292 0.01274 0.862957 -0.0025 0.164294 -0.0083 0.28378 -0.01268 0.265525 -0.0051 -0.02123 -0.0085 0.0068 -0.0094 0.07787 -0.0043 0.361141 -0.07443 1.129819 -0.153355 1.681235 -0.579207 4.046458 -2.67574 7.74446 -5.9094 10.423386 -1.525208 1.263558 -3.280372 2.268706 -5.159497 2.954743 -1.472429 0.537559 -3.05625 0.885894 -4.616098 1.015231 -0.278509 0.02309 -0.726864 0.04969 -0.868319 0.05151 -0.08168 0.0011 -0.105655 0.004 -0.07843 0.0097 0.02178 0.0045 -0.07338 0.0088 -0.213989 0.0096 -0.139261 7.97e-4 -0.290517 0.0031 -0.336123 0.0052 -0.04561 0.0021 -0.211488 8.07e-4 -0.368626 -0.0028 z m 1.322086 -2.494529 c 0.840923 -0.05941 1.549744 -0.157679 2.287492 -0.317141 3.996551 -0.863838 7.463829 -3.294301 9.555162 -6.697894 0.74603 -1.214144 1.293688 -2.507786 1.6412 -3.876729 0.211744 -0.834121 0.334227 -1.618517 0.400177 -2.562783 0.01986 -0.284314 0.01986 -1.397346 0 -1.68166 -0.06659 -0.953433 -0.188232 -1.728413 -0.405509 -2.583481 C 31.148714 10.558866 29.533012 7.9948945 27.253635 6.05869 25.732163 4.7662843 23.942024 3.7808548 22.021699 3.1786319 20.814607 2.800082 19.662522 2.5905425 18.279523 2.4980103 c -0.287522 -0.019237 -1.471525 -0.019237 -1.759047 0 -1.671435 0.1118305 -3.0471 0.4007035 -4.52472 0.9501362 C 11.397047 3.6707681 10.602651 4.0335921 10.0613 4.3316693 8.0925615 5.4156919 6.4390836 6.8686268 5.1572473 8.6409312 4.2843454 9.8478309 3.579514 11.249227 3.1430837 12.645636 2.8548354 13.56792 2.6665179 14.494461 2.571928 15.455778 c -0.047973 0.487549 -0.055633 0.669501 -0.056122 1.333157 -4.762e-4 0.645918 0.00351 0.754844 0.045129 1.233586 0.2400072 2.760703 1.3161054 5.396981 3.0979855 7.589595 1.6096175 1.980644 3.6978693 3.501056 6.1261271 4.460306 0.84656 0.334422 1.852634 0.622342 2.75605 0.788731 0.780112 0.143681 1.350473 0.207653 2.265083 0.254056 0.20443 0.01037 1.357063 -0.0041 1.579781 -0.01983 z M 12.171933 20.206864 C 10.551996 18.53007 9.2265934 17.151609 9.2265934 17.143617 c 0 -0.008 1.3254226 -1.386745 2.9453836 -3.063895 l 2.945385 -3.049364 1.658804 0 1.658805 0 -0.02901 0.03043 c -0.01595 0.01673 -1.053132 1.090831 -2.30484 2.386882 -1.313561 1.360095 -2.274459 2.363508 -2.272581 2.373131 0.0029 0.01483 0.710797 0.01698 6.397849 0.01945 l 6.394599 0.0028 0 1.299948 0 1.299948 -6.394599 0.0028 c -5.738972 0.0025 -6.394937 0.0045 -6.397911 0.01976 -0.002 0.01004 0.925221 0.978322 2.267092 2.367599 1.248722 1.292839 2.285974 2.366795 2.305003 2.386571 l 0.0346 0.03596 -1.658952 0 -1.658951 0 -2.945338 -3.048716 z" Background="White"/>
+                <corec:PathButton x:Name="BackBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Width="35" Height="35" Data="m 17.063876 33.589905 c -0.157138 -0.0036 -0.268059 -0.0094 -0.246491 -0.01303 0.02235 -0.0037 -0.01138 -0.0073 -0.07843 -0.0084 -0.275553 -0.0043 -0.896765 -0.04955 -1.326842 -0.0967 C 12.551266 33.158181 9.8179773 32.158914 7.4507403 30.561215 5.6290459 29.331714 4.049767 27.758261 2.8386624 25.966149 1.437936 23.893449 0.53511795 21.564854 0.18564234 19.123344 0.10671306 18.571928 0.0365974 17.80325 0.03228675 17.442109 0.03144478 17.37157 0.02804557 17.34316 0.02297 17.36424 0.01231634 17.40849 0.00444051 16.874948 0.01023155 16.501283 c 0.0025462 -0.164294 0.008252 -0.28378 0.01267954 -0.265525 0.0051485 0.02123 0.0085278 -0.0068 0.0093757 -0.07787 C 0.0365974 15.796748 0.10671306 15.02807 0.18564234 14.476654 0.61765709 11.458509 1.8978513 8.6136349 3.8922113 6.2398416 5.6452348 4.1532998 7.8798965 2.5053734 10.41423 1.4302516 c 1.725624 -0.7320487 3.589487 -1.19215814 5.456407 -1.34695767 0.278509 -0.02309311 0.726864 -0.04968754 0.868319 -0.05150478 0.0777 -9.9826e-4 0.104331 -0.0041156 0.07843 -0.0091823 -0.05309 -0.01038601 0.509651 -0.01817856 0.893529 -0.01237301 0.171003 0.0025861 0.293268 0.008154 0.2717 0.01237301 -0.0259 0.0050667 7.28e-4 0.008184 0.07843 0.0091823 0.268277 0.0034465 0.893152 0.04883938 1.326842 0.09638607 2.971398 0.32576214 5.798924 1.38924928 8.230273 3.09556478 1.32157 0.9274754 2.518916 2.0497182 3.53075 3.3092856 1.767328 2.2000347 2.944034 4.8087104 3.403508 7.5453404 0.11348 0.67589 0.209627 1.604564 0.215296 2.079523 8.4e-4 0.07054 0.0042 0.09895 0.0093 0.07787 0.01065 -0.04425 0.01853 0.489292 0.01274 0.862957 -0.0025 0.164294 -0.0083 0.28378 -0.01268 0.265525 -0.0051 -0.02123 -0.0085 0.0068 -0.0094 0.07787 -0.0043 0.361141 -0.07443 1.129819 -0.153355 1.681235 -0.579207 4.046458 -2.67574 7.74446 -5.9094 10.423386 -1.525208 1.263558 -3.280372 2.268706 -5.159497 2.954743 -1.472429 0.537559 -3.05625 0.885894 -4.616098 1.015231 -0.278509 0.02309 -0.726864 0.04969 -0.868319 0.05151 -0.08168 0.0011 -0.105655 0.004 -0.07843 0.0097 0.02178 0.0045 -0.07338 0.0088 -0.213989 0.0096 -0.139261 7.97e-4 -0.290517 0.0031 -0.336123 0.0052 -0.04561 0.0021 -0.211488 8.07e-4 -0.368626 -0.0028 z m 1.322086 -2.494529 c 0.840923 -0.05941 1.549744 -0.157679 2.287492 -0.317141 3.996551 -0.863838 7.463829 -3.294301 9.555162 -6.697894 0.74603 -1.214144 1.293688 -2.507786 1.6412 -3.876729 0.211744 -0.834121 0.334227 -1.618517 0.400177 -2.562783 0.01986 -0.284314 0.01986 -1.397346 0 -1.68166 -0.06659 -0.953433 -0.188232 -1.728413 -0.405509 -2.583481 C 31.148714 10.558866 29.533012 7.9948945 27.253635 6.05869 25.732163 4.7662843 23.942024 3.7808548 22.021699 3.1786319 20.814607 2.800082 19.662522 2.5905425 18.279523 2.4980103 c -0.287522 -0.019237 -1.471525 -0.019237 -1.759047 0 -1.671435 0.1118305 -3.0471 0.4007035 -4.52472 0.9501362 C 11.397047 3.6707681 10.602651 4.0335921 10.0613 4.3316693 8.0925615 5.4156919 6.4390836 6.8686268 5.1572473 8.6409312 4.2843454 9.8478309 3.579514 11.249227 3.1430837 12.645636 2.8548354 13.56792 2.6665179 14.494461 2.571928 15.455778 c -0.047973 0.487549 -0.055633 0.669501 -0.056122 1.333157 -4.762e-4 0.645918 0.00351 0.754844 0.045129 1.233586 0.2400072 2.760703 1.3161054 5.396981 3.0979855 7.589595 1.6096175 1.980644 3.6978693 3.501056 6.1261271 4.460306 0.84656 0.334422 1.852634 0.622342 2.75605 0.788731 0.780112 0.143681 1.350473 0.207653 2.265083 0.254056 0.20443 0.01037 1.357063 -0.0041 1.579781 -0.01983 z M 12.171933 20.206864 C 10.551996 18.53007 9.2265934 17.151609 9.2265934 17.143617 c 0 -0.008 1.3254226 -1.386745 2.9453836 -3.063895 l 2.945385 -3.049364 1.658804 0 1.658805 0 -0.02901 0.03043 c -0.01595 0.01673 -1.053132 1.090831 -2.30484 2.386882 -1.313561 1.360095 -2.274459 2.363508 -2.272581 2.373131 0.0029 0.01483 0.710797 0.01698 6.397849 0.01945 l 6.394599 0.0028 0 1.299948 0 1.299948 -6.394599 0.0028 c -5.738972 0.0025 -6.394937 0.0045 -6.397911 0.01976 -0.002 0.01004 0.925221 0.978322 2.267092 2.367599 1.248722 1.292839 2.285974 2.366795 2.305003 2.386571 l 0.0346 0.03596 -1.658952 0 -1.658951 0 -2.945338 -3.048716 z" Background="White" UseMouseOverColor="True" MouseOverColor="#FFEDBAAE"/>
 
             </Grid>
         </TabItem>

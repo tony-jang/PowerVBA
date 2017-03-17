@@ -59,10 +59,8 @@ F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.exe.config
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.exe
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.pdb
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\ICSharpCode.AvalonEdit.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\Microsoft.Windows.Shell.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\WPFExtension.dll
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\ICSharpCode.AvalonEdit.xml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.ResolveComReference.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ProjectListViewItemDesign.g.cs
@@ -95,3 +93,11 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Deb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2013.pdb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Core.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Core.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\StartupWindow.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\StartupWindow.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Core.dll.config
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.xml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.dll.config
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddProcedureWindow.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddProcedureWindow.baml

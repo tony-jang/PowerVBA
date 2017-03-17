@@ -101,6 +101,8 @@ namespace PowerVBA.Core.AvalonEdit
 
             thr.Start();
 
+            
+
             this.TextChanged += delegate (object sender, EventArgs e)
             {
                 //codeParser.Seek();
@@ -195,6 +197,42 @@ namespace PowerVBA.Core.AvalonEdit
 
             #endregion
         }
+
+
+        private static void Send(Key key, bool Shift = false, bool Ctrl = false)
+        {
+            if (Keyboard.PrimaryDevice != null)
+            {
+                if (Keyboard.PrimaryDevice.ActiveSource != null)
+                {
+                    if (Shift) key |= Key.LeftShift;
+                    if (Ctrl) key |= Key.LeftCtrl;
+                    var e = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, key)
+                    {
+                        RoutedEvent = Keyboard.KeyDownEvent
+                    };
+                    InputManager.Current.ProcessInput(e);
+
+                    // Note: Based on your requirements you may also need to fire events for:
+                    // RoutedEvent = Keyboard.PreviewKeyDownEvent
+                    // RoutedEvent = Keyboard.KeyUpEvent
+                    // RoutedEvent = Keyboard.PreviewKeyUpEvent
+                }
+            }
+        }
+
+        public void InputIndent()
+        {
+            this.Focus();
+            Send(Key.Tab);
+        }
+
+        public void DeleteIndent()
+        {
+            this.Focus();
+            Send(Key.Tab, true);
+        }
+
 
         private void PrevKeyDown(object sender, KeyEventArgs e)
         {

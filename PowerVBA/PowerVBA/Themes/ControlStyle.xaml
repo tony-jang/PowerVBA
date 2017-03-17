@@ -4,6 +4,7 @@
                     xmlns:w="clr-namespace:PowerVBA.Windows"
                     xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
                     xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+                    xmlns:corec="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
                     xmlns:h="clr-namespace:PowerVBA.Controls.Helper">
 
 
@@ -55,19 +56,19 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
-                                <c:PathButton x:Name="MiniButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="0"
+                                <corec:PathButton x:Name="MiniButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="0"
                                               Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}" Background="#00000000" />
-                                <c:PathButton x:Name="MiniButt" Data="{StaticResource MiniMizePath}" Margin="8,17,8,8" Background="#FF919191" Grid.Column="0"
+                                <corec:PathButton x:Name="MiniButt" Data="{StaticResource MiniMizePath}" Margin="8,17,8,8" Background="#FF919191" Grid.Column="0"
                                                                  shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}"/>
 
-                                <c:PathButton x:Name="RestoreButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="1"
+                                <corec:PathButton x:Name="RestoreButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="1"
                                               Command="{x:Static cm:WindowSystemCommand.RestoreCommand}" Background="#00000000" />
-                                <c:PathButton x:Name="RestoreButt" Data="{StaticResource MaximizePath}" Margin="8" Background="#FF919191" Grid.Column="1"
+                                <corec:PathButton x:Name="RestoreButt" Data="{StaticResource MaximizePath}" Margin="8" Background="#FF919191" Grid.Column="1"
                                                                  shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.RestoreCommand}"/>
 
-                                <c:PathButton x:Name="EndButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="2"
+                                <corec:PathButton x:Name="EndButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="2"
                                               Command="{x:Static cm:WindowSystemCommand.CloseCommand}" Background="#00000000" />
-                                <c:PathButton x:Name="EndButt" Data="{StaticResource EndPath}" Margin="8" Background="#FF919191" Grid.Column="2"
+                                <corec:PathButton x:Name="EndButt" Data="{StaticResource EndPath}" Margin="8" Background="#FF919191" Grid.Column="2"
                                                                  shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.CloseCommand}"/>
                                 
                             </Grid>
@@ -102,18 +103,49 @@
     </Style>
 
     <!--PathButton Style-->
-    <Style TargetType="{x:Type c:PathButton}">
+    <Style TargetType="{x:Type corec:PathButton}">
+        <Setter Property="ContentHorizontalAlignment" Value="Stretch"/>
+        <Setter Property="ContentVerticalAlignment" Value="Stretch"/>
+        <Setter Property="ContentWidth" Value="NaN"/>
+        <Setter Property="ContentHeight" Value="NaN"/>
+        
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type c:PathButton}">
+                <ControlTemplate TargetType="{x:Type corec:PathButton}">
                     <Border x:Name="border" Background="#00000000">
-                        <Path x:Name="pth" Data="{TemplateBinding Data}"
+                        <Grid>
+                            <Path x:Name="pth" Data="{TemplateBinding Data}"
                                   Fill="{TemplateBinding Background}"
-                                  Width="{TemplateBinding Width}"
-                                  Height="{TemplateBinding Height}"
+                                  Width="{TemplateBinding ContentWidth}"
+                                  Height="{TemplateBinding ContentHeight}"
+                                  VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
+                                  HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
+                                  Margin="{TemplateBinding ContentMargin}"
                                   Stretch="Fill">
-                        </Path>
+                            </Path>
+                            <Path x:Name="mouseOverpth" Data="{TemplateBinding Data}"
+                                  Fill="{TemplateBinding MouseOverColor}"
+                                  Width="{TemplateBinding ContentWidth}"
+                                  Height="{TemplateBinding ContentHeight}"
+                                  VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
+                                  HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
+                                  Margin="{TemplateBinding ContentMargin}"
+                                  Visibility="Hidden"
+                                  Stretch="Fill">
+                            </Path>
+                        </Grid>
+                        
                     </Border>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Visibility" TargetName="mouseOverpth" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="UseMouseOverColor" Value="false">
+                            <Setter Property="Visibility" TargetName="mouseOverpth" Value="Hidden"/>
+                        </Trigger>
+                        
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -194,7 +226,7 @@
                                           RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                           VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
                         <TextBlock x:Name="TBChanged" Margin="0,2,10,2" Grid.Column="1" Text="*"/>
-                        <c:PathButton x:Name="EndBtn" Command="{x:Static cm:TabItemCommand.DeleteCommand}" Visibility="Hidden" Grid.Column="2" Background="White" Data="{StaticResource EndPath}" Width="10" Height="10" Margin="0,0,5,0"/>
+                        <corec:PathButton x:Name="EndBtn" Command="{x:Static cm:TabItemCommand.DeleteCommand}" Visibility="Hidden" Grid.Column="2" Background="White" Data="{StaticResource EndPath}" Width="10" Height="10" Margin="0,0,5,0"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -279,25 +311,34 @@
     <!--ImageButton Style-->
     <Style x:Key="ImageButtonStyle" TargetType="{x:Type c:ImageButton}">
         <Setter Property="MinWidth" Value="50"/>
-        <Setter Property="Height" Value="80"/>
+        <Setter Property="MinHeight" Value="80"/>
+        <Setter Property="Height" Value="Auto"/>
         <Setter Property="h:MouseDownHelper.IsEnabled" Value="True"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Style.Triggers>
             <Trigger Property="buttonMode" Value="Default">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type c:ImageButton}">
-                            <Grid Background="Transparent">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="45"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Border x:Name="SimpleButton" Background="Transparent" Grid.RowSpan="2"/>
-                                <Image x:Name="BtnImg" IsHitTestVisible="False" Width="40" Source="{TemplateBinding BackImage}" 
-                                       Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Grid Background="Transparent" >
+                                <Border x:Name="SimpleButton" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Grid.RowSpan="2" />
+                                <Grid Margin="{TemplateBinding Padding}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="45"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <Image x:Name="BtnImg" IsHitTestVisible="False" Width="40" Source="{TemplateBinding BackImage}" 
+                                        Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
-                                <ContentPresenter Margin="2,0" Grid.Row="1" VerticalAlignment="Top"
-                                                  TextBlock.TextAlignment="Center" IsHitTestVisible="False"/>
+                                    <ContentPresenter Margin="2,0" Grid.Row="1" VerticalAlignment="Top"
+                                        TextBlock.TextAlignment="Center" IsHitTestVisible="False"/>
+                                </Grid>
+                                
+                                
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">

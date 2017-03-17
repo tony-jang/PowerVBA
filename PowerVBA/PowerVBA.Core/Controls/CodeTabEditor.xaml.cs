@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Core.AvalonEdit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,7 @@ namespace PowerVBA.Core.Controls
         {
             InitializeComponent();
         }
+
+        public CodeEditor CodeEditor { get => VBAEditor; set => VBAEditor = value; }
     }
 }

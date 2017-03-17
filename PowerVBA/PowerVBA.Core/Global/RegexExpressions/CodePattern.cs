@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Global.RegexExpressions
 {
-    static class CodePattern
+    public static class CodePattern
     {
         public class RegexString
         {
@@ -48,7 +48,7 @@ namespace PowerVBA.Global.RegexExpressions
         /// <summary>
         /// 사용 가능한 이름입니다. (1 Group)
         /// </summary>
-        public static string Name = @"([_|a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_|a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)";
+        public static string Name = @"([_a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)";
 
         /// <summary>
         /// - 범위의 숫자와 + 범위의 숫자입니다. (1 Group)
@@ -64,6 +64,12 @@ namespace PowerVBA.Global.RegexExpressions
             return $"(?<!{String})";
         }
 
+        #endregion
+
+
+        #region [  컴포넌트 명명 규칙  ]
+
+        public static RegexString ComponentNameRule = new RegexString("^[a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*$");
 
         #endregion
 

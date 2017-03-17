@@ -13,11 +13,17 @@ namespace PowerVBA.Controls.Customize
     class ImageRadioButton : RadioButton
     {
         public static DependencyProperty SourceProperty = DependencyHelper.Register();
-
+        public static DependencyProperty IsSmallProperty = DependencyHelper.Register();
         public ImageSource Source
         {
             get { return (ImageSource)GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
+        }
+
+        public bool IsSmall
+        {
+            get { return (bool)GetValue(IsSmallProperty); }
+            set { SetValue(IsSmallProperty, value); }
         }
     }
 }

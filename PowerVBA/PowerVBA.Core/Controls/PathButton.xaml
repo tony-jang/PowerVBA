@@ -10,8 +10,11 @@
                     <Border x:Name="border" Background="#00000000">
                         <Path x:Name="pth" Data="{TemplateBinding Data}"
                                   Fill="{TemplateBinding Background}"
-                                  Width="{TemplateBinding Width}"
-                                  Height="{TemplateBinding Height}"
+                                  Width="{TemplateBinding ContentWidth}"
+                                  Height="{TemplateBinding ContentHeight}"
+                                  VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
+                                  HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
+                                  Margin="{TemplateBinding ContentMargin}"
                                   Stretch="Fill">
                         </Path>
                     </Border>

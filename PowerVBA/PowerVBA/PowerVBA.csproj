@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -98,7 +99,6 @@
     <Compile Include="Controls\Customize\ImageListViewItem.cs" />
     <Compile Include="Controls\Customize\ImageRadioButton.cs" />
     <Compile Include="Controls\Customize\ImageTreeViewItem.cs" />
-    <Compile Include="Controls\Customize\PathButton.cs" />
     <Compile Include="Controls\Customize\ProjectListViewItem.cs" />
     <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
     <Compile Include="Controls\Customize\ScrollBarEx.cs" />
@@ -132,7 +132,13 @@
     <Compile Include="Windows\AddWindows\AddFileWindow.xaml.cs">
       <DependentUpon>AddFileWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AddWindows\AddProcedureWindow.xaml.cs">
+      <DependentUpon>AddProcedureWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ChromeWindow.cs" />
+    <Compile Include="Windows\StartupWindow.xaml.cs">
+      <DependentUpon>StartupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wrap\WrappedClassManager.cs" />
     <Page Include="Controls\Design\ErrorToolTipDesign.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -171,6 +177,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddWindows\AddFileWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddWindows\AddProcedureWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\StartupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -302,6 +316,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\VirtualProjectIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\FormIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\LockIcon.png" />
+    <Resource Include="Resources\Icon\UnLockIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

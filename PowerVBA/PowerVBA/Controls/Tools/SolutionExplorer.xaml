@@ -30,7 +30,7 @@
         <TextBlock Text="솔루션 탐색기 (확장)" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
         <Grid Grid.Row="1">
-            <Grid Visibility="Hidden">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -83,7 +83,7 @@
 
             </Grid>
 
-            <Grid>
+            <Grid Visibility="Hidden">
                 <TreeView VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" BorderBrush="{x:Null}">
                     <TreeView.ItemsPanel>
                         <ItemsPanelTemplate>

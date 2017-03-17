@@ -16,6 +16,8 @@ using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Wrap;
 using PowerVBA.Controls.Customize;
 using PowerVBA.Core.Controls;
+using System.Threading;
+using System.ComponentModel;
 
 namespace PowerVBA
 {
@@ -25,27 +27,86 @@ namespace PowerVBA
     public partial class MainWindow : ChromeWindow
     {
         PPTConnectorBase Connector;
+        StartupWindow suWindow = new StartupWindow();
+        BackgroundWorker bg;
+        Thread loadThread;
+        SQLiteConnector dbConnector;
+
         public MainWindow()
         {
             InitializeComponent();
             
+            bg = new BackgroundWorker();
+            bg.DoWork += bg_DoWork;
+            bg.RunWorkerCompleted += bg_RunWorkerCompleted;
+
+            bg.WorkerReportsProgress = true;
+
             this.Closing += MainWindow_Closing;
-            MainTabControl.SelectionChanged += MainTabControl_SelectionChanged;
-            CodeTabControls.SelectionChanged += CodeTabControls_SelectionChanged;
+            this.Loaded += MainWindow_Loaded;
 
+            MenuTabControl.SelectionChanged += MenuTabControl_SelectionChanged;
+            CodeTabControl.SelectionChanged += CodeTabControl_SelectionChanged;
+
+            BackBtn.Click += BackBtn_Click;
+
+            
+        }
+
+
+
+        bool LoadComplete = false;
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Opacity = 0.0;
+            loadThread = new Thread(() => 
+            {
+                suWindow = new StartupWindow();
+
+                Dispatcher.FromThread(loadThread).Invoke(new Action(() =>
+                {
+                    suWindow.Show();
+                }), DispatcherPriority.Background);
+                
+                while (!LoadComplete) { }
+                suWindow.Close();
+            });
+
+            loadThread.SetApartmentState(ApartmentState.STA);
+            Dispatcher.Invoke(new Action(() =>
+            {
+                loadThread.Start();
+            }), DispatcherPriority.Background);
+            
+
+            bg.RunWorkerAsync();
+        }
+
+        private void bg_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.Opacity = 1.0;
+            LoadComplete = true;
+
+            this.Activate();
+        }
+
+        private void bg_DoWork(object sender, DoWorkEventArgs e)
+        {
             MainDispatcher = Dispatcher;
+            
+            Dispatcher.Invoke(new Action(() =>
+            {
+                dbConnector = new SQLiteConnector();
+                RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
 
-            // Menu 초기화
+                var ce = new CodeEditor();
 
-            FileMenu.Items.Add(new MenuItem() { Header = "asdf" });
+                
 
 
-            RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
-
-            AddTab();
-            AddTab();
-            AddTab();
-            AddTab();
+                AddTab();
+            }));
+            
         }
         #region [  코드 에디터(CodeEditor) 부분 코드  ]
 
@@ -61,17 +122,19 @@ namespace PowerVBA
 
         #region [  홈 탭 이벤트  ]
 
+
+        #region [  클립보드  ]
         private void BtnCopy_SimpleButtonClicked()
         {
             Clipboard.Clear();
-            Clipboard.SetText(((CodeEditor)CodeTabControls.SelectedContent).SelectedText);
+            Clipboard.SetText(((CodeEditor)CodeTabControl.SelectedContent).SelectedText);
         }
         private void BtnPaste_SimpleButtonClicked()
         {
             if (Clipboard.ContainsText())
             {
                 string t = Clipboard.GetText();
-                CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+                CodeEditor editor = ((CodeEditor)CodeTabControl.SelectedContent);
 
                 if (editor.SelectionLength != 0)
                 {
@@ -82,14 +145,14 @@ namespace PowerVBA
                     editor.TextArea.Document.Insert(editor.CaretOffset, t);
                 }
                 
-            }
-
-            
+            }            
         }
-
+        #endregion
+        
+        #region [  작업  ]
         private void BtnUndo_SimpleButtonClicked()
         {
-            CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+            CodeEditor editor = ((CodeEditor)CodeTabControl.SelectedContent);
             if (editor.CanUndo) editor.Undo();
             BtnUndo.IsEnabled = editor.CanUndo;
             BtnRedo.IsEnabled = editor.CanRedo;
@@ -98,7 +161,7 @@ namespace PowerVBA
 
         private void BtnRedo_SimpleButtonClicked()
         {
-            CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+            CodeEditor editor = ((CodeEditor)CodeTabControl.SelectedContent);
             if (editor.CanRedo) editor.Redo();
             BtnUndo.IsEnabled = editor.CanUndo;
             BtnRedo.IsEnabled = editor.CanRedo;
@@ -106,26 +169,79 @@ namespace PowerVBA
         }
 
         #endregion
+        
+        #region [  슬라이드 관리  ]
+        private void BtnNewSlide_SimpleButtonClicked()
+        {
+            int SlideNumber = 0;
+
+
+            switch (Connector.Version)
+            {
+                case PPTVersion.PPT2010:
+
+                    break;
+                case PPTVersion.PPT2013:
+                    PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+                    if (conn2013.Presentation.Slides.Count != 0) SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+
+                    conn2013.Presentation.Slides.AddSlide(SlideNumber + 1, conn2013.Presentation.SlideMaster.CustomLayouts[1]);
+                    conn2013.Presentation.Application.ActiveWindow.View.GotoSlide(SlideNumber + 1);
+                    break;
+                case PPTVersion.PPT2016:
+
+                    break;
+            }
+
+        }
+
+        private void BtnDelSlide_SimpleButtonClicked()
+        {
+            PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+            int SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+            if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
+                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                conn2013.Presentation.Slides[SlideNumber].Delete();
+            }
+        }
+
+        #endregion
+
+
+        #endregion
 
 
         #region [  삽입 탭 이벤트  ]
         private void BtnAddClass_SimpleButtonClicked()
         {
-            AddFileWindow filewindow = new AddFileWindow(Connector, true);
+            AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddType.Class);
 
             filewindow.ShowDialog();
         }
 
         private void BtnAddModule_SimpleButtonClicked()
         {
-            AddFileWindow filewindow = new AddFileWindow(Connector, false);
+            AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddType.Module);
 
             filewindow.ShowDialog();
         }
 
+        private void BtnAddForm_SimpleButtonClicked()
+        {
+            AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddType.Form);
+
+            filewindow.ShowDialog();
+        }
+
+
         private void BtnAddSub_SimpleButtonClicked()
         {
+            AddProcedureWindow procWindow = new AddProcedureWindow();
 
+            procWindow.ShowDialog();
         }
 
         private void BtnAddFunc_SimpleButtonClicked()
@@ -154,47 +270,6 @@ namespace PowerVBA
         }
         #endregion
 
-
-        #region [  슬라이드 탭 이벤트  ]
-        private void BtnNewSlide_SimpleButtonClicked()
-        {
-            int SlideNumber = 0;
-
-
-            switch (Connector.Version)
-            {
-                case PPTVersion.PPT2010:
-
-                    break;
-                case PPTVersion.PPT2013:
-                    PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
-
-                    if (conn2013.Presentation.Slides.Count != 0) SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
-
-                    conn2013.Presentation.Slides.AddSlide(SlideNumber + 1, conn2013.Presentation.SlideMaster.CustomLayouts[1]);
-                    conn2013.Presentation.Application.ActiveWindow.View.GotoSlide(SlideNumber + 1);
-                    break;
-                case PPTVersion.PPT2016:
-
-                    break;
-            }
-
-            
-        }
-
-        private void BtnDelSlide_SimpleButtonClicked()
-        {
-            PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
-
-            int SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
-            if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
-                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                conn2013.Presentation.Slides[SlideNumber].Delete();
-            }
-        }
-        #endregion
-
         #endregion
 
 
@@ -209,7 +284,7 @@ namespace PowerVBA
                 Header = "ABC",
                 Content = codeTabEditor
             };
-            CodeTabControls.Items.Add(codeTab);
+            CodeTabControl.Items.Add(codeTab);
         }
         public void AddTab(VBComponentWrappingBase component)
         {
@@ -227,7 +302,7 @@ namespace PowerVBA
                         Header = comp2013.Name,
                         Content = codeTabEditor
                     };
-                    CodeTabControls.Items.Add(codeTab);
+                    CodeTabControl.Items.Add(codeTab);
                     break;
                 case PPTVersion.PPT2016:
 
@@ -282,6 +357,11 @@ namespace PowerVBA
             
         }
 
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ProgramTabControl.SelectedIndex = 0;
+            this.NoTitle = false;
+        }
 
         private void ProjectFileChange()
         {
@@ -289,11 +369,11 @@ namespace PowerVBA
         }
 
 
-        private void CodeTabControls_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             return;
 
-            CodeEditor editor = ((CodeEditor)CodeTabControls.SelectedContent);
+            CodeEditor editor = ((CodeEditor)CodeTabControl.SelectedContent);
 
 
             BtnUndo.IsEnabled = editor.CanUndo;
@@ -304,11 +384,16 @@ namespace PowerVBA
         {
             Connector?.Dispose();
         }
-        ContextMenu FileMenu = new ContextMenu();
-        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void MenuTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FileMenu.IsOpen = true;
-            if (MainTabControl.SelectedIndex == 0) MainTabControl.SelectedIndex = 1;
+            if (MenuTabControl.SelectedIndex == 0)
+            {
+                ProgramTabControl.SelectedIndex = 2;
+                MenuTabControl.SelectedIndex = 1;
+                this.NoTitle = true;
+            }
+
+            
         }
         #endregion
 
@@ -423,9 +508,17 @@ namespace PowerVBA
             ProgramTabControl.SelectedIndex = 0;
             SetName("가상 프레젠테이션 1");
         }
+
+
+
         #endregion
-        
 
-
+        private void DebugBtn_SimpleButtonClicked()
+        {
+            //CodeTabEditor
+            var itm = ((CodeTabEditor)((CloseableTabItem)CodeTabControl.SelectedItem).Content).CodeEditor;
+            itm.DeleteIndent();
+            
+        }
     }
 }

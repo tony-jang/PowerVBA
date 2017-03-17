@@ -50,7 +50,7 @@
         
         <TabControl TabStripPlacement="Bottom" BorderBrush="White">
             <TabItem Header="VBA 편집기">
-                <av:CodeEditor FontSize="13.333333333" FontFamily="GulimChe" SnapsToDevicePixels="True"/>
+                <av:CodeEditor x:Name="VBAEditor" FontSize="13.333333333" FontFamily="GulimChe" SnapsToDevicePixels="True"/>
             </TabItem>
             <TabItem Header="파트별 편집기">
                 <StackPanel>

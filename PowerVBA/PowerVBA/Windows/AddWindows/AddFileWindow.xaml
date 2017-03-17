@@ -42,9 +42,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <c:ImageRadioButton x:Name="btnClass" IsChecked="True" Content="클래스" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
                 <c:ImageRadioButton x:Name="btnModule" Grid.Column="1" Content="모듈" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png" />
+                <c:ImageRadioButton x:Name="btnForm" Grid.Column="2" Content="사용자 폼" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/FormIcon.png" />
             </Grid>
             <Grid Margin="10,20,10,0">
                 <Grid.ColumnDefinitions>
@@ -62,8 +64,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="취소" Padding="30,5" Click="Button_Click"/>
-                <Button Grid.Column="2" Content="확인" Padding="30,5" Click="Button_Click_1"/>
+                <Button x:Name="CloseBtn" Grid.Column="0" Content="취소" Padding="30,5" Click="CloseBtn_Click"/>
+                <Button x:Name="AddBtn" Grid.Column="2" Content="확인" Padding="30,5" Click="AddBtn_Click"/>
             </Grid>
         </StackPanel>
     </Grid>

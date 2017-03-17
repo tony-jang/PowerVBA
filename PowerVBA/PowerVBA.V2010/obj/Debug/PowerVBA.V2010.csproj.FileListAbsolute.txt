@@ -7,5 +7,8 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\b
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\ICSharpCode.AvalonEdit.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\System.ValueTuple.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Core.pdb
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\ICSharpCode.AvalonEdit.xml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\WPFExtension.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\System.Data.SQLite.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Core.dll.config
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\System.Data.SQLite.xml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\System.Data.SQLite.dll.config

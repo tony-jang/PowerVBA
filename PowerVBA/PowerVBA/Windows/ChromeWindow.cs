@@ -11,14 +11,22 @@ using System.Windows.Input;
 using PowerVBA.Commands;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using WPFExtension;
 
 namespace PowerVBA.Windows
 {
     public class ChromeWindow : Window
     {
 
-        public static DependencyProperty NoTitleProperty = DependencyProperty.Register("NoTitle",
-            typeof(bool), typeof(ChromeWindow), new PropertyMetadata(false));
+        public static DependencyProperty NoTitleProperty = DependencyHelper.Register();
+
+        public static DependencyProperty IsSubWindowProperty = DependencyHelper.Register(new PropertyMetadata(true));
+
+        public bool IsSubWindow
+        {
+            get { return (bool)GetValue(IsSubWindowProperty); }
+            set { SetValue(IsSubWindowProperty,value); }
+        }
 
         public bool NoTitle
         {
@@ -80,7 +88,11 @@ namespace PowerVBA.Windows
 
         private void OnClose(object sender, ExecutedRoutedEventArgs e)
         {
-            this.Close();
+            if (!IsSubWindow)
+                Environment.Exit(0);
+            else
+                this.Close();
+            
         }
 
 

@@ -14,6 +14,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using PowerVBA.Global.RegexExpressions;
 
 namespace PowerVBA.V2013.Connector
 {
@@ -81,16 +82,6 @@ namespace PowerVBA.V2013.Connector
                                 LastShapeCount = TempShapeCount;
                                 OnShapeChanged();
                             }
-
-                            //Presentation.Slides.Cast<Slide>().Select((i) => new SlideWrapping(i)).ToList().ForEach((i) =>
-                            //{
-                            //    foreach (Microsoft.Office.Interop.PowerPoint.Shape s in i.Shapes)
-                            //    {
-                            //        Shapes.Add(new ShapeWrapping(s));
-                            //    }
-                            //});
-
-
 
 
                             DelayCounter = 0;
@@ -164,7 +155,7 @@ namespace PowerVBA.V2013.Connector
 
         public override bool AddClass(string name)
         {
-            if (!Regex.IsMatch(name, RegexPattern.Pattern.NamePattern)) return false;
+            if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_StdModule))
             {
@@ -175,7 +166,7 @@ namespace PowerVBA.V2013.Connector
 
         public override bool AddForm(string name)
         {
-            if (!Regex.IsMatch(name, RegexPattern.Pattern.NamePattern)) return false;
+            if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardForm = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_MSForm))
             {
@@ -186,7 +177,7 @@ namespace PowerVBA.V2013.Connector
 
         public override bool AddModule(string name)
         {
-            if (!Regex.IsMatch(name, RegexPattern.Pattern.NamePattern)) return false;
+            if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_StdModule))
             {
