@@ -113,8 +113,12 @@
       <DependentUpon>RecentFileListViewItemDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Controls\Tools\PreDeclareFunctions.cs" />
     <Compile Include="Controls\Tools\PresentationAnalyzer.xaml.cs">
       <DependentUpon>PresentationAnalyzer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\ProjectProperty.xaml.cs">
+      <DependentUpon>ProjectProperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\SolutionExplorer.xaml.cs">
       <DependentUpon>SolutionExplorer.xaml</DependentUpon>
@@ -155,6 +159,10 @@
     <Page Include="Controls\Tools\PresentationAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Tools\ProjectProperty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Tools\SolutionExplorer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -323,6 +331,22 @@
   <ItemGroup>
     <Resource Include="Resources\Icon\LockIcon.png" />
     <Resource Include="Resources\Icon\UnLockIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\SyncIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\AllSyncIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ReferenceIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\AddFuncsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\AllSlideSyncIcon.png" />
+    <Resource Include="Resources\Icon\SlideSyncIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

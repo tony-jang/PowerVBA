@@ -27,7 +27,7 @@ namespace PowerVBA.V2013.Connector
         {
             Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
 
-
+            
 
             EventConnectThread = new Thread(() =>
             {
@@ -128,6 +128,8 @@ namespace PowerVBA.V2013.Connector
             Presentation = new PresentationWrapping(Application.Presentations.Add(OpenWithWindow.BoolToState()));
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
+            //compWrap.CodeModule.DeleteLines()
+            
 
             EventConnectThread?.Start();
         }
@@ -153,36 +155,42 @@ namespace PowerVBA.V2013.Connector
 
         #region [  Class/Form/Module 추가/제거  ]
 
-        public override bool AddClass(string name)
+        public override bool AddClass(string name, out VBComponentWrappingBase vbcomp)
         {
+            vbcomp = null;
             if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
-            VBComponentWrapping newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_StdModule))
+            VBComponentWrapping newStandardClass = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_ClassModule))
             {
                 Name = name
             };
+            vbcomp = newStandardClass;
             return true;
         }
 
-        public override bool AddForm(string name)
+        public override bool AddForm(string name, out VBComponentWrappingBase vbcomp)
         {
+            vbcomp = null;
             if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardForm = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_MSForm))
             {
                 Name = name
             };
+            vbcomp = newStandardForm;
             return true;
         }
 
-        public override bool AddModule(string name)
+        public override bool AddModule(string name, out VBComponentWrappingBase vbcomp)
         {
+            vbcomp = null;
             if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
             VBComponentWrapping newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_StdModule))
             {
                 Name = name
             };
+            vbcomp = newStandardModule;
             return true;
         }
 
@@ -211,6 +219,12 @@ namespace PowerVBA.V2013.Connector
 
             return true;
         }
+
+        #endregion
+
+        #region [  Class/Module 코드 관리  ]
+
+        
 
         #endregion
 

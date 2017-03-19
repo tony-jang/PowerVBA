@@ -1,4 +1,5 @@
 ﻿using PowerVBA.Core.Interface;
+using PowerVBA.Core.Wrap.WrapBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="name">추가할 모듈 이름입니다.</param>
         /// <returns></returns>
-        bool AddModule(string name);
+        bool AddModule(string name, out VBComponentWrappingBase comp);
         /// <summary>
         /// 모듈을 제거합니다.
         /// </summary>
@@ -55,7 +56,7 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="name">추가할 클래스 이름입니다.</param>
         /// <returns></returns>
-        bool AddClass(string name);
+        bool AddClass(string name, out VBComponentWrappingBase comp);
         /// <summary>
         /// 클래스를 제거합니다.
         /// </summary>
@@ -68,7 +69,7 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="name">추가할 폼 이름입니다.</param>
         /// <returns></returns>
-        bool AddForm(string name);
+        bool AddForm(string name, out VBComponentWrappingBase comp);
         /// <summary>
         /// 폼을 제거합니다.
         /// </summary>

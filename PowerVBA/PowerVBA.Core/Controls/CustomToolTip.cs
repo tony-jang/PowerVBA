@@ -8,10 +8,13 @@ using System.Windows.Controls;
 
 namespace PowerVBA.Core.Controls
 {
-    public class ErrorToolTip : ToolTip
+    public class CustomToolTip : ToolTip
     {
-        public static DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(ErrorToolTip));
-        public static DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text), typeof(string), typeof(ErrorToolTip));
+        public CustomToolTip()
+        {
+        }
+        public static DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(CustomToolTip));
+        public static DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text), typeof(string), typeof(CustomToolTip));
 
         public string Title
         {

@@ -18,17 +18,17 @@ namespace PowerVBA.V2010.Connector
 
         public override PPTVersion Version => PPTVersion.PPT2010;
 
-        public override bool AddClass(string name)
+        public override bool AddClass(string name, out VBComponentWrappingBase compbase)
         {
             throw new NotImplementedException();
         }
 
-        public override bool AddForm(string name)
+        public override bool AddForm(string name, out VBComponentWrappingBase compbase)
         {
             throw new NotImplementedException();
         }
 
-        public override bool AddModule(string name)
+        public override bool AddModule(string name, out VBComponentWrappingBase compbase)
         {
             throw new NotImplementedException();
         }

@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:PowerVBA"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         <ResourceDictionary Source="Themes/ControlStyle.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ControlStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/PowerVBA.Core;component/Controls/CustomToolTip.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+         
     </Application.Resources>
 </Application>

@@ -1,4 +1,5 @@
 ﻿using PowerVBA.Core.Connector;
+using PowerVBA.Core.Wrap.WrapBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,13 +40,14 @@ namespace PowerVBA.Windows.AddWindows
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
+            VBComponentWrappingBase wrap;
             bool Result = false;
             if (btnClass.IsChecked.Value)
-            { Result = conn.AddClass(TBName.Text); }
+            { Result = conn.AddClass(TBName.Text, out wrap); }
             else if (btnModule.IsChecked.Value)
-            { Result = conn.AddModule(TBName.Text); }
+            { Result = conn.AddModule(TBName.Text, out wrap); }
             else if (btnForm.IsChecked.Value)
-            { Result = conn.AddForm(TBName.Text); }
+            { Result = conn.AddForm(TBName.Text, out wrap); }
 
             if (!Result)
             { MessageBox.Show("파일 추가에 실패했습니다. 명명 규칙이 잘못 되었습니다.\r\n명명 규칙은 다음과 같습니다.\r\n - 이름의 시작은 문자만 올 수 있습니다.\r\n - 이외에는 빈칸을 제외한 _이나 문자 또는 숫자가 올 수 있습니다."); }

@@ -29,6 +29,7 @@ using System.Xml;
 using static PowerVBA.Global.Globals;
 using static PowerVBA.Core.Extension.HighlightingRuleEx;
 using PowerVBA.Core.Controls;
+using PowerVBA.Core.Wrap.WrapBase;
 
 namespace PowerVBA.Core.AvalonEdit
 {
@@ -49,15 +50,24 @@ namespace PowerVBA.Core.AvalonEdit
         protected Stopwatch sw = new Stopwatch();
         protected CodeIndentation codeIndentation;
         protected List<CodeError> CodeErrors = new List<CodeError>();
-        protected ErrorToolTip errToolTip;
+        protected CustomToolTip errToolTip;
         protected double LineHeight;
         protected CodeParser codeParser;
 
+        /// <summary>
+        /// VBComponent와 연결되어 있는 여부를 가져옵니다.
+        /// </summary>
+        protected bool IsConnectedFile = false;
+        protected VBComponentWrappingBase ConnectedFile = null;
 
         public static List<string> Classes;
         public static bool IsInitLibRead = false;
 
+        public event BlankEventHandler SaveRequest;
+
         #endregion
+
+
         static CodeEditor()
         {
             Classes = new List<string>();
@@ -164,9 +174,11 @@ namespace PowerVBA.Core.AvalonEdit
             this.ShowLineNumbers = true;
 
             this.Options.InheritWordWrapIndentation = false;
-            errToolTip = new ErrorToolTip();
+            errToolTip = new CustomToolTip();
 
             this.FontSize = 13.333333333333333;
+            this.FontFamily = new System.Windows.Media.FontFamily("DotumChe");
+
 
             LineHeight = this.TextArea.TextView.DefaultLineHeight;
 
@@ -191,13 +203,41 @@ namespace PowerVBA.Core.AvalonEdit
 
             var ctrlSpace = new RoutedCommand();
             ctrlSpace.InputGestures.Add(new KeyGesture(Key.Space, ModifierKeys.Control));
-            var cb = new CommandBinding(ctrlSpace, OnCtrlSpaceCommand);
 
-            this.CommandBindings.Add(cb);
+            var ctrlS = new RoutedCommand();
+            ctrlS.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+
+            var ctrlShiftZ = new RoutedCommand();
+            ctrlShiftZ.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
+
+            var cb1 = new CommandBinding(ctrlSpace, OnCtrlSpaceCommand);
+            var cb2 = new CommandBinding(ctrlS, OnCtrlSCommand);
+            var cb3 = new CommandBinding(ctrlShiftZ, OnCtrlShiftZCommand);
+
+            this.CommandBindings.Add(cb1);
+            this.CommandBindings.Add(cb2);
+            this.CommandBindings.Add(cb3);
 
             #endregion
         }
 
+        public CodeEditor(VBComponentWrappingBase wrappingFile) : this() 
+        {
+            IsConnectedFile = true;
+            ConnectedFile = wrappingFile;
+        }
+
+
+        private void OnCtrlShiftZCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CanRedo) Redo();
+        }
+
+        private void OnCtrlSCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            Document.UndoStack.MarkAsOriginalFile();
+            SaveRequest?.Invoke();
+        }
 
         private static void Send(Key key, bool Shift = false, bool Ctrl = false)
         {
@@ -281,8 +321,6 @@ namespace PowerVBA.Core.AvalonEdit
             }
         }
 
-
-
         private void Current_Exit(object sender, ExitEventArgs e)
         {
             thr.Abort();
@@ -361,7 +399,7 @@ namespace PowerVBA.Core.AvalonEdit
         #region Code Completion
         private void OnTextEntered(object sender, TextCompositionEventArgs textCompositionEventArgs)
         {
-            if (Text.Length >= 2)
+            if (this.CaretOffset >= 2)
             {
                 string prevStr = Text.Substring(this.CaretOffset - 2, 1);
                 Console.WriteLine(prevStr);

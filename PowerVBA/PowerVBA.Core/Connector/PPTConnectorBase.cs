@@ -86,7 +86,7 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="name">추가할 모듈 이름입니다.</param>
         /// <returns></returns>
-        public abstract bool AddModule(string name);
+        public abstract bool AddModule(string name, out VBComponentWrappingBase comp);
         /// <summary>
         /// 모듈을 제거합니다.
         /// </summary>
@@ -99,7 +99,7 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="name">추가할 클래스 이름입니다.</param>
         /// <returns></returns>
-        public abstract bool AddClass(string name);
+        public abstract bool AddClass(string name, out VBComponentWrappingBase comp);
         /// <summary>
         /// 클래스를 제거합니다.
         /// </summary>
@@ -112,7 +112,7 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="name">추가할 폼 이름입니다.</param>
         /// <returns></returns>
-        public abstract bool AddForm(string name);
+        public abstract bool AddForm(string name, out VBComponentWrappingBase comp);
         /// <summary>
         /// 폼을 제거합니다.
         /// </summary>

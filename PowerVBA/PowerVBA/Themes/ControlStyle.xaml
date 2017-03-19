@@ -418,8 +418,8 @@
                                 <RowDefinition Height="4*"/>
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="TBFileName" Text="{TemplateBinding Content}" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0"/>
-                            <TextBlock x:Name="TBFileLoc" Text="{TemplateBinding FolderLocation}" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1"/>
+                            <TextBlock x:Name="TBFileName" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0"/>
+                            <TextBlock x:Name="TBFileLoc" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1"/>
                         </Grid>
                     </Grid>
 

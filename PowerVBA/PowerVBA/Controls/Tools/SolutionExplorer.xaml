@@ -27,7 +27,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="솔루션 탐색기 (확장)" Margin="15,10" FontSize="20"
+        <TextBlock Text="솔루션 탐색기" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
         <Grid Grid.Row="1">
             <Grid>
@@ -112,7 +112,7 @@
         <Grid Grid.Row="2">
             <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
             <StackPanel Margin="0,10">
-                <TextBlock Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
+                <TextBlock x:Name="BtnOpenProperty" Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand" MouseDown="OpenProperty_Click"/>
                 <TextBlock Grid.Row="2" Text="개체 브라우저" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
             </StackPanel>
         </Grid>

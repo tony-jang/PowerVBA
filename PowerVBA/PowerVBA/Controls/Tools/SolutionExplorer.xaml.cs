@@ -1,4 +1,6 @@
-﻿using PowerVBA.Core.Connector;
+﻿using System;
+using System.Windows.Input;
+using PowerVBA.Core.Connector;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -10,6 +12,7 @@ using PowerVBA.Global;
 using PowerVBA.V2013.Wrap.WrapClass;
 using PowerVBA.Core.Wrap.WrapBase;
 using static PowerVBA.Wrap.WrappedClassManager;
+using System.Windows;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -26,6 +29,30 @@ namespace PowerVBA.Controls.Tools
             ListBoxes.Add(LBClass);
             ListBoxes.Add(LBModule);
             ListBoxes.Add(LBForms);
+
+
+            foreach(ListBox lb in ListBoxes)
+            {
+                lb.MouseDoubleClick += Item_DoubleClick;
+            }
+        }
+
+        public delegate void ComponentDelegate(object sender, VBComponentWrappingBase Data);
+
+        public event ComponentDelegate OpenRequest;
+        public event BlankDelegate OpenPropertyRequest;
+
+        private void Item_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            object source = (((FrameworkElement)e.OriginalSource).TemplatedParent);
+            if (source.GetType() == typeof(ContentPresenter)) source = ((ContentPresenter)source).TemplatedParent;
+
+            ImageListViewItem itm = (ImageListViewItem)source;
+            
+            VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
+
+
+            OpenRequest?.Invoke(this, comp);
         }
 
         bool Handled = false;
@@ -110,11 +137,15 @@ namespace PowerVBA.Controls.Tools
 
             foreach(var itm in AddComp) AddItem(itm);
             foreach (var itm in RemoveComp) RemoveItem(itm);
-
-
+            
             ClassRun.Text = LBClass.Items.Count.ToString();
-            ModuleRun.Text = LBForms.Items.Count.ToString();
+            ModuleRun.Text = LBModule.Items.Count.ToString();
             FormRun.Text = LBForms.Items.Count.ToString();
+        }
+
+        private void OpenProperty_Click(object sender, MouseButtonEventArgs e)
+        {
+            OpenPropertyRequest?.Invoke();
         }
     }
 }

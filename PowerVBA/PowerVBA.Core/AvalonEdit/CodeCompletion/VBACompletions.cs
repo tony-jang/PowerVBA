@@ -25,9 +25,12 @@ namespace PowerVBA.Core.AvalonEdit.CodeCompletion
         public static CompletionData Comp_EndSelect_ = new CompletionData("Select", "Select Case문의 정의를 종료합니다.", DeclaratorImg);
         public static CompletionData Comp_EndIf = new CompletionData("End If", "If문의 정의를 종료합니다.", DeclaratorImg);
         public static CompletionData Comp_EndIf_ = new CompletionData("If", "If문의 정의를 종료합니다.", DeclaratorImg);
+        public static CompletionData Comp_EndSub = new CompletionData("End Sub", "Sub문의 정의를 종료합니다.", DeclaratorImg);
+        public static CompletionData Comp_EndSub_ = new CompletionData("Sub", "Sub문의 정의를 종료합니다.", DeclaratorImg);
+        public static CompletionData Comp_EndFunction = new CompletionData("End Function", "Function문의 정의를 종료합니다.", DeclaratorImg);
+        public static CompletionData Comp_EndFunction_ = new CompletionData("Function", "Function문의 정의를 종료합니다.", DeclaratorImg);
 
         #endregion
-
 
         #region [  엑세서  ]
 
@@ -36,13 +39,24 @@ namespace PowerVBA.Core.AvalonEdit.CodeCompletion
         public static CompletionData Comp_Private = new CompletionData("Private", "프로그래밍 요소를 선언한 모듈, 클래스에서만 해당 프로그래밍 요소를 액세스할 수 있도록 지정합니다.", DeclaratorImg);
 
         #endregion
-
-
+        
         #region [  Do While/Until 문  ]
 
         public static CompletionData Comp_Do = new CompletionData("Do", "Boolean 조건이 True이거나 조건이 True가 될 때까지 문 블록을 반복합니다.", DeclaratorImg);
         public static CompletionData Comp_DoAfterUntil = new CompletionData("Until", "Boolean 조건이 True가 될 때까지 문 블록을 반복합니다.", DeclaratorImg);
         public static CompletionData Comp_DoAfterWhile = new CompletionData("While", "Boolean 조건이 True인 경우 문 블록을 반복합니다.", DeclaratorImg);
+
+        #endregion
+
+        #region [  Sub/Func/Type  ]
+
+        public static CompletionData Comp_Sub = new CompletionData("Sub", 
+            "호출 코드에 값을 반환하지 않는 프로시져인 Sub 프로시저를 정의하는 이름, 매개 변수 및 코드를 선언합니다.", DeclaratorImg);
+
+        public static CompletionData Comp_Func = new CompletionData("Function",
+            "호출 코드에 값을 반환하는 Function 프로시저를 정의하는 이름, 매개 변수 및 코드를 선언합니다.", DeclaratorImg);
+
+        public static CompletionData Comp_Type = new CompletionData("Type", "사용자가 지정한 새로운 형식의 타입을 선언합니다.", DeclaratorImg);
 
         #endregion
 
@@ -80,7 +94,6 @@ namespace PowerVBA.Core.AvalonEdit.CodeCompletion
         public static CompletionData Comp_Next = new CompletionData("Next", "루프 변수 값을 통해 반복하는 루프를 종료합니다.", DeclaratorImg);
 
         #endregion
-
 
     }
 }

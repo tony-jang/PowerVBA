@@ -8,7 +8,8 @@
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
         xmlns:local="clr-namespace:PowerVBA"
-        mc:Ignorable="d"
+                xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
+                mc:Ignorable="d"
         x:Name="ThisWindow" Title="Untitle Presentation - PowerVBA" Height="800" Width="1300"
                 Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico" IsSubWindow="false"
                 WindowStyle="None" AllowsTransparency="True" IsEnableMove="True" NoTitle="True" WindowStartupLocation="CenterScreen">
@@ -61,6 +62,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="140"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="23"/>
                 </Grid.RowDefinitions>
 
                 <Grid>
@@ -76,22 +78,46 @@
 
                                 <GroupBox Header="클립보드">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnCopy" Content="복사" BackImage="Resources/Icon/CopyIcon.png" SimpleButtonClicked="BtnCopy_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnPaste" Content="붙여넣기" BackImage="Resources/Icon/ClipboardIcon.png" SimpleButtonClicked="BtnPaste_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnCopy" Content="복사" BackImage="Resources/Icon/CopyIcon.png" SimpleButtonClicked="BtnCopy_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="복사 (Ctrl+C)" Text="현재 코드 편집기의&#x0a;내용을 복사합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnPaste" Content="붙여넣기" BackImage="Resources/Icon/ClipboardIcon.png" SimpleButtonClicked="BtnPaste_SimpleButtonClicked" >
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="붙여넣기 (Ctrl+V)" Text="클립보드의 내용을 문서를 붙여&#x0a;넣습니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="작업">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnUndo" Content="실행 취소" BackImage="Resources/Icon/UndoIcon.png" SimpleButtonClicked="BtnUndo_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnRedo" Content="다시 실행" BackImage="Resources/Icon/RedoIcon.png" SimpleButtonClicked="BtnRedo_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnUndo" Content="실행 취소" BackImage="Resources/Icon/UndoIcon.png" SimpleButtonClicked="BtnUndo_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="실행 취소 (Ctrl+Z)" Text="가장 최근에 실행했던 작업을 취소합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnRedo" Content="다시 실행" BackImage="Resources/Icon/RedoIcon.png" SimpleButtonClicked="BtnRedo_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="실행 취소 (Ctrl+Z)" Text="가장 최근에 취소했던 작업을 다시 실행합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="슬라이드 관리">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnNewSlide" Content="새 슬라이드" BackImage="Resources/Icon/NewSlideIcon.png" SimpleButtonClicked="BtnNewSlide_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnNewSlide" Content="새 슬라이드" BackImage="Resources/Icon/NewSlideIcon.png" SimpleButtonClicked="BtnNewSlide_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="새 슬라이드" Text="현재 프레젠테이션에 슬라이드를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="슬라이드 삭제" Text="현재 프레젠테이션에 슬라이드를 삭제합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
@@ -101,24 +127,56 @@
                             <WrapPanel>
                                 <GroupBox Header="파일 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddClass" Content="클래스 추가" BackImage="Resources/Icon/ClassIcon.png" SimpleButtonClicked="BtnAddClass_SimpleButtonClicked" />
-                                        <c:ImageButton x:Name="BtnAddModule" Content="모듈 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddModule_SimpleButtonClicked" />
-                                        <c:ImageButton x:Name="BtnAddForm" Content="사용자 폼&#x0a;추가" BackImage="Resources/Icon/FormIcon.png" SimpleButtonClicked="BtnAddForm_SimpleButtonClicked" />
+                                        <c:ImageButton x:Name="BtnAddClass" Content="클래스 추가" BackImage="Resources/Icon/ClassIcon.png" SimpleButtonClicked="BtnAddClass_SimpleButtonClicked" >
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="클래스 추가" Text="현재 VBA 프로젝트에 클래스를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnAddModule" Content="모듈 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddModule_SimpleButtonClicked" >
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="모듈 추가" Text="현재 VBA 프로젝트에 모듈을 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnAddForm" Content="사용자 폼&#x0a;추가" BackImage="Resources/Icon/FormIcon.png" SimpleButtonClicked="BtnAddForm_SimpleButtonClicked" >
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="사용자 폼 추가" Text="현재 VBA 프로젝트에 사용자 폼을 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="프로시져 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="Sub 함수 추가" Text="현재 VBA 프로젝트에 Sub 함수를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="Function 함수 추가" Text="현재 VBA 프로젝트에 Function 함수를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="Property 추가" Text="현재 VBA 프로젝트에 Property를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="변수/상수 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
-                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" >
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="변수 추가" Text="현재 VBA 프로젝트에 변수를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" >
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="상수 추가" Text="현재 VBA 프로젝트에 상수를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
@@ -143,13 +201,58 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                             </WrapPanel>
                         </TabItem>
-                        <TabItem Header="디버그">
+                        <TabItem Header="디버그" Background="White">
                             <WrapPanel>
                                 <GroupBox Header="디버그">
                                     <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
                                 </GroupBox>
                             </WrapPanel>
 
+                        </TabItem>
+                        <TabItem Header="동기화">
+                            <WrapPanel>
+                                <GroupBox Header="파일 동기화">
+                                    <WrapPanel>
+                                        <c:ImageButton Content="현재 파일&#x0a;동기화" BackImage="Resources/Icon/SyncIcon.png">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="현재 파일 동기화 (Ctrl+S)" Text="현재 선택된 파일을 VBA 프로젝트와 동기화시킵니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton Content="모든 파일&#x0a;동기화" BackImage="Resources/Icon/AllSyncIcon.png">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="모든 파일 동기화 (Ctrl+Shift+S)" Text="모든 변경된 파일들을 VBA 프로젝트와 동기화시킵니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="개체 동기화">
+                                    <WrapPanel>
+                                        <c:ImageButton Content="슬라이드&#x0a;동기화" BackImage="Resources/Icon/SlideSyncIcon.png">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+M)" Text="현재 프레젠테이션에서 선택된 개체들을 수동으로 동기화시킵니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton Content="모든 개체&#x0a;동기화" BackImage="Resources/Icon/AllSlideSyncIcon.png">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+Shift+M)" Text="현재 프레젠테이션의 모든 개체들을 수동으로 동기화시킵니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                            </WrapPanel>
+                        </TabItem>
+                        <TabItem Header="프로젝트">
+                            <WrapPanel>
+                                <GroupBox Header="구성 요소">
+                                    <WrapPanel>
+                                        <c:ImageButton Content="참조 추가" BackImage="Resources/Icon/ReferenceIcon.png"/>
+                                        <c:ImageButton Content="미리 정의된&#x0a;함수 추가" BackImage="Resources/Icon/AddFuncsIcon.png"/>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                            </WrapPanel>
                         </TabItem>
                     </TabControl>
                 </Grid>
@@ -163,12 +266,10 @@
                     </Grid.ColumnDefinitions>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="250"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <t:PresentationAnalyzer x:Name="projAnalyzer"/>
-                        
                         
                     </Grid>
                     
@@ -183,7 +284,7 @@
                             <TabControl.Resources>
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
-                            <!--<c:CloseableTabItem Header="Module1.bas" Height="20">
+                            <c:CloseableTabItem Header="Module1.bas" Height="20">
                                 
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
@@ -191,13 +292,8 @@
                                 <av:CodeEditor x:Name="codeEditor2" Text="Dim B As Presentation" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
                             <c:CloseableTabItem Header="Class2.cls" Height="20">
-                                <corec:CodeTabEditor/>
+                                <av:CodeEditor/>
                             </c:CloseableTabItem>
-                            <c:CloseableTabItem  Header="개체 브라우저" Height="20">
-                                <Grid>
-                                    
-                                </Grid>
-                            </c:CloseableTabItem>-->
                         </TabControl>
                         <GridSplitter Grid.Row="1" VerticalAlignment="Stretch"/>
                         <Rectangle Grid.Row="2" Fill="Beige"/>
@@ -213,6 +309,10 @@
                         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFF0F0F0"/>
                         <c:WpfPropertyGrid Grid.Row="2" x:Name="PropGrid"/>
                     </Grid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Rectangle Fill="#FFD24726"/>
+                    <TextBlock x:Name="tbMessage" Margin="5, 0" Text="준비" VerticalAlignment="Center" Foreground="White"/>
                 </Grid>
             </Grid>
         </TabItem>
@@ -238,7 +338,7 @@
 
                         </StackPanel>
                         <TextBlock x:Name="NoRecentInfoTB" Grid.Row="1" Visibility="Hidden" TextWrapping="Wrap" Margin="30" Foreground="White" VerticalAlignment="Top"  FontSize="13" Text="최근에 열었던 프레젠테이션이(가) 없습니다. 프레젠테이션을(를) 찾아보려면 다른 프로젠테이션 열기을(를) 클릭하여 시작합니다."/>
-                        <ListView Grid.Row="1" Margin="15,20,15,0" Background="{x:Null}" BorderBrush="{x:Null}"
+                        <ListView x:Name="LVrecentFile" Grid.Row="1" Margin="15,20,15,0" Background="{x:Null}" BorderBrush="{x:Null}"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -279,10 +379,6 @@
                                     </Setter>
                                 </Style>
                             </ListView.ItemContainerStyle>
-                            <c:RecentFileListViewItem Content="매크로 테스트.pptm" FolderLocation="바탕화면" Source="Resources/Icon/EventIcon.png"/>
-                            <c:RecentFileListViewItem Content="Macro Test.pptm" FolderLocation="바탕화면" Source="Resources/Icon/EventIcon.png"/>
-                            <c:RecentFileListViewItem Content="기이이이인 파일 이름 테스트입니다아아아.pptm" FolderLocation="바탕화면 >> Looooooooooong Folder Location" Source="Resources/Icon/EventIcon.png"/>
-                            <c:RecentFileListViewItem Content="Test1.pptm" FolderLocation="바탕화면 >> Test Folders" Source="Resources/Icon/EventIcon.png"/>
                         </ListView>
 
                         <Grid Grid.Row="2">
@@ -344,11 +440,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
-                        혹시 사용중이신 파워포인트 버전이 감지된 버전과 다르신가요? <Run  Text="버전 선택" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
+                        혹시 사용중이신 파워포인트 버전이 감지된 버전과 다르신가요? <Run x:Name="SelVerRun"  Text="버전 선택" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
                         </TextBlock>
 
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">
-                        PowerVBA가 아닌 PowerPoint를 사용하시려고 하시나요? <Run  Text="파워포인트 열기" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
+                        PowerVBA가 아닌 PowerPoint를 사용하시려고 하시나요? <Run x:Name="OpenPPTRun"  Text="파워포인트 열기" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
                         </TextBlock>
                     </Grid>
                     
@@ -427,10 +523,35 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <WrapPanel>
-                                        <c:ImageButton Padding="5" Content="프레젠테이션&#xd;보호" Foreground="Black"  BackImage="Resources/Icon/ClassIcon.png" BorderBrush="#FFABABAB" BorderThickness="1"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <WrapPanel Margin="0,20,0,0">
+                                        <c:ImageButton Padding="5" Content="클래스 정보&#xd;모두 보기" Foreground="Black"  BackImage="Resources/Icon/ClassIcon.png" BorderBrush="#FFABABAB" BorderThickness="1"/>
+                                        <Grid Margin="20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="클래스 정보 모두 보기" FontSize="20 " Foreground="Black"/>
+                                            <TextBlock Text="현재 프로젝트의 클래스 정보를 모두 볼 수 있습니다." Margin="0,5,0,0" Foreground="Black" Grid.Row="1"/>
+                                        </Grid>
+
                                     </WrapPanel>
-                                    
+                                    <WrapPanel Margin="0,20,0,0" Grid.Row="1">
+                                        <c:ImageButton Padding="5" Content=" 모듈 정보 &#xd;모두 보기" Foreground="Black"  BackImage="Resources/Icon/ModuleIcon.png" BorderBrush="#FFABABAB" BorderThickness="1"/>
+                                        <Grid Margin="20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="모듈 정보 모두 보기" FontSize="20 " Foreground="Black"/>
+                                            <TextBlock Text="현재 프로젝트의 모듈 정보를 모두 볼 수 있습니다." Margin="0,5,0,0" Foreground="Black" Grid.Row="1"/>
+                                        </Grid>
+
+                                    </WrapPanel>
+
                                 </Grid>
                             </StackPanel>
                         </Grid>

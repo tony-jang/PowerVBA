@@ -103,7 +103,7 @@
     <Compile Include="Controls\CodeTabEditor.xaml.cs">
       <DependentUpon>CodeTabEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ErrorToolTip.cs" />
+    <Compile Include="Controls\CustomToolTip.cs" />
     <Compile Include="Controls\PathButton.cs" />
     <Compile Include="AvalonEdit\Folding\FoldingLineType.cs" />
     <Compile Include="AvalonEdit\Folding\VBAFoldingStrategy.cs" />
@@ -181,7 +181,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ErrorToolTip.xaml">
+    <Page Include="Controls\CustomToolTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
