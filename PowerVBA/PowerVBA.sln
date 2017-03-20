@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA", "PowerVBA\PowerVBA.csproj", "{703A6E9D-5899-4C73-AC71-3589900B1ABF}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA.Core", "PowerVBA.Core\PowerVBA.Core.csproj", "{4D02935E-9F9A-4B75-AE11-2539229E53E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA.V2010", "PowerVBA.V2010\PowerVBA.V2010.csproj", "{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerVBA.Codes", "PowerVBA.Codes\PowerVBA.Codes.csproj", "{CC2DB167-E61F-420D-A731-AFB486E59538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A87CC0FC-AD2C-41E4-BF3C-9D6A57DED6AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC2DB167-E61F-420D-A731-AFB486E59538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2DB167-E61F-420D-A731-AFB486E59538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2DB167-E61F-420D-A731-AFB486E59538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2DB167-E61F-420D-A731-AFB486E59538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

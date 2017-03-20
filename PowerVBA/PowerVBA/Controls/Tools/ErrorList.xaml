@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="PowerVBA.Controls.Tools.ErrorList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="오류 목록" Foreground="Black" Margin="5"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="5" Background="White" Padding="30,5">
+                <Button.Content>
+                    <TextBlock>
+                        <Run x:Name="RunErrorCount" Text="1"/>개의 오류
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+            <Button Margin="5"  Background="White" Padding="30,5" Grid.Column="1">
+                <Button.Content>
+                    <TextBlock>
+                        <Run x:Name="RunWarnCount" Text="1"/>개의 경고
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+
+            <TextBox Grid.Column="3" Margin="8">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label Content="오류 목록 검색" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </Grid>
+        
+        <Grid Grid.Row="2">
+            <Grid.Resources>
+                <Style x:Key="CustomHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <DataTemplate x:Key="WrappingHeaderTemplate">
+                    <Grid>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    </Grid>
+                </DataTemplate>
+            </Grid.Resources>
+            <ListView x:Name="lvErrors">
+                <ListView.GroupStyle>
+                    <GroupStyle ContainerStyle="{DynamicResource CustomHeaderStyle}"/>
+                </ListView.GroupStyle>
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True" ColumnHeaderContainerStyle="{DynamicResource CustomHeaderStyle}" ColumnHeaderTemplate="{DynamicResource WrappingHeaderTemplate}">
+                        <GridViewColumn Header="코드" DisplayMemberBinding="{Binding ErrorCode}" />
+                        <GridViewColumn Header="설명" DisplayMemberBinding="{Binding Description}" />
+                        <GridViewColumn Header="파일" DisplayMemberBinding="{Binding FileName}" />
+                        <GridViewColumn Header="줄" DisplayMemberBinding="{Binding Line}" />
+                    </GridView>
+                </ListView.View>
+                
+            </ListView>
+
+        </Grid>
+    </Grid>
+</UserControl>

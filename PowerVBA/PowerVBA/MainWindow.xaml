@@ -296,7 +296,7 @@
                             </c:CloseableTabItem>
                         </TabControl>
                         <GridSplitter Grid.Row="1" VerticalAlignment="Stretch"/>
-                        <Rectangle Grid.Row="2" Fill="Beige"/>
+                        <t:ErrorList Grid.Row="2" />
                     </Grid>
                     <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch"/>
                     <Grid Grid.Column="4">

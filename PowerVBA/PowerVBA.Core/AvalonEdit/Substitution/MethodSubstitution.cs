@@ -41,13 +41,12 @@ namespace PowerVBA.Core.AvalonEdit.Substitution
                 string parameter = "";
 
                 if (!string.IsNullOrEmpty(m.Groups[7].Value)) parameter = m.Groups[8].Value;
-
+                
                 // 메소드 선언 부분
                 string sMethodPart = $"{ConvertAccessor(Accessor)} {ConvertType(Type)} {Name}";
                 if (Type != "Type") sMethodPart += $"({parameter})";
                 // 메소드 종료 부분
                 string eMethodPart = "End " + ConvertType(Type);
-
 
                 TextArea.Document.Replace(line.Offset, line.Length, 
                                                  sMethodPart + "\r\n" + GetIndentation() + "\t" + "\r\n" + eMethodPart);

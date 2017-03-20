@@ -113,6 +113,9 @@
       <DependentUpon>RecentFileListViewItemDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Controls\Tools\ErrorList.xaml.cs">
+      <DependentUpon>ErrorList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Tools\PreDeclareFunctions.cs" />
     <Compile Include="Controls\Tools\PresentationAnalyzer.xaml.cs">
       <DependentUpon>PresentationAnalyzer.xaml</DependentUpon>
@@ -155,6 +158,10 @@
     <Page Include="Controls\Design\RecentFileListViewItemDesign.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Tools\ErrorList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Tools\PresentationAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
