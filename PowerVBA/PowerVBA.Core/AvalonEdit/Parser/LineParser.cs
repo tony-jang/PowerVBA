@@ -27,39 +27,39 @@ namespace PowerVBA.Core.AvalonEdit.Parser
 
         public ILineInfo Parse()
         {
-            //string parseText = LineText.TrimStart();
-            //ILineInfo value = new SingleLineInfo(Segment.Length, Segment.Offset, LineType.Unknown);
+            string parseText = LineText.TrimStart();
+            ILineInfo value = new SingleLineInfo(Segment.Length, Segment.Offset, LineType.Unknown);
 
-            //if (parseText.StartsWith("'"))
-            //{
-            //    // 주석 인식
-            //    value = new SingleLineInfo(Segment.Length, Segment.Offset, LineType.Remark);
-            //}
-            //else if (Regex.IsMatch(parseText, Pattern.pattern4))
-            //{
-            //    // 변수 선언 인식
-            //    Match m = Regex.Match(parseText, Pattern.pattern4);
-            //    LineType lineType = LineType.Unknown;
-            //    string type1 = m.Groups[2].Value.ToLower();
-            //    //if ()
+            if (parseText.StartsWith("'"))
+            {
+                // 주석 인식
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, LineType.Remark);
+            }
+            else if (Regex.IsMatch(parseText, Pattern.pattern4))
+            {
+                // 변수 선언 인식
+                Match m = Regex.Match(parseText, Pattern.pattern4);
+                LineType lineType = LineType.Unknown;
+                string type1 = m.Groups[2].Value.ToLower();
+                //if ()
 
-            //    value = new SingleLineInfo(Segment.Length, Segment.Offset, LineType.GlobalVariable);
-            //}
-            //else if (Regex.IsMatch(parseText, Pattern.pattern3))
-            //{
-            //    //4
-            //    Match m = Regex.Match(parseText, Pattern.pattern3);
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, LineType.GlobalVariable);
+            }
+            else if (Regex.IsMatch(parseText, Pattern.pattern3))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
 
-            //    string type = m.Groups[4].Value.ToLower();
-            //    LineType lineType = LineType.Unknown;
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
 
-            //    if (type == "enum") { lineType = LineType.EnumStart; }
-            //    else if (type == "type") { lineType = LineType.TypeStart; }
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
 
-            //    value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
-            //}
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
 
-            //return value;
+            return value;
 
             return null;
         }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using static PowerVBA.Core.Extension.StringEx;
 using System.Collections;
 using System.Windows;
+using PowerVBA.Core.AvalonEdit.CodeCompletion;
 
 namespace PowerVBA.Core.AvalonEdit.Parser
 {
@@ -28,20 +29,39 @@ namespace PowerVBA.Core.AvalonEdit.Parser
 
         
         public List<ILineInfo> Lines { get; }
-
+        
         public void Seek()
         {
-            //// 라인 분석 (문법적 선언 오류)
-            //foreach (DocumentLine line in Editor.Document.Lines)
-            //{
-            //    string code = Editor.Text.Substring(line.Offset, line.Length);
+            DocumentLine currLine = Editor.Document.GetLineByOffset(Editor.CaretOffset);
 
-                
-                
-            //    LineParser lparser = new LineParser(code, this, new AnchorSegment(Editor.Document, line.Offset, line.Length));
-            //    var itm = lparser.Parse();
-            //    //MessageBox.Show(itm.LineType.ToString());
-            //}
+            string currCode = Editor.Text.Substring(currLine.Offset, Editor.CaretOffset - currLine.Offset);
+            
+            if (currCode.Length >= 2)
+            {
+                string PrevText = currCode.Substring(Editor.CaretOffset - currLine.Offset - 2 , 1);
+                string ThisText = currCode.Substring(Editor.CaretOffset - currLine.Offset - 1, 1);
+
+                if (PrevText == " " && ThisText == " ")
+                    return;
+
+            }
+
+            MiniLexer lexer = new MiniLexer(currCode);
+
+            lexer.Parse();
+
+            if (lexer.IsInSingleComment || lexer.IsInString) return;
+
+
+            //// 라인 분석 (문법적 선언 오류)
+            foreach (DocumentLine line in Editor.Document.Lines)
+            {
+                string code = Editor.Text.Substring(line.Offset, line.Length);
+
+                LineParser lparser = new LineParser(code, this, new AnchorSegment(Editor.Document, line.Offset, line.Length));
+                var itm = lparser.Parse();
+                //MessageBox.Show(itm.LineType.ToString());
+            }
         }
 
 

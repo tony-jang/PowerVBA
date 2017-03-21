@@ -75,9 +75,6 @@
                 </DataTemplate>
             </Grid.Resources>
             <ListView x:Name="lvErrors">
-                <ListView.GroupStyle>
-                    <GroupStyle ContainerStyle="{DynamicResource CustomHeaderStyle}"/>
-                </ListView.GroupStyle>
                 <ListView.View>
                     <GridView AllowsColumnReorder="True" ColumnHeaderContainerStyle="{DynamicResource CustomHeaderStyle}" ColumnHeaderTemplate="{DynamicResource WrappingHeaderTemplate}">
                         <GridViewColumn Header="코드" DisplayMemberBinding="{Binding ErrorCode}" />

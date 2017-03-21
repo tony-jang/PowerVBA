@@ -44,7 +44,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparer\TextComparer.cs" />
+    <Compile Include="ComponentTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeSystem\IAssembly.cs" />
+    <Compile Include="TypeSystem\IEntity.cs" />
+    <Compile Include="TypeSystem\IMember.cs" />
+    <Compile Include="TypeSystem\IMethod.cs" />
+    <Compile Include="TypeSystem\INamedElement.cs" />
+    <Compile Include="TypeSystem\IParameter.cs" />
+    <Compile Include="TypeSystem\IParameterizedMember.cs" />
+    <Compile Include="TypeSystem\ISymbol.cs" />
+    <Compile Include="TypeSystem\IType.cs" />
+    <Compile Include="TypeSystem\ITypeDefinition.cs" />
+    <Compile Include="TypeSystem\ITypeParameter.cs" />
+    <Compile Include="TypeSystem\ITypeReference.cs" />
+    <Compile Include="TypeSystem\IVariable.cs" />
+    <Compile Include="TypeSystem\KnownTypeCode.cs" />
+    <Compile Include="TypeSystem\TypeKind.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
