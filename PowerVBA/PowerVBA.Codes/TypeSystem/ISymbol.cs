@@ -21,7 +21,7 @@ namespace PowerVBA.Codes.TypeSystem
         TypeParameter
     }
     /// <summary>
-    /// TypeSystem Symbol에 대한 인터페이스.
+    /// 타입 시스템 Symbol에 대한 인터페이스입니다.
     /// </summary>
     public interface ISymbol
     {
@@ -34,6 +34,13 @@ namespace PowerVBA.Codes.TypeSystem
         /// Symbol의 간단한 이름을 가져옵니다.
         /// </summary>
         string Name { get; }
+
+
+        /// <summary>
+        /// 다른 컴파일에서 이 Symbol을 재발견하는 데 사용 가능한 심볼 참조를 작성합니다.
+        /// </summary>
+        /// <returns></returns>
+        ISymbolReference ToReference();
     }
 
     public interface ISymbolReference

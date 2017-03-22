@@ -19,6 +19,9 @@ namespace PowerVBA.Codes.TypeSystem
         IType Resolve(ITypeResolveContext context);
     }
 
+    /// <summary>
+    /// 타입 해석 컨텍스트
+    /// </summary>
     public interface ITypeResolveContext : ICompilationProvider
     {
         /// <summary>

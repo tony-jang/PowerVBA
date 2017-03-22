@@ -67,13 +67,13 @@ namespace PowerVBA.Codes.TypeSystem
         IEnumerable<IEvent> Events { get; }
 
         /// <summary>
-        /// Gets the known type code for this type definition.
+        /// 이 형식 정의에 대해 알려진 형식 코드를 가져옵니다.
         /// </summary>
         KnownTypeCode KnownTypeCode { get; }
 
         /// <summary>
-        /// For enums: returns the underlying primitive type.
-        /// For all other types: returns <see cref="SpecialType.UnknownType"/>.
+        /// Enum의 경우 : 기본 유형 반환 /
+        /// 다른 모든 타입의 경우 : <see cref="SpecialType.UnknownType"/> 반환.
         /// </summary>
         IType EnumUnderlyingType { get; }
 
@@ -86,24 +86,14 @@ namespace PowerVBA.Codes.TypeSystem
         //FullTypeName FullTypeName { get; }
 
         /// <summary>
-        /// Gets/Sets the declaring type (incl. type arguments, if any).
-        /// This property will return null for top-level types.
+        /// 선언 타입을 가져오거나 설정합니다. (타입 인수 존재시 포함)
+        /// 이 프로퍼티는 최상위 타입에 대해 null을 반환합니다.
         /// </summary>
         new IType DeclaringType { get; } // solves ambiguity between IType.DeclaringType and IEntity.DeclaringType
 
+        
         /// <summary>
-        /// Gets whether this type contains extension methods.
-        /// </summary>
-        /// <remarks>This property is used to speed up the search for extension methods.</remarks>
-        bool HasExtensionMethods { get; }
-
-        /// <summary>
-        /// Gets whether this type definition is made up of one or more partial classes.
-        /// </summary>
-        bool IsPartial { get; }
-
-        /// <summary>
-        /// Determines how this type is implementing the specified interface member.
+        /// 이 타입이 지정된 인터페이스 구성원을 구현하는 방법을 결정합니다.
         /// </summary>
         /// <returns>
         /// The method on this type that implements the interface member;
@@ -112,7 +102,7 @@ namespace PowerVBA.Codes.TypeSystem
         IMember GetInterfaceImplementation(IMember interfaceMember);
 
         /// <summary>
-        /// Determines how this type is implementing the specified interface members.
+        /// 이 타입이 지정된 인터페이스 구성원을 구현하는 방법을 결정합니다.
         /// </summary>
         /// <returns>
         /// For each interface member, this method returns the class member 

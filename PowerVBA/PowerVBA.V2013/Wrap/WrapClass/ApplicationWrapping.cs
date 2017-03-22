@@ -10,11 +10,11 @@ using PowerVBA.Core.Connector;
 namespace PowerVBA.V2013.Wrap.WrapClass
 
 {
-    [Wrapped(typeof(ppt._Application))]
+    [Wrapped(typeof(ppt.Application))]
     public class ApplicationWrapping : ApplicationWrappingBase
 	{
-		public ppt._Application Application { get; }
-        public ApplicationWrapping(ppt._Application application)
+		public ppt.Application Application { get; }
+        public ApplicationWrapping(ppt.Application application)
         {
             this.Application = application;
         }
@@ -57,7 +57,7 @@ namespace PowerVBA.V2013.Wrap.WrapClass
         public dynamic Marker => Application.Marker;
         public MsoDebugOptions MsoDebugOptions => Application.MsoDebugOptions;
         public string Name => Application.Name;
-        public NewFile NewPresentation => Application.NewPresentation;
+        public NewFile NewPresentation => ((ppt._Application)Application).NewPresentation;
         public string OperatingSystem => Application.OperatingSystem;
         public ppt.Options Options => Application.Options;
         public string Path => Application.Path;

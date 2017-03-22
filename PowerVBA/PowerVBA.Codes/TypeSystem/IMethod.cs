@@ -24,8 +24,8 @@ namespace PowerVBA.Codes.TypeSystem
         
 
         /// <summary>
-        /// If this method is an accessor, returns a reference to the corresponding property/event.
-        /// Otherwise, returns null.
+        /// 이 메소드가 접근자(엑세서)라면 해당 속성/이벤트에 대한 참조를 반환합니다.
+        /// 그 이외엔 null을 반환합니다.
         /// </summary>
         IUnresolvedMember AccessorOwner { get; }
 
@@ -51,7 +51,7 @@ namespace PowerVBA.Codes.TypeSystem
         IList<ITypeParameter> TypeParameters { get; }
 
         /// <summary>
-        /// Gets whether this is a generic method that has been parameterized.
+        /// 이 메소드가 매개 변수화 된 제네릭 메소드인지 여부를 가져옵니다.
         /// </summary>
         bool IsParameterized { get; }
 
@@ -75,7 +75,7 @@ namespace PowerVBA.Codes.TypeSystem
         bool IsAccessor { get; }
 
         /// <summary>
-        /// If this method is an accessor, returns the corresponding property/event.
+        /// 이 메소드 접근자라면 해당 속성/이벤트를 반환합니다.
         /// Otherwise, returns null.
         /// </summary>
         IMember AccessorOwner { get; }
@@ -84,7 +84,7 @@ namespace PowerVBA.Codes.TypeSystem
         /// If this method is reduced from an extension method return the original method, <c>null</c> otherwise.
         /// A reduced method doesn't contain the extension method parameter. That means that has one parameter less than it's definition.
         /// </summary>
-        IMethod ReducedFrom { get; }
+        //IMethod ReducedFrom { get; }
 
         /// <summary>
         /// Specializes this method with the given substitution.

@@ -23,6 +23,7 @@ namespace PowerVBA.V2013.Connector
 
         internal Thread EventConnectThread;
 
+
         private PPTConnector2013()
         {
             Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
@@ -34,7 +35,7 @@ namespace PowerVBA.V2013.Connector
                 int LastComponentCount = 0;
                 int LastShapeCount = 0;
                 int LastSlideCount = 0;
-
+                
                 int DelayCounter = 0;
 
                 while (true)
@@ -42,7 +43,6 @@ namespace PowerVBA.V2013.Connector
                     // PPT 종료 확인
                     try
                     {
-
                         bool Contain = Application.Presentations.Cast<Presentation>().Where((i) => (i.Application.Build == Presentation.Application.Build)).Where((i) => i.Name == Presentation.Name).Count() >= 1;
 
 
@@ -119,6 +119,7 @@ namespace PowerVBA.V2013.Connector
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
             Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, NewFile.BoolToState(), OpenWithWindow.BoolToState()));
+            
             VBProject = new VBProjectWrapping(Presentation.VBProject);
 
             EventConnectThread?.Start();

@@ -48,7 +48,7 @@ namespace PowerVBA.Codes.TypeSystem
     /// <summary>
     /// 해석된 독립체를 나타냅니다.
     /// </summary>
-    public interface IEntity : ISymbol
+    public interface IEntity : ISymbol, ICompilationProvider, INamedElement, IHasAccessibility
     {
         /// <summary>
         /// 독립체의 짧은 이름을 가져옵니다.

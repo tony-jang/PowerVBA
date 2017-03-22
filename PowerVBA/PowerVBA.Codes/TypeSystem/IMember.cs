@@ -59,8 +59,8 @@ namespace PowerVBA.Codes.TypeSystem
         IMember MemberDefinition { get; }
 
         /// <summary>
-        /// Gets the unresolved member instance from which this member was created.
-        /// This property may return <c>null</c> for special members that do not have a corresponding unresolved member instance.
+        /// 이 멤버가 생성된 해석되지 않은 멤버 인스턴스를 가져옵니다.
+        /// 확인되지 않은 멤버 인스턴스가 없는 특수 멤버에 대해 null을 반환 할 수 있습니다.
         /// </summary>
         /// <remarks>
         /// For specialized members, this property returns the unresolved member for the original member definition.
@@ -71,37 +71,22 @@ namespace PowerVBA.Codes.TypeSystem
         IUnresolvedMember UnresolvedMember { get; }
 
         /// <summary>
-        /// Gets the return type of this member.
-        /// This property never returns <c>null</c>.
+        /// 이 멤버의 반환 타입을 가져옵니다.
+        /// 이 속성은 null을 반환 하지 않습니다.
         /// </summary>
         IType ReturnType { get; }
 
         /// <summary>
-        /// Gets the interface members implemented by this member (both implicitly and explicitly).
+        /// 이 멤버로 구현된 인터페이스 멤버를 가져옵니다. (암시 or 명시 모두)
         /// </summary>
         IList<IMember> ImplementedInterfaceMembers { get; }
 
         /// <summary>
-        /// Gets whether this member is explicitly implementing an interface.
+        /// 이 멤버가 명시적으로 인터페이스를 구현하는지 여부를 가져옵니다.
         /// </summary>
         bool IsExplicitInterfaceImplementation { get; }
 
-        /// <summary>
-        /// Gets if the member is virtual. Is true only if the "virtual" modifier was used, but non-virtual
-        /// members can be overridden, too; if they are abstract or overriding a method.
-        /// </summary>
-        bool IsVirtual { get; }
-
-        /// <summary>
-        /// Gets whether this member is overriding another member.
-        /// </summary>
-        bool IsOverride { get; }
-
-        /// <summary>
-        /// Gets if the member can be overridden. Returns true when the member is "abstract", "virtual" or "override" but not "sealed".
-        /// </summary>
-        bool IsOverridable { get; }
-
+        
         /// <summary>
         /// Creates a member reference that can be used to rediscover this member in another compilation.
         /// </summary>

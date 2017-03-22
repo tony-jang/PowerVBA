@@ -40,6 +40,7 @@ namespace PowerVBA
         {
             InitializeComponent();
             
+
             bg = new BackgroundWorker();
             bg.DoWork += bg_DoWork;
             bg.RunWorkerCompleted += bg_RunWorkerCompleted;

@@ -42,7 +42,6 @@ namespace PowerVBA.Codes.TypeSystem
             this.namespaceName = namespaceName;
             this.name = name;
             this.typeParameterCount = typeParameterCount;
-            this.baseType = baseType;
         }
 
         static readonly KnownTypeReference[] knownTypeReferences = new KnownTypeReference[KnownTypeCodeCount] {
