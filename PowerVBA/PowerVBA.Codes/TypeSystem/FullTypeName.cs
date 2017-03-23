@@ -29,28 +29,32 @@ namespace PowerVBA.Codes.TypeSystem
         }
 
 
-        readonly TopLevelTypeName topLevelType;
+        //readonly TopLevelTypeName topLevelType;
         readonly NestedTypeName[] nestedTypes;
 
-        FullTypeName(TopLevelTypeName topLevelTypeName, NestedTypeName[] nestedTypes)
-        {
-            this.topLevelType = topLevelTypeName;
-            this.nestedTypes = nestedTypes;
-        }
+        //FullTypeName(TopLevelTypeName topLevelTypeName, NestedTypeName[] nestedTypes)
+        //{
+        //    this.topLevelType = topLevelTypeName;
+        //    this.nestedTypes = nestedTypes;
+        //}
         /// <summary>
 		/// Gets the name of the type.
 		/// For nested types, this is the name of the innermost type.
 		/// </summary>
-		public string Name
-        {
-            get
-            {
-                if (nestedTypes != null)
-                    return nestedTypes[nestedTypes.Length - 1].Name;
-                else
-                    return topLevelType.Name;
-            }
-        }
+		//public string Name
+  //      {
+  //          get
+  //          {
+  //              if (nestedTypes != null)
+  //                  return nestedTypes[nestedTypes.Length - 1].Name;
+  //              else
+  //                  return topLevelType.Name;
+  //          }
+  //      }
 
+        public bool Equals(FullTypeName other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

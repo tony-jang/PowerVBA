@@ -23,8 +23,8 @@ namespace PowerVBA.Codes.TypeSystem
 
         IEnumerable<IUnresolvedMethod> Methods { get; }
         IEnumerable<IUnresolvedProperty> Properties { get; }
-        IEnumerable<IUnresolvedField> Fields { get; }
-        IEnumerable<IUnresolvedEvent> Events { get; }
+        //IEnumerable<IUnresolvedField> Fields { get; }
+        //IEnumerable<IUnresolvedEvent> Events { get; }
 
         
         /// <summary>
@@ -64,7 +64,7 @@ namespace PowerVBA.Codes.TypeSystem
         IEnumerable<IField> Fields { get; }
         IEnumerable<IMethod> Methods { get; }
         IEnumerable<IProperty> Properties { get; }
-        IEnumerable<IEvent> Events { get; }
+        //IEnumerable<IEvent> Events { get; }
 
         /// <summary>
         /// 이 형식 정의에 대해 알려진 형식 코드를 가져옵니다.

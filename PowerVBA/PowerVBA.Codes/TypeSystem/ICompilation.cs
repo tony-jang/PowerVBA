@@ -62,10 +62,10 @@ namespace PowerVBA.Codes.TypeSystem
         /// </summary>
         StringComparer NameComparer { get; }
 
-        ISolutionSnapshot SolutionSnapshot { get; }
+        //ISolutionSnapshot SolutionSnapshot { get; }
 
 
-        CacheManager CacheManager { get; }
+        //CacheManager CacheManager { get; }
     }
 
     public interface ICompilationProvider

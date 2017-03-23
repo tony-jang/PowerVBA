@@ -23,6 +23,11 @@ namespace PowerVBA.Codes.TypeSystem
         int Index { get; }
 
         /// <summary>
+        /// Gets the region where the type parameter is defined.
+        /// </summary>
+        DomRegion Region { get; }
+
+        /// <summary>
 		/// 파라미터의 변화를 가져옵니다.
 		/// </summary>
 		VarianceModifier Variance { get; }
@@ -50,6 +55,11 @@ namespace PowerVBA.Codes.TypeSystem
         /// 이 속성은 null을 반환 할 수 있습니다.
         /// </summary>
         IEntity Owner { get; }
+
+        /// <summary>
+        /// Gets the region where the type parameter is defined.
+        /// </summary>
+        DomRegion Region { get; }
 
         /// <summary>
         /// 소유 메소드/클래스의 형식 파라미터 목록에서 형식 파라미터의 인덱스를 가져옵니다.

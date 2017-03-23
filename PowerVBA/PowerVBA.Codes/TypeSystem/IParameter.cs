@@ -11,6 +11,12 @@ namespace PowerVBA.Codes.TypeSystem
         string Name { get; }
 
 
+        /// <summary>
+        /// Gets the declaration region of the variable.
+        /// </summary>
+        DomRegion Region { get; }
+
+
         ITypeReference Type { get; }
 
         /// <summary>

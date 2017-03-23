@@ -248,6 +248,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PowerVBA.Codes\PowerVBA.Codes.csproj">
+      <Project>{cc2db167-e61f-420d-a731-afb486e59538}</Project>
+      <Name>PowerVBA.Codes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PowerVBA.Core\PowerVBA.Core.csproj">
       <Project>{4d02935e-9f9a-4b75-ae11-2539229e53e4}</Project>
       <Name>PowerVBA.Core</Name>

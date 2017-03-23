@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using ICSharpCode.AvalonEdit.Document;
 using PowerVBA.V2013.Wrap.WrapClass;
 using PowerVBA.Controls.Tools;
+using PowerVBA.Codes;
 
 namespace PowerVBA
 {
@@ -39,7 +40,9 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
-            
+
+            new VBAParser().Parse("public a as integer _" + Environment.NewLine + "abc");
+
 
             bg = new BackgroundWorker();
             bg.DoWork += bg_DoWork;

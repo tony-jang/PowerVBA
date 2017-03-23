@@ -81,7 +81,7 @@ namespace PowerVBA.Codes.TypeSystem
         INamespace RootNameSpace { get; }
 
 
-        ITypeDefinition GetTypeDefinition(TopLevelTypeName topLevelTypeName);
+        //ITypeDefinition GetTypeDefinition(TopLevelTypeName topLevelTypeName);
 
         /// <summary>
         /// 어셈블리 내에 있는 모든 내포되지 않은 타입들을 가져옵니다.

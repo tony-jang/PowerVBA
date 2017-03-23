@@ -16,19 +16,23 @@ namespace PowerVBA.Codes.TypeSystem
         /// </summary>
         SymbolKind SymbolKind { get; }
 
-        
+        /// <summary>
+        /// Gets the complete entity region (including header+body)
+        /// </summary>
+        DomRegion Region { get; }
+
+        /// <summary>
+        /// Gets the entity body region.
+        /// </summary>
+        DomRegion BodyRegion { get; }
+
+
         /// <summary>
         /// Gets the declaring class.
         /// For members, this is the class that contains the member.
         /// For nested classes, this is the outer class. For top-level entities, this property returns null.
         /// </summary>
         IUnresolvedTypeDefinition DeclaringTypeDefinition { get; }
-
-        /// <summary>
-        /// Gets the parsed file in which this entity is defined.
-        /// Returns null if this entity wasn't parsed from source code (e.g. loaded from a .dll with CecilLoader).
-        /// </summary>
-        IUnresolvedFile UnresolvedFile { get; }
 
         /// <summary>
         /// 현재 독립체가 정적인지에 대한 여부를 가져옵니다.
@@ -40,8 +44,6 @@ namespace PowerVBA.Codes.TypeSystem
         /// </summary>
         bool IsSynthetic { get; }
     }
-
-
 
 
 
@@ -62,7 +64,18 @@ namespace PowerVBA.Codes.TypeSystem
 
         IAssembly ParentAssembly { get; }
 
-        
+
+        /// <summary>
+        /// Gets the complete entity region (including header+body)
+        /// </summary>
+        DomRegion Region { get; }
+
+        /// <summary>
+        /// Gets the entity body region.
+        /// </summary>
+        DomRegion BodyRegion { get; }
+
+
 
         /// <summary>
         /// 현재 독립체가 정적인지에 대한 여부를 가져옵니다.

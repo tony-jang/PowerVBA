@@ -80,12 +80,7 @@ namespace PowerVBA.Codes.TypeSystem
         /// 이 멤버로 구현된 인터페이스 멤버를 가져옵니다. (암시 or 명시 모두)
         /// </summary>
         IList<IMember> ImplementedInterfaceMembers { get; }
-
-        /// <summary>
-        /// 이 멤버가 명시적으로 인터페이스를 구현하는지 여부를 가져옵니다.
-        /// </summary>
-        bool IsExplicitInterfaceImplementation { get; }
-
+        
         
         /// <summary>
         /// Creates a member reference that can be used to rediscover this member in another compilation.
@@ -110,15 +105,15 @@ namespace PowerVBA.Codes.TypeSystem
         /// Gets the substitution belonging to this specialized member.
         /// Returns TypeParameterSubstitution.Identity for not specialized members.
         /// </summary>
-        TypeParameterSubstitution Substitution
-        {
-            get;
-        }
+        //TypeParameterSubstitution Substitution
+        //{
+        //    get;
+        //}
 
         /// <summary>
         /// Specializes this member with the given substitution.
         /// If this member is already specialized, the new substitution is composed with the existing substition.
         /// </summary>
-        IMember Specialize(TypeParameterSubstitution substitution);
+        //IMember Specialize(TypeParameterSubstitution substitution);
     }
 }

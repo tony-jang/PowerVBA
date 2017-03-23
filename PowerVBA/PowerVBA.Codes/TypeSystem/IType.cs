@@ -50,6 +50,51 @@ namespace PowerVBA.Codes.TypeSystem
         /// true라면 유형은 제네릭 형식의 인스턴스를 나타냅니다.
         /// </summary>
         bool IsParameterized { get; }
+        
+        /// <summary>
+        /// Calls ITypeVisitor.Visit for this type.
+        /// </summary>
+        /// <returns>The return value of the ITypeVisitor.Visit call</returns>
+        //IType AcceptVisitor(TypeVisitor visitor);
+
+        /// <summary>
+        /// Calls ITypeVisitor.Visit for all children of this type, and reconstructs this type with the children based
+        /// on the return values of the visit calls.
+        /// </summary>
+        /// <returns>A copy of this type, with all children replaced by the return value of the corresponding visitor call.
+        /// If the visitor returned the original types for all children (or if there are no children), returns <c>this</c>.
+        /// </returns>
+        //IType VisitChildren(TypeVisitor visitor);
+
+        /// <summary>
+        /// Gets the direct base types.
+        /// </summary>
+        /// <returns>Returns the direct base types including interfaces</returns>
+        IEnumerable<IType> DirectBaseTypes { get; }
+
+        /// <summary>
+        /// Creates a type reference that can be used to look up a type equivalent to this type in another compilation.
+        /// </summary>
+        /// <remarks>
+        /// If this type contains open generics, the resulting type reference will need to be looked up in an appropriate generic context.
+        /// Otherwise, the main resolve context of a compilation is sufficient.
+        /// </remarks>
+        ITypeReference ToTypeReference();
+
+        /// <summary>
+        /// Gets a type visitor that performs the substitution of class type parameters with the type arguments
+        /// of this parameterized type.
+        /// Returns TypeParameterSubstitution.Identity if the type is not parametrized.
+        /// </summary>
+        //TypeParameterSubstitution GetSubstitution();
+
+        /// <summary>
+        /// Gets a type visitor that performs the substitution of class type parameters with the type arguments
+        /// of this parameterized type,
+        /// and also substitutes method type parameters with the specified method type arguments.
+        /// Returns TypeParameterSubstitution.Identity if the type is not parametrized.
+        /// </summary>
+        //TypeParameterSubstitution GetSubstitution(IList<IType> methodTypeArguments);
 
         IEnumerable<IMethod> GetMethods(Predicate<IUnresolvedMethod> filter = null);
 
@@ -59,7 +104,7 @@ namespace PowerVBA.Codes.TypeSystem
 
         IEnumerable<IField> GetFields(Predicate<IUnresolvedMethod> filter = null);
 
-        IEnumerable<IEvent> GetEvents(Predicate<IUnresolvedEvent> filter = null);
+        //IEnumerable<IEvent> GetEvents(Predicate<IUnresolvedEvent> filter = null);
 
         IEnumerable<IMember> GetMembers(Predicate<IUnresolvedMember> filter = null);
     }

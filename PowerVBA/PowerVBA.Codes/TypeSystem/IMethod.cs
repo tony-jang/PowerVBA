@@ -90,6 +90,6 @@ namespace PowerVBA.Codes.TypeSystem
         /// Specializes this method with the given substitution.
         /// If this method is already specialized, the new substitution is composed with the existing substition.
         /// </summary>
-        new IMethod Specialize(TypeParameterSubstitution substitution);
+        //new IMethod Specialize(TypeParameterSubstitution substitution);
     }
 }
