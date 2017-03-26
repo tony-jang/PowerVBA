@@ -28,3 +28,6 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bi
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CustomToolTip.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\PowerVBA.Codes.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\PowerVBA.Codes.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\ICSharpCode.AvalonEdit.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\WPFExtension.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\ICSharpCode.AvalonEdit.xml

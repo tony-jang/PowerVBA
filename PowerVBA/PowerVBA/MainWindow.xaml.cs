@@ -23,6 +23,11 @@ using ICSharpCode.AvalonEdit.Document;
 using PowerVBA.V2013.Wrap.WrapClass;
 using PowerVBA.Controls.Tools;
 using PowerVBA.Codes;
+using PowerVBA.Codes.TypeSystem;
+using System.Diagnostics;
+using PowerVBA.Core.AvalonEdit.Parser;
+using PowerVBA.Core.Error;
+using ICSharpCode.AvalonEdit;
 
 namespace PowerVBA
 {
@@ -36,14 +41,30 @@ namespace PowerVBA
         BackgroundWorker bg;
         Thread loadThread;
         SQLiteConnector dbConnector;
+        List<Error> Errors;
 
         public MainWindow()
         {
             InitializeComponent();
+            Errors = new List<Error>();
+            Stopwatch sw = new Stopwatch();
+            
+            sw.Start();
+            var d = new VBAParser(Errors).Parse("Dim A As String = \"!\"");
 
-            new VBAParser().Parse("public a as integer _" + Environment.NewLine + "abc");
+
+            codeEditor.TextChanged += ParsingCode;
+
+            //foreach (var itm in d)
+            //{
+            //    MessageBox.Show(itm.ToString());
+            //}
 
 
+            string str = sw.ElapsedMilliseconds + Environment.NewLine + string.Join("\r\n",
+                Errors.Select((i) => i.Message + " :: " + i.Region.BeginLine));
+            MessageBox.Show(str);
+            
             bg = new BackgroundWorker();
             bg.DoWork += bg_DoWork;
             bg.RunWorkerCompleted += bg_RunWorkerCompleted;
@@ -58,6 +79,7 @@ namespace PowerVBA
 
             solutionExplorer.OpenRequest += SolutionExplorer_OpenRequest;
             solutionExplorer.OpenPropertyRequest += SolutionExplorer_OpenPropertyRequest;
+            
 
             BackBtn.Click += BackBtn_Click;
 
@@ -223,13 +245,13 @@ namespace PowerVBA
 
         #region [  윈도우 코드  ]
 
-        public void SetMessage(string Message)
+        public void SetMessage(string Message, int Delay = 3000)
         {
             Thread thr = new Thread(() =>
             {
                 Dispatcher.Invoke(() => { tbMessage.Text = Message; });
 
-                Thread.Sleep(3000);
+                Thread.Sleep(Delay);
 
                 Dispatcher.Invoke(() => { tbMessage.Text = "준비"; });
             });
@@ -325,9 +347,20 @@ namespace PowerVBA
 
             codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
             codeEditor.SaveRequest += () => { SetMessage("저장되었습니다."); };
-
             CodeTabControl.Items.Add(codeTab);
         }
+
+        private void ParsingCode(object sender, EventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+
+            var pr = new VBAParser(Errors).Parse(((CodeEditor)sender).Text);
+            errorList.SetError(Errors);
+            this.Title = sw.ElapsedMilliseconds.ToString();
+        }
+
         public void AddCodeTab(VBComponentWrappingBase component)
         {
             CodeEditor codeEditor = null;
@@ -349,7 +382,6 @@ namespace PowerVBA
                         CodeTabControl.SelectedItem = tabItems.First();
                         return;
                     }
-                    
 
                     codeEditor = new CodeEditor(component);
 
@@ -365,7 +397,6 @@ namespace PowerVBA
                         MessageBox.Show("예외가 발생했습니다!");
                     }
                     
-
                     CloseableTabItem codeTab = new CloseableTabItem()
                     {
                         Header = comp2013.Name,
@@ -374,6 +405,8 @@ namespace PowerVBA
                     CodeTabControl.Items.Add(codeTab);
 
                     CodeTabControl.SelectedItem = codeTab;
+
+                    codeEditor.TextChanged += ParsingCode;
                     codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
                     codeEditor.SaveRequest += () => 
                     {
@@ -385,10 +418,6 @@ namespace PowerVBA
                     break;
                 
             }
-
-            
-            
-
         }
 
         public void SetName(string customName = "")
@@ -421,8 +450,6 @@ namespace PowerVBA
             {
                 Environment.Exit(0);
             }
-
-            
         }
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
@@ -453,6 +480,7 @@ namespace PowerVBA
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             Connector?.Dispose();
+            Environment.Exit(0);
         }
         private void MenuTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -539,8 +567,7 @@ namespace PowerVBA
                 Connector = tmpConn;
 
                 PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
-
-
+                
                 //== Debug ==
                 //VBComponentWrappingBase comp;
 
@@ -555,7 +582,7 @@ namespace PowerVBA
                 //AddCodeTab(comp);
 
                 //===========
-
+                
                 ProgramTabControl.SelectedIndex = 0;
                 SetName();
             }), DispatcherPriority.Background);
@@ -591,7 +618,6 @@ namespace PowerVBA
         }
 
 
-
         #endregion
 
         private void DebugBtn_SimpleButtonClicked()
@@ -599,8 +625,6 @@ namespace PowerVBA
             //CodeTabEditor
             var itm = ((CodeTabEditor)((CloseableTabItem)CodeTabControl.SelectedItem).Content).CodeEditor;
             itm.DeleteIndent();
-            
         }
-
     }
 }

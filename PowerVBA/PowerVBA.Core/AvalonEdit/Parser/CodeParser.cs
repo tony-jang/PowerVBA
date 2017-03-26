@@ -13,6 +13,7 @@ using static PowerVBA.Core.Extension.StringEx;
 using System.Collections;
 using System.Windows;
 using PowerVBA.Core.AvalonEdit.CodeCompletion;
+using System.Diagnostics;
 
 namespace PowerVBA.Core.AvalonEdit.Parser
 {
@@ -30,8 +31,10 @@ namespace PowerVBA.Core.AvalonEdit.Parser
         
         public List<ILineInfo> Lines { get; }
         
-        public void Seek()
+        public long Seek()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             DocumentLine currLine = Editor.Document.GetLineByOffset(Editor.CaretOffset);
 
             string currCode = Editor.Text.Substring(currLine.Offset, Editor.CaretOffset - currLine.Offset);
@@ -42,7 +45,7 @@ namespace PowerVBA.Core.AvalonEdit.Parser
                 string ThisText = currCode.Substring(Editor.CaretOffset - currLine.Offset - 1, 1);
 
                 if (PrevText == " " && ThisText == " ")
-                    return;
+                    return sw.ElapsedMilliseconds;
 
             }
 
@@ -50,7 +53,7 @@ namespace PowerVBA.Core.AvalonEdit.Parser
 
             lexer.Parse();
 
-            if (lexer.IsInSingleComment || lexer.IsInString) return;
+            if (lexer.IsInSingleComment || lexer.IsInString) return sw.ElapsedMilliseconds;
 
 
             //// 라인 분석 (문법적 선언 오류)
@@ -62,6 +65,8 @@ namespace PowerVBA.Core.AvalonEdit.Parser
                 var itm = lparser.Parse();
                 //MessageBox.Show(itm.LineType.ToString());
             }
+
+            return sw.ElapsedMilliseconds;
         }
 
 

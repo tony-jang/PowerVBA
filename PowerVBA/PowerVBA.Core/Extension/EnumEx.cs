@@ -19,7 +19,6 @@ namespace PowerVBA.Core.Extension
             {
                 return "";
             }
-            
         }
     }
 }

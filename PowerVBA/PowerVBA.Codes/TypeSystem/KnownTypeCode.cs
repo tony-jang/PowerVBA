@@ -105,7 +105,6 @@ namespace PowerVBA.Codes.TypeSystem
         readonly string namespaceName;
         readonly string name;
         readonly int typeParameterCount;
-        internal readonly KnownTypeCode baseType;
         public KnownTypeCode KnownTypeCode
         {
             get { return knownTypeCode; }

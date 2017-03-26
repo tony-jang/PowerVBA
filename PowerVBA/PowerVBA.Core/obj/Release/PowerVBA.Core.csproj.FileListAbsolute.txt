@@ -1,0 +1,6 @@
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Release\PowerVBA.Core.csprojResolveAssemblyReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Release\Controls\CodeBlock.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Release\Controls\CodeTabEditor.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Release\GeneratedInternalTypeHelper.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Release\PowerVBA.Core_MarkupCompile.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Release\PowerVBA.Core_MarkupCompile.lref

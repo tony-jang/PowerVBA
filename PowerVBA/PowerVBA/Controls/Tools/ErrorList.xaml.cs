@@ -1,4 +1,5 @@
-﻿using PowerVBA.Core.AvalonEdit.Errors;
+﻿using PowerVBA.Codes.TypeSystem;
+using PowerVBA.Core.AvalonEdit.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,16 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ErrorList : UserControl
     {
-        public List<CodeError> CodeErrors = new List<CodeError>();
+        public List<Error> CodeErrors = new List<Error>();
         public ErrorList()
         {
             InitializeComponent();
-            lvErrors.ItemsSource = CodeErrors;
-            CodeErrors.Add(new CodeError("IDE1", "해당 문법은 현재 버전에서 지원하지 않습니다. 지원 문법을 확인하세요.", "Module1", 1));
+        }
+        public void SetError(List<Error> Errors)
+        {
+            CodeErrors = Errors;
+            lvErrors.Items.Clear();
+            CodeErrors.ForEach(err => { lvErrors.Items.Add(err.Message); });
         }
     }
 }

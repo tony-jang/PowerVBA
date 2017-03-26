@@ -10,7 +10,7 @@ using PowerVBA.RegexPattern;
 using static PowerVBA.Core.Convert.StringConverter;
 using ICSharpCode.AvalonEdit.Editing;
 using PowerVBA.Core.AvalonEdit.Substitution.Base;
-
+using PowerVBA.Global.RegexExpressions;
 
 namespace PowerVBA.Core.AvalonEdit.Substitution
 {
@@ -35,18 +35,19 @@ namespace PowerVBA.Core.AvalonEdit.Substitution
 
             int Offset = line.Offset;
 
-            if (Regex.IsMatch(codeText, Pattern.VariableDeclarePattern))
+            if (Regex.IsMatch(codeText, CodePattern.VarComp))
             {
                 string TempStr = clonestr;
-                Match m = Regex.Match(codeText, Pattern.VariableDeclarePattern);
+                Match m = Regex.Match(codeText, CodePattern.VarComp);
 
-                string Accessor = m.Groups[1].Value;
-                string Name = m.Groups[3].Value;
-                string Type = m.Groups[6].Value;
+                //string Accessor = m.Groups[1].Value;
+                string Name = m.Groups[1].Value;
+                string Type = m.Groups[2].Value;
 
                 // 변수 선언 부분
                 // TODO : 앞쪽에 Indent 넣기
-                string DeclarePart = $"{ConvertAccessor(Accessor)} {Name} As {Type}\r\n{GetIndentation()}";
+                //string DeclarePart = $"{ConvertAccessor(Accessor)} {Name} As {Type}\r\n{GetIndentation()}";
+                string DeclarePart = $"Dim {Name} As {Type}\r\n{GetIndentation()}";
 
                 //TempStr = TempStr.Change(line.Offset, line.Length, DeclarePart);
 

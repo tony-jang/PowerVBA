@@ -74,17 +74,19 @@
                     </Grid>
                 </DataTemplate>
             </Grid.Resources>
-            <ListView x:Name="lvErrors">
+            <ListBox x:Name="lvErrors">
+                
+            </ListBox>
+            <!--<ListView x:Name="lvErrors">
                 <ListView.View>
                     <GridView AllowsColumnReorder="True" ColumnHeaderContainerStyle="{DynamicResource CustomHeaderStyle}" ColumnHeaderTemplate="{DynamicResource WrappingHeaderTemplate}">
-                        <GridViewColumn Header="코드" DisplayMemberBinding="{Binding ErrorCode}" />
-                        <GridViewColumn Header="설명" DisplayMemberBinding="{Binding Description}" />
+                        <GridViewColumn Header="설명" DisplayMemberBinding="{Binding Message}" />
                         <GridViewColumn Header="파일" DisplayMemberBinding="{Binding FileName}" />
                         <GridViewColumn Header="줄" DisplayMemberBinding="{Binding Line}" />
                     </GridView>
                 </ListView.View>
                 
-            </ListView>
+            </ListView>-->
 
         </Grid>
     </Grid>

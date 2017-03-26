@@ -23,7 +23,10 @@ namespace PowerVBA.Codes
         public int StartInt
         {
             get { return _StartInt; }
-            set { if (value <= _EndInt) _StartInt = value; }
+            set {
+                if (value <= _EndInt) _StartInt = value;
+                else { _StartInt = value; _EndInt = value; }
+            }
         }
         private int _EndInt;
         public int EndInt

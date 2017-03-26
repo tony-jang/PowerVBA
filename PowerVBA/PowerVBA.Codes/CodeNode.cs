@@ -9,18 +9,18 @@ namespace PowerVBA.Codes
 {
     public class CodeNode
     {
-        private List<CodeNode> ChildNode;
+        
         public CodeNode()
         {
-            ChildNode = new List<CodeNode>();
+            _ChildNode = new List<CodeData>();
         }
 
-        public RangeInt Lines;
+        //private RangeInt _Lines;
+        //public RangeInt Lines => _Lines;
 
-        private ISegment _Segment;
-        public ISegment Segment => _Segment;
-
-        private CodeType _type;
-        public CodeType Type => _type;
+        private List<CodeData> _ChildNode;
+        public  List<CodeData> ChildNode => _ChildNode;
+        
+        
     }
 }

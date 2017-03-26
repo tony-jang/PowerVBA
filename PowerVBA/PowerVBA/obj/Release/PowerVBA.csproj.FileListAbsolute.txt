@@ -1,0 +1,15 @@
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\PowerVBA.csprojResolveAssemblyReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\PowerVBA.csproj.ResolveComReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Design\ErrorToolTipDesign.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Design\ProjectListViewItemDesign.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Design\RecentFileListViewItemDesign.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Tools\ErrorList.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Tools\PresentationAnalyzer.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Tools\ProjectProperty.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Controls\Tools\SolutionExplorer.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Windows\AddWindows\AddFileWindow.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\Windows\AddWindows\AddProcedureWindow.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\App.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\GeneratedInternalTypeHelper.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\PowerVBA_MarkupCompile.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Release\PowerVBA_MarkupCompile.lref

@@ -36,6 +36,7 @@
     <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,11 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\BaseErrorAttribute.cs" />
+    <Compile Include="Attributes\CanReplaceAttribute.cs" />
+    <Compile Include="Attributes\KoErrorAttribute.cs" />
+    <Compile Include="Attributes\NotSupportedAttribute.cs" />
+    <Compile Include="CodeData.cs" />
     <Compile Include="CodeNode.cs" />
     <Compile Include="CodeType.cs" />
-    <Compile Include="Comparer\TextComparer.cs" />
     <Compile Include="ComponentTree.cs" />
+    <Compile Include="ErrorCode.cs" />
+    <Compile Include="Extension\charEx.cs" />
+    <Compile Include="Extension\EnumEx.cs" />
+    <Compile Include="Extension\stringEx.cs" />
+    <Compile Include="LineInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RangeInt.cs" />
     <Compile Include="TypeSystem\DomRegion.cs" />
     <Compile Include="TypeSystem\Error.cs" />
@@ -80,7 +95,13 @@
     <Compile Include="TypeSystem\KnownTypeCode.cs" />
     <Compile Include="TypeSystem\TypeKind.cs" />
     <Compile Include="VBAParser.cs" />
+    <Compile Include="VBASeeker.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

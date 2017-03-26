@@ -8,6 +8,25 @@ namespace PowerVBA.Codes
 {
     public enum CodeType
     {
+        /// <summary>
+        /// 알 수 없는 코드입니다.
+        /// </summary>
+        Unknown,
+
+
+        #region [  엑세서  ]
+
+        /// <summary>
+        /// Public ~~
+        /// </summary>
+        PublicAccessor,
+        /// <summary>
+        /// Private ~~
+        /// </summary>
+        PrivateAccessor,
+
+        #endregion
+
         #region [  블록  ]
         /// <summary>Type 선언 블록 전체입니다.</summary>
         TypeBlock,
@@ -50,6 +69,8 @@ namespace PowerVBA.Codes
 
         #endregion
 
+        #region [  선언  ]
+
         /// <summary>
         /// Type 선언 부분입니다.
         /// </summary>
@@ -64,6 +85,7 @@ namespace PowerVBA.Codes
         /// Function 선언 부분입니다.
         /// </summary>
         DeclareFunction,
+        
 
         /// <summary>
         /// If 선언 부분입니다.
@@ -115,5 +137,72 @@ namespace PowerVBA.Codes
         /// </summary>
         DeclareWhile,
 
+        #endregion
+        
+        #region [  Close  ]
+
+        /// <summary>
+        /// End Sub
+        /// </summary>
+        EndSub,
+        /// <summary>
+        /// End Function
+        /// </summary>
+        EndFunction,
+        /// <summary>
+        /// End Enum
+        /// </summary>
+        EndEnum,
+        /// <summary>
+        /// End Property
+        /// </summary>
+        EndProperty,
+        /// <summary>
+        /// End If
+        /// </summary>
+        EndIf,
+        /// <summary>
+        /// Next
+        /// </summary>
+        Next,
+        /// <summary>
+        /// While
+        /// </summary>
+        While,
+        /// <summary>
+        /// Wend
+        /// </summary>
+        Wend,
+
+        #endregion
+
+        #region [  String  ]
+
+        /// <summary>
+        /// 문자열 내부입니다.
+        /// </summary>
+        String,
+        /// <summary>
+        /// 식별자를 나타냅니다.
+        /// </summary>
+        Identifier,
+
+        #endregion
+
+        /// <summary>
+        /// 클래스를 나타냅니다. 해당 선언은 잘못되었습니다.
+        /// </summary>
+        Class,
+        /// <summary>
+        /// 모듈을 나타냅니다. 해당 선언은 잘못되었습니다.
+        /// </summary>
+        Module,
+        Dim,
+        /// <summary>
+        /// - + / * 와 같은 연산자를 나타냅니다.
+        /// </summary>
+        Operator,
+        ExitDo,
+        
     }
 }

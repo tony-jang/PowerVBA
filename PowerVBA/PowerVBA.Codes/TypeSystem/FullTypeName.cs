@@ -30,7 +30,7 @@ namespace PowerVBA.Codes.TypeSystem
 
 
         //readonly TopLevelTypeName topLevelType;
-        readonly NestedTypeName[] nestedTypes;
+        //readonly NestedTypeName[] nestedTypes;
 
         //FullTypeName(TopLevelTypeName topLevelTypeName, NestedTypeName[] nestedTypes)
         //{

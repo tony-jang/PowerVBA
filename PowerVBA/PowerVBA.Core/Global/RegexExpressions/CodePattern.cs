@@ -337,6 +337,7 @@ namespace PowerVBA.Global.RegexExpressions
 
         public static RegexString VarBefore_Type { get; } = $@"Dim{Blank}{Name}{Blank}As{Blank}";
 
+        public static RegexString VarComp { get; } = $@"Dim{Blank}{Name}{Blank}As{Blank}{Name}{Blank}";
         #endregion
 
 

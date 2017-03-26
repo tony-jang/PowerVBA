@@ -285,18 +285,11 @@
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
                             <c:CloseableTabItem Header="Module1.bas" Height="20">
-                                
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CloseableTabItem>
-                            <c:CloseableTabItem Header="Class1.cls" Height="20">
-                                <av:CodeEditor x:Name="codeEditor2" Text="Dim B As Presentation" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CloseableTabItem>
-                            <c:CloseableTabItem Header="Class2.cls" Height="20">
-                                <av:CodeEditor/>
                             </c:CloseableTabItem>
                         </TabControl>
                         <GridSplitter Grid.Row="1" VerticalAlignment="Stretch"/>
-                        <t:ErrorList Grid.Row="2" />
+                        <t:ErrorList x:Name="errorList" Grid.Row="2" />
                     </Grid>
                     <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch"/>
                     <Grid Grid.Column="4">

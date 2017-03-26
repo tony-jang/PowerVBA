@@ -39,7 +39,6 @@ namespace PowerVBA.Core.AvalonEdit.Parser
             {
                 // 변수 선언 인식
                 Match m = Regex.Match(parseText, Pattern.pattern4);
-                LineType lineType = LineType.Unknown;
                 string type1 = m.Groups[2].Value.ToLower();
                 //if ()
 
@@ -58,10 +57,87 @@ namespace PowerVBA.Core.AvalonEdit.Parser
 
                 value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
             }
+            else if (Regex.IsMatch(parseText, Pattern.pattern2))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
+
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
+
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
+
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
+            else if (Regex.IsMatch(parseText, Pattern.pattern1))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
+
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
+
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
+
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
+            else if (Regex.IsMatch(parseText, Pattern.pattern4))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
+
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
+
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
+
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
+            else if (Regex.IsMatch(parseText, Pattern.pattern1_1))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
+
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
+
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
+
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
+            else if (Regex.IsMatch(parseText, Pattern.pattern1_2))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
+
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
+
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
+
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
+
+            else if (Regex.IsMatch(parseText, Pattern.pattern1_3))
+            {
+                //4
+                Match m = Regex.Match(parseText, Pattern.pattern3);
+
+                string type = m.Groups[4].Value.ToLower();
+                LineType lineType = LineType.Unknown;
+
+                if (type == "enum") { lineType = LineType.EnumStart; }
+                else if (type == "type") { lineType = LineType.TypeStart; }
+
+                value = new SingleLineInfo(Segment.Length, Segment.Offset, lineType);
+            }
 
             return value;
-
-            return null;
         }
     }
 }
