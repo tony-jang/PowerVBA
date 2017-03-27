@@ -15,36 +15,35 @@ namespace PowerVBA.Codes
 {
     public class VBAParser
     {
-        public List<Error> Errors;
-        public VBAParser(List<Error> errors)
+        CodeInfo CodeInfo;
+        public VBAParser(CodeInfo codeInfo)
         {
-            Errors = errors;
-            Errors.Clear();
+            this.CodeInfo = codeInfo;
         }
-        public List<CodeData> Parse(string code)
+        public void Parse(string code)
         {
-            return Parse(new List<string> { code });
+            Parse(new List<string> { code });
         }
 
-
-        List<CodeData> codeDatas = new List<CodeData>();
-
-        public List<CodeData> Parse(List<string> codes)
+        public void Parse(List<string> codes)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
             int counter = 0;
 
+            // 기존 코드의 네스트(포함 여부)를 확인하기 위한 변수
             LineInfo lineInfo = new LineInfo();
 
             foreach (string code in codes)
             {
-                RangeInt line = 0;
+                
+                RangeInt CodeLine = 0;
                 
                 int LineCount = 0;
+                int Offset = 0;
                 bool IsMultiLine = false;
-                string data = "";
+                string data = string.Empty;
 
                 foreach(string codesp in code.Split(new string[] { Environment.NewLine}, StringSplitOptions.None))
                 {
@@ -57,13 +56,15 @@ namespace PowerVBA.Codes
                     {
                         if (IsMultiLine)
                         {
-                            line.EndInt = LineCount;
+                            // 다중 줄 코드라면 끝나는 부분을 해당 라인으로 잡음
+                            CodeLine.EndInt = LineCount;
                             data += Environment.NewLine + codesp;
                             IsMultiLine = true;
                         }
                         else
                         {
-                            line = LineCount;
+                            // 다중 줄의 첫 시작이라면 시작하는 부분을 해당 라인으로 잡음
+                            CodeLine = LineCount;
                             data = codesp;
                             IsMultiLine = true;
                         }
@@ -75,30 +76,23 @@ namespace PowerVBA.Codes
                         if (IsMultiLine)
                         {
                             IsMultiLine = false;
-                            VBASeeker seeker = new VBASeeker(data + Environment.NewLine + codesp, line, Errors, lineInfo);
-                            codeDatas = codeDatas.Concat(seeker.GetLine()).ToList();
-                            //MessageBox.Show(string.Join("\r\n", seeker.GetLine().ChildNode.Select((i) => i.ToString())));
+                            new VBASeeker(CodeInfo).GetLine(data + Environment.NewLine + codesp, CodeLine);
                         }
-                        else
                         // 처리 - 일반 적인 처리
+                        else
                         {
-                            line.StartInt = LineCount;
-                            VBASeeker seeker = new VBASeeker(codesp, line, Errors, lineInfo);
-                            codeDatas = codeDatas.Concat(seeker.GetLine()).ToList();
-                            //MessageBox.Show(string.Join("\r\n", seeker.GetLine().ChildNode.Select((i) => i.ToString())));
+                            CodeLine.StartInt = LineCount;
+                            new VBASeeker(CodeInfo).GetLine(codesp, CodeLine);
                         }
                     }
-
                     
+                    Offset += codesp.Length + Environment.NewLine.Length;
                 }
                 
             }
-
-            // DEBUG: 지원하지 않는 문법은 제외
-            //Errors.Where((i) => i.ErrorCode.ContainAttribute(typeof(NotSupportedAttribute))).ToList().ForEach((i) => Errors.Remove(i));
-                
             
-            return codeDatas;
+            //Errors.Where((i) => i.ErrorCode.ContainAttribute(typeof(NotSupportedAttribute))).ToList().ForEach((i) => Errors.Remove(i));
+            
         }
     }
     

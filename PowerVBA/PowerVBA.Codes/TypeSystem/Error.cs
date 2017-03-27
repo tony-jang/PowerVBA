@@ -20,7 +20,7 @@ namespace PowerVBA.Codes.TypeSystem
     }
 
     /// <summary>
-    /// Descibes an error during parsing.
+    /// 파싱중에 오류가 발생한 것을 설명합니다.
     /// </summary>
     [Serializable]
     public class Error

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes
 {
-    class LineInfo
+    public class LineInfo
     {
 
         /// <summary>

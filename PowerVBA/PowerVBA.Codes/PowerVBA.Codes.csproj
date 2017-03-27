@@ -39,6 +39,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,9 +55,15 @@
     <Compile Include="Attributes\KoErrorAttribute.cs" />
     <Compile Include="Attributes\NotSupportedAttribute.cs" />
     <Compile Include="CodeData.cs" />
-    <Compile Include="CodeNode.cs" />
+    <Compile Include="CodeInfo.cs" />
+    <Compile Include="CodeNodes\CodeItemBase.cs" />
+    <Compile Include="CodeNodes\ICodeItem.cs" />
+    <Compile Include="CodeNodes\IdentifierItem.cs" />
+    <Compile Include="CodeNodes\TextItem.cs" />
+    <Compile Include="CodeNodes\TypeItem.cs" />
     <Compile Include="CodeType.cs" />
-    <Compile Include="ComponentTree.cs" />
+    <Compile Include="Enums\Accessor.cs" />
+    <Compile Include="Enums\ClassType.cs" />
     <Compile Include="ErrorCode.cs" />
     <Compile Include="Extension\charEx.cs" />
     <Compile Include="Extension\EnumEx.cs" />
@@ -69,31 +78,31 @@
     <Compile Include="RangeInt.cs" />
     <Compile Include="TypeSystem\DomRegion.cs" />
     <Compile Include="TypeSystem\Error.cs" />
-    <Compile Include="TypeSystem\FullTypeName.cs" />
-    <Compile Include="TypeSystem\IAssembly.cs" />
-    <Compile Include="TypeSystem\ICompilation.cs" />
-    <Compile Include="TypeSystem\IEntity.cs" />
-    <Compile Include="TypeSystem\IField.cs" />
-    <Compile Include="TypeSystem\IFreezable.cs" />
-    <Compile Include="TypeSystem\IHasAccessibility.cs" />
-    <Compile Include="TypeSystem\IMember.cs" />
-    <Compile Include="TypeSystem\IMethod.cs" />
+    <Compile Include="TypeSystem\NotUsed\FullTypeName.cs" />
+    <Compile Include="TypeSystem\NotUsed\IAssembly.cs" />
+    <Compile Include="TypeSystem\NotUsed\ICompilation.cs" />
+    <Compile Include="TypeSystem\NotUsed\IEntity.cs" />
+    <Compile Include="TypeSystem\NotUsed\IField.cs" />
+    <Compile Include="TypeSystem\NotUsed\IFreezable.cs" />
+    <Compile Include="TypeSystem\NotUsed\IHasAccessibility.cs" />
+    <Compile Include="TypeSystem\NotUsed\IMember.cs" />
+    <Compile Include="TypeSystem\NotUsed\IMethod.cs" />
     <Compile Include="TypeSystem\Implementation\AbstractFreezable.cs" />
     <Compile Include="TypeSystem\Implementation\AbstractResolvedEntity.cs" />
     <Compile Include="TypeSystem\Implementation\AbstractResolvedMember.cs" />
-    <Compile Include="TypeSystem\INamedElement.cs" />
-    <Compile Include="TypeSystem\INamespace.cs" />
-    <Compile Include="TypeSystem\IParameter.cs" />
-    <Compile Include="TypeSystem\IParameterizedMember.cs" />
-    <Compile Include="TypeSystem\IProperty.cs" />
-    <Compile Include="TypeSystem\ISymbol.cs" />
-    <Compile Include="TypeSystem\IType.cs" />
-    <Compile Include="TypeSystem\ITypeDefinition.cs" />
-    <Compile Include="TypeSystem\ITypeParameter.cs" />
-    <Compile Include="TypeSystem\ITypeReference.cs" />
-    <Compile Include="TypeSystem\IVariable.cs" />
-    <Compile Include="TypeSystem\KnownTypeCode.cs" />
-    <Compile Include="TypeSystem\TypeKind.cs" />
+    <Compile Include="TypeSystem\NotUsed\INamedElement.cs" />
+    <Compile Include="TypeSystem\NotUsed\INamespace.cs" />
+    <Compile Include="TypeSystem\NotUsed\IParameter.cs" />
+    <Compile Include="TypeSystem\NotUsed\IParameterizedMember.cs" />
+    <Compile Include="TypeSystem\NotUsed\IProperty.cs" />
+    <Compile Include="TypeSystem\NotUsed\ISymbol.cs" />
+    <Compile Include="TypeSystem\NotUsed\IType.cs" />
+    <Compile Include="TypeSystem\NotUsed\ITypeDefinition.cs" />
+    <Compile Include="TypeSystem\NotUsed\ITypeParameter.cs" />
+    <Compile Include="TypeSystem\NotUsed\ITypeReference.cs" />
+    <Compile Include="TypeSystem\NotUsed\IVariable.cs" />
+    <Compile Include="TypeSystem\NotUsed\KnownTypeCode.cs" />
+    <Compile Include="TypeSystem\NotUsed\TypeKind.cs" />
     <Compile Include="VBAParser.cs" />
     <Compile Include="VBASeeker.cs" />
   </ItemGroup>
@@ -102,6 +111,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

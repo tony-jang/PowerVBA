@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.Codes
+namespace PowerVBA.Codes.Enums
 {
-    class ComponentTree
+    public enum ClassType
     {
+        Type,
+        Enum
     }
 }

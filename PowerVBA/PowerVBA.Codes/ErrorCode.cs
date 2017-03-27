@@ -147,26 +147,62 @@ namespace PowerVBA.Codes
 
         /// <summary>ElseIf If문 이후에 사용 가능 오류</summary>
         [KoError("ElseIf문은 If문 이후에 사용 할 수 있습니다.")]
-        VB0065 = 65,
+        VB0070 = 70,
 
         /// <summary>Else If문 이후에 사용 가능 오류</summary>
         [KoError("Else문은 If문 이후에 사용 할 수 있습니다.")]
-        VB0066,
+        VB0071,
         /// <summary>Else If문 한줄 사용 오류</summary>
         [KoError("ElseIf문은 한줄 If문으로 사용할 수 없습니다.")]
-        VB0067,
+        VB0072,
         /// <summary>If문 한줄 중복 사용 오류</summary>
         [KoError("If문은 한줄에 중복해서 사용 할 수 없습니다.")]
-        VB0068,
+        VB0073,
+        /// <summary>If문 처음에만 사용 가능</summary>
         [KoError("If문은 맨 처음에만 사용 할 수 있습니다.")]
-        VB0069,
+        VB0074,
+        /// <summary>If서 Else와 If띄워 사용 불가능</summary>
+        [KoError("VBA에서는 Else와 If를 띄워서 사용할 수 없습니다. 대신 ElseIf를 사용해보세요.")]
+        VB0075,
+        #endregion
+
+        #region [  Do / While 오류  ]
+
+
+        [KoError("Do문은 맨 처음에만 오거나 Exit Do의 형태로만 사용 할 수 있습니다.")]
+        VB0080 = 80,
+        [KoError("While문은 Do While로만 사용 할 수 있습니다.")]
+        VB0081,
+        [KoError("Wend문은 While문을 닫을 때만 사용 할 수 있습니다.")]
+        VB0082,
+
+
+
+        #endregion
+
+
+        #region [  파라미터 오류  ]
+
+        [KoError("ParamArray는 Optional과 함께 사용 할 수 없습니다.")]
+        VB0090 = 90,
+        [KoError("Optional은 ParamArray와 함께 사용 할 수 없습니다.")]
+        VB0091,
+        [KoError("ParamArray는 Variant의 배열이여야 합니다.")]
+        VB0092,
+        [KoError("Optional을 사용할 시 초기 값이 반드시 들어가야 합니다.")]
+        VB0093,
+        /// <summary>선언문 (Dim, Sub, Function) 오류</summary>
+        [KoError("파라미터 인식에는 Dim을 사용 할 수 없습니다. 대신 ByVal, ByRef, ParamArray를 사용해주세요.")]
+        VB0094,
         #endregion
 
         #region [  선언문 오류  ]
         /// <summary>선언문 (Dim, Sub, Function) 오류</summary>
         [KoError("선언문은 엑세서를 생략하고 쓰거나 엑세서 하나 이후에만 사용 할 수 있습니다.")]
-        VB0100 = 0100,
+        VB0100 = 100,
 
+
+        
         #endregion
 
     }
