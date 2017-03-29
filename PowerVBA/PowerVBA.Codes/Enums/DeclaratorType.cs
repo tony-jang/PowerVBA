@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes.Enums
 {
-    public enum ClassType
+    public enum DeclaratorType
     {
         Type,
-        Enum
+        Enum,
+        Sub,
+        Function,
+        Property,
     }
 }

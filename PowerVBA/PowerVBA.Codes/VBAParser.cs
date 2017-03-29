@@ -30,14 +30,12 @@ namespace PowerVBA.Codes
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            CodeInfo.ErrorList.Clear();
+
             int counter = 0;
-
-            // 기존 코드의 네스트(포함 여부)를 확인하기 위한 변수
-            LineInfo lineInfo = new LineInfo();
-
+            
             foreach (string code in codes)
             {
-                
                 RangeInt CodeLine = 0;
                 
                 int LineCount = 0;
@@ -76,13 +74,13 @@ namespace PowerVBA.Codes
                         if (IsMultiLine)
                         {
                             IsMultiLine = false;
-                            new VBASeeker(CodeInfo).GetLine(data + Environment.NewLine + codesp, CodeLine);
+                            new VBASeeker(CodeInfo).GetLine(data + Environment.NewLine + codesp, (CodeLine, Offset));
                         }
                         // 처리 - 일반 적인 처리
                         else
                         {
                             CodeLine.StartInt = LineCount;
-                            new VBASeeker(CodeInfo).GetLine(codesp, CodeLine);
+                            new VBASeeker(CodeInfo).GetLine(codesp, (CodeLine, Offset));
                         }
                     }
                     

@@ -56,19 +56,28 @@
     <Compile Include="Attributes\NotSupportedAttribute.cs" />
     <Compile Include="CodeData.cs" />
     <Compile Include="CodeInfo.cs" />
-    <Compile Include="CodeNodes\CodeItemBase.cs" />
-    <Compile Include="CodeNodes\ICodeItem.cs" />
-    <Compile Include="CodeNodes\IdentifierItem.cs" />
-    <Compile Include="CodeNodes\TextItem.cs" />
-    <Compile Include="CodeNodes\TypeItem.cs" />
+    <Compile Include="CodeItems\AccessorItem.cs" />
+    <Compile Include="CodeItems\ClosingItem.cs" />
+    <Compile Include="CodeItems\CodeItemBase.cs" />
+    <Compile Include="CodeItems\CommentItem.cs" />
+    <Compile Include="CodeItems\EndItem.cs" />
+    <Compile Include="CodeItems\ExitItem.cs" />
+    <Compile Include="CodeItems\ICodeItem.cs" />
+    <Compile Include="CodeItems\IdentifierItem.cs" />
+    <Compile Include="CodeItems\LineCodeItem.cs" />
+    <Compile Include="CodeItems\OperatorItem.cs" />
+    <Compile Include="CodeItems\TextItem.cs" />
+    <Compile Include="CodeItems\DeclaratorItem.cs" />
+    <Compile Include="CodeItems\UnknownItem.cs" />
     <Compile Include="CodeType.cs" />
     <Compile Include="Enums\Accessor.cs" />
-    <Compile Include="Enums\ClassType.cs" />
+    <Compile Include="Enums\DeclaratorType.cs" />
+    <Compile Include="Enums\CanExitItems.cs" />
     <Compile Include="ErrorCode.cs" />
     <Compile Include="Extension\charEx.cs" />
     <Compile Include="Extension\EnumEx.cs" />
     <Compile Include="Extension\stringEx.cs" />
-    <Compile Include="LineInfo.cs" />
+    <Compile Include="CodeItems\PreprocessorDirectiveItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -115,5 +124,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

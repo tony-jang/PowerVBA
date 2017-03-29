@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes.Enums
 {
-    public enum Accessor
+    enum CanExitItems
     {
-        Public,
-        Private,
-        Dim
+        Do,
+        If,
+        While,
+        For,
     }
 }

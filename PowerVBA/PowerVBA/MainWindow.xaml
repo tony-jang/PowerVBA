@@ -287,6 +287,9 @@
                             <c:CloseableTabItem Header="Module1.bas" Height="20">
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
+                            <c:CloseableTabItem Header="미리 정의된 함수" Height="20">
+                                <t:PreDeclareFuncManager/>
+                            </c:CloseableTabItem>
                         </TabControl>
                         <GridSplitter Grid.Row="1" VerticalAlignment="Stretch"/>
                         <t:ErrorList x:Name="errorList" Grid.Row="2" />

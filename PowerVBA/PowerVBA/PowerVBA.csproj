@@ -116,6 +116,9 @@
     <Compile Include="Controls\Tools\ErrorList.xaml.cs">
       <DependentUpon>ErrorList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Tools\PreDeclareFuncManager.xaml.cs">
+      <DependentUpon>PreDeclareFuncManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Tools\PreDeclareFunctions.cs" />
     <Compile Include="Controls\Tools\PresentationAnalyzer.xaml.cs">
       <DependentUpon>PresentationAnalyzer.xaml</DependentUpon>
@@ -160,6 +163,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Tools\ErrorList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\PreDeclareFuncManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

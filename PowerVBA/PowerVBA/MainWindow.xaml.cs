@@ -875,8 +875,9 @@ End Class
 
 
             new VBAParser(codeInfo).Parse(((CodeEditor)sender).Text);
+
             errorList.SetError(codeInfo.ErrorList);
-            this.Title = sw.ElapsedMilliseconds.ToString();
+            this.Title = ((float)sw.ElapsedTicks / 1000).ToString();
         }
 
         public void AddCodeTab(VBComponentWrappingBase component)
@@ -986,7 +987,7 @@ End Class
         {
 
             CloseableTabItem tabItm = ((CloseableTabItem)CodeTabControl.SelectedItem);
-
+            if (tabItm == null) return;
             if (tabItm.Content.GetType() == typeof(CodeEditor))
             {
                 var editor = (CodeEditor)tabItm.Content;

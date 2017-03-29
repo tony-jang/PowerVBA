@@ -8,24 +8,8 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes
 {
-    public struct CodeData : INotifyPropertyChanged
+    public struct CodeData
     {
-        public ISegment CodeSegment { get => _CodeSegment; set => _CodeSegment = value; }
-        private ISegment _CodeSegment;
-
-
-        public CodeType Type { get => _Type;
-            set
-            {
-                if (value != _Type)
-                {
-                    _Type = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs("Type"));
-                }
-            }
-        }
-        private CodeType _Type;
-
         #region [  Basis  ]
 
         /// <summary>
@@ -192,34 +176,5 @@ namespace PowerVBA.Codes
         /// Property 절 이후인지에 대한 여부를 가져옵니다. 이후에는 Expression이 나와야 합니다.
         /// </summary>
         public bool AfterProperty { get; set; }
-        
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(sender, e);
-        }
-
-        public CodeData Clone()
-        {
-            var d = new CodeData();
-            d.IsFistNonWs = IsFistNonWs;
-            d.IsInComment = IsInComment;
-            d.IsInPreprocessorDirective = IsInPreprocessorDirective;
-            d.IsInString = IsInString;
-            d.IsInVerbatimString = IsInVerbatimString;
-            d.IsInBracket = IsInBracket;
-            d.Type = Type;
-            d.CodeSegment = CodeSegment;
-
-            return d;
-        }
-
-        public override string ToString()
-        {
-            return $"CodeData :: Type : {Type.ToString()} / Length:Offset:EndOffset {CodeSegment.Length}:{CodeSegment.Offset}:{CodeSegment.EndOffset}";
-        }
     }
 }

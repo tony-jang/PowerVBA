@@ -47,11 +47,16 @@ namespace PowerVBA.Codes
         [NotSupported]
         [KoError("'AddHandler'는 VBA에서 지원하지 않습니다.")]
         VB0007,
-        /// <summary>선언과 동시에 초기화 불가</summary>
+        /// <summary>미지원 문법 - 선언과 동시에 초기화 불가</summary>
         [NotSupported]
         [KoError("VBA에서는 변수 선언과 동시에 초기화를 지원하지 않습니다.")]
         VB0008,
+        /// <summary>미지원 문법 - 연산자 미지원</summary>
+        [NotSupported]
+        [CanReplace(2)]
+        [KoError("VBA에서는 %1와(과) 같은 연산자를 지원하지 않습니다. 대신 %2로 사용 해보세요.")]
         VB0009,
+
         VB0010,
 
         #endregion
@@ -85,14 +90,12 @@ namespace PowerVBA.Codes
         [KoError("식별자 뒤에는 %1가 와야 합니다.")]
         VB0027,
 
-        #endregion
-
-
-
         /// <summary>특수 절 (1) 사용 불가</summary>
         [CanReplace(1)]
         [KoError("%1 절은 맨 처음에만 올 수 있습니다.")]
         VB0040 = 40,
+        #endregion
+
 
         #region [  특수문자 사용 불가  ]
 
@@ -143,6 +146,16 @@ namespace PowerVBA.Codes
 
         #endregion
 
+        #region [  연산자 오류  ]
+
+        /// <summary>저장시 자동 치환 경고</summary>
+        [CanReplace(2)]
+        [KoError("%1은(는) 저장할때 %2로 자동으로 바뀝니다.")]
+        VB0065 = 65,
+        
+
+        #endregion
+
         #region [  If 오류  ]
 
         /// <summary>ElseIf If문 이후에 사용 가능 오류</summary>
@@ -176,8 +189,7 @@ namespace PowerVBA.Codes
         [KoError("Wend문은 While문을 닫을 때만 사용 할 수 있습니다.")]
         VB0082,
 
-
-
+        
         #endregion
 
 
@@ -194,6 +206,7 @@ namespace PowerVBA.Codes
         /// <summary>선언문 (Dim, Sub, Function) 오류</summary>
         [KoError("파라미터 인식에는 Dim을 사용 할 수 없습니다. 대신 ByVal, ByRef, ParamArray를 사용해주세요.")]
         VB0094,
+
         #endregion
 
         #region [  선언문 오류  ]
