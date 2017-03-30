@@ -1109,7 +1109,7 @@ End Class
 
         private void SectionChangedDetect()
         {
-            projAnalyzer.SectionCount = Connector.ToConnector2013().Presentation.SectionCount;
+            //projAnalyzer.SectionCount = Connector.ToConnector2013().Presentation.SectionCount;
         }
 
         private void ShapeChangedDetect()

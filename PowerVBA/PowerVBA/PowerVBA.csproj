@@ -98,6 +98,7 @@
     <Compile Include="Controls\Customize\ImageButton.cs" />
     <Compile Include="Controls\Customize\ImageListViewItem.cs" />
     <Compile Include="Controls\Customize\ImageRadioButton.cs" />
+    <Compile Include="Controls\Customize\ImageTabItem.cs" />
     <Compile Include="Controls\Customize\ImageTreeViewItem.cs" />
     <Compile Include="Controls\Customize\ProjectListViewItem.cs" />
     <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
@@ -125,6 +126,9 @@
     </Compile>
     <Compile Include="Controls\Tools\ProjectProperty.xaml.cs">
       <DependentUpon>ProjectProperty.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\SlideExplorer.xaml.cs">
+      <DependentUpon>SlideExplorer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\SolutionExplorer.xaml.cs">
       <DependentUpon>SolutionExplorer.xaml</DependentUpon>
@@ -175,6 +179,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Tools\ProjectProperty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\SlideExplorer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

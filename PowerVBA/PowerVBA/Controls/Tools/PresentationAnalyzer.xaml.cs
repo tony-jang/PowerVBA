@@ -49,16 +49,16 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
-        private int _SectionCount;
-        public int SectionCount
-        {
-            get { return _SectionCount; }
-            set
-            {
-                _SectionCount = value;
+        //private int _SectionCount;
+        //public int SectionCount
+        //{
+        //    get { return _SectionCount; }
+        //    set
+        //    {
+        //        _SectionCount = value;
 
-                SectionRun.Text = _SectionCount.ToString();
-            }
-        }
+        //        SectionRun.Text = _SectionCount.ToString();
+        //    }
+        //}
     }
 }

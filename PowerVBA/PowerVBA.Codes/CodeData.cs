@@ -142,10 +142,7 @@ namespace PowerVBA.Codes
         public bool AfterCase { get; set; }
 
         #endregion
-
-
-
-
+        
         #region [  Keyword  ]
 
         /// <summary>
@@ -170,6 +167,9 @@ namespace PowerVBA.Codes
 
 
         #endregion
+
+
+
 
 
         /// <summary>

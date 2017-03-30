@@ -34,10 +34,10 @@
                     슬라이드 갯수 (<Run x:Name="SlideRun" Text="0"/>개) <Run x:Name="RunSlideDetail" Text="자세히 보기" TextDecorations="Underline"/>
                 </TextBlock>
 
-                <TextBlock Grid.Row="4" Margin="15,5" FontSize="12"
+                <!--<TextBlock Grid.Row="4" Margin="15,5" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
                     섹션 갯수 (<Run x:Name="SectionRun" Text="0"/>개) <Run x:Name="RunSectionDetail" Text="자세히 보기" TextDecorations="Underline"/>
-                </TextBlock>
+                </TextBlock>-->
             </Grid>
         </ScrollViewer>
 
@@ -46,7 +46,7 @@
             <StackPanel Margin="0,10">
                 <TextBlock Grid.Row="2" Text="도형 관리자" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
                 <TextBlock Grid.Row="2" Text="슬라이드 관리자" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
-                <TextBlock Grid.Row="2" Text="섹션 관리자" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
+                <!--<TextBlock Grid.Row="2" Text="섹션 관리자" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>-->
             </StackPanel>
         </Grid>
     </Grid>

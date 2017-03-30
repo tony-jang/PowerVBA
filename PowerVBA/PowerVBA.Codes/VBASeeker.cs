@@ -162,6 +162,7 @@ namespace PowerVBA.Codes
                     case '*':
                     case '!':
                     case '=':
+                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
 
                         // 다음 글자도 Operator일시 중복 Operator로 인식해서 처리
                         if (nextCh.IsOperator())

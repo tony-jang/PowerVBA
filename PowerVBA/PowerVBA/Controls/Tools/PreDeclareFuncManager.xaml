@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
              mc:Ignorable="d" Foreground="Black"
-             d:DesignHeight="500" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1000">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,33 +13,56 @@
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="미리 정의된 함수 추가/제거" Margin="15,10" FontSize="20"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="미리 정의된 함수 추가/제거" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+            <Button Grid.Column="1" Content="저장"  Padding="20,5" Margin="10,0" VerticalAlignment="Center" BorderBrush="Black" Background="White" Foreground="Black" Click="Button_Click"/>
+        </Grid>
+        
 
-        <Grid Grid.Row="1" Margin="10">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
-            <ListView Grid.Column="0">
-                <ListViewItem Content="MathEx"/>
-                <ListViewItem Content="File"/>
-            </ListView>
+            <ListView x:Name="FileListView" Grid.Column="0" Margin="10"/>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
 
-            <ListView Grid.Column="2">
-                <CheckBox Content="Min"/>
-                <CheckBox Content="Max"/>
-            </ListView>
+            <ListView x:Name="FunctionsListView" Grid.Column="2" Margin="10"/>
         </Grid>
 
         <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch"/>
 
         <Grid Grid.Row="3">
-            <StackPanel>
-                <TextBlock Margin="10"  FontSize="20" Text="MathEx.Min 함수"/>
-            </StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock Margin="10"  FontSize="20" >
+                    <Run x:Name="RunFuncName" Text="선택되지 않은" /> 함수
+                </TextBlock>                
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Margin="10,0,10,10">
+                    <TextBlock x:Name="TBDescription" TextWrapping="Wrap" FontSize="15"/>
+                </ScrollViewer>
+                <Rectangle Grid.Row="1" Fill="LightGray" Margin="5,0"/>
+                <Grid Grid.Row="2">
+                    <TextBlock Text="※ 자동으로 파일이름에 따라 파일이 생성됩니다. 만약 내용이 있다면 모두 덮어씌워지니 주의하세요." Margin="5" Foreground="Gray"/>
+                </Grid>
+            </Grid>
+
         </Grid>
         
     </Grid>

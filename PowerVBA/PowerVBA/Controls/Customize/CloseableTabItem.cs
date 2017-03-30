@@ -30,8 +30,18 @@ namespace PowerVBA.Controls.Customize
         {
             if (this.Parent.GetType() == typeof(TabControl))
             {
+                if (Changed)
+                {
+                    var result = MessageBox.Show("저장되지 않은 내용이 있습니다. 저장하고 닫으시겠습니까?", "저장되지 않은 파일", MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        return;
+                    }
+                }
                 TabControl tc = (TabControl)this.Parent;
                 tc.Items.Remove(this);
+
             }
         }
 
