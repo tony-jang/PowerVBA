@@ -13,7 +13,21 @@ namespace PowerVBA.Codes
     /// </summary>
     public class CodeInfo
     {
+        /// <summary>
+        /// 커스텀 메소드들을 가져옵니다.
+        /// </summary>
         public List<string> CustomMethods { get; set; }
+
+        /// <summary>
+        /// 현재 프로젝트의 변수들을 나타냅니다.
+        /// </summary>
+        public List<string> Variables { get; set; }
+
+        /// <summary>
+        /// 현재 프로젝트에서 선언된 속성들을 가져옵니다.
+        /// </summary>
+        public List<string> Properties { get; set; }
+        
         /// <summary>
         /// 현재 프로젝트 코드의 오류를 나타냅니다.
         /// </summary>
@@ -28,6 +42,25 @@ namespace PowerVBA.Codes
         {
             ErrorList = new List<Error>();
             Childrens = new List<CodeItemBase>();
+        }
+
+        public void Reset()
+        {
+            CustomMethods = new List<string>();
+            ErrorList = new List<Error>();
+            Childrens = new List<CodeItemBase>();
+        }
+
+        public override string ToString()
+        {
+            List<string> returnD = new List<string>();
+
+            foreach (var itm in Childrens)
+            {
+                returnD.Add(itm.ToString());
+            }
+
+            return string.Join("\r\n", returnD.ToArray());
         }
 
     }

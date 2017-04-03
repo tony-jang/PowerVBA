@@ -104,6 +104,18 @@ namespace PowerVBA.Codes
         [KoError("해당 특수문자 '%1'은(는) 사용할 수 없습니다.")]
         VB0041,
 
+        /// <summary>전처리기 지시문 특수문자 사용 불가</summary>
+        [KoError("전처리기 지시문 특수문자 '#'은(는) 사용할 수 없습니다.")]
+        VB0042,
+
+
+        /// <summary>해당 문자가 잘못되었습니다.</summary>
+        [KoError("해당 문자가 잘못되었습니다.")]
+        VB0043,
+
+        /// <summary>해당 문자가 잘못되었습니다.</summary>
+        [KoError("'+'나 '&'는 문자나 숫자를 이어줄 때만 사용 할 수 있습니다.")]
+        VB0044,
 
         #endregion
 
@@ -116,6 +128,7 @@ namespace PowerVBA.Codes
         /// <summary>배열 크기 뒤에는 예약어 사용 불가</summary>
         [KoError("배열 크기 선언에는 예약어가 올 수 없습니다.")]
         VB0046,
+        
 
         #endregion
 
@@ -137,13 +150,17 @@ namespace PowerVBA.Codes
 
         #endregion
 
+
         #region [  End 오류  ]
 
         /// <summary>End로 닫을 수 없는 아이템 (1)</summary>
         [CanReplace(1)]
-        [KoError("%1은(는) End로 닫을 수 없습니다.")]
-        VB0060 = 60,
+        [KoError("%1은(는) End로 닫을 수 없습니다. If, Select, Sub, Function, Property, Type, With, Enum 또는 그냥 End로만 사용해야 합니다.")]
+        VB0055 = 55,
 
+        /// <summary>처음에 End가 나오지 않은 오류</summary>
+        [KoError("End는 맨 처음에만 올 수 있습니다.")]
+        VB0056,
         #endregion
 
         #region [  연산자 오류  ]
@@ -151,12 +168,33 @@ namespace PowerVBA.Codes
         /// <summary>저장시 자동 치환 경고</summary>
         [CanReplace(2)]
         [KoError("%1은(는) 저장할때 %2로 자동으로 바뀝니다.")]
-        VB0065 = 65,
-        
+        VB0060 = 60,
+
+        /// <summary>연산자 오류</summary>
+        [CanReplace(1)]
+        [KoError("%1은(는) 올바른 연산자가 아닙니다.")]
+        VB0061,
+
+        /// <summary>피연산자 오류</summary>
+        [CanReplace(1)]
+        [KoError("'%1' 키워드는 피연산자 다음에는 나올 수 없습니다.")]
+        VB0062,
+        /// <summary>연산자 오류</summary>
+        [CanReplace(1)]
+        [KoError("'%1' 키워드는 연산자 다음에는 나올 수 없습니다.")]
+        VB0063,
+        /// <summary>연산자 오류</summary>
+        [CanReplace(1)]
+        [KoError("'%1' 식은 연산자 다음에는 나올 수 없습니다.")]
+        VB0064,
+        /// <summary>연산자 오류</summary>
+        [CanReplace(1)]
+        [KoError("'%1' 식은 피연산자 다음에는 나올 수 없습니다.")]
+        VB0065,
 
         #endregion
 
-        #region [  If 오류  ]
+        #region [  If / Select Case 오류  ]
 
         /// <summary>ElseIf If문 이후에 사용 가능 오류</summary>
         [KoError("ElseIf문은 If문 이후에 사용 할 수 있습니다.")]
@@ -177,6 +215,10 @@ namespace PowerVBA.Codes
         /// <summary>If서 Else와 If띄워 사용 불가능</summary>
         [KoError("VBA에서는 Else와 If를 띄워서 사용할 수 없습니다. 대신 ElseIf를 사용해보세요.")]
         VB0075,
+        /// <summary>Select에서 Case누락</summary>
+        [KoError("Case가 필요합니다.")]
+        VB0076,
+
         #endregion
 
         #region [  Do / While 오류  ]
@@ -199,23 +241,110 @@ namespace PowerVBA.Codes
         VB0090 = 90,
         [KoError("Optional은 ParamArray와 함께 사용 할 수 없습니다.")]
         VB0091,
-        [KoError("ParamArray는 Variant의 배열이여야 합니다.")]
+        [KoError("ParamArray는 한번만 사용할 수 있습니다.")]
         VB0092,
-        [KoError("Optional을 사용할 시 초기 값이 반드시 들어가야 합니다.")]
+        [KoError("Optional이나 ParamArray 이후 절에는 ByVal이나 ByRef가 사용될 수 없습니다.")]
         VB0093,
+        [KoError("ParamArray는 Variant의 배열이여야 합니다.")]
+        VB0094,
+        [KoError("Optional을 사용할 시 초기값이 반드시 들어가야 합니다.")]
+        VB0095,
         /// <summary>선언문 (Dim, Sub, Function) 오류</summary>
         [KoError("파라미터 인식에는 Dim을 사용 할 수 없습니다. 대신 ByVal, ByRef, ParamArray를 사용해주세요.")]
-        VB0094,
+        VB0096,
+        /// <summary>파라미터 식별자 필요</summary>
+        [KoError("파라미터 식별자가 필요합니다.")]
+        VB0097,
+        /// <summary>파라미터 쉼표 필요</summary>
+        [KoError("쉼표가 필요하지 않습니다.")]
+        VB0098,
+        /// <summary>파라미터 쉼표 필요하지 않음</summary>
+        [KoError("쉼표가 필요합니다.")]
+        VB0099,
+        /// <summary>파라미터 Optional 타입 오류</summary>
+        [KoError("Optional은 기본값을 가진 내부 형식이나 Variant이어야 합니다.")]
+        VB0100,
+        /// <summary>파라미터 괄호 오류</summary>
+        [KoError("파라미터 배열 선언은 괄호 한번만 열어야 합니다.")]
+        VB0101,
+        [KoError("ByVal, ByRef, ParamArray, Optional 등은 파라미터 내부에서만 사용 할 수 있습니다.")]
+        VB0102,
+        [KoError("Optional을 제외한 나머지에는 초기값이 들어갈 수 없습니다.")]
+        VB0103,
+
+        [KoError("현 위치에서는 String 값을 사용할 수 없습니다.")]
+        VB0104,
 
         #endregion
 
         #region [  선언문 오류  ]
         /// <summary>선언문 (Dim, Sub, Function) 오류</summary>
-        [KoError("선언문은 엑세서를 생략하고 쓰거나 엑세서 하나 이후에만 사용 할 수 있습니다.")]
-        VB0100 = 100,
+        [KoError("선언문은 엑세서를 생략하고 쓰거나 엑세서 이후에만 사용 할 수 있습니다.")]
+        VB0120 = 120,
 
-
+        /// <summary>식별자가 필요합니다.</summary>
+        [KoError("식별자가 필요합니다.")]
+        VB0121,
+        /// <summary>식이 필요합니다.</summary>
+        [KoError("식이 필요합니다.")]
+        VB0122,
+        /// <summary>식별자/선언자 필요</summary>
+        [KoError("식별자 또는 Sub/Function/Property가 와야 합니다.")]
+        VB0123,
+        /// <summary>Type 필요</summary>
+        [KoError("타입이 필요합니다.")]
+        VB0124,
+        /// <summary>ByVal, ByRef, ParamArray, Optional, ')' 이 필요합니다.</summary>
+        [KoError("ByVal, ByRef, ParamArray, Optional 또는 ')' 이 필요합니다.")]
+        VB0125,
+        #endregion
         
+        #region [  Property 오류  ]
+
+        /// <summary>Set/Get/Let 위치 오류</summary>
+        [CanReplace(1)]
+        [KoError("%1 컨텍스트는 현재 위치에 올 수 없습니다.")]
+        VB0130 = 130,
+
+        /// <summary>Property + Get/Let/Set</summary>
+        [KoError("Property 절 뒤에는 Get이나 Let 또는 Set만 올 수 있습니다.")]
+        VB0131,
+        #endregion
+
+        #region [  As 오류  ]
+
+        /// <summary>As 절은 식별자 다음에만 올 수 있습니다.</summary>
+        [KoError("As 절은 식별자 다음에만 올 수 있습니다.")]
+        VB0140 = 140,
+
+        /// <summary>As가 와야 합니다.</summary>
+        [KoError("As가 와야 합니다.")]
+        VB0141,
+
+        #endregion
+
+        #region [  배열 오류  ]
+
+        /// <summary>배열 크기 뒤에는 상수 필요</summary>
+        [KoError("배열 크기 선언에는 상수가 와야합니다")]
+        VB0150 = 150,
+
+        #endregion
+
+
+
+        #region [  문자열 오류  ]
+
+        [KoError("문자열은 닫아야 합니다.")]
+        VB0160 = 160,
+
+        #endregion
+
+
+        #region [  식 오류  ]
+
+
+
         #endregion
 
     }

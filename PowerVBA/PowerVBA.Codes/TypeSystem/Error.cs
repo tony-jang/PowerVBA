@@ -48,6 +48,7 @@ namespace PowerVBA.Codes.TypeSystem
                 string s = errorCode.GetDescription("ko-KR");
                 for (int i=1; i<=errorCode.GetReplaceCount(); i++)
                 {
+                    if (parameters == null) return "";
                     // 2개 인데 1개 밖에 없을때
                     if (parameters.Count() < i) break;
                     s = s.Replace($"%{i}", parameters[i-1]);

@@ -23,12 +23,46 @@ namespace PowerVBA.Codes.Extension
                                                 .Where((i) => CultureName == ((BaseErrorAttribute)i).MessageCulture.Name)
                                                        .First()).ErrorMessage;
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.ToString());
                 return "";
             }
         }
+
+        public static string GetValue(this Enum Enum)
+        {
+            try
+            {
+                return ((ValueAttribute)Enum.GetType()
+                       .GetField(Enum.ToString())
+                       .GetCustomAttributes(false)
+                       .Where((i) => i.GetType() == typeof(ValueAttribute))
+                       .First()).Value;
+            }
+            catch 
+            {
+                return "";
+            }
+        }
+
+        
+        public static int GetPriority(this Enum Enum)
+        {
+            try
+            {
+                return ((PriorityAttribute)Enum.GetType()
+                   .GetField(Enum.ToString())
+                   .GetCustomAttributes(false)
+                   .Where((i) => i.GetType() == typeof(PriorityAttribute))
+                   .First()).Priority;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+            
+        }
+
         public static bool ContainAttribute(this Enum Enum, Type type)
         {
             return Enum.GetType()

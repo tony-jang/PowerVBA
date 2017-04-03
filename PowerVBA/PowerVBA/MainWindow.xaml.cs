@@ -23,11 +23,13 @@ using ICSharpCode.AvalonEdit.Document;
 using PowerVBA.V2013.Wrap.WrapClass;
 using PowerVBA.Controls.Tools;
 using PowerVBA.Codes;
-using PowerVBA.Codes.TypeSystem;
 using System.Diagnostics;
 using PowerVBA.Core.AvalonEdit.Parser;
 using PowerVBA.Core.Error;
 using ICSharpCode.AvalonEdit;
+using exp = PowerVBA.Codes.Expressions;
+using Microsoft.Vbe.Interop;
+using PowerVBA.Codes.Expressions;
 
 namespace PowerVBA
 {
@@ -42,15 +44,25 @@ namespace PowerVBA
         Thread loadThread;
         SQLiteConnector dbConnector;
         CodeInfo codeInfo;
+
+        Stopwatch ParseSw = new Stopwatch();
+
         public MainWindow()
         {
             InitializeComponent();
+
             Stopwatch sw = new Stopwatch();
 
             codeInfo = new CodeInfo();
 
-            sw.Start();
-            new VBAParser(codeInfo).Parse(@"Imports FmodExample.FMOD
+            
+
+            var Exp = new exp.Expression("true * true = not false", codeInfo.ErrorList, 1);
+            var list = Exp.GetPostFix(codeInfo, out bool err);
+            MessageBox.Show(list.GetPostFixStr());
+
+            #region [ Test Code ]
+            string TestCode = @"Imports FmodExample.FMOD
 Imports System.Runtime.InteropServices
 Imports System.IO
 Imports System.Threading
@@ -568,10 +580,15 @@ Public Class FmodPlayer
     End Class
 End Class
 
-");
+";
+            #endregion
 
 
-            codeEditor.TextChanged += ParsingCode;
+            sw.Start();
+            //new VBAParser(codeInfo).Parse(TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode);
+
+
+            codeEditor.TextChanged += CodeEditor_TextChanged;
 
             //foreach (var itm in d)
             //{
@@ -579,10 +596,9 @@ End Class
             //}
 
 
-            string str = sw.ElapsedMilliseconds + Environment.NewLine + string.Join("\r\n",
+            string str = sw.ElapsedMilliseconds + "ms" + Environment.NewLine + string.Join("\r\n",
                 codeInfo.ErrorList.Select((i) => i.Message + " :: " + i.Region.BeginLine));
-            MessageBox.Show(str);
-            
+
             bg = new BackgroundWorker();
             bg.DoWork += bg_DoWork;
             bg.RunWorkerCompleted += bg_RunWorkerCompleted;
@@ -595,13 +611,54 @@ End Class
             MenuTabControl.SelectionChanged += MenuTabControl_SelectionChanged;
             CodeTabControl.SelectionChanged += CodeTabControl_SelectionChanged;
 
+            errorList.LineMoveRequest += ErrorList_LineMoveRequest;
+
             solutionExplorer.OpenRequest += SolutionExplorer_OpenRequest;
             solutionExplorer.OpenPropertyRequest += SolutionExplorer_OpenPropertyRequest;
-            
+
 
             BackBtn.Click += BackBtn_Click;
 
+            Thread thr = new Thread(() =>
+            {
+                while (true)
+                {
+                    if (ParseSw.ElapsedMilliseconds > 500)
+                    {
+                        Stopwatch sw2 = new Stopwatch();
+                        sw2.Start();
+                        string s = null;
+                        Dispatcher.Invoke(new Action(() => { s = ((CodeEditor)codeEditor).Text; }));
+
+                        new VBAParser(codeInfo).Parse(s);
+                        
+                        errorList.Dispatcher.Invoke(new Action(() =>
+                        {
+                            errorList.SetError(codeInfo.ErrorList);
+                        }));
+
+
+
+                        //Dispatcher.Invoke(new Action(() => { this.Title = (((float)sw2.ElapsedTicks) / 1000).ToString(); }));
+                        //Dispatcher.Invoke(new Action(() => { this.Title = codeInfo.ToString(); }));
+                        //MessageBox.Show(codeInfo.ToString());
+                        ParseSw.Reset();
+                    }
+                    Thread.Sleep(10);
+                }
+            });
+
+            thr.SetApartmentState(ApartmentState.STA);
+            thr.Start();
+        }
+
+        private void ErrorList_LineMoveRequest(Codes.TypeSystem.Error err)
+        {
+            codeEditor.ScrollToLine(err.Region.Begin.Line);
+            codeEditor.SelectionStart = codeEditor.Document.GetOffset(err.Region.Begin);
+            codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
             
+            codeEditor.Focus();
         }
 
 
@@ -867,17 +924,9 @@ End Class
             codeEditor.SaveRequest += () => { SetMessage("저장되었습니다."); };
             CodeTabControl.Items.Add(codeTab);
         }
-
-        private void ParsingCode(object sender, EventArgs e)
+        private void CodeEditor_TextChanged(object sender, EventArgs e)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-
-            new VBAParser(codeInfo).Parse(((CodeEditor)sender).Text);
-
-            errorList.SetError(codeInfo.ErrorList);
-            this.Title = ((float)sw.ElapsedTicks / 1000).ToString();
+            ParseSw.Restart();
         }
 
         public void AddCodeTab(VBComponentWrappingBase component)
@@ -925,7 +974,7 @@ End Class
 
                     CodeTabControl.SelectedItem = codeTab;
 
-                    codeEditor.TextChanged += ParsingCode;
+                    codeEditor.TextChanged += CodeEditor_TextChanged;
                     codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
                     codeEditor.SaveRequest += () => 
                     {
@@ -1012,7 +1061,6 @@ End Class
         }
         #endregion
 
-        
 
         #region [  초기 화면  ]
         private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
@@ -1085,21 +1133,13 @@ End Class
 
                 Connector = tmpConn;
 
+
+
                 PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
-                
+
                 //== Debug ==
-                //VBComponentWrappingBase comp;
-
-                //tmpConn.AddClass("Test", out comp);
-
-                //VBComponentWrapping compWrap = (VBComponentWrapping)comp;
-                
-
-                //compWrap.CodeModule.InsertLines(1, "Dim A As String\r\nDim B as String\r\nPublic Sub Test\r\n\t\r\nEnd Sub");
-
-
-                //AddCodeTab(comp);
-
+                tmpConn._VBProject.ToVBProj2013().VBComponents.OfType<VBComponent>().ToList().ForEach((i) => { MessageBox.Show(i.CodeModule.get_Lines(1, i.CodeModule.CountOfLines)); });
+                //tmpConn._VBProject.ToVBProj2013().VBComponents.OfType<VBComponent>().ToList().ForEach((i) => { i.CodeModule.Prope })
                 //===========
                 
                 ProgramTabControl.SelectedIndex = 0;
@@ -1144,6 +1184,14 @@ End Class
             //CodeTabEditor
             var itm = ((CodeTabEditor)((CloseableTabItem)CodeTabControl.SelectedItem).Content).CodeEditor;
             itm.DeleteIndent();
+        }
+
+        private void FileTabControl_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (((TabItem)FileTabControl.SelectedItem).Header.ToString() == "닫기")
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

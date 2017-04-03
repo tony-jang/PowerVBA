@@ -39,27 +39,7 @@ namespace PowerVBA.Codes
 
         #endregion
 
-
-        #region [  Parameter  ]
-
-        /// <summary>
-        /// 파라미터 선언 내부인지를 가져옵니다.
-        /// </summary>
-        public bool IsInParameters { get; set; }
-
-        /// <summary>
-        /// 파라미터 ParamArray 이후 절인지에 대한 여부를 가져옵니다.
-        /// </summary>
-        public bool AfterParamArray { get; set; }
-
-        /// <summary>
-        /// 파라미터 Optional 이후 절인지에 대한 여부를 가져옵니다.
-        /// </summary>
-        public bool AfterOptional { get; set; }
-
-        #endregion
-
-
+        
         /// <summary>
         /// 현재 변수 선언 중인지 여부를 나타냅니다. 확실치 않을때도 false를 반환합니다.
         /// </summary>
@@ -85,9 +65,11 @@ namespace PowerVBA.Codes
         /// </summary>
         public bool AfterDeclarator { get; set; }
 
+        public bool AfterFunction { get; set; }
+        public bool AfterSub { get; set; }
+        public bool AfterEnum { get; set; }
         public bool AfterArray { get; set; }
-
-
+        public bool AfterProperty { get; set; }
 
         #region [  Do Until/While  ]
 
@@ -167,14 +149,12 @@ namespace PowerVBA.Codes
 
 
         #endregion
+        
+        public bool AfterOperator { get; set; }
+        public bool AfterObject { get; set; }
+        public object AfterWend { get; set; }
 
-
-
-
-
-        /// <summary>
-        /// Property 절 이후인지에 대한 여부를 가져옵니다. 이후에는 Expression이 나와야 합니다.
-        /// </summary>
-        public bool AfterProperty { get; set; }
+        public bool AfterLet { get; set; }
+        public bool AfterSet { get; set; }
     }
 }

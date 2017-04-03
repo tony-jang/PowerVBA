@@ -9,6 +9,7 @@
         xmlns:w="clr-namespace:PowerVBA.Windows"
         xmlns:local="clr-namespace:PowerVBA"
                 xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
+                xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
                 mc:Ignorable="d"
         x:Name="ThisWindow" Title="Untitle Presentation - PowerVBA" Height="800" Width="1300"
                 Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico" IsSubWindow="false"
@@ -290,6 +291,9 @@
                             <c:CloseableTabItem Header="미리 정의된 함수" Height="20">
                                 <t:PreDeclareFuncManager/>
                             </c:CloseableTabItem>
+                            <c:CloseableTabItem Header="참조 관리자" Height="20">
+                                <t:ReferenceManager/>
+                            </c:CloseableTabItem>
                         </TabControl>
                         <GridSplitter Grid.Row="1" VerticalAlignment="Stretch"/>
                         <t:ErrorList x:Name="errorList" Grid.Row="2" />
@@ -461,7 +465,8 @@
                 </Grid.ColumnDefinitions>
                 <Rectangle Grid.Column="0" Fill="#FFD24726"/>
                 <TextBlock Text="{Binding ElementName=ThisWindow, Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                <TabControl Grid.ColumnSpan="2" Margin="0,20,0,0" Padding="0" Background="#00000000" BorderBrush="Transparent" TabStripPlacement="Left">
+                <TabControl x:Name="FileTabControl" Grid.ColumnSpan="2" Margin="0,20,0,0" Padding="0" Background="#00000000" BorderBrush="Transparent" TabStripPlacement="Left"
+                            SelectionChanged="FileTabControl_Changed">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type TabControl}">
                             <Setter Property="Template">
@@ -584,27 +589,169 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <TextBlock Margin="30,50,30,0" Text="열기" Foreground="Black" FontSize="30"/>
+                            <Grid Grid.Row="0">
+                                <StackPanel>
+                                    <TextBlock Margin="30,50,30,0" Text="열기" Foreground="Black" FontSize="30"/>
+                                    <TextBlock Margin="30,10,30,0" Text="※ PowerPoint의 내용과 동기화되지 않습니다." Foreground="Gray" FontSize="12"/>
+                                </StackPanel>
+                                
+                            </Grid>
+                            
                             <Grid Grid.Row="1" Margin="50,20">
-                                  
+                                <Grid>
+                                    <Grid>
+                                        <TabControl Padding="0" BorderBrush="{x:Null}" TabStripPlacement="Left">
+                                            <TabControl.Resources>
+                                                <Style TargetType="{x:Type TabControl}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type TabControl}">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="275"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TabPanel Grid.Column="0" Panel.ZIndex="1" Margin="0,0,0,-1" IsItemsHost="True" Background="Transparent"/>
+                                                                    <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">
+                                                                        <ContentPresenter ContentSource="SelectedContent" />
+                                                                    </Border>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                                <Style TargetType="{x:Type c:ImageTabItem}">
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                    <Setter Property="FontSize" Value="14"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type c:ImageTabItem}">
+                                                                <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border x:Name="mainBorder" Grid.ColumnSpan="2" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="0"/>
+                                                                    <Image Width="30" Height="30" Source="{TemplateBinding Source}" Margin="7,12"/>
+                                                                    <ContentPresenter Margin="25,10,0,10" x:Name="contentPresenter" Grid.Column="1" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                                         Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                                                         ContentSource="Header" Focusable="False"
+                                                                         HorizontalAlignment="Left"
+                                                                         RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                         VerticalAlignment="Center"/>
+                                                                </Grid>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#FFFCE4DC"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter Property="Background" Value="#FFFCCDB6"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </TabControl.Resources>
+                                            <c:ImageTabItem Header="최근에 사용한 프레젠테이션" Source="Resources/Icon/RecentIcon.png">
+                                                <Grid>
+
+                                                </Grid>
+                                            </c:ImageTabItem>
+                                            <c:ImageTabItem Header="컴퓨터" Source="Resources/Icon/MyComIcon.png"  >
+                                                <Grid>
+
+                                                </Grid>
+                                            </c:ImageTabItem>
+
+                                        </TabControl>
+                                    </Grid>
+                                </Grid>  
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="저장">
+                    <TabItem Header="저장"/>
+                    <TabItem x:Name="SaveAsTabItem" Header="다른 이름으로&#xd;저장">
                         <Grid>
-                            <StackPanel Margin="30,50,30,0">
-                                <TextBlock Text="저장" Foreground="Black" FontSize="30"/>
-                            </StackPanel>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="30,50,30,0" Text="다른 이름으로 저장" Foreground="Black" FontSize="30"/>
+                            <Grid Grid.Row="1" Margin="50,20">
+                                <Grid>
+                                    <Grid>
+                                        <TabControl Padding="0" BorderBrush="{x:Null}" TabStripPlacement="Left">
+                                            <TabControl.Resources>
+                                                <Style TargetType="{x:Type TabControl}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type TabControl}">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="275"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TabPanel Grid.Column="0" Panel.ZIndex="1" Margin="0,0,0,-1" IsItemsHost="True" Background="Transparent"/>
+                                                                    <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0">
+                                                                        <ContentPresenter ContentSource="SelectedContent" />
+                                                                    </Border>
+                                                                </Grid>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                                <Style TargetType="{x:Type c:ImageTabItem}">
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                    <Setter Property="FontSize" Value="14"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type c:ImageTabItem}">
+                                                                <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border x:Name="mainBorder" Grid.ColumnSpan="2" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="0"/>
+                                                                    <Image Width="30" Height="30" Source="{TemplateBinding Source}" Margin="7,12"/>
+                                                                    <ContentPresenter Margin="25,10,0,10" x:Name="contentPresenter" Grid.Column="1" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                                         Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                                                         ContentSource="Header" Focusable="False"
+                                                                         HorizontalAlignment="Left"
+                                                                         RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                         VerticalAlignment="Center"/>
+                                                                </Grid>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#FFFCE4DC"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter Property="Background" Value="#FFFCCDB6"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </TabControl.Resources>
+                                            <c:ImageTabItem Header="컴퓨터" Source="Resources/Icon/MyComIcon.png"  >
+                                                <Grid>
+
+                                                </Grid>
+                                            </c:ImageTabItem>
+
+                                        </TabControl>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
+                        
                     </TabItem>
-                    <TabItem Header="다른 이름으로&#xd;저장">
-                        <Grid>
-                            <StackPanel Margin="30,50,30,0">
-                                <TextBlock Text="다른 이름으로 저장" Foreground="Black" FontSize="30"/>
-                            </StackPanel>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="닫기"/>
+                    <TabItem Header="닫기" />
 
                 </TabControl>
 

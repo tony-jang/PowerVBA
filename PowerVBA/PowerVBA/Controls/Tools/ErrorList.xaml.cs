@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static PowerVBA.Global.Globals;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -26,12 +27,40 @@ namespace PowerVBA.Controls.Tools
         public ErrorList()
         {
             InitializeComponent();
+            lvErrors.MouseDoubleClick += LvErrors_MouseDoubleClick;
         }
+
+        private void LvErrors_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var itm = ((FrameworkElement)e.OriginalSource).TemplatedParent;
+            if (itm.GetType() == typeof(ContentPresenter)) itm = ((FrameworkElement)itm).TemplatedParent;
+
+            if (itm.GetType() == typeof(ListViewItem))
+            {
+                ListViewItem listview = (ListViewItem)itm;
+
+                LineMoveRequest?.Invoke((Error)listview.Tag);
+            }
+        }
+
         public void SetError(List<Error> Errors)
         {
             CodeErrors = Errors;
             lvErrors.Items.Clear();
-            CodeErrors.ForEach(err => { lvErrors.Items.Add(err.Message); });
+            CodeErrors.ForEach(err => { lvErrors.Items.Add(
+                new ListViewItem()
+                {
+                    Content = err.Message + " | (" + err.Line + "번째 줄) <" + err.ErrorCode.ToString() + ">",
+                    Tag = err
+                }
+                );
+            });
+
+            RunErrorCount.Text = Errors.Count.ToString();
         }
+        public delegate void MoveRequestEventHandler(Error err);
+        public event MoveRequestEventHandler LineMoveRequest;
+        
+
     }
 }

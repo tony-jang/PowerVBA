@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static PowerVBA.Global.Globals;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -24,6 +25,8 @@ namespace PowerVBA.Controls.Tools
         {
             InitializeComponent();
         }
+
+        public event BlankEventHandler OpenShapeExplorer;
 
         private int _SlideCount;
         public int SlideCount
@@ -47,6 +50,11 @@ namespace PowerVBA.Controls.Tools
 
                 ShapeRun.Text = _ShapeCount.ToString();
             }
+        }
+
+        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenShapeExplorer?.Invoke();
         }
 
         //private int _SectionCount;

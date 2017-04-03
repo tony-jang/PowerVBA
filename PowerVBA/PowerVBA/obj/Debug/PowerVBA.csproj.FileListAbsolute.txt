@@ -109,4 +109,7 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Deb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Codes.pdb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.baml
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SlideExplorer.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ReferenceManager.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ShapeExplorer.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ReferenceManager.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ShapeExplorer.baml

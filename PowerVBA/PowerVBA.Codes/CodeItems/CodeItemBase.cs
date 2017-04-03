@@ -16,9 +16,19 @@ namespace PowerVBA.Codes.CodeItems
         public string FileName { get; set; }
         public string StrDescription { get; }
         public List<CodeItemBase> Childrens { get; set; }
+
         public override string ToString()
         {
-            return StrDescription;
+            List<string> returnD = new List<string>();
+
+            returnD.Add(base.ToString());
+
+            foreach (var itm in Childrens)
+            {
+                returnD.Add(itm.ToString());
+            }
+
+            return string.Join("\r\n", returnD.ToArray());
         }
 
 

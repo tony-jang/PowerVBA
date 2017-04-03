@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="PowerVBA.Controls.Tools.ReferenceManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="참조 관리자" Margin="15,10" FontSize="20"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+            <Button Grid.Column="1" Content="저장"  Padding="20,5" Margin="10,0" VerticalAlignment="Center" BorderBrush="Black" Background="White" Foreground="Black"/>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="20">                
+                <CheckBox Content="abc"/>
+                <CheckBox Content="abc"/>
+                <CheckBox Content="abc"/>
+            </ListView>
+
+            <Grid Grid.Row="1" Margin="25,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Center">
+                    이름 : <Run Text="asdfjasklfj;lsdf"/>
+                </TextBlock>
+                <TextBlock Grid.Row="2" VerticalAlignment="Center">
+                    위치 : <Run Text="C:\Users\uutak\Desktop\Test.dll"/>
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="찾아보기 .." Padding="10,0" Grid.Column="0" Margin="10" />
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

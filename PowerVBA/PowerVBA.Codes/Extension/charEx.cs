@@ -44,7 +44,7 @@ namespace PowerVBA.Codes.Extension
 
         public static bool IsDivision(this char c)
         {
-            string DivisionString = "().+-*=";
+            string DivisionString = "().,+-*=";
 
 
             if (DivisionString.Contains(c)) return true;

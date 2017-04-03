@@ -19,6 +19,7 @@ namespace PowerVBA.Codes
         public VBAParser(CodeInfo codeInfo)
         {
             this.CodeInfo = codeInfo;
+            CodeInfo.Reset();
         }
         public void Parse(string code)
         {
@@ -31,62 +32,79 @@ namespace PowerVBA.Codes
             sw.Start();
 
             CodeInfo.ErrorList.Clear();
-
-            int counter = 0;
             
             foreach (string code in codes)
             {
                 RangeInt CodeLine = 0;
                 
                 int LineCount = 0;
-                int Offset = 0;
                 bool IsMultiLine = false;
                 string data = string.Empty;
 
-                foreach(string codesp in code.Split(new string[] { Environment.NewLine}, StringSplitOptions.None))
-                {
-                    LineCount++;
+                char[] cArr = code.ToCharArray();
+                int Length = cArr.Length;
+                
+                string spCode = "";
 
-                    counter++;
-                    string codeline = codesp.Trim();
-                    // 처리 - 다중 라인 처리
-                    if (codeline.EndsWith("_"))
+                VBASeeker seeker = new VBASeeker(CodeInfo);
+                
+
+                for (int i=0;i< cArr.Length; i++)
+                {
+                    bool ReadLine = (cArr[i] == '\r' && cArr[i + 1] == '\n');
+                    if (Length - 1 == i) {
+                        ReadLine = true;
+                        spCode += cArr[i];
+                    }
+
+                    if (ReadLine)
                     {
-                        if (IsMultiLine)
+                        LineCount++;
+
+                        string codeline = spCode.Trim();
+                        // 처리 - 다중 라인 처리
+                        if (codeline.EndsWith("_"))
                         {
-                            // 다중 줄 코드라면 끝나는 부분을 해당 라인으로 잡음
-                            CodeLine.EndInt = LineCount;
-                            data += Environment.NewLine + codesp;
-                            IsMultiLine = true;
+                            if (IsMultiLine)
+                            {
+                                // 다중 줄 코드라면 끝나는 부분을 해당 라인으로 잡음
+                                CodeLine.EndInt = LineCount;
+                                data += Environment.NewLine + spCode;
+                                    
+                                IsMultiLine = true;
+                            }
+                            else
+                            {
+                                // 다중 줄의 첫 시작이라면 시작하는 부분을 해당 라인으로 잡음
+                                CodeLine = LineCount;
+                                data = spCode;
+                                IsMultiLine = true;
+                            }
+                            continue;
                         }
                         else
                         {
-                            // 다중 줄의 첫 시작이라면 시작하는 부분을 해당 라인으로 잡음
-                            CodeLine = LineCount;
-                            data = codesp;
-                            IsMultiLine = true;
+                            // 처리 - 이전 줄이 다중 라인이였을경우
+                            if (IsMultiLine)
+                            {
+                                IsMultiLine = false;
+                                seeker.GetLine(data + Environment.NewLine + spCode, (CodeLine, i));
+                            }
+                            // 처리 - 일반 적인 처리
+                            else
+                            {
+                                CodeLine.StartInt = LineCount;
+                                seeker.GetLine(spCode, (CodeLine, i));
+                            }
                         }
+
+                        i++;
+                        spCode = string.Empty;
                         continue;
                     }
-                    else
-                    {
-                        // 처리 - 이전 줄이 다중 라인이였을경우
-                        if (IsMultiLine)
-                        {
-                            IsMultiLine = false;
-                            new VBASeeker(CodeInfo).GetLine(data + Environment.NewLine + codesp, (CodeLine, Offset));
-                        }
-                        // 처리 - 일반 적인 처리
-                        else
-                        {
-                            CodeLine.StartInt = LineCount;
-                            new VBASeeker(CodeInfo).GetLine(codesp, (CodeLine, Offset));
-                        }
-                    }
-                    
-                    Offset += codesp.Length + Environment.NewLine.Length;
+
+                    spCode += cArr[i];
                 }
-                
             }
             
             //Errors.Where((i) => i.ErrorCode.ContainAttribute(typeof(NotSupportedAttribute))).ToList().ForEach((i) => Errors.Remove(i));

@@ -169,8 +169,6 @@ namespace PowerVBA.Core.Connector
 
         }
 
-        
-
         #endregion
 
 

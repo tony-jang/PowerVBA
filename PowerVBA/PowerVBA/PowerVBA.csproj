@@ -127,8 +127,11 @@
     <Compile Include="Controls\Tools\ProjectProperty.xaml.cs">
       <DependentUpon>ProjectProperty.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Tools\SlideExplorer.xaml.cs">
-      <DependentUpon>SlideExplorer.xaml</DependentUpon>
+    <Compile Include="Controls\Tools\ReferenceManager.xaml.cs">
+      <DependentUpon>ReferenceManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\ShapeExplorer.xaml.cs">
+      <DependentUpon>ShapeExplorer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\SolutionExplorer.xaml.cs">
       <DependentUpon>SolutionExplorer.xaml</DependentUpon>
@@ -182,7 +185,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Tools\SlideExplorer.xaml">
+    <Page Include="Controls\Tools\ReferenceManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\ShapeExplorer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -364,6 +371,16 @@
   <ItemGroup>
     <Resource Include="Resources\Icon\AllSlideSyncIcon.png" />
     <Resource Include="Resources\Icon\SlideSyncIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\MyComIcon.png" />
+    <Resource Include="Resources\Icon\RecentIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\AddIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\FindFolderIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

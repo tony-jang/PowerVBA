@@ -2,6 +2,7 @@
 using ICSharpCode.AvalonEdit.Document;
 using PowerVBA.Codes.CodeItems;
 using PowerVBA.Codes.Enums;
+using PowerVBA.Codes.Expressions;
 using PowerVBA.Codes.Extension;
 using PowerVBA.Codes.TypeSystem;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -21,6 +23,10 @@ namespace PowerVBA.Codes
             CodeInfo = codeInfo;
             CurrentLineCodeList = new LineCodeItem((0, 0));
         }
+
+
+        string NamePattern = @"^([_a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)$";
+
 
         private CodeInfo CodeInfo;
         // TODO : LineInfo 추가한 것으로 처리
@@ -54,17 +60,16 @@ namespace PowerVBA.Codes
                 bool IsLastChar = i == text.Length - 1;
                 bool Handled = true;
                 char nextCh = i + 1 < text.Length ? text[i + 1] : '\0';
+                // 기본적인 문자
                 switch (ch)
                 {
                     #region [  string / 주석 / 전처리기 지시문  ]
                     case '#': // 전처리기 지시문
+                        if (data.IsInString || data.IsInVerbatimString || data.IsInComment)
+                            break;
                         // 첫번째 문자가 #일 경우 전처리기 지시문으로 인식함
-                        if (data.IsFistNonWs)
-                        {
-
-                            data.IsInPreprocessorDirective = true;
-                        }
-
+                        if (data.IsFistNonWs) data.IsInPreprocessorDirective = true;
+                        else AddError(ErrorCode.VB0042);
                         break;
                     case '\'': // 주석
                         // String 중이거나, Comment내부라면
@@ -115,14 +120,12 @@ namespace PowerVBA.Codes
                             if (data.IsVarDeclaring)
                             {
                                 data.AfterArray = true;
-                                AddError(ErrorCode.VB0000, new string[] { "Array가 인식되었습니다." });
                             }
                             // 파라미터 (VBA에서 Public Sub A 나 Public Function A 이후에 괄호가 나오면 파라미터의 시작이다.
                             else
                             {
-                                data.IsInParameters = true;
+                                ParameterSeek(i);
                             }
-                            data.AfterIdentifier = false;
                         }
 
                         bracketCount++;
@@ -138,8 +141,7 @@ namespace PowerVBA.Codes
                             data.IsInBracket = false;
                         }
                         else bracketCount--;
-
-
+                        
                         if (data.AfterArray)
                         {
                             // Array 선언이 끝난뒤에는 다시 식별자로 인식 될 수 있도록 함
@@ -150,7 +152,6 @@ namespace PowerVBA.Codes
                         if (data.AfterArray && bracketCount <= 0) data.AfterArray = false;
 
                         break;
-
                     #endregion
 
                     #region [  연산자  ]
@@ -177,14 +178,14 @@ namespace PowerVBA.Codes
                                 case "=<":
                                 case "<=":
                                     if (multiOperator.StartsWith("="))
-                                        AddWarning(ErrorCode.VB0065, new string[] { multiOperator, "<=" });
+                                        AddWarning(ErrorCode.VB0060, new string[] { multiOperator, "<=" });
 
                                     AddItem(new OperatorItem(multiOperator, (i, 2)));
                                     break;
                                 case "=>":
                                 case ">=":
                                     if (multiOperator.StartsWith("="))
-                                        AddWarning(ErrorCode.VB0065, new string[] { multiOperator, ">=" });
+                                        AddWarning(ErrorCode.VB0060, new string[] { multiOperator, ">=" });
                                     AddItem(new OperatorItem(multiOperator, (i, 2)));
 
                                     break;
@@ -237,8 +238,6 @@ namespace PowerVBA.Codes
                 // switch문에서 처리되지 않은 경우
                 if (!Handled)
                 {
-                    if (ch.ToLower().ToString() == "a")
-                        Console.WriteLine("!");
                     (int, int) CurrentOffset = (i - SavingText.Length - 1, i);
 
                     // 빈칸이거나 마지막 단어 일경우 또는 읽을 필요가 있는 경우
@@ -246,15 +245,21 @@ namespace PowerVBA.Codes
                     if (ch.IsWhiteSpace() || IsLastChar || nextCh.IsDivision())
                     {
                         // string이거나 전처리기 지시문이거나 코멘트일 경우 넘김
-                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) continue;
+                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
 
                         // 마지막 글자이면서 빈칸이 아니라면 인식할 문자열에 추가
                         if ((IsLastChar || nextCh.IsDivision()) && !(ch.IsWhiteSpace() || ch.IsOperator() || ch.IsBracket())) SavingText += ch;
 
-                        if (string.IsNullOrEmpty(SavingText)) continue;
+                        if (string.IsNullOrEmpty(SavingText)) goto ExitIf;
 
 
-
+                        // 기본적인 오류는 여기서 잡아냄
+                        if (ErrorCheck(SavingText.ToLower(), CurrentOffset))
+                        {
+                            SavingText = string.Empty;
+                            goto ExitIf;
+                        }
+                        
                         switch (SavingText.ToLower())
                         {
                             #region [  Accessor  ]
@@ -271,102 +276,68 @@ namespace PowerVBA.Codes
                                 data.AfterAccessor = true;
                                 break;
                             case "dim":
-                                if (data.AfterAccessor || data.AfterDeclarator) AddError(ErrorCode.VB0040, new string[] { "Dim" });
-                                if (data.IsInParameters) AddError(ErrorCode.VB0094);
-
                                 data.AfterAccessor = false;
                                 data.AfterDeclarator = true;
                                 data.IsVarDeclaring = true;
 
                                 AddItem(new AccessorItem(Accessor.Dim, "", CurrentOffset));
-
                                 break;
                             #endregion
 
                             #region [  Declartor  ]
 
                             case "sub":
-                                if (data.AfterDeclarator) AddError(ErrorCode.VB0021);
-
                                 if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Sub, CurrentOffset));
-                                else if (!(data.AfterAccessor || WordRecognition == 0 || data.AfterEnd)) AddError(ErrorCode.VB0100);
                                 else AddItem(new DeclaratorItem(DeclaratorType.Sub, CurrentOffset));
 
+                                data.AfterSub = true;
                                 data.AfterDeclarator = true;
                                 break;
                             case "function":
-                                if (data.AfterDeclarator) AddError(ErrorCode.VB0021);
-
                                 if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Function, CurrentOffset));
-                                else if (!(data.AfterAccessor || WordRecognition == 0 || data.AfterEnd)) AddError(ErrorCode.VB0100);
                                 else AddItem(new DeclaratorItem(DeclaratorType.Function, CurrentOffset));
 
+                                data.AfterFunction = true;
                                 data.AfterDeclarator = true;
                                 break;
                             case "property":
-                                if (data.AfterDeclarator) AddError(ErrorCode.VB0021);
 
                                 if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Property, CurrentOffset));
-                                else if (!(data.AfterAccessor || WordRecognition == 0)) AddError(ErrorCode.VB0100);
                                 else AddItem(new DeclaratorItem(DeclaratorType.Property, CurrentOffset));
 
                                 data.AfterProperty = true;
-                                break;
-                            case "enum":
-                                if (data.AfterDeclarator) AddError(ErrorCode.VB0021);
-
-                                if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Enum, CurrentOffset));
-                                else if (!(data.AfterAccessor || WordRecognition == 0)) AddError(ErrorCode.VB0100);
-                                else AddItem(new DeclaratorItem(DeclaratorType.Enum, CurrentOffset));
-
                                 data.AfterDeclarator = true;
                                 break;
-                            case "class":
-                                AddItem(new UnknownItem(CurrentOffset));
-                                AddError(ErrorCode.VB0001);
+                            case "enum":
+                                if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Enum, CurrentOffset));
+                                else AddItem(new DeclaratorItem(DeclaratorType.Enum, CurrentOffset));
 
-                                break;
-                            case "module":
-                                AddItem(new UnknownItem(CurrentOffset));
-                                AddError(ErrorCode.VB0002);
-
+                                data.AfterEnum = true;
+                                data.AfterDeclarator = true;
                                 break;
                             #endregion
 
                             #region [  Conditional  ]
-
                             case "if":
                                 if (data.AfterEnd)
                                 {
-                                    data.AfterIf = true;
                                     AddItem(new EndItem(ClosingItem.If, CurrentOffset));
                                 }
-                                else if (data.AfterIf) AddError(ErrorCode.VB0073);
-                                else if (data.AfterElse) AddError(ErrorCode.VB0075);
-                                else if (WordRecognition != 0) AddError(ErrorCode.VB0074);
-                                else data.AfterIf = true;
+                                data.AfterIf = true;
 
                                 break;
                             case "elseif":
-                                if (data.AfterIf) AddError(ErrorCode.VB0072);
-                                else
-                                {
-                                    data.AfterElseIf = true;
-                                }
+                                data.AfterElseIf = true;
 
                                 break;
                             case "else":
-                                if (data.AfterElse || data.AfterElseIf) AddError(ErrorCode.VB0071);
-
                                 data.AfterElse = true;
-
                                 break;
                             case "select":
-
+                                data.AfterSelect = true;
                                 break;
-
                             case "case":
-
+                                data.AfterCase = true;
                                 break;
                             #endregion
 
@@ -397,17 +368,23 @@ namespace PowerVBA.Codes
 
                             // 특이한 End While의 형태
                             case "wend":
-
+                                if (WordRecognition == 0)
+                                {
+                                    data.AfterWend = true;
+                                    AddItem(new EndItem(ClosingItem.While,CurrentOffset));
+                                }
+                                else AddError(ErrorCode.VB0082);
                                 break;
-
                             #endregion
 
                             #region  [  Get/Set  ]
                             case "get":
-                                if (WordRecognition == 0) AddError(ErrorCode.VB0003);
+                                // 오류는 이미 확인
+
                                 break;
                             case "set":
-                                if (WordRecognition == 0) AddError(ErrorCode.VB0004);
+                                // 오류는 이미 확인
+
                                 break;
 
                             #endregion
@@ -415,22 +392,20 @@ namespace PowerVBA.Codes
                             #region [  Parameter  ]
 
                             case "byval":
-
-                                break;
                             case "byref":
-
-                                break;
                             case "paramarray":
-
-                                break;
                             case "optional":
-
+                                AddError(ErrorCode.VB0102);
                                 break;
-
                             #endregion
 
                             case "end":
+                                if (WordRecognition != 0) AddError(ErrorCode.VB0000);
                                 data.AfterEnd = true;
+                                break;
+
+                            case "as":
+                                data.AfterAs = true;
                                 break;
 
                             #region [  VB.NET 미호환 문법  ]
@@ -448,13 +423,11 @@ namespace PowerVBA.Codes
                                 if (WordRecognition == 0) AddItem(new UnknownItem(CurrentOffset));
                                 else
                                 {
-                                    if (data.AfterEnd)
-                                    {
-                                        AddError(ErrorCode.VB0060, new string[] { SavingText });
-                                    }
-                                    if (data.AfterDeclarator)
+
+                                    if (data.AfterDeclarator || (!data.AfterDeclarator && data.AfterAccessor))
                                     {
                                         if (SavingText.ToLower() == "as") AddError(ErrorCode.VB0045, new string[] { "As" });
+                                        
 
                                         data.AfterDeclarator = false;
                                         data.AfterIdentifier = true;
@@ -466,8 +439,12 @@ namespace PowerVBA.Codes
                                     }
                                     else if (data.AfterIdentifier)
                                     {
-                                        if (SavingText.ToLower() != "as") AddError(ErrorCode.VB0027, new string[] { "As" });
+                                        if (SavingText.ToLower() != "as" && !data.AfterAs) AddError(ErrorCode.VB0027, new string[] { "As" });
                                         data.AfterIdentifier = false;
+                                    }
+                                    else if (data.AfterIdentifier && data.AfterAs && (data.AfterFunction || data.IsVarDeclaring))
+                                    {
+                                        AddItem(new TypeItem(SavingText, CurrentOffset));
                                     }
                                     else if (data.AfterArray)
                                     {
@@ -480,12 +457,10 @@ namespace PowerVBA.Codes
                         WordRecognition++;
 
                         SavingText = string.Empty;
-
-                        //MessageBox.Show("빈칸");
                     }
                     else if (ch.IsLetterOrDigit())
                     {
-                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) continue;
+                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
 
                         SavingText += ch;
 
@@ -496,10 +471,11 @@ namespace PowerVBA.Codes
                         AddItem(new OperatorItem(SavingText, CurrentOffset));
                     }
                 }
+                ExitIf:
                 // 마지막 문자일시
                 if (IsLastChar)
                 {
-                    if (bracketCount >= 1) AddError(ErrorCode.VB0052, new string[] { bracketCount.ToString() });
+                    if (bracketCount != 0) AddError(ErrorCode.VB0052, new string[] { bracketCount.ToString() });
 
                     // 전처리기 지시문, 코멘트 등 아이템으로 추가시키기
 
@@ -509,9 +485,31 @@ namespace PowerVBA.Codes
                     }
                     else if (data.IsInPreprocessorDirective)
                     {
-
+                        AddItem(new PreprocessorDirectiveItem("", Offset));
                     }
+                    // 미완성된 구문 체크
 
+                    if (data.AfterAccessor && !data.AfterDeclarator && !data.AfterIdentifier)
+                    {
+                        AddError(ErrorCode.VB0123);
+                    }
+                    if (data.AfterDeclarator && !data.AfterIdentifier && !data.AfterEnd)
+                    {
+                        AddError(ErrorCode.VB0121);
+                    }
+                    if (data.AfterIdentifier && data.AfterAs)
+                    {
+                        AddError(ErrorCode.VB0124);
+                    }
+                    if (data.AfterWhile || data.AfterIf || data.AfterElseIf || (!data.AfterSelect && data.AfterCase) || (data.AfterSelect && data.AfterCase))
+                    {
+                        if (!data.AfterObject && !data.AfterOperator) AddError(ErrorCode.VB0122);
+                    }
+                    if (data.AfterSelect && (!data.AfterCase && !data.AfterEnd))
+                    {
+                        AddError(ErrorCode.VB0076);
+                    }
+                    
                 }
 
                 // 만약 첫번째줄이 유지되고 있다면 빈칸, 탭, 새로 띄우기에서 False가 되진 않음
@@ -519,6 +517,477 @@ namespace PowerVBA.Codes
             }
 
             CodeInfo.Childrens.Add(CurrentLineCodeList);
+
+            //======================================================================================================================
+
+
+
+            // true : Handled   false : Not Handled
+            bool ErrorCheck(string Keyword, (int,int) ErrOffset)
+            {
+                bool Handled = false;
+                if (data.IsInString || data.IsInComment || data.IsInPreprocessorDirective) return false;
+
+                // class, module 오류
+                if (Keyword.ContainsWords(new string[] { "class", "module" }))
+                {
+                    if (Keyword == "class") AddError(ErrorCode.VB0001);
+                    if (Keyword == "module") AddError(ErrorCode.VB0002);
+
+                    AddItem(new UnknownItem(ErrOffset));
+                    Handled = true;
+                }
+                // public, private, dim 오류
+                if (Keyword.ContainsWords(new string[] { "public", "private", "dim" }))
+                {
+                    if (data.AfterAccessor)
+                    {
+                        AddError(ErrorCode.VB0022);
+                        Handled = true;
+                    }
+                    if (Keyword == "dim" && data.AfterDeclarator)
+                    {
+                        AddError(ErrorCode.VB0021);
+                        Handled = true;
+                    }
+                    if (Keyword == "dim" && WordRecognition != 0)
+                    {
+                        AddError(ErrorCode.VB0040, new string[] { "Dim" });
+                        Handled = true;
+                    }
+                }
+                // Enum, Property, Function, Sub 오류
+                if (Keyword.ContainsWords(new string[] { "enum", "property", "function", "sub" }))
+                {
+                    if (data.AfterDeclarator)
+                    {
+                        AddError(ErrorCode.VB0021);
+                        Handled = true;
+                    }
+                    else if (!(data.AfterAccessor || WordRecognition == 0) && !(data.AfterEnd && WordRecognition == 1))
+                    {
+                        AddError(ErrorCode.VB0120);
+                        Handled = true;
+                    }
+                    else
+                    {
+                        if (Keyword == "function") data.AfterFunction = true;
+                        if (Keyword == "sub") data.AfterSub = true;
+                        if (Keyword == "property") data.AfterProperty = true;
+                        if (Keyword == "enum") data.AfterEnum = true;
+
+                        data.AfterDeclarator = true;
+                    }
+                    
+                }
+                if (Keyword.ContainsWords(new string[] { "get", "set", "let" }))
+                {
+                    if (!(data.AfterProperty && !data.AfterIdentifier))
+                    {
+                        AddError(ErrorCode.VB0130, new string[] { Keyword });
+                        Handled = true;
+                    }
+
+                    if (WordRecognition == 0 && Keyword != "let") {
+                        if (Keyword == "get") AddError(ErrorCode.VB0003);
+                        if (Keyword == "set") AddError(ErrorCode.VB0004);
+                        Handled = true;
+                    }
+                }
+
+                if (Keyword == "as")
+                {
+                    if (!data.AfterIdentifier)
+                    {
+                        AddError(ErrorCode.VB0140);
+                        Handled = true;
+                    }
+                }
+
+                // If, ElseIf, Else에 대한 오류
+                if (Keyword.ContainsWords(new string[] {"if","elseif","else" }))
+                {
+                    if (Keyword == "else" && (data.AfterElse || data.AfterElseIf))
+                    {
+                        AddError(ErrorCode.VB0071);
+                        Handled = true;
+                    }
+                    if (Keyword == "elseif" && data.AfterIf)
+                    {
+                        AddError(ErrorCode.VB0072);
+                        Handled = true;
+                    }
+                    if (Keyword == "if" && data.AfterIf)
+                    {
+                        AddError(ErrorCode.VB0073);
+                        Handled = true;
+                    }
+                    if (Keyword == "if" && WordRecognition != 0 && !data.AfterEnd)
+                    {
+                        AddError(ErrorCode.VB0074);
+                        Handled = true;
+                    }
+                    if (Keyword == "if" && data.AfterElse)
+                    {
+                        AddError(ErrorCode.VB0075);
+                        Handled = true;
+                    }
+                }
+                // ReadOnly, AddHandler 키워드 오류
+                if (Keyword.ContainsWords(new string[] { "readonly", "addhandler" }))
+                {
+                    if (Keyword == "readonly") AddError(ErrorCode.VB0006);
+                    if (Keyword == "addhandler") AddError(ErrorCode.VB0007);
+                    Handled = true;
+                }
+
+                // 기본 처리
+                if (!Handled)
+                {
+                    if ((data.AfterEnd && !Keyword.ContainsWords(new string[] { "if", "select", "sub", "function", "property", "type", "with", "enum" })))
+                    {
+                        AddError(ErrorCode.VB0055, new string[] { Keyword });
+                        Handled = true;
+                    }
+                    if (data.AfterProperty && Keyword != "property" && !data.AfterIdentifier && !Keyword.ContainsWords(new string[] { "get", "set", "let" }))
+                    {
+                        AddError(ErrorCode.VB0131);
+                        Handled = true;
+                    }
+                }
+
+                if (Handled) WordRecognition++;
+                
+                return Handled;
+            }
+            
+
+
+
+            void ParameterSeek(int TextOffset)
+            { 
+                int BracketInt = 0;
+                
+                for (int j = TextOffset; j< text.Length; j++)
+                {
+                    if (text[j] == '(') BracketInt++;
+                    if (text[j] == ')') BracketInt--;
+
+
+                    if (BracketInt == 0)
+                    {
+                        string ParamString = CodeLine.Substring(TextOffset + 1, j - TextOffset - 1);
+                        
+                        char[] cArr = ParamString.ToCharArray();
+
+                        i += ParamString.Length;
+
+                        string savText = string.Empty;
+
+
+                        (int, int) ParamOffset = (0, 0), ValueOffset = (0, 0);
+
+                        bool AfterBracket = false;
+                        bool AfterIdentifier = false;
+                        bool AfterAs = false, AfterArray = false;
+
+
+
+                        bool AfterParamArray = false, AfterOptional = false;
+                        bool AfterByVal = false, AfterByRef = false;
+                        bool NeedRest = false, NeedExpression = false;
+
+                        bool AfterString = false, AfterInt = false;
+
+                        bool IsInString = false;
+
+                        string name = "";
+                        string type = "";
+
+                        Expression initValue = Expression.Empty;
+                        bool FirstSubstitiution = true;
+                        bool UseParamArray = false, UseOptional = false, UseRest = false;
+                        bool LastChar = false;
+                        for(int k = 0; k< cArr.Length; k++)
+                        {
+                            char i_ch = cArr[k];
+                            char i_nextCh = k + 1 < cArr.Length ? cArr[k + 1] : '\0';
+                            LastChar = k == cArr.Length - 1 ;
+                            switch (i_ch)
+                            {
+                                case '(':
+                                    if (IsInString) continue;
+                                    if (AfterBracket) { AddError(ErrorCode.VB0101); break; }
+                                    if (AfterIdentifier && AfterOptional) { AddError(ErrorCode.VB0100); break; }
+                                    if (AfterIdentifier && !AfterOptional) { AfterArray = true; break; }
+                                    AfterBracket = true;
+                                    break;
+                                case '\"':
+                                    
+                                    if (IsInString && i_nextCh == '\"') { i_ch++; break; }
+
+                                    if (!NeedExpression && !AfterString) { AddError(ErrorCode.VB0104); break; }
+
+                                    IsInString = !IsInString;
+
+                                    if (!IsInString)
+                                    {
+                                        NeedExpression = false;
+                                        AfterString = true;
+                                        AfterOptional = false;
+                                    }
+                                    break;
+                                case ')':
+                                    if (IsInString) continue;
+                                    if (!AfterBracket || !AfterArray)
+                                    {
+                                        AddError(ErrorCode.VB0052, new string[] { "1" });
+                                        break;
+                                    }
+                                    if (AfterArray) AfterArray = false;
+                                    else AfterBracket = false; 
+
+                                    break;
+                                case '&':
+                                case '+':
+                                    if (NeedExpression) AddError(ErrorCode.VB0122);
+                                    else if (!AfterString && !AfterInt) AddError(ErrorCode.VB0044);
+                                    else
+                                    {
+                                        NeedExpression = true;
+                                    }
+                                    break;
+                                case ',':
+                                    if (IsInString) continue;
+                                    if (!NeedRest)
+                                    {
+                                        AddError(ErrorCode.VB0098);
+                                        break;
+                                    }
+                                    NeedRest = false;
+                                    UseRest = true;
+                                    break;
+                                case '=':
+                                    if (IsInString) continue;
+                                    
+                                    if (!AfterOptional)
+                                    {
+                                        AddError(ErrorCode.VB0103);
+                                        break;
+                                    }
+                                    if (FirstSubstitiution)
+                                    {
+                                        FirstSubstitiution = false;
+                                        ValueOffset.Item1 = k;
+                                    }
+                                    NeedExpression = true;
+                                    break;
+                                default:
+                                    if (IsInString) continue;
+                                    if (i_ch == ' ') continue;
+                                    savText += i_ch;
+                                    break;
+                            }
+
+                            if (i_nextCh.IsDivision() || i_nextCh == ' ' || LastChar)
+                            {
+                                if (IsInString) continue;
+                                if (savText.Replace(' ','\0') == "") continue;
+
+                                switch (savText.ToLower())  
+                                {
+                                    case "byval":
+                                        if (NeedRest)
+                                        {
+                                            AddError(ErrorCode.VB0099);
+                                            break;
+                                        }
+                                        if (AfterByRef || AfterByVal || AfterOptional || AfterParamArray)
+                                        {
+                                            AddError(ErrorCode.VB0097);
+                                            break;
+                                        }
+                                        if (UseParamArray || UseOptional)
+                                        {
+                                            AddError(ErrorCode.VB0093);
+                                            break;
+                                        }
+                                        ParamOffset.Item1 = k;
+                                        AfterByVal = true;
+                                        break;
+                                    case "byref":
+                                        if (NeedRest)
+                                        {
+                                            AddError(ErrorCode.VB0099);
+                                            break;
+                                        }
+                                        if (AfterByRef || AfterByVal || AfterOptional || AfterParamArray)
+                                        {
+                                            AddError(ErrorCode.VB0097);
+                                            break;
+                                        }
+                                        if (UseParamArray || UseOptional)
+                                        {
+                                            AddError(ErrorCode.VB0093);
+                                            break;
+                                        }
+                                        ParamOffset.Item1 = k;
+                                        AfterByRef = true;
+                                        break;
+                                    case "optional":
+                                        if (NeedRest)
+                                        {
+                                            AddError(ErrorCode.VB0099);
+                                            break;
+                                        }
+                                        if (AfterByRef || AfterByVal || AfterOptional || AfterParamArray)
+                                        {
+                                            AddError(ErrorCode.VB0097);
+                                            break;
+                                        }
+                                        if (UseParamArray)
+                                        {
+                                            AddError(ErrorCode.VB0091);
+                                        }
+                                        ParamOffset.Item1 = k;
+                                        AfterOptional = true;
+                                        UseOptional = true;
+                                        break;
+                                    case "paramarray":
+
+                                        ParamOffset.Item1 = k;
+
+                                        if (NeedRest) { AddError(ErrorCode.VB0099); break; }
+                                        if (AfterByRef || AfterByVal || AfterOptional || AfterParamArray) { AddError(ErrorCode.VB0097); break; }
+                                        if (UseOptional) { AddError(ErrorCode.VB0090); break; }
+                                        if (UseParamArray) { AddError(ErrorCode.VB0092); break; }
+                                        
+                                        AfterParamArray = true;
+                                        UseParamArray = true;
+                                        break;
+                                    case "as":
+                                        if (NeedRest)
+                                        {
+                                            AddError(ErrorCode.VB0099);
+                                            break;
+                                        }
+                                        if (AfterIdentifier)
+                                        {
+                                            AfterAs = true;
+                                        }
+                                        else
+                                        {
+                                            AddError(ErrorCode.VB0140);
+                                        }
+                                        break;
+                                    default:
+
+                                        if (savText.IsDigit() || NeedExpression)
+                                        {   
+                                            NeedExpression = false;
+                                            AfterOptional = false;
+                                            break;
+                                        }
+
+                                        if (NeedRest)
+                                        {
+                                            AddError(ErrorCode.VB0099);
+                                            break;
+                                        }
+                                        if ((AfterByRef || AfterByVal || AfterOptional || AfterParamArray) && AfterIdentifier && AfterAs)
+                                        {
+                                            type = savText;
+
+
+
+                                            if (AfterByVal)
+                                            {
+                                                AddItem(new ParameterItem(ParamAccessor.ByVal, name, type, "","", ParamOffset));
+                                                NeedRest = true;
+                                            }
+                                            else if (AfterByRef)
+                                            {
+                                                AddItem(new ParameterItem(ParamAccessor.ByRef, name, type, "", "", ParamOffset));
+                                                NeedRest = true;
+                                            }
+                                            else if (AfterOptional)
+                                            {
+                                                AddItem(new ParameterItem(ParamAccessor.Optional, name, type, "", "", ParamOffset));
+
+                                                UseOptional = true;
+
+                                                AfterParamArray = false; AfterIdentifier = false; AfterAs = false; AfterByRef = false; AfterByVal = false;
+
+                                                AfterOptional = true;
+                                                NeedExpression = true;
+                                                break;
+                                            }
+                                            else if (AfterParamArray)
+                                            {
+                                                AddItem(new ParameterItem(ParamAccessor.ParamArray, name, type, "", "", ParamOffset));
+                                                NeedRest = true;   
+                                            }
+                                            else
+                                            {
+                                                AddItem(new ParameterItem(ParamAccessor.ByRef, name, type, "", "", ParamOffset));
+                                                NeedRest = true;
+                                            }
+
+                                            AfterParamArray = false; AfterIdentifier = false; AfterAs = false; AfterByRef = false; AfterByVal = false;
+
+                                            AfterOptional = false;
+
+                                        }
+                                        else if (AfterIdentifier && !AfterAs)
+                                        {
+                                            AddError(ErrorCode.VB0141);
+                                        }
+                                        else
+                                        {
+                                            // Identifier로 인식
+
+                                            if (Regex.IsMatch(savText, NamePattern))
+                                            {
+                                                AfterIdentifier = true;
+                                                name = savText;
+                                            }
+                                            else
+                                            {
+                                                AddError(ErrorCode.VB0043);
+                                                AfterIdentifier = true;
+                                                name = "";
+                                            }
+                                        }
+                                        break;
+                                }
+                                
+                                savText = string.Empty;
+                            }
+                        }
+
+                        if (!AfterIdentifier && UseRest && !NeedRest)
+                        {
+                            if (AfterOptional && NeedExpression) AddError(ErrorCode.VB0095);
+                            else if (AfterOptional) AddError(ErrorCode.VB0097);
+                        }
+
+                        if (IsInString) AddError(ErrorCode.VB0160);
+
+
+                        break;
+                    }
+                }
+                if (BracketInt != 0) AddError(ErrorCode.VB0052, new string[] { BracketInt.ToString() });
+
+            }
+
+            
+            // 식 계산
+            Expression ToExpression(string Expression)
+            {
+                return new Expression(Expression, CodeInfo.ErrorList, i);
+            }
+
 
             void AddError(ErrorCode Code, string[] parameters = null, int Line = -1)
             {
