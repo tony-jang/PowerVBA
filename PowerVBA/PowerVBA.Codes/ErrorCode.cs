@@ -57,6 +57,9 @@ namespace PowerVBA.Codes
         [KoError("VBA에서는 %1와(과) 같은 연산자를 지원하지 않습니다. 대신 %2로 사용 해보세요.")]
         VB0009,
 
+        
+        [CanReplace(1)]
+        [KoError("'%1'라는 이름 또는 형식을 찾을 수 없습니다. 선언되어 있는지 확인하세요.")]
         VB0010,
 
         #endregion
@@ -231,10 +234,10 @@ namespace PowerVBA.Codes
         [KoError("Wend문은 While문을 닫을 때만 사용 할 수 있습니다.")]
         VB0082,
 
-        
+
         #endregion
 
-
+        
         #region [  파라미터 오류  ]
 
         [KoError("ParamArray는 Optional과 함께 사용 할 수 없습니다.")]
@@ -338,6 +341,18 @@ namespace PowerVBA.Codes
         [KoError("문자열은 닫아야 합니다.")]
         VB0160 = 160,
 
+        #endregion
+
+        #region [  For / For Each 오류  ]
+
+        [KoError("For문은 맨 처음에만 올 수 있습니다.")]
+        VB0170 = 170,
+
+        [KoError("Each문은 For문 뒤에 올 수 있습니다.")]
+        VB0171,
+
+        [KoError("For문은 End로 닫을 수 없습니다. End For문 대신 Next를 사용하세요.")]
+        VB0172,
         #endregion
 
 

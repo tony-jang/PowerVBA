@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes.TypeSystem
 {
-    class PropertyInfo : MethodInfo
+    public class PropertyInfo : MethodInfo
     {
         public PropertyInfo(string Name, PropertySetType setType) : base(Name)
         {

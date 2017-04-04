@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes.CodeItems
 {
-    class OperatorItem : CodeItemBase
+    class TokenItem : CodeItemBase
     {
-        public OperatorItem(string Operator, string FileName, (int, int) Segment) : base(FileName, Segment)
+        public TokenItem(string Operator, string FileName, (int, int) Segment) : base(FileName, Segment)
         {
             this.Operator = Operator;
         }
 
-        public OperatorItem(string Operator, (int, int) Segment) : base(string.Empty, Segment)
+        public TokenItem(string Operator, (int, int) Segment) : base(string.Empty, Segment)
         {
             this.Operator = Operator;
         }

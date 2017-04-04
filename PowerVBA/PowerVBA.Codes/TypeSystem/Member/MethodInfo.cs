@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PowerVBA.Codes.Enums;
 
 namespace PowerVBA.Codes.TypeSystem
 {
@@ -10,9 +11,9 @@ namespace PowerVBA.Codes.TypeSystem
     {
         List<Parameter> Parameters { get; }
         public string Name { get; set; }
-        public IType ReturnType { get; set; }
+        public Accessor Accessor { get; set; }
 
-        public MethodInfo(string Name)
+        public MethodInfo(string Name, Accessor Accessor = Accessor.Dim)
         {
             this.Name = Name;
             Parameters = new List<Parameter>();

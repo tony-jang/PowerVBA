@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Codes.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,6 @@ namespace PowerVBA.Codes.TypeSystem
     public interface IMember
     {
         string Name { get; set; }
-
-        IType ReturnType { get; set; }
+        Accessor Accessor { get; set; }
     }
 }

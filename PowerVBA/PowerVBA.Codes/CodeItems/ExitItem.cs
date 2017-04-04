@@ -13,6 +13,7 @@ namespace PowerVBA.Codes.CodeItems
         {
             DeclaratorType = type;
         }
+
         public ExitItem(CanExitItems type, (int, int) Segment) : base(string.Empty, Segment)
         {
             DeclaratorType = type;

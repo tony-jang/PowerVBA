@@ -16,14 +16,19 @@ namespace PowerVBA.Codes.Expressions
         public string String { get; set; }
 
 
-        public MiniIntExp ConvertToInt()
+        public MiniIntExp ConvertToInt(out bool Error)
         {
             int i;
+            Error = false;
             if (int.TryParse(String, out i))
             {
                 return new MiniIntExp(i);
             }
-            else { throw new Exception($"'{String}'식 은 Int로 변환할 수 없습니다."); }
+            else
+            {
+                Error = false;
+                return new MiniIntExp(int.MinValue);
+            }
             
         }
     }

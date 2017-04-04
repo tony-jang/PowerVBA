@@ -36,9 +36,9 @@ namespace PowerVBA.Codes
         // 가장 마지막에 추가된 아이템
         private CodeItemBase LastCodeItm { get; set; }
 
-        public void GetLine(string CodeLine, (RangeInt,int) Lines)
+        public void GetLine(string FileName, string CodeLine, (RangeInt,int) Lines)
         {
-            //CurrentLineCodeList = new LineCodeItem(CodeLine);
+            CurrentLineCodeList = new LineCodeItem((Lines.Item1.StartInt, Lines.Item1.EndInt));
             //  for 카운터
             int i = 0,
                 // 여는 괄호 갯수
@@ -116,6 +116,7 @@ namespace PowerVBA.Codes
 
                         if (data.AfterIdentifier)
                         {
+                            AddItem(new TokenItem("(", (i, 1)));
                             // Array
                             if (data.IsVarDeclaring)
                             {
@@ -156,11 +157,9 @@ namespace PowerVBA.Codes
 
                     #region [  연산자  ]
 
-                    case '<':
-                    case '>':
-                    case '+':
-                    case '-':
-                    case '*':
+                    case '<': case '>':
+                    case '+': case '-':
+                    case '*': case '/':
                     case '!':
                     case '=':
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
@@ -173,25 +172,24 @@ namespace PowerVBA.Codes
                             switch (multiOperator)
                             {
                                 case "<>":
-                                    AddItem(new OperatorItem(multiOperator, (i, 2)));
+                                    AddItem(new TokenItem(multiOperator, (i, 2)));
                                     break;
                                 case "=<":
                                 case "<=":
                                     if (multiOperator.StartsWith("="))
                                         AddWarning(ErrorCode.VB0060, new string[] { multiOperator, "<=" });
 
-                                    AddItem(new OperatorItem(multiOperator, (i, 2)));
+                                    AddItem(new TokenItem(multiOperator, (i, 2)));
                                     break;
                                 case "=>":
                                 case ">=":
                                     if (multiOperator.StartsWith("="))
                                         AddWarning(ErrorCode.VB0060, new string[] { multiOperator, ">=" });
-                                    AddItem(new OperatorItem(multiOperator, (i, 2)));
+                                    AddItem(new TokenItem(multiOperator, (i, 2)));
 
                                     break;
-                                case "*=":
-                                case "-=":
-                                case "+=":
+                                case "*=": case "/=":
+                                case "-=": case "+=":
                                     AddError(ErrorCode.VB0009, new string[] { multiOperator, $"Object = Object { multiOperator.Substring(0,1) } Value" });
                                     break;
                                 case "!=":
@@ -201,12 +199,15 @@ namespace PowerVBA.Codes
                         }
                         else
                         {
+                            if (data.AfterType)
+                            {
 
+                            }
+                            AddItem(new TokenItem(ch.ToString(), (i, 1)));
                         }
                         if (data.AfterDeclarator || data.AfterIdentifier || data.IsVarDeclaring)
                         {
                             AddError(ErrorCode.VB0008);
-                            
                         }
                         break;
 
@@ -226,6 +227,7 @@ namespace PowerVBA.Codes
                         break;
 
                     #endregion
+
                     case ':': // 멀티 라인 인식
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
                         break;
@@ -287,29 +289,28 @@ namespace PowerVBA.Codes
                             #region [  Declartor  ]
 
                             case "sub":
-                                if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Sub, CurrentOffset));
+                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Sub, FileName, CurrentOffset));
                                 else AddItem(new DeclaratorItem(DeclaratorType.Sub, CurrentOffset));
 
                                 data.AfterSub = true;
                                 data.AfterDeclarator = true;
                                 break;
                             case "function":
-                                if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Function, CurrentOffset));
+                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Function, FileName, CurrentOffset));
                                 else AddItem(new DeclaratorItem(DeclaratorType.Function, CurrentOffset));
 
                                 data.AfterFunction = true;
                                 data.AfterDeclarator = true;
                                 break;
                             case "property":
-
-                                if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Property, CurrentOffset));
+                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Function, FileName, CurrentOffset));
                                 else AddItem(new DeclaratorItem(DeclaratorType.Property, CurrentOffset));
 
                                 data.AfterProperty = true;
                                 data.AfterDeclarator = true;
                                 break;
                             case "enum":
-                                if (data.AfterEnd) AddItem(new EndItem(ClosingItem.Enum, CurrentOffset));
+                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Enum, FileName, CurrentOffset));
                                 else AddItem(new DeclaratorItem(DeclaratorType.Enum, CurrentOffset));
 
                                 data.AfterEnum = true;
@@ -319,10 +320,7 @@ namespace PowerVBA.Codes
 
                             #region [  Conditional  ]
                             case "if":
-                                if (data.AfterEnd)
-                                {
-                                    AddItem(new EndItem(ClosingItem.If, CurrentOffset));
-                                }
+                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.If, FileName, CurrentOffset));
                                 data.AfterIf = true;
 
                                 break;
@@ -371,22 +369,50 @@ namespace PowerVBA.Codes
                                 if (WordRecognition == 0)
                                 {
                                     data.AfterWend = true;
-                                    AddItem(new EndItem(ClosingItem.While,CurrentOffset));
+                                    AddItem(new KeywordItem(Keywords.Wend, FileName, CurrentOffset));
                                 }
                                 else AddError(ErrorCode.VB0082);
                                 break;
+
+                            case "for":
+                                if (WordRecognition == 0)
+                                {
+                                    data.AfterFor = true;
+                                    AddItem(new KeywordItem(Keywords.For, FileName, CurrentOffset));
+                                }
+                                break;
+                            case "each":
+                                if (data.AfterFor)
+                                {
+                                    data.AfterFor = false;
+                                    data.AfterForEach = true;
+                                    
+                                }
+                                else
+                                {
+                                    AddError(ErrorCode.VB0171);
+                                }
+                                break;
                             #endregion
 
-                            #region  [  Get/Set  ]
+                            #region  [  Get/Set/Let  ]
                             case "get":
                                 // 오류는 이미 확인
-
+                                if (data.AfterProperty && !data.AfterPropAccessor) data.AfterPropAccessor = true;
+                                else AddError(ErrorCode.VB0130, new string[] { "Get" });
                                 break;
                             case "set":
                                 // 오류는 이미 확인
+                                if (data.AfterProperty && !data.AfterPropAccessor) data.AfterPropAccessor = true;
+                                else AddError(ErrorCode.VB0130, new string[] { "Set" });
 
                                 break;
 
+                            case "let":
+                                if (data.AfterProperty && !data.AfterPropAccessor) data.AfterPropAccessor = true;
+                                else AddError(ErrorCode.VB0130, new string[] { "Let" });
+
+                                break;
                             #endregion
 
                             #region [  Parameter  ]
@@ -395,16 +421,22 @@ namespace PowerVBA.Codes
                             case "byref":
                             case "paramarray":
                             case "optional":
+                                
                                 AddError(ErrorCode.VB0102);
                                 break;
                             #endregion
 
                             case "end":
                                 if (WordRecognition != 0) AddError(ErrorCode.VB0000);
-                                data.AfterEnd = true;
+                                else
+                                {
+                                    AddItem(new KeywordItem(Keywords.End, FileName, (i, 1)));
+                                    data.AfterEnd = true;
+                                }
                                 break;
 
                             case "as":
+                                AddItem(new KeywordItem(Keywords.As, FileName, (i, 1)));
                                 data.AfterAs = true;
                                 break;
 
@@ -420,38 +452,48 @@ namespace PowerVBA.Codes
                             #endregion
 
                             default:
-                                if (WordRecognition == 0) AddItem(new UnknownItem(CurrentOffset));
-                                else
+                                if (data.AfterDeclarator || (!data.AfterDeclarator && data.AfterAccessor))
                                 {
-
-                                    if (data.AfterDeclarator || (!data.AfterDeclarator && data.AfterAccessor))
+                                    if (SavingText.ToLower() == "as") AddError(ErrorCode.VB0045, new string[] { "As" });
+                                    
+                                    if (data.AfterProperty)
                                     {
-                                        if (SavingText.ToLower() == "as") AddError(ErrorCode.VB0045, new string[] { "As" });
-                                        
-
+                                        if (data.AfterPropAccessor)
+                                        {
+                                            data.AfterIdentifier = true;
+                                        }
+                                        else goto ExitIf;
+                                    }
+                                    else
+                                    {
                                         data.AfterDeclarator = false;
                                         data.AfterIdentifier = true;
 
-                                        // Public/Private/Dim 뒤에 식별자가 나왔을 경우 변수 선언으로 인식 및 처리
-                                        if (LastCodeItm.GetType() == typeof(AccessorItem)) data.IsVarDeclaring = true;
+                                    }
 
-                                        AddItem(new IdentifierItem(SavingText, CurrentOffset));
-                                    }
-                                    else if (data.AfterIdentifier)
-                                    {
-                                        if (SavingText.ToLower() != "as" && !data.AfterAs) AddError(ErrorCode.VB0027, new string[] { "As" });
-                                        data.AfterIdentifier = false;
-                                    }
-                                    else if (data.AfterIdentifier && data.AfterAs && (data.AfterFunction || data.IsVarDeclaring))
-                                    {
-                                        AddItem(new TypeItem(SavingText, CurrentOffset));
-                                    }
-                                    else if (data.AfterArray)
-                                    {
-                                        if (SavingText.IsReservedKeyWords()) AddError(ErrorCode.VB0046);
-                                    }
+                                    // Public/Private/Dim 뒤에 식별자가 나왔을 경우 변수 선언으로 인식 및 처리
+                                    if (LastCodeItm.GetType() == typeof(AccessorItem)) data.IsVarDeclaring = true;
+
+                                    AddItem(new IdentifierItem(SavingText, CurrentOffset));
                                 }
-
+                                else if (data.AfterIdentifier)
+                                {
+                                    if (SavingText.ToLower() != "as" && !data.AfterAs) AddError(ErrorCode.VB0027, new string[] { "As" });
+                                    data.AfterIdentifier = false;
+                                }
+                                else if (data.AfterIdentifier && data.AfterAs && (data.AfterFunction || data.IsVarDeclaring))
+                                {
+                                    AddItem(new TypeItem(SavingText, CurrentOffset));
+                                }
+                                else if (data.AfterArray)
+                                {
+                                    if (SavingText.IsReservedKeyWords()) AddError(ErrorCode.VB0046);
+                                }
+                                else
+                                {
+                                    AddItem(new UnknownItem(CurrentOffset));
+                                    AddError(ErrorCode.VB0010, new string[] { SavingText });
+                                }
                                 break;
                         }
                         WordRecognition++;
@@ -468,7 +510,7 @@ namespace PowerVBA.Codes
                     else if (ch.IsOperator())
                     {
                         // DEBUG : 위쪽에서 처리 되었을 가능성 존재 확인후 삭제
-                        AddItem(new OperatorItem(SavingText, CurrentOffset));
+                        AddItem(new TokenItem(SavingText, CurrentOffset));
                     }
                 }
                 ExitIf:
@@ -516,6 +558,7 @@ namespace PowerVBA.Codes
                 data.IsFistNonWs &= ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r';
             }
 
+            RecognitionList(CurrentLineCodeList);
             CodeInfo.Childrens.Add(CurrentLineCodeList);
 
             //======================================================================================================================
@@ -649,7 +692,7 @@ namespace PowerVBA.Codes
                         AddError(ErrorCode.VB0055, new string[] { Keyword });
                         Handled = true;
                     }
-                    if (data.AfterProperty && Keyword != "property" && !data.AfterIdentifier && !Keyword.ContainsWords(new string[] { "get", "set", "let" }))
+                    if (data.AfterProperty && Keyword != "property" && !data.AfterPropAccessor && !Keyword.ContainsWords(new string[] { "get", "set", "let" }))
                     {
                         AddError(ErrorCode.VB0131);
                         Handled = true;
@@ -661,9 +704,6 @@ namespace PowerVBA.Codes
                 return Handled;
             }
             
-
-
-
             void ParameterSeek(int TextOffset)
             { 
                 int BracketInt = 0;
@@ -981,7 +1021,7 @@ namespace PowerVBA.Codes
 
             }
 
-            
+
             // 식 계산
             Expression ToExpression(string Expression)
             {
@@ -1007,6 +1047,19 @@ namespace PowerVBA.Codes
                 LastCodeItm = codeItm;
             }
         }
+
+
+        void RecognitionList(LineCodeItem codeItm)
+        {
+
+            int counter = 0;
+            foreach (var itm in codeItm.Childrens)
+            {
+                //MessageBox.Show(itm.ToString());
+            }
+        }
+
+
     }
 
 }

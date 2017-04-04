@@ -88,13 +88,13 @@ namespace PowerVBA.Codes
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                seeker.GetLine(data + Environment.NewLine + spCode, (CodeLine, i));
+                                seeker.GetLine("", data + Environment.NewLine + spCode, (CodeLine, i));
                             }
                             // 처리 - 일반 적인 처리
                             else
                             {
                                 CodeLine.StartInt = LineCount;
-                                seeker.GetLine(spCode, (CodeLine, i));
+                                seeker.GetLine("", spCode, (CodeLine, i));
                             }
                         }
 

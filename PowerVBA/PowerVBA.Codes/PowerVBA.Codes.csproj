@@ -62,12 +62,13 @@
     <Compile Include="CodeItems\ClosingItem.cs" />
     <Compile Include="CodeItems\CodeItemBase.cs" />
     <Compile Include="CodeItems\CommentItem.cs" />
-    <Compile Include="CodeItems\EndItem.cs" />
     <Compile Include="CodeItems\ExitItem.cs" />
     <Compile Include="CodeItems\ICodeItem.cs" />
     <Compile Include="CodeItems\IdentifierItem.cs" />
+    <Compile Include="CodeItems\KeywordItem.cs" />
+    <Compile Include="CodeItems\Keywords.cs" />
     <Compile Include="CodeItems\LineCodeItem.cs" />
-    <Compile Include="CodeItems\OperatorItem.cs" />
+    <Compile Include="CodeItems\TokenItem.cs" />
     <Compile Include="CodeItems\ParameterItem.cs" />
     <Compile Include="CodeItems\TextItem.cs" />
     <Compile Include="CodeItems\DeclaratorItem.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Expressions\MiniOperatorExp.cs" />
     <Compile Include="Expressions\MiniStrExp.cs" />
     <Compile Include="Expressions\EnumExp.cs" />
+    <Compile Include="Expressions\MiniVarExp.cs" />
     <Compile Include="Extension\charEx.cs" />
     <Compile Include="Extension\EnumEx.cs" />
     <Compile Include="Extension\stringEx.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="TypeSystem\File\FormFile.cs" />
     <Compile Include="TypeSystem\Member\BasisMethodInfo.cs" />
     <Compile Include="TypeSystem\File\IFile.cs" />
+    <Compile Include="TypeSystem\Member\FunctionInfo.cs" />
     <Compile Include="TypeSystem\Member\IMember.cs" />
     <Compile Include="TypeSystem\NameSpace.cs" />
     <Compile Include="TypeSystem\ParamAccessor.cs" />

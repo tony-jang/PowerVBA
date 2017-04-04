@@ -156,5 +156,7 @@ namespace PowerVBA.Codes
 
         public bool AfterLet { get; set; }
         public bool AfterSet { get; set; }
+        public bool AfterType { get; set; }
+        public bool AfterPropAccessor { get; set; }
     }
 }

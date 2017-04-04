@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PowerVBA.Codes.Enums;
 
 namespace PowerVBA.Codes.TypeSystem
 {
@@ -19,5 +20,6 @@ namespace PowerVBA.Codes.TypeSystem
         }
         public string Name { get; set; }
         public IType ReturnType { get; set; }
+        public Accessor Accessor { get; set; }
     }
 }

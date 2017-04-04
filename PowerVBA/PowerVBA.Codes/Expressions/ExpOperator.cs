@@ -10,13 +10,7 @@ namespace PowerVBA.Codes.Expressions
     public enum ExpOperator
     {
 
-        [Priority(0)]
-        [Value("(")]
-        OpenBracket,
-        [Priority(0)]
-        [Value(")")]
-        CloseBracket,
-
+        
         [Priority(1)]
         [Value("^")]
         Power,
@@ -79,6 +73,13 @@ namespace PowerVBA.Codes.Expressions
         [Priority(10)]
         [Value("Xor")]
         Xor,
-        
+
+        [Priority(11)]
+        [Value("(")]
+        OpenBracket,
+        [Priority(11)]
+        [Value(")")]
+        CloseBracket,
+
     }
 }
