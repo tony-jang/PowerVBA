@@ -46,21 +46,35 @@ namespace PowerVBA.Controls.Tools
         public void SetError(List<Error> Errors)
         {
             CodeErrors = Errors;
+            SetErrorCtrl();
+        }
+        public void SetErrorCtrl()
+        {
             lvErrors.Items.Clear();
-            CodeErrors.ForEach(err => { lvErrors.Items.Add(
-                new ListViewItem()
-                {
-                    Content = err.Message + " | (" + err.Line + "번째 줄) <" + err.ErrorCode.ToString() + ">",
-                    Tag = err
-                }
-                );
+
+            CodeErrors.Where((i) => (i.Message.Contains(TBSearchError.Text) || TBSearchError.Text == string.Empty)).ToList().ForEach(err => {
+                lvErrors.Items.Add(
+                    new ListViewItem()
+                    {
+                        Content = err.Message + " | (" + err.Line + "번째 줄) <" + err.ErrorCode.ToString() + ">",
+                        Tag = err
+                    }
+                    );
             });
 
-            RunErrorCount.Text = Errors.Count.ToString();
+            if (lvErrors.Items.Count != CodeErrors.Count)
+                RunErrorCount.Text = $"({lvErrors.Items.Count}/{CodeErrors.Count})";
+            else
+                RunErrorCount.Text = CodeErrors.Count.ToString();
         }
         public delegate void MoveRequestEventHandler(Error err);
         public event MoveRequestEventHandler LineMoveRequest;
-        
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SetErrorCtrl();
+        }
+
+        
     }
 }

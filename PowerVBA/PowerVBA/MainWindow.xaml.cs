@@ -133,11 +133,20 @@ namespace PowerVBA
 
         private void ErrorList_LineMoveRequest(Codes.TypeSystem.Error err)
         {
-            codeEditor.ScrollToLine(err.Region.Begin.Line);
-            codeEditor.SelectionStart = codeEditor.Document.GetOffset(err.Region.Begin);
-            codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
+            try
+            {
+                codeEditor.ScrollToLine(err.Region.Begin.Line);
+                codeEditor.SelectionLength = 0;
+                codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Region.Begin);
+                codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
+
+                codeEditor.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());   
+            }
             
-            codeEditor.Focus();
         }
 
 

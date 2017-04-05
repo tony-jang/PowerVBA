@@ -56,12 +56,18 @@ namespace PowerVBA.Codes
         [CanReplace(2)]
         [KoError("VBA에서는 %1와(과) 같은 연산자를 지원하지 않습니다. 대신 %2로 사용 해보세요.")]
         VB0009,
-
         
         [CanReplace(1)]
         [KoError("'%1'라는 이름 또는 형식을 찾을 수 없습니다. 선언되어 있는지 확인하세요.")]
         VB0010,
 
+        [CanReplace(1)]
+        [KoError("Exit 뒤에는 '%1' 키워드 대신 Do, For, Sub, Function 또는 Property가 와야 합니다.")]
+        VB0011,
+
+        [NotSupported]
+        [KoError("Return으로 값을 반환하는 것은 VBA에서 지원하지 않습니다. Identifier = Value를 사용하세요.")]
+        VB0012,
         #endregion
 
         #region [  중복  ]
@@ -225,8 +231,7 @@ namespace PowerVBA.Codes
         #endregion
 
         #region [  Do / While 오류  ]
-
-
+        
         [KoError("Do문은 맨 처음에만 오거나 Exit Do의 형태로만 사용 할 수 있습니다.")]
         VB0080 = 80,
         [KoError("While문은 Do While로만 사용 할 수 있습니다.")]
@@ -234,8 +239,8 @@ namespace PowerVBA.Codes
         [KoError("Wend문은 While문을 닫을 때만 사용 할 수 있습니다.")]
         VB0082,
 
-
         #endregion
+
 
         
         #region [  파라미터 오류  ]
@@ -354,6 +359,7 @@ namespace PowerVBA.Codes
         [KoError("For문은 End로 닫을 수 없습니다. End For문 대신 Next를 사용하세요.")]
         VB0172,
         #endregion
+        
 
 
         #region [  식 오류  ]

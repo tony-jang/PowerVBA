@@ -205,7 +205,11 @@
                         <TabItem Header="디버그" Background="White">
                             <WrapPanel>
                                 <GroupBox Header="디버그">
-                                    <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
+                                    <WrapPanel>
+                                        <!--TODO : 아이콘 추가-->
+                                        <c:ImageButton x:Name="DebugProcedureBtn" Content="디버그&#x0a;프로시져" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
+                                    </WrapPanel>
                                 </GroupBox>
                             </WrapPanel>
 
