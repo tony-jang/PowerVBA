@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,38 @@ namespace PowerVBA.Codes
     public class VBAParser
     {
         CodeInfo CodeInfo;
+
+        public static List<string> VBANamespaces = new List<string>();
+        public static void AddNameSpace(Assembly asm)
+        {
+            Type[] itm = asm.GetTypes()
+                .Where(t => t.Namespace == "Microsoft.Office.Interop.PowerPoint")
+                .Where(t => t.IsPublic)
+                .Where(t => !t.Name.StartsWith("_"))
+                .ToArray();
+
+            foreach (Type type in itm)
+            {
+                if (VBANamespaces.Contains(type.Namespace)) VBANamespaces.Add(type.Namespace);
+                if (type.IsInterface)
+                {
+
+                }
+            }
+
+
+
+            //StringBuilder sb = new StringBuilder();
+            //foreach(Type t in asm.GetTypes())
+            //{
+            //    sb.AppendLine(t.Namespace + "." + t.Name + $" ({(t.IsNotPublic ? "Private" : "Public" )})");
+            //}
+        }
+
+        static VBAParser()
+        {
+            AddNameSpace(Assembly.Load(Properties.Resources.LibPowerPoint));
+        }
         public VBAParser(CodeInfo codeInfo)
         {
             this.CodeInfo = codeInfo;
@@ -47,8 +80,8 @@ namespace PowerVBA.Codes
                 string spCode = "";
 
                 VBASeeker seeker = new VBASeeker(CodeInfo);
-                
 
+                
                 for (int i=0;i< cArr.Length; i++)
                 {
                     bool ReadLine = (cArr[i] == '\r' && cArr[i + 1] == '\n');
@@ -88,7 +121,7 @@ namespace PowerVBA.Codes
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                seeker.GetLine("", data + Environment.NewLine + spCode, (CodeLine, i));
+                                seeker.GetLine("", spCode, (CodeLine, i));
                             }
                             // 처리 - 일반 적인 처리
                             else

@@ -9,7 +9,7 @@ namespace PowerVBA.Codes.TypeSystem
     class PreDeclareType : IType
     {
         public string DisplayName { get; set; }
-        public NameSpace Namespace { get; set; }
+        public string Namespace { get; set; }
         public bool IsVaild { get; set; }
         public TypeKind TypeKind { get; set; }
     }

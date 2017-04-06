@@ -67,6 +67,7 @@
     <Compile Include="CodeItems\IdentifierItem.cs" />
     <Compile Include="CodeItems\KeywordItem.cs" />
     <Compile Include="CodeItems\Keywords.cs" />
+    <Compile Include="CodeItems\LabelItem.cs" />
     <Compile Include="CodeItems\LineCodeItem.cs" />
     <Compile Include="CodeItems\TokenItem.cs" />
     <Compile Include="CodeItems\ParameterItem.cs" />
@@ -108,7 +109,6 @@
     <Compile Include="TypeSystem\File\IFile.cs" />
     <Compile Include="TypeSystem\Member\FunctionInfo.cs" />
     <Compile Include="TypeSystem\Member\IMember.cs" />
-    <Compile Include="TypeSystem\NameSpace.cs" />
     <Compile Include="TypeSystem\ParamAccessor.cs" />
     <Compile Include="TypeSystem\Type\IType.cs" />
     <Compile Include="TypeSystem\Member\MethodInfo.cs" />
@@ -131,6 +131,8 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\LibPowerPoint.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -50,16 +50,17 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
-
+            
             Stopwatch sw = new Stopwatch();
 
             codeInfo = new CodeInfo();
 
+            new VBAParser(codeInfo);
 
             sw.Start();
             var Exp = new exp.Expression("\"이것도 인식하면 \"\"기분 좋게 먹으러 간다.\" * true = not false", codeInfo.ErrorList, 1);
             var list = Exp.GetPostFix(codeInfo, out bool err);
-            MessageBox.Show(list.GetPostFixStr() + " :: " + sw.ElapsedMilliseconds);
+            //MessageBox.Show(list.GetPostFixStr() + " :: " + sw.ElapsedMilliseconds);
 
             
 
@@ -670,6 +671,7 @@ namespace PowerVBA
         private void DebugBtn_SimpleButtonClicked()
         {
             //CodeTabEditor
+            Connector.ToConnector2013().VBProject.ToVBProj2013().VBE.
             var itm = ((CodeTabEditor)((CloseableTabItem)CodeTabControl.SelectedItem).Content).CodeEditor;
             itm.DeleteIndent();
         }

@@ -159,5 +159,9 @@ namespace PowerVBA.Codes
         public bool AfterType { get; set; }
         public bool AfterPropAccessor { get; set; }
         public bool AfterReturn { get; set; }
+        public bool UseMultiLine { get; internal set; }
+        public bool AfterThen { get; internal set; }
+        public bool AfterLabel { get; internal set; }
+        public bool ReadMember { get; internal set; }
     }
 }

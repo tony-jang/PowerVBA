@@ -9,7 +9,7 @@ namespace PowerVBA.Codes.TypeSystem
     public interface IType
     {
         string DisplayName { get; set; }
-        NameSpace Namespace { get; set; }
+        string Namespace { get; set; }
 
         /// <summary>
         /// 유효한 타입인지에 대한 여부를 가져옵니다.
