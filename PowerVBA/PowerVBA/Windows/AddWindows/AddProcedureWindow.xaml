@@ -15,11 +15,11 @@
                     <ControlTemplate TargetType="{x:Type c:ImageRadioButton}">
                         <Grid Background="{TemplateBinding Background}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image Width="30" Source="{TemplateBinding Source}" Margin="10,5"/>
-                            <TextBlock Grid.Column="1" Margin="0,0,10,0" FontSize="15" VerticalAlignment="Center" Text="{TemplateBinding Content}"/>
+                            <TextBlock Grid.Column="1" Margin="0,0,10,0" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Content}"/>
                         </Grid>
 
                         <ControlTemplate.Triggers>
@@ -38,15 +38,23 @@
     </Window.Resources>
     <Grid Margin="20">
         <StackPanel>
-            <Grid>
+            <Grid Margin="0,15,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <c:ImageRadioButton Margin="10,0" x:Name="btnPrivate" IsChecked="True" Content="Private" Source="/PowerVBA;component/Resources/Icon/LockIcon.png"/>
+                <c:ImageRadioButton Margin="10,0" x:Name="btnPublic" Grid.Column="1" Content="Public" Source="/PowerVBA;component/Resources/Icon/UnLockIcon.png" />
+            </Grid>                 
+            <Grid Margin="0,15,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <c:ImageRadioButton x:Name="btnClass" IsChecked="True" Content="Sub" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/MethodSubIcon.png"/>
-                <c:ImageRadioButton x:Name="btnModule" Grid.Column="1" Content="Function" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/MethodIcon.png" />
-                <c:ImageRadioButton x:Name="btnForm" Grid.Column="2" Content="Property" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/PropertyIcon.png" />
+                <c:ImageRadioButton Margin="10,0" x:Name="btnClass" IsChecked="True" Content="Sub" Source="/PowerVBA;component/Resources/Icon/MethodSubIcon.png"/>
+                <c:ImageRadioButton Margin="10,0" x:Name="btnModule" Grid.Column="1" Content="Function" Source="/PowerVBA;component/Resources/Icon/MethodIcon.png" />
+                <c:ImageRadioButton Margin="10,0" x:Name="btnForm" Grid.Column="2" Content="Property" Source="/PowerVBA;component/Resources/Icon/PropertyIcon.png" />
             </Grid>
             
             <Grid Margin="10,20,10,0">
@@ -57,14 +65,7 @@
                 <TextBlock Text="이름 : " FontSize="15"/>
                 <TextBox x:Name="TBName" Grid.Column="1" FontSize="15"/>
             </Grid>
-            <Grid Margin="0,15,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <c:ImageRadioButton x:Name="btnPrivate" IsChecked="True" Content="Private" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/LockIcon.png"/>
-                <c:ImageRadioButton x:Name="btnPublic" Grid.Column="1" Content="Public" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/UnLockIcon.png" />
-            </Grid>
+
             <Grid Margin="0,15,0,0" HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

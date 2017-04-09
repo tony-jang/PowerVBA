@@ -40,10 +40,10 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Center">
-                    이름 : <Run Text="asdfjasklfj;lsdf"/>
+                    이름 : <Run x:Name="RunName" Text="asdfjasklfj;lsdf"/>
                 </TextBlock>
                 <TextBlock Grid.Row="2" VerticalAlignment="Center">
-                    위치 : <Run Text="C:\Users\uutak\Desktop\Test.dll"/>
+                    위치 : <Run x:Name="RunLoc" Text="C:\Users\uutak\Desktop\Test.dll"/>
                 </TextBlock>
             </Grid>
 
@@ -52,7 +52,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="찾아보기 .." Padding="10,0" Grid.Column="0" Margin="10" />
+                    <Button Content="찾아보기 .." Padding="30,0" Grid.Column="0" Margin="10" />
                 </Grid>
 
             </Grid>

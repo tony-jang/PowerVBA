@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,9 @@ namespace PowerVBA.Controls.Tools
     /// <summary>
     /// PresentationAnalyzer.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class PresentationAnalyzer : UserControl
+    public partial class ProjectAnalyzer : UserControl
     {
-        public PresentationAnalyzer()
+        public ProjectAnalyzer()
         {
             InitializeComponent();
         }
@@ -56,17 +57,21 @@ namespace PowerVBA.Controls.Tools
         {
             OpenShapeExplorer?.Invoke();
         }
+        
+        public void SlideSync(V2013.Connector.PPTConnector2013 Connector)
+        {
+            RunSelSlideShapeCount.Text = Connector.Presentation
+                                    .Slides[Connector.Application.ActiveWindow.Selection.SlideRange.SlideIndex]
+                                    .Shapes.Count.ToString();
+            RunSelShape.Text = Connector.Application.ActiveWindow.Selection.ShapeRange.Name;
+        }
 
-        //private int _SectionCount;
-        //public int SectionCount
-        //{
-        //    get { return _SectionCount; }
-        //    set
-        //    {
-        //        _SectionCount = value;
+        public void CodeSync(int lines, int Components, int Currline)
+        {
+            RunAllLine.Text = lines.ToString();
+            RunVBAClasses.Text = Components.ToString();
 
-        //        SectionRun.Text = _SectionCount.ToString();
-        //    }
-        //}
+            RunCurrLine.Text = Currline.ToString();
+        }
     }
 }

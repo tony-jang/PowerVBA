@@ -183,14 +183,14 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="트리거 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked" IsEnabled="False" />
-                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="열거형 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddEnum" Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="BtnAddEnum_SimpleButtonClicked" IsEnabled="False" />
+                                        <c:ImageButton x:Name="BtnAddEnum" Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="BtnAddEnum_SimpleButtonClicked"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
@@ -202,32 +202,19 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                             </WrapPanel>
                         </TabItem>
-                        <TabItem Header="디버그" Background="White">
-                            <WrapPanel>
-                                <GroupBox Header="디버그">
-                                    <WrapPanel>
-                                        <!--TODO : 아이콘 추가-->
-                                        <c:ImageButton x:Name="DebugProcedureBtn" Content="디버그&#x0a;프로시져" BackImage="Resources/Icon/StartIcon.png" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="DebugPauseBtn" Content="일시정지" BackImage="Resources/Icon/PauseIcon.png" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="DebugStopBtn" Content="디버그&#x0a;중단" BackImage="Resources/Icon/StopIcon.png" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="DebugBtn" Content="디버그 버튼" BackImage="Resources/ProgramIcon/PowerVBA BigLogo.ico" SimpleButtonClicked="DebugBtn_SimpleButtonClicked"/>
-                                    </WrapPanel>
-                                </GroupBox>
-                            </WrapPanel>
-
-                        </TabItem>
                         <TabItem Header="동기화">
                             <WrapPanel>
                                 <GroupBox Header="파일 동기화">
                                     <WrapPanel>
-                                        <c:ImageButton Content="현재 파일&#x0a;동기화" BackImage="Resources/Icon/SyncIcon.png">
+                                        <c:ImageButton x:Name="BtnFileSync" Content="현재 파일&#x0a;동기화" BackImage="Resources/Icon/SyncIcon.png">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="현재 파일 동기화 (Ctrl+S)" Text="현재 선택된 파일을 VBA 프로젝트와 동기화시킵니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton Content="모든 파일&#x0a;동기화" BackImage="Resources/Icon/AllSyncIcon.png">
+                                        <c:ImageButton x:Name="BtnAllFileSync" Content="모든 파일&#x0a;동기화" BackImage="Resources/Icon/AllSyncIcon.png">
                                             <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="모든 파일 동기화 (Ctrl+Shift+S)" Text="모든 변경된 파일들을 VBA 프로젝트와 동기화시킵니다."/>
+                                                <corec:CustomToolTip Title="모든 파일 동기화 (Ctrl+Shift+S)" Text="모든 변경된 파일들을 VBA 프로젝트와 동기화시킵니다.
+                                                                     파워포인트에서 저장을 요청합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                     </WrapPanel>
@@ -235,12 +222,12 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="개체 동기화">
                                     <WrapPanel>
-                                        <c:ImageButton Content="슬라이드&#x0a;동기화" BackImage="Resources/Icon/SlideSyncIcon.png">
+                                        <c:ImageButton x:Name="BtnSlideSync" Content="슬라이드&#x0a;동기화" BackImage="Resources/Icon/SlideSyncIcon.png">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+M)" Text="현재 프레젠테이션에서 선택된 개체들을 수동으로 동기화시킵니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton Content="모든 개체&#x0a;동기화" BackImage="Resources/Icon/AllSlideSyncIcon.png">
+                                        <c:ImageButton x:Name="BtnAllSlideSync" Content="모든 개체&#x0a;동기화" BackImage="Resources/Icon/AllSlideSyncIcon.png">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+Shift+M)" Text="현재 프레젠테이션의 모든 개체들을 수동으로 동기화시킵니다."/>
                                             </c:ImageButton.ToolTip>
@@ -254,8 +241,8 @@
                             <WrapPanel>
                                 <GroupBox Header="구성 요소">
                                     <WrapPanel>
-                                        <c:ImageButton Content="참조 추가" BackImage="Resources/Icon/ReferenceIcon.png"/>
-                                        <c:ImageButton Content="미리 정의된&#x0a;함수 추가" BackImage="Resources/Icon/AddFuncsIcon.png"/>
+                                        <c:ImageButton x:Name="AddRefBtn" Content="참조 추가" BackImage="Resources/Icon/ReferenceIcon.png"/>
+                                        <c:ImageButton x:Name="PreDeclareFuncBtn" Content="미리 정의된&#x0a;함수 추가" BackImage="Resources/Icon/AddFuncsIcon.png" SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
@@ -272,11 +259,7 @@
                         <ColumnDefinition Width="250"/>
                     </Grid.ColumnDefinitions>
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="250"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <t:PresentationAnalyzer x:Name="projAnalyzer"/>
+                        <t:ProjectAnalyzer x:Name="projAnalyzer"/>
 
                     </Grid>
 
@@ -291,14 +274,11 @@
                             <TabControl.Resources>
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
-                            <c:CloseableTabItem Header="Module1.bas" Height="20">
-                                <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CloseableTabItem>
-                            <c:CloseableTabItem Header="미리 정의된 함수" Height="20">
-                                <t:PreDeclareFuncManager/>
-                            </c:CloseableTabItem>
                             <c:CloseableTabItem Header="참조 관리자" Height="20">
                                 <t:ReferenceManager/>
+                            </c:CloseableTabItem>
+                            <c:CloseableTabItem Header="Module1.bas" Height="20">
+                                <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>
                         </TabControl>
                         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
@@ -441,13 +421,6 @@
                     </ScrollViewer>
 
                     <Grid Grid.Row="2" Margin="0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
-                        혹시 사용중이신 파워포인트 버전이 감지된 버전과 다르신가요? <Run x:Name="SelVerRun"  Text="버전 선택" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
-                        </TextBlock>
 
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">
                         PowerVBA가 아닌 PowerPoint를 사용하시려고 하시나요? <Run x:Name="OpenPPTRun"  Text="파워포인트 열기" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>

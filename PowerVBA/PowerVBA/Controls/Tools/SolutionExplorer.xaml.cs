@@ -29,9 +29,10 @@ namespace PowerVBA.Controls.Tools
             ListBoxes.Add(LBClass);
             ListBoxes.Add(LBModule);
             ListBoxes.Add(LBForms);
+            ListBoxes.Add(LBSlideDoc);
 
 
-            foreach(ListBox lb in ListBoxes)
+            foreach (ListBox lb in ListBoxes)
             {
                 lb.MouseDoubleClick += Item_DoubleClick;
             }
@@ -87,7 +88,8 @@ namespace PowerVBA.Controls.Tools
             
             if (t == VBA.vbext_ComponentType.vbext_ct_ClassModule) { AddLB = LBClass; img = ResourceImage.GetIconImage("ClassIcon"); }
             else if (t == VBA.vbext_ComponentType.vbext_ct_StdModule) { AddLB = LBModule; img = ResourceImage.GetIconImage("ModuleIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = null; }
+            else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = ResourceImage.GetIconImage("FormIcon"); }
+            else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = LBSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
 
             AddLB?.Items.Add(new ImageListViewItem() { Content = comp.ToVBComponent2013().Name, Tag = comp, Source = img });
         }
@@ -141,6 +143,7 @@ namespace PowerVBA.Controls.Tools
             ClassRun.Text = LBClass.Items.Count.ToString();
             ModuleRun.Text = LBModule.Items.Count.ToString();
             FormRun.Text = LBForms.Items.Count.ToString();
+            SlideDocRun.Text = LBSlideDoc.Items.Count.ToString();
         }
 
         private void OpenProperty_Click(object sender, MouseButtonEventArgs e)

@@ -38,6 +38,10 @@ namespace PowerVBA.Core.Connector
         event BlankDelegate SectionChanged;
 
 
+        bool ContainsModule(string name);
+        bool ContainsClass(string name);
+        bool ContainsForm(string name);
+
         /// <summary>
         /// 모듈을 추가합니다.
         /// </summary>
@@ -76,6 +80,10 @@ namespace PowerVBA.Core.Connector
         /// <param name="name">제거할 폼 이름입니다.</param>
         /// <returns></returns>
         bool DeleteForm(string name);
+
+        VBComponentWrappingBase GetModule(string name);
+        VBComponentWrappingBase GetClass(string name);
+        VBComponentWrappingBase GetFrm(string name);
 
 
     }

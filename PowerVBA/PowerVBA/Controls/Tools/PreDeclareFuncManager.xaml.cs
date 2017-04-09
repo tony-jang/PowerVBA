@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PowerVBA.Core.Connector;
+using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.Wrap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -99,13 +102,76 @@ namespace PowerVBA.Controls.Tools
             lv.SelectedItem = sender;
             ((PreDeclareFunction)((CheckBox)sender).Tag).IsUse = ((CheckBox)sender).IsChecked.Value;
         }
-
+        
         public bool Saved { get; set; }
-        public event BlankEventHandler SaveRequest;
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            SaveRequest?.Invoke();
-            Saved = true;
+
+            List<PreDeclareFunction> list = new List<PreDeclareFunction>();
+            FileListView.Items.Cast<ListViewItem>()
+                              .ToList()
+                              .Select((i) => (List<PreDeclareFunction>)i.Tag)
+                              .ToList()
+                              .ForEach((lst) => list.AddRange(lst));
+            list = list.Where((i) => i.IsUse).ToList();
+
+            VBComponentWrappingBase module;
+            if (!Connector.ContainsModule("PowerVBA"))
+            {
+                Connector.AddModule("PowerVBA", out module);
+            }
+            else { module = Connector.GetModule("PowerVBA"); }
+            
+            if (module == null) MessageBox.Show("알 수 없는 오류가 발생했습니다.");
+
+            StringBuilder sb = new StringBuilder();
+            StringBuilder infoSb = new StringBuilder();
+            list.Sort(compare);
+            string lastFile = "";
+
+            infoSb.AppendLine($"'          ┌───────────────────────────────┐");
+            infoSb.AppendLine($"'          │                                                              │");
+            infoSb.AppendLine($"'          │                 PowerVBA PreDeclare Functions                │");
+            infoSb.AppendLine($"'          │                                                              │");
+            infoSb.AppendLine($"'          │                                    [Auto-Generated Code]     │");
+            infoSb.AppendLine($"'          └───────────────────────────────┘");
+            infoSb.AppendLine($"' 이 부분은 PowerVBA에서 사용중인 프로시져들을 인식하기 위함입니다. 삭제하지 말아주세요.");
+
+            infoSb.AppendLine("'[Start]");
+
+            foreach (var itm in list)
+            {
+                if (lastFile != itm.File)
+                {
+                    if (lastFile != "") sb.AppendLine($"'#endregion");
+                    sb.AppendLine();
+                    sb.AppendLine($"'#region \"Part Of {itm.File}\"");
+
+                    lastFile = itm.File;
+                }
+                sb.AppendLine(itm.Code);
+                
+                sb.AppendLine();
+
+                infoSb.AppendLine("'" + itm.File + "." + itm.Identifier);
+            }
+
+            sb.AppendLine($"'#endregion");
+
+            infoSb.AppendLine("'[End]");
+
+            sb.AppendLine();
+
+            module.ToVBComponent2013().CodeModule.DeleteLines(1, module.ToVBComponent2013().CodeModule.CountOfLines);
+            module.ToVBComponent2013().CodeModule.AddFromString(infoSb.ToString() + Environment.NewLine + sb.ToString());
         }
+
+        public int compare(PreDeclareFunction f1, PreDeclareFunction f2)
+        {
+            return f1.File.CompareTo(f2.File);
+        }
+
+        public PPTConnectorBase Connector { get; set; }
+
     }
 }

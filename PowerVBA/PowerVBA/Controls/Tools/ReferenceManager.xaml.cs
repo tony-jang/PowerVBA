@@ -24,6 +24,5 @@ namespace PowerVBA.Controls.Tools
         {
             InitializeComponent();
         }
-
     }
 }

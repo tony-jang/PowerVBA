@@ -34,7 +34,6 @@
                     </TextBlock>
                 </Button.Content>
             </Button>
-
             <TextBox x:Name="TBSearchError" Grid.Column="3" Margin="8" TextChanged="TextBox_TextChanged">
                 <TextBox.Style>
                     <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">

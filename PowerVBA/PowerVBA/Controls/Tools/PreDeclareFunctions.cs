@@ -73,7 +73,7 @@ namespace PowerVBA.Controls.Tools
             #region File : MathEx
 
             // Min (값 적은 값 체크)
-            Functions.Add(new PreDeclareFunction("Min", "두 값을 비교해 더 작은 값을 반환합니다.", "MathEx", 
+            Functions.Add(new PreDeclareFunction("Min", "두 값을 비교해 더 작은 값을 반환합니다.", "Math", 
                 @"Public Function Min(val1 As Integer, val2 As Integer) As Integer
     If val1 < val2 Then 
         Min = val1
@@ -84,7 +84,7 @@ End Function
 ", "Integer"));
 
             // Max (값 큰 값 체크)
-            Functions.Add(new PreDeclareFunction("Max", "두 값을 비교해 더 큰 값을 반환합니다.", "MathEx", 
+            Functions.Add(new PreDeclareFunction("Max", "두 값을 비교해 더 큰 값을 반환합니다.", "Math", 
                 @"Public Function Max(val1 As Integer, val2 As Integer) As Integer
     If val1 > val2 Then 
         Max = val1

@@ -22,6 +22,5 @@ namespace PowerVBA.Codes.TypeSystem
     {
         Class,
         Type,
-
     }
 }

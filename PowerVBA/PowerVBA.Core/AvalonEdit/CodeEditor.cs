@@ -74,19 +74,30 @@ namespace PowerVBA.Core.AvalonEdit
 
             if (!IsInitLibRead)
             {
-                Type[] typelist = GetTypesInNamespace(Assembly.Load(Properties.Resources.LibPowerPoint), "Microsoft.Office.Interop.PowerPoint");
+                foreach (Assembly asm in new Assembly[] { Assembly.Load(Properties.Resources.LibPowerPoint),
+                                                          Assembly.Load(Properties.Resources.Interop_VBA)})
+                {
+                    Type[] typelist = GetTypesInNamespace(asm);
 
-                foreach (var t in typelist)
-                    if (t.IsInterface || t.IsEnum)
-                    {
-                        if (t.Name.StartsWith("_")) continue;
-                        Classes.Add(t.Name);
+                    foreach (var t in typelist)
+                        if (t.IsInterface || t.IsEnum)
+                        {
+                            if (t.Name.StartsWith("_")) continue;
+                            Classes.Add(t.Name);
 
-                    }
+                        }
+                }
+                
 
                 IsInitLibRead = true;
             }
         }
+
+        public void RaiseFolding()
+        {
+            sw.Restart();
+        }
+
         public CodeEditor()
         {
             #region [  코드 폴딩  ]
@@ -184,13 +195,18 @@ namespace PowerVBA.Core.AvalonEdit
 
             #endregion
 
+
             #region [  이벤트 연결  ]
 
             this.TextArea.TextEntering += OnTextEntering;
             this.TextArea.TextEntered += OnTextEntered;
 
+            Thread ErrCheckthr = new Thread(CheckErrorPos);
+
+            ErrCheckthr.Start();
+
             this.TextArea.Caret.PositionChanged += (sender, e) => this.TextArea.TextView.InvalidateLayer(KnownLayer.Background);
-            
+
             this.MouseMove += CodeMouseMove;
             this.MouseLeave += CodeMouseLeave;
             this.PreviewKeyDown += PrevKeyDown;
@@ -210,9 +226,13 @@ namespace PowerVBA.Core.AvalonEdit
             var ctrlShiftZ = new RoutedCommand();
             ctrlShiftZ.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
 
+            var ctrlShiftS = new RoutedCommand();
+            ctrlShiftS.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
+
             var cb1 = new CommandBinding(ctrlSpace, OnCtrlSpaceCommand);
             var cb2 = new CommandBinding(ctrlS, OnCtrlSCommand);
             var cb3 = new CommandBinding(ctrlShiftZ, OnCtrlShiftZCommand);
+            var cb4 = new CommandBinding(ctrlShiftS, OnCtrlShiftSCommand);
 
             this.CommandBindings.Add(cb1);
             this.CommandBindings.Add(cb2);
@@ -231,6 +251,11 @@ namespace PowerVBA.Core.AvalonEdit
         private void OnCtrlShiftZCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (CanRedo) Redo();
+        }
+
+        private void OnCtrlShiftSCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            
         }
 
         private void OnCtrlSCommand(object sender, ExecutedRoutedEventArgs e)
@@ -327,58 +352,68 @@ namespace PowerVBA.Core.AvalonEdit
         }
 
         int lastindex = 0;
+        bool Handling;
         private void CodeMouseMove(object sender, MouseEventArgs e)
         {
-            bool Handled = false;
-
-            for (int ctr = 1; ctr <= this.LineCount; ctr++)
-            {
-                double lineTop = this.TextArea.TextView.GetVisualTopByDocumentLine(ctr);
-                double MouseY = Mouse.GetPosition(this).Y;
-
-                if (MouseY >= lineTop && MouseY < LineHeight + lineTop)
-                {
-                    string d = string.Join("\r\n", CodeErrors.Where((err) => err.LineNumber == ctr)
-                                                             .Select((err) => err.LineNumber + " : " + err.ErrorMessage));
-
-                    int count = CodeErrors.Where((err) => err.LineNumber == ctr).Count();
-
-                    // 현재 라인에 오류가 있을 경우
-                    if (!string.IsNullOrEmpty(d))
-                    {
-
-                        if (lastindex != ctr)
-                        {
-                            errToolTip.IsOpen = false;
-                            errToolTip.IsOpen = true;
-
-                            errToolTip.Title = ctr + "번째 줄에서 발생한 " + count + "개의 오류";
-                            errToolTip.Text = d;
-                        }
-                    }
-                    else
-                    {
-                        errToolTip.IsOpen = false;
-
-                    }
-                    Handled = true;
-                    lastindex = ctr;
-                    break;
-                }
-            }
-
-            if (!Handled)
-            {
-                {
-                    errToolTip.IsOpen = false;
-                    lastindex = -1;
-                }
-            }
+            Handling = true;
         }
 
 
+        public void CheckErrorPos()
+        {
+            do
+            {
+                if (!Handling) return;
+                bool Handled = false;
+                for (int ctr = 1; ctr <= this.LineCount; ctr++)
+                {
+                    double lineTop = this.TextArea.TextView.GetVisualTopByDocumentLine(ctr);
+                    double MouseY = Mouse.GetPosition(this).Y;
+
+                    if (MouseY >= lineTop && MouseY < LineHeight + lineTop)
+                    {
+                        string d = string.Join("\r\n", CodeErrors.Where((err) => err.LineNumber == ctr)
+                                                                 .Select((err) => err.LineNumber + " : " + err.ErrorMessage));
+
+                        int count = CodeErrors.Where((err) => err.LineNumber == ctr).Count();
+
+                        // 현재 라인에 오류가 있을 경우
+                        if (!string.IsNullOrEmpty(d))
+                        {
+
+                            if (lastindex != ctr)
+                            {
+                                errToolTip.IsOpen = false;
+                                errToolTip.IsOpen = true;
+
+                                errToolTip.Title = ctr + "번째 줄에서 발생한 " + count + "개의 오류";
+                                errToolTip.Text = d;
+                            }
+                        }
+                        else
+                        {
+                            errToolTip.IsOpen = false;
+
+                        }
+                        Handled = true;
+                        lastindex = ctr;
+                        break;
+                    }
+                }
+                if (!Handled)
+                {
+                    {
+                        errToolTip.IsOpen = false;
+                        lastindex = -1;
+                    }
+                }
+                Thread.Sleep(100);
+            } while (true);
+        }
+
         private void CodeMouseLeave(object sender, MouseEventArgs e)
         {
+            Handling = false;
             errToolTip.IsOpen = false;
             lastindex = -1;
         }
@@ -522,12 +557,7 @@ namespace PowerVBA.Core.AvalonEdit
             // Do not set e.Handled=true.
             // We still want to insert the character that was typed.
         }
-
-        /// <summary>
-        /// Gets the document used for code completion, can be overridden to provide a custom document
-        /// </summary>
-        /// <param name="offset"></param>
-        /// <returns>The document of this text editor.</returns>
+        
         protected virtual IDocument GetCompletionDocument(out int offset)
         {
             offset = CaretOffset;

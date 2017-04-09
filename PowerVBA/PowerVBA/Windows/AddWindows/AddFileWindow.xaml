@@ -15,11 +15,11 @@
                     <ControlTemplate TargetType="{x:Type c:ImageRadioButton}">
                         <Grid Background="{TemplateBinding Background}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image Width="30" Source="{TemplateBinding Source}" Margin="10,5"/>
-                            <TextBlock Grid.Column="1" Margin="0,0,10,0" FontSize="15" VerticalAlignment="Center" Text="{TemplateBinding Content}"/>
+                            <TextBlock Grid.Column="1" Margin="0,0,10,0" FontSize="15" TextAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Content}"/>
                         </Grid>
 
                         <ControlTemplate.Triggers>
@@ -44,9 +44,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <c:ImageRadioButton x:Name="btnClass" IsChecked="True" Content="클래스" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
-                <c:ImageRadioButton x:Name="btnModule" Grid.Column="1" Content="모듈" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png" />
-                <c:ImageRadioButton x:Name="btnForm" Grid.Column="2" Content="사용자 폼" HorizontalAlignment="Center" Source="/PowerVBA;component/Resources/Icon/FormIcon.png" />
+                <c:ImageRadioButton Margin="10,0"  x:Name="btnClass" IsChecked="True" Content="클래스" Source="/PowerVBA;component/Resources/Icon/ClassIcon.png"/>
+                <c:ImageRadioButton Margin="10,0"  x:Name="btnModule" Grid.Column="1" Content="모듈" Source="/PowerVBA;component/Resources/Icon/ModuleIcon.png" />
+                <c:ImageRadioButton Margin="10,0"  x:Name="btnForm" Grid.Column="2" Content="유저 폼" Source="/PowerVBA;component/Resources/Icon/FormIcon.png" />
             </Grid>
             <Grid Margin="10,20,10,0">
                 <Grid.ColumnDefinitions>

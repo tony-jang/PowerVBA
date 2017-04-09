@@ -38,6 +38,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Margin="15,0" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
@@ -80,6 +82,21 @@
                         </ControlTemplate>
                     </ListBox.Template>
                 </ListBox>
+
+                <TextBlock Grid.Row="6" Margin="15,0" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    슬라이드 개체 목록 (<Run x:Name="SlideDocRun" Text="0"/>개)
+                </TextBlock>
+
+                <ListBox x:Name="LBSlideDoc" Grid.Row="7" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                          SelectionChanged="ListBoxes_SelectionChanged">
+                    <ListBox.Template>
+                        <ControlTemplate>
+                            <ItemsPresenter />
+                        </ControlTemplate>
+                    </ListBox.Template>
+                </ListBox>
+
 
             </Grid>
 

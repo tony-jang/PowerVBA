@@ -18,6 +18,8 @@ namespace PowerVBA.V2010.Connector
 
         public override PPTVersion Version => PPTVersion.PPT2010;
 
+        public override string Name => throw new NotImplementedException();
+
         public override bool AddClass(string name, out VBComponentWrappingBase compbase)
         {
             throw new NotImplementedException();
@@ -39,6 +41,21 @@ namespace PowerVBA.V2010.Connector
         }
 
         public override bool AddSlide(int SlideNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ContainsClass(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ContainsForm(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ContainsModule(string name)
         {
             throw new NotImplementedException();
         }
@@ -69,6 +86,31 @@ namespace PowerVBA.V2010.Connector
         }
 
         public override void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override VBComponentWrappingBase GetClass(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override VBComponentWrappingBase GetFrm(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override VBComponentWrappingBase GetModule(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool SaveAs(string path)
         {
             throw new NotImplementedException();
         }

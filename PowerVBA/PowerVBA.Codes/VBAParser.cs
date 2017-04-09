@@ -22,7 +22,6 @@ namespace PowerVBA.Codes
         public static void AddNameSpace(Assembly asm)
         {
             Type[] itm = asm.GetTypes()
-                .Where(t => t.Namespace == "Microsoft.Office.Interop.PowerPoint")
                 .Where(t => t.IsPublic)
                 .Where(t => !t.Name.StartsWith("_"))
                 .ToArray();
@@ -32,7 +31,11 @@ namespace PowerVBA.Codes
                 if (VBANamespaces.Contains(type.Namespace)) VBANamespaces.Add(type.Namespace);
                 if (type.IsInterface)
                 {
-
+                    //MessageBox.Show(type.ToString() + " :: Interface");
+                }
+                else if (type.IsClass && type.IsAbstract)
+                {
+                    //MessageBox.Show(type.ToString() + " :: Abstract Class");
                 }
             }
 
@@ -48,6 +51,7 @@ namespace PowerVBA.Codes
         static VBAParser()
         {
             AddNameSpace(Assembly.Load(Properties.Resources.LibPowerPoint));
+            AddNameSpace(Assembly.Load(Properties.Resources.Interop_VBA));
         }
         public VBAParser(CodeInfo codeInfo)
         {

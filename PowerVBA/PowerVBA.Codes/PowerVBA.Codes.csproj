@@ -101,6 +101,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RangeInt.cs" />
+    <Compile Include="RecognitionTypes.cs" />
     <Compile Include="TypeSystem\File\ClassFile.cs" />
     <Compile Include="TypeSystem\DomRegion.cs" />
     <Compile Include="TypeSystem\Error.cs" />
@@ -133,6 +134,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LibPowerPoint.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="VBA">
+      <Guid>{000204EF-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>2</VersionMinor>
+      <Lcid>9</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Debug\Interop.VBA.dll" />
+    <Content Include="Resources\Interop.VBA.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

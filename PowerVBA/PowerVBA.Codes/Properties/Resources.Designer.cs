@@ -63,6 +63,16 @@ namespace PowerVBA.Codes.Properties {
         /// <summary>
         ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static byte[] Interop_VBA {
+            get {
+                object obj = ResourceManager.GetObject("Interop_VBA", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static byte[] LibPowerPoint {
             get {
                 object obj = ResourceManager.GetObject("LibPowerPoint", resourceCulture);

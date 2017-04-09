@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="PowerVBA.Controls.Tools.ProjectAnalyzer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="250">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="프로젝트 분석기" Margin="15,10" FontSize="20"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <StackPanel>
+                    <Grid Margin="0,10">
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Margin="15,5" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="프레젠테이션 전체 정보" FontSize="12" VerticalAlignment="Center" Foreground="#FFD34B2A"/>
+                            <Image Grid.Column="1" Source="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" Width="30"/>
+                        </Grid>
+                        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+                        <TextBlock Grid.Row="3" Margin="15,5" FontSize="12"
+                            HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                             총 도형 갯수 (<Run x:Name="ShapeRun" Text="0"/>개) <Run x:Name="RunShapeDetail" Text="자세히 보기" TextDecorations="Underline"/>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="4" Margin="15,5" FontSize="12"
+                            HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                             슬라이드 갯수 (<Run x:Name="SlideRun" Text="0"/>개) <Run x:Name="RunSlideDetail" Text="자세히 보기" TextDecorations="Underline"/>
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid Margin="0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="선택된 슬라이드 정보" FontSize="12" Margin="15,5" Foreground="#FFD34B2A"/>
+                        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
+                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            현재 슬라이드의 도형 갯수 (<Run x:Name="RunSelSlideShapeCount" Text="0"/>개)
+                        </TextBlock>
+                        <TextBlock Grid.Row="3" Margin="15,5" FontSize="12" 
+                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            현재 선택된 도형 이름 : <Run x:Name="RunSelShape" Text="Shape1"/>
+                        </TextBlock>
+                    </Grid>
+                    <Grid Margin="0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="VBA 프로젝트 전체 정보" FontSize="12" Margin="15,5" Foreground="#FFD34B2A"/>
+                        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
+                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            VBA 프로젝트 코드 전체 줄 : <Run x:Name="RunAllLine" Text="0"/> 라인
+                        </TextBlock>
+                        <TextBlock Grid.Row="3" Margin="15,5" FontSize="12" 
+                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            VBA 프로젝트 구성요소 갯수 : <Run x:Name="RunVBAClasses" Text="0"/>개
+                        </TextBlock>
+                    </Grid>
+                    <Grid Margin="0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="선택된 코드 파일 정보" FontSize="12" Margin="15,5" Foreground="#FFD34B2A"/>
+                        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
+                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            현재 코드 파일 전체 줄 : <Run x:Name="RunCurrLine" Text="0"/> 라인
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+                
+
+                <!--<TextBlock Grid.Row="4" Margin="15,5" FontSize="12"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    섹션 갯수 (<Run x:Name="SectionRun" Text="0"/>개) <Run x:Name="RunSectionDetail" Text="자세히 보기" TextDecorations="Underline"/>
+                </TextBlock>-->
+            </Grid>
+        </ScrollViewer>
+
+        <Grid Grid.Row="2">
+            <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+            <StackPanel Margin="0,10">
+                <TextBlock Grid.Row="2" Text="도형 관리자" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand" MouseDown="TextBlock_MouseDown"/>
+                <!--<TextBlock Grid.Row="2" Text="섹션 관리자" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>-->
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

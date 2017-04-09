@@ -16,6 +16,7 @@ namespace PowerVBA.Core.Connector
         public VBProjectWrappingBase _VBProject { get; set; }
 
         public abstract PPTVersion Version { get; }
+        public abstract string Name { get; }
 
         public event BlankDelegate VBAComponentChange;
         public event BlankDelegate PresentationClosed;
@@ -121,5 +122,33 @@ namespace PowerVBA.Core.Connector
         public abstract bool DeleteForm(string name);
 
         public abstract void Dispose();
+        /// <summary>
+        /// 해당 이름에 해당하는 모듈이 존재하는지에 대한 여부를 가져옵니다.
+        /// </summary>
+        /// <param name="name">확인할 모듈 이름입니다.</param>
+        /// <returns></returns>
+        public abstract bool ContainsModule(string name);
+        /// <summary>
+        /// 해당 이름에 해당하는 클래스가 존재하는지에 대한 여부를 가져옵니다.
+        /// </summary>
+        /// <param name="name">확인할 클래스 이름입니다.</param>
+        /// <returns></returns>
+        public abstract bool ContainsClass(string name);
+
+        /// <summary>
+        /// 해당 이름에 해당하는 사용자 지정 폼이 존재하는지에 대한 여부를 가져옵니다.
+        /// </summary>
+        /// <param name="name">확인할 사용자 지정 폼의 이름입니다.</param>
+        /// <returns></returns>
+        public abstract bool ContainsForm(string name);
+        
+        public abstract VBComponentWrappingBase GetModule(string name);
+
+        public abstract VBComponentWrappingBase GetClass(string name);
+
+        public abstract VBComponentWrappingBase GetFrm(string name);
+
+        public abstract bool Save();
+        public abstract bool SaveAs(string path);
     }
 }

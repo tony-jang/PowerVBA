@@ -20,9 +20,8 @@ namespace PowerVBA.Core.Connector
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-
             
-            string strConn = @"Data Source = testdb.db";
+            string strConn = @"Data Source = PowerVBA.db";
             dbConnection = new SQLiteConnection(strConn);
             dbConnection.Open();
 
@@ -47,10 +46,10 @@ namespace PowerVBA.Core.Connector
                 Enabled = false;
                 throw;
             }
-
-            // PreDeclareFunction  없을때에는 생성한다.
-            strQuery = "CREATE TABLE IF NOT EXISTS PreDeclareFunction ( Code  VARCHAR(100000) " +
-                ", Caption  VARCHAR(100) )";
+            
+            // DllLocation 테이블이 없을때에는 생성한다.
+            strQuery = "CREATE TABLE IF NOT EXISTS DllLocation ( Location VARCHAR(255) " +
+                ", Name VARCHAR(100))";
 
             dbCommand = dbConnection.CreateCommand();
             dbCommand.CommandText = strQuery;
@@ -68,8 +67,7 @@ namespace PowerVBA.Core.Connector
             }
 
         }
-
-
+        
         #region [  Recent Files  ]
 
         /// <summary>
@@ -155,21 +153,7 @@ namespace PowerVBA.Core.Connector
         }
 
         #endregion
-
-
-        #region [  PreDeclared Functions  ]
-
-        public void Func_Add(string code, string name)
-        {
-
-        }
-
-        public void Func_Remove(string name)
-        {
-
-        }
-
-        #endregion
+        
 
 
         public enum PresentationType

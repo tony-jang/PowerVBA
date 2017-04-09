@@ -30,6 +30,8 @@ using ICSharpCode.AvalonEdit;
 using exp = PowerVBA.Codes.Expressions;
 using Microsoft.Vbe.Interop;
 using PowerVBA.Codes.Expressions;
+using PowerVBA.Core.Reference;
+using System.IO;
 
 namespace PowerVBA
 {
@@ -44,6 +46,7 @@ namespace PowerVBA
         Thread loadThread;
         SQLiteConnector dbConnector;
         CodeInfo codeInfo;
+        List<FileInfo> LibraryFiles = new List<FileInfo>();
 
         Stopwatch ParseSw = new Stopwatch();
 
@@ -51,34 +54,21 @@ namespace PowerVBA
         {
             InitializeComponent();
             
-            Stopwatch sw = new Stopwatch();
-
             codeInfo = new CodeInfo();
 
             new VBAParser(codeInfo);
-
-            sw.Start();
-            var Exp = new exp.Expression("\"이것도 인식하면 \"\"기분 좋게 먹으러 간다.\" * true = not false", codeInfo.ErrorList, 1);
-            var list = Exp.GetPostFix(codeInfo, out bool err);
+            
+            //var dirlist = DirectorySearcher.GetAllDriveDirectories();
+            
+            //var Exp = new exp.Expression("\"이것도 인식하면 \"\"기분 좋게 먹으러 간다.\" * true = not false", codeInfo.ErrorList, 1);
+            //var list = Exp.GetPostFix(codeInfo, out bool err);
             //MessageBox.Show(list.GetPostFixStr() + " :: " + sw.ElapsedMilliseconds);
 
-            
-
-            
             //new VBAParser(codeInfo).Parse(TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode);
 
 
             codeEditor.TextChanged += CodeEditor_TextChanged;
-
-            //foreach (var itm in d)
-            //{
-            //    MessageBox.Show(itm.ToString());
-            //}
-
-
-            string str = sw.ElapsedMilliseconds + "ms" + Environment.NewLine + string.Join("\r\n",
-                codeInfo.ErrorList.Select((i) => i.Message + " :: " + i.Region.BeginLine));
-
+            
             bg = new BackgroundWorker();
             bg.DoWork += bg_DoWork;
             bg.RunWorkerCompleted += bg_RunWorkerCompleted;
@@ -116,9 +106,7 @@ namespace PowerVBA
                         {
                             errorList.SetError(codeInfo.ErrorList);
                         }));
-
-
-
+                        
                         //Dispatcher.Invoke(new Action(() => { this.Title = (((float)sw2.ElapsedTicks) / 1000).ToString(); }));
                         //Dispatcher.Invoke(new Action(() => { this.Title = codeInfo.ToString(); }));
                         //MessageBox.Show(codeInfo.ToString());
@@ -150,6 +138,408 @@ namespace PowerVBA
             
         }
 
+        #region [  윈도우 코드  ]
+
+        public void SetMessage(string Message, int Delay = 3000)
+        {
+            Thread thr = new Thread(() =>
+            {
+                Dispatcher.Invoke(() => { tbMessage.Text = Message; });
+
+                Thread.Sleep(Delay);
+
+                Dispatcher.Invoke(() => { tbMessage.Text = "준비"; });
+            });
+
+            thr.Start();
+        }
+
+
+        private void SolutionExplorer_OpenPropertyRequest()
+        {
+            var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "솔루션 탐색기").ToList();
+            if (tabItems.Count >= 1)
+            {
+                CodeTabControl.SelectedItem = tabItems.First();
+            }
+            else
+            {
+                CloseableTabItem itm = new CloseableTabItem()
+                {
+                    Header = "솔루션 탐색기",
+                    Content = new ProjectProperty()
+                };
+                CodeTabControl.Items.Add(itm);
+                CodeTabControl.SelectedItem = itm;
+            }
+        }
+
+
+        private void PreDeclareFuncBtn_SimpleButtonClicked()
+        {
+            var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "미리 정의된 함수").ToList();
+            if (tabItems.Count >= 1)
+            {
+                CodeTabControl.SelectedItem = tabItems.First();
+            }
+            else
+            {
+                CloseableTabItem itm = new CloseableTabItem()
+                {
+                    Header = "미리 정의된 함수",
+                    Content = new PreDeclareFuncManager() { Connector = Connector }
+                };
+                CodeTabControl.Items.Add(itm);
+                CodeTabControl.SelectedItem = itm;
+            }
+        }
+
+        private void SolutionExplorer_OpenRequest(object sender, VBComponentWrappingBase Data)
+        {
+            var itm = Data.ToVBComponent2013();
+            AddCodeTab(Data);
+        }
+
+        bool LoadComplete = false;
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Opacity = 0.0;
+            loadThread = new Thread(() =>
+            {
+                suWindow = new StartupWindow();
+
+                Dispatcher.FromThread(loadThread).Invoke(new Action(() =>
+                {
+                    suWindow.Show();
+                }), DispatcherPriority.Background);
+
+                while (!LoadComplete) { }
+                suWindow.Close();
+            });
+
+            loadThread.SetApartmentState(ApartmentState.STA);
+            Dispatcher.Invoke(new Action(() =>
+            {
+                loadThread.Start();
+            }), DispatcherPriority.Background);
+
+
+            bg.RunWorkerAsync();
+        }
+
+        private void bg_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.Opacity = 1.0;
+            LoadComplete = true;
+
+            this.Activate();
+        }
+
+        private void bg_DoWork(object sender, DoWorkEventArgs e)
+        {
+            MainDispatcher = Dispatcher;
+
+            Dispatcher.Invoke(new Action(() =>
+            {
+                dbConnector = new SQLiteConnector();
+                dbConnector.RecentFile_Get().ForEach((fl) => { LVrecentFile.Items.Add(new RecentFileListViewItem(fl)); });
+
+                RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
+            }));
+
+            //Environment.GetFolderPath(Environment.SpecialFolder.MyComputer),
+            //Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            //Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+            //Environment.GetFolderPath(Environment.SpecialFolder.System),
+            //Environment.GetFolderPath(Environment.SpecialFolder.SystemX86),
+            string[] Locations = { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+                                   };
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            List<string> CheckLocations = new List<string>();
+
+            foreach (string s in Locations)
+            {
+                if (string.IsNullOrEmpty(s.Trim())) continue;
+                CheckLocations.AddRange(DirectorySearcher.GetDirectories(s));
+            }
+            
+            foreach(string s in CheckLocations)
+            {
+                try
+                {
+                    foreach (FileInfo f in new DirectoryInfo(s).GetFiles())
+                    {
+                        // dll tlb olb
+                        switch (f.Extension)
+                        {
+                            case ".dll": case ".tlb": case ".olb":
+                                LibraryFiles.Add(f);
+                                break;
+                        }
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                { continue; }
+            }
+        }
+
+        public void AddCodeTab(string Name)
+        {
+            CodeEditor codeEditor = new CodeEditor();
+
+            CloseableTabItem codeTab = new CloseableTabItem()
+            {
+                Header = Name,
+                Content = codeEditor
+            };
+
+            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
+            codeEditor.SaveRequest += () => { SetMessage("저장되었습니다."); };
+            CodeTabControl.Items.Add(codeTab);
+        }
+        private void CodeEditor_TextChanged(object sender, EventArgs e)
+        {
+            ParseSw.Restart();
+            CodeSync(sender);
+        }
+
+        public void CodeSync(object sender)
+        {
+
+            int lines = 0;
+            Connector.ToConnector2013().VBProject.VBComponents.Cast<VBComponent>()
+                                                              .ToList()
+                                                              .ForEach((i) => lines += i.CodeModule.CountOfLines);
+
+            int ComponentCount = Connector.ToConnector2013().VBProject.VBComponents.Count;
+
+            int CurrLine = 0;
+            if (sender?.GetType() == typeof(CodeEditor)) CurrLine = ((CodeEditor)sender).Text.SplitByNewLine().Count();
+
+            projAnalyzer.CodeSync(lines, ComponentCount, CurrLine);
+        }
+
+
+        public void AddCodeTab(VBComponentWrappingBase component)
+        {
+            CodeEditor codeEditor = null;
+
+
+            switch (component.ClassVersion)
+            {
+                case PPTVersion.PPT2010:
+                    // TODO : PPT 2010 Version 추가
+                    return;
+                case PPTVersion.PPT2016:
+                case PPTVersion.PPT2013:
+                    var comp2013 = component.ToVBComponent2013();
+
+                    var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == comp2013.CodeModule.Name).ToList();
+
+                    if (tabItems.Count >= 1)
+                    {
+                        CodeTabControl.SelectedItem = tabItems.First();
+                        return;
+                    }
+
+                    codeEditor = new CodeEditor(component);
+
+                    try
+                    {
+                        var module = comp2013.VBComponent.CodeModule;
+
+                        if (comp2013.VBComponent.CodeModule.CountOfLines == 0) codeEditor.Text = "";
+                        else codeEditor.Text = comp2013.VBComponent.CodeModule.get_Lines(1, comp2013.VBComponent.CodeModule.CountOfLines);
+                    }
+                    catch (Exception)
+                    { MessageBox.Show("예외가 발생했습니다!"); }
+
+                    CloseableTabItem codeTab = new CloseableTabItem()
+                    {
+                        Header = comp2013.Name + GetExtensions(comp2013.Type),
+                        Content = codeEditor
+                    };
+
+                    CodeTabControl.Items.Add(codeTab);
+
+
+                    codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
+                    codeEditor.TextChanged += CodeEditor_TextChanged;
+                    codeEditor.SaveRequest += () =>
+                    {
+                        SetMessage("저장되었습니다.");
+                        comp2013.CodeModule.DeleteLines(1, comp2013.CodeModule.CountOfLines);
+                        comp2013.CodeModule.AddFromString(codeEditor.Text);
+                        CodeSync(codeEditor);
+                    };
+
+                    codeEditor.RaiseFolding();
+
+                    CodeTabControl.SelectedItem = codeTab;
+
+                    break;
+            }
+        }
+
+        public string GetExtensions(vbext_ComponentType Type)
+        {
+            switch (Type)
+            {
+                case vbext_ComponentType.vbext_ct_StdModule:
+                    return ".bas";
+                case vbext_ComponentType.vbext_ct_ClassModule:
+                case vbext_ComponentType.vbext_ct_Document:
+                    return ".cls";
+                case vbext_ComponentType.vbext_ct_MSForm:
+                    return ".frm";
+                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
+                default:
+                    return "";
+            }
+        }
+
+        public void SetName(string customName = "")
+        {
+            if (customName != "")
+            {
+                this.Title = $"{customName} - PowerVBA";
+            }
+            else if (Connector != null)
+            {
+                PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+                this.Title = conn2013.Presentation.Name + " - PowerVBA";
+                if (conn2013.Presentation.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    this.Title += " [읽기 전용]";
+                }
+            }
+        }
+
+        private void PPTCloseDetect()
+        {
+            var result = MessageBox.Show("프레젠테이션이 PowerVBA의 코드가 저장되지 않은 상태에서 닫혔습니다.\r\n코드는 저장한 상태에서 다시 여시겠습니까?\r\n이대로 닫게 되면 코드는 저장되지 않습니다.", "PowerVBA", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+        }
+
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ProgramTabControl.SelectedIndex = 0;
+            this.NoTitle = false;
+        }
+
+        private void ProjectFileChange()
+        {
+            solutionExplorer.Update(Connector);
+        }
+
+
+        private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CodeTabControl.SelectedItem == null)
+            {
+                ChangeBtnState(false, true);
+                return;
+            }
+
+            CloseableTabItem tabItm = ((CloseableTabItem)CodeTabControl.SelectedItem);
+            if (tabItm == null) return;
+            if (tabItm.Content.GetType() == typeof(CodeEditor))
+            {
+                var editor = (CodeEditor)tabItm.Content;
+                BtnUndo.IsEnabled = editor.CanUndo;
+                BtnRedo.IsEnabled = editor.CanRedo;
+
+                ChangeBtnState(true);
+            }
+            else
+            {
+                ChangeBtnState(false, true);
+            }
+        }
+
+        public void ChangeBtnState(bool Flag, bool ContainUndoRedoButtons = false)
+        {
+            if (ContainUndoRedoButtons)
+            {
+                BtnUndo.IsEnabled = Flag;
+                BtnRedo.IsEnabled = Flag;
+            }
+            BtnAddSub.IsEnabled = Flag;
+            BtnAddFunc.IsEnabled = Flag;
+            BtnAddForm.IsEnabled = Flag;
+
+            BtnAddVar.IsEnabled = Flag;
+            BtnAddConst.IsEnabled = Flag;
+
+            BtnAddMouseOverTrigger.IsEnabled = Flag;
+            BtnAddMouseClickTrigger.IsEnabled = Flag;
+
+            BtnAddEnum.IsEnabled = Flag;
+            BtnAddType.IsEnabled = Flag;
+        }
+
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (Connector != null)
+            {
+                if (Connector.ToConnector2013().Presentation.Saved != Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    MessageBoxResult result =
+                        MessageBox.Show(Connector.Name + "에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?",
+                        "저장되지 않은 내용",
+                        MessageBoxButton.YesNoCancel);
+
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                            if (!Connector.Save())
+                            {
+                                MessageBox.Show("저장에 실패했습니다. [읽기 전용]이라면 다른 이름으로 저장하기를 해주세요.", "저장 실패");
+                                e.Cancel = true;
+                                break;
+                            }
+                            break;
+                        case MessageBoxResult.No:
+                            break;
+                        case MessageBoxResult.Cancel:
+                            e.Cancel = true;
+                            return;
+                    }
+                }
+            }
+
+            AllClose();
+        }
+
+        public void AllClose()
+        {
+            Connector?.Dispose();
+            Environment.Exit(0);
+        }
+
+        private void MenuTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MenuTabControl.SelectedIndex == 0)
+            {
+                ProgramTabControl.SelectedIndex = 2;
+                MenuTabControl.SelectedIndex = 1;
+                this.NoTitle = true;
+            }
+        }
+        #endregion
+        
 
         #region [  에디터 메뉴 탭  ]
 
@@ -285,12 +675,12 @@ namespace PowerVBA
 
         private void BtnAddMouseOverTrigger_SimpleButtonClicked()
         {
-
+            new AddTriggerWindow(true).ShowDialog();
         }
 
         private void BtnAddMouseClickTrigger_SimpleButtonClicked()
         {
-
+            new AddTriggerWindow(false).ShowDialog();
         }
 
         private void BtnAddEnum_SimpleButtonClicked()
@@ -305,252 +695,8 @@ namespace PowerVBA
         #endregion
 
         #endregion
-
-
-        #region [  윈도우 코드  ]
-
-        public void SetMessage(string Message, int Delay = 3000)
-        {
-            Thread thr = new Thread(() =>
-            {
-                Dispatcher.Invoke(() => { tbMessage.Text = Message; });
-
-                Thread.Sleep(Delay);
-
-                Dispatcher.Invoke(() => { tbMessage.Text = "준비"; });
-            });
-
-            thr.Start();
-        }
-
-
-        private void SolutionExplorer_OpenPropertyRequest()
-        {
-            var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "솔루션 탐색기").ToList();
-            if (tabItems.Count >= 1)
-            {
-                CodeTabControl.SelectedItem = tabItems.First();
-            }
-            else
-            {
-                CloseableTabItem itm = new CloseableTabItem()
-                {
-                    Header = "솔루션 탐색기",
-                    Content = new ProjectProperty()
-                };
-                CodeTabControl.Items.Add(itm);
-                CodeTabControl.SelectedItem = itm;
-            }
-        }
-
-        private void SolutionExplorer_OpenRequest(object sender, VBComponentWrappingBase Data)
-        {
-            var itm = Data.ToVBComponent2013();
-            //string value = itm.CodeModule.get_Lines(1, itm.CodeModule.CountOfLines);
-            AddCodeTab(Data);
-
-        }
-
-        bool LoadComplete = false;
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.Opacity = 0.0;
-            loadThread = new Thread(() =>
-            {
-                suWindow = new StartupWindow();
-
-                Dispatcher.FromThread(loadThread).Invoke(new Action(() =>
-                {
-                    suWindow.Show();
-                }), DispatcherPriority.Background);
-
-                while (!LoadComplete) { }
-                suWindow.Close();
-            });
-
-            loadThread.SetApartmentState(ApartmentState.STA);
-            Dispatcher.Invoke(new Action(() =>
-            {
-                loadThread.Start();
-            }), DispatcherPriority.Background);
-
-
-            bg.RunWorkerAsync();
-        }
-
-        private void bg_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            this.Opacity = 1.0;
-            LoadComplete = true;
-
-            this.Activate();
-        }
-
-        private void bg_DoWork(object sender, DoWorkEventArgs e)
-        {
-            MainDispatcher = Dispatcher;
-
-            Dispatcher.Invoke(new Action(() =>
-            {
-                dbConnector = new SQLiteConnector();
-                dbConnector.RecentFile_Get().ForEach((fl) => { LVrecentFile.Items.Add(new RecentFileListViewItem(fl)); });
-                
-                RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
-            }));
-        }
-
-        public void AddCodeTab(string Name)
-        {
-            CodeEditor codeEditor = new CodeEditor();
-
-            CloseableTabItem codeTab = new CloseableTabItem()
-            {
-                Header = Name,
-                Content = codeEditor
-            };
-
-            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
-            codeEditor.SaveRequest += () => { SetMessage("저장되었습니다."); };
-            CodeTabControl.Items.Add(codeTab);
-        }
-        private void CodeEditor_TextChanged(object sender, EventArgs e)
-        {
-            ParseSw.Restart();
-        }
-
-        public void AddCodeTab(VBComponentWrappingBase component)
-        {
-            CodeEditor codeEditor = null;
-            
-
-            switch (component.ClassVersion)
-            {
-                case PPTVersion.PPT2010:
-                    // TODO : PPT 2010 Version 추가
-                    return;
-                case PPTVersion.PPT2016:
-                case PPTVersion.PPT2013:
-                    var comp2013 = component.ToVBComponent2013();
-
-                    var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == comp2013.CodeModule.Name).ToList();
-
-                    if (tabItems.Count >= 1)
-                    {
-                        CodeTabControl.SelectedItem = tabItems.First();
-                        return;
-                    }
-
-                    codeEditor = new CodeEditor(component);
-
-                    try
-                    {
-                        var module = comp2013.VBComponent.CodeModule;
-
-                        if (comp2013.VBComponent.CodeModule.CountOfLines == 0) codeEditor.Text = "";
-                        else codeEditor.Text = comp2013.VBComponent.CodeModule.get_Lines(1, comp2013.VBComponent.CodeModule.CountOfLines);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("예외가 발생했습니다!");
-                    }
-                    
-                    CloseableTabItem codeTab = new CloseableTabItem()
-                    {
-                        Header = comp2013.Name,
-                        Content = codeEditor
-                    };
-                    CodeTabControl.Items.Add(codeTab);
-
-                    CodeTabControl.SelectedItem = codeTab;
-
-                    codeEditor.TextChanged += CodeEditor_TextChanged;
-                    codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
-                    codeEditor.SaveRequest += () => 
-                    {
-                        SetMessage("저장되었습니다.");
-                        comp2013.CodeModule.DeleteLines(1, comp2013.CodeModule.CountOfLines);
-                        comp2013.CodeModule.AddFromString(codeEditor.Text);
-                    };
-
-                    break;
-                
-            }
-        }
-
-        public void SetName(string customName = "")
-        {
-            if (customName!= "")
-            {
-                this.Title = $"{customName} - PowerVBA";
-            }
-            else if (Connector != null)
-            {
-                PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
-
-                this.Title = conn2013.Presentation.Name + " - PowerVBA";
-                if (conn2013.Presentation.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
-                {
-                    this.Title += " [읽기 전용]";
-                }
-            }
-        }
-
-        private void PPTCloseDetect()
-        {
-            var result = MessageBox.Show("프레젠테이션이 PowerVBA의 코드가 저장되지 않은 상태에서 닫혔습니다.\r\n코드는 저장한 상태에서 다시 여시겠습니까?\r\n이대로 닫게 되면 코드는 저장되지 않습니다.", "PowerVBA", MessageBoxButton.YesNo);
-
-            if (result == MessageBoxResult.Yes)
-            {
-
-            }
-            else
-            {
-                Environment.Exit(0);
-            }
-        }
-
-        private void BackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ProgramTabControl.SelectedIndex = 0;
-            this.NoTitle = false;
-        }
-
-        private void ProjectFileChange()
-        {
-            solutionExplorer.Update(Connector);
-        }
-
-
-        private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            CloseableTabItem tabItm = ((CloseableTabItem)CodeTabControl.SelectedItem);
-            if (tabItm == null) return;
-            if (tabItm.Content.GetType() == typeof(CodeEditor))
-            {
-                var editor = (CodeEditor)tabItm.Content;
-                BtnUndo.IsEnabled = editor.CanUndo;
-                BtnRedo.IsEnabled = editor.CanRedo;
-            }
-        }
-
-        private void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            Connector?.Dispose();
-            Environment.Exit(0);
-        }
-        private void MenuTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MenuTabControl.SelectedIndex == 0)
-            {
-                ProgramTabControl.SelectedIndex = 2;
-                MenuTabControl.SelectedIndex = 1;
-                this.NoTitle = true;
-            }    
-        }
-        #endregion
-
-
+        
+        
         #region [  초기 화면  ]
         private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -578,7 +724,6 @@ namespace PowerVBA
 
                 InitalizeConnector(ofd.FileName);
             }
-            
         }
 
         private void BtnNewPPT_Click(object sender, RoutedEventArgs e)
@@ -591,7 +736,6 @@ namespace PowerVBA
                 MessageBox.Show($"죄송합니다. {ver.ToString()}는 지원하지 않는 버전입니다.");
                 return;
             }
-
             tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
 
             InitalizeConnector();
@@ -605,13 +749,9 @@ namespace PowerVBA
                 this.NoTitle = false;
                 PPTConnectorBase tmpConn;
                 if (FileLocation == "")
-                {
-                    tmpConn = new PPTConnector2013();
-                }
+                { tmpConn = new PPTConnector2013(); }
                 else
-                {
-                    tmpConn = new PPTConnector2013(FileLocation);
-                }
+                { tmpConn = new PPTConnector2013(FileLocation); }
 
                 tmpConn.PresentationClosed += PPTCloseDetect;
                 tmpConn.VBAComponentChange += ProjectFileChange;
@@ -626,11 +766,30 @@ namespace PowerVBA
 
                 PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
 
+
                 //== Debug ==
-                tmpConn._VBProject.ToVBProj2013().VBComponents.OfType<VBComponent>().ToList().ForEach((i) => { MessageBox.Show(i.CodeModule.get_Lines(1, i.CodeModule.CountOfLines)); });
+                //tmpConn._VBProject.ToVBProj2013().VBComponents.OfType<VBComponent>().ToList().ForEach((i) => { MessageBox.Show(i.CodeModule.get_Lines(1, i.CodeModule.CountOfLines)); });
                 //tmpConn._VBProject.ToVBProj2013().VBComponents.OfType<VBComponent>().ToList().ForEach((i) => { i.CodeModule.Prope })
+
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
+                //foreach(FileInfo f in LibraryFiles)
+                //{
+                //    try
+                //    {
+                //        Connector._VBProject.ToVBProj2013().References.AddFromFile(f.FullName);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                        
+                //    }                    
+                //}
+                //MessageBox.Show((sw.ElapsedMilliseconds / 1000).ToString());
+
+
                 //===========
-                
+                CodeSync(null);
                 ProgramTabControl.SelectedIndex = 0;
                 SetName();
             }), DispatcherPriority.Background);
@@ -671,7 +830,7 @@ namespace PowerVBA
         private void DebugBtn_SimpleButtonClicked()
         {
             //CodeTabEditor
-            Connector.ToConnector2013().VBProject.ToVBProj2013().VBE.
+            
             var itm = ((CodeTabEditor)((CloseableTabItem)CodeTabControl.SelectedItem).Content).CodeEditor;
             itm.DeleteIndent();
         }
@@ -683,5 +842,6 @@ namespace PowerVBA
                 Environment.Exit(0);
             }
         }
+
     }
 }

@@ -19,9 +19,13 @@ namespace PowerVBA.Windows.AddWindows
     /// </summary>
     public partial class AddTriggerWindow : ChromeWindow
     {
-        public AddTriggerWindow()
+        public AddTriggerWindow(bool IsMouseOver)
         {
             InitializeComponent();
+            if (IsMouseOver)
+            { btnMouseOver.IsChecked = true; }
+            else
+            { btnMouseClick.IsChecked = true; }
         }
     }
 }

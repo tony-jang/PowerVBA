@@ -58,10 +58,6 @@ namespace PowerVBA.Codes
         VB0009,
         
         [CanReplace(1)]
-        [KoError("'%1'라는 이름 또는 형식을 찾을 수 없습니다. 선언되어 있는지 확인하세요.")]
-        VB0010,
-
-        [CanReplace(1)]
         [KoError("Exit 뒤에는 '%1' 키워드 대신 Do, For, Sub, Function 또는 Property가 와야 합니다.")]
         VB0011,
 
@@ -132,12 +128,22 @@ namespace PowerVBA.Codes
 
         /// <summary>식별자 뒤 예약어 사용불가능 (1)</summary>
         [CanReplace(1)]
-        [KoError("식별자 뒤에는 %1와 같은 예약어가 올 수 없습니다.")]
+        [KoError("식별자 뒤에는 '%1'와 같은 예약어가 올 수 없습니다.")]
         VB0045 = 45,
         /// <summary>배열 크기 뒤에는 예약어 사용 불가</summary>
         [KoError("배열 크기 선언에는 예약어가 올 수 없습니다.")]
         VB0046,
-        
+
+        [CanReplace(1)]
+        /// <summary>라벨 선언에는 예약어 사용 불가</summary>
+        [KoError("라벨 선언에는 '%1'와 같은 예약어가 올 수 없습니다.")]
+        VB0047,
+
+        [CanReplace(1)]
+        [KoError("현재 컨텍스트에서는 '%1'와 같은 예약어가 유효하지 않습니다.")]
+        /// <summary>현재 컨텍스트에서 예약어 유효하지 않음</summary>
+        VB0048,
+
 
         #endregion
 
@@ -200,7 +206,9 @@ namespace PowerVBA.Codes
         [CanReplace(1)]
         [KoError("'%1' 식은 피연산자 다음에는 나올 수 없습니다.")]
         VB0065,
-
+        [CanReplace(1)]
+        [KoError("'=' 토큰은 현재 위치에서 사용할 수 없습니다.")]
+        VB0066,
         #endregion
 
         #region [  If / Select Case 오류  ]
@@ -228,21 +236,38 @@ namespace PowerVBA.Codes
         [KoError("Case가 필요합니다.")]
         VB0076,
 
+        [KoError("Then이 누락되었습니다. If문의 마지막에는 Then이 필요합니다.")]
+        VB0077,
+        [KoError("조건문 뒤에는 바로 연산자가 올 수 없습니다.")]
+        VB0078,
+
         #endregion
 
         #region [  Do / While 오류  ]
         
         [KoError("Do문은 맨 처음에만 오거나 Exit Do의 형태로만 사용 할 수 있습니다.")]
         VB0080 = 80,
-        [KoError("While문은 Do While로만 사용 할 수 있습니다.")]
+        [KoError("Until문은 Do Until로만 사용 할 수 있습니다.")]
         VB0081,
         [KoError("Wend문은 While문을 닫을 때만 사용 할 수 있습니다.")]
         VB0082,
 
+        /// <summary>Do문 이후 식 사용 불가능</summary>
+        [KoError("Do문 이후에는 식을 사용 할 수 없습니다.")]
+        VB0083,
+
+        /// <summary>Loop문 이후 식 사용 불가능</summary>
+        [KoError("Loop은 처음에만 사용 할 수 있습니다.")]
+        VB0084,
+
+        /// <summary>Loop문 이후 식 사용 불가능</summary>
+        [KoError("Wend문 이후에는 식을 사용 할 수 없습니다.")]
+        VB0085,
+
         #endregion
 
 
-        
+
         #region [  파라미터 오류  ]
 
         [KoError("ParamArray는 Optional과 함께 사용 할 수 없습니다.")]

@@ -124,8 +124,8 @@
       <DependentUpon>PreDeclareFuncManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\PreDeclareFunctions.cs" />
-    <Compile Include="Controls\Tools\PresentationAnalyzer.xaml.cs">
-      <DependentUpon>PresentationAnalyzer.xaml</DependentUpon>
+    <Compile Include="Controls\Tools\ProjectAnalyzer.xaml.cs">
+      <DependentUpon>ProjectAnalyzer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\ProjectProperty.xaml.cs">
       <DependentUpon>ProjectProperty.xaml</DependentUpon>
@@ -187,7 +187,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Tools\PresentationAnalyzer.xaml">
+    <Page Include="Controls\Tools\ProjectAnalyzer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

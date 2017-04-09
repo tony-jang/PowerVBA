@@ -88,11 +88,7 @@ namespace PowerVBA.Windows
 
         private void OnClose(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!IsSubWindow)
-                Environment.Exit(0);
-            else
-                this.Close();
-            
+            this.Close();
         }
 
 

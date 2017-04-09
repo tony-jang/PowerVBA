@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using PowerVBA.Global.RegexExpressions;
+using System.Diagnostics;
 
 namespace PowerVBA.V2013.Connector
 {
@@ -27,9 +28,7 @@ namespace PowerVBA.V2013.Connector
         private PPTConnector2013()
         {
             Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
-
             
-
             EventConnectThread = new Thread(() =>
             {
                 int LastComponentCount = 0;
@@ -97,8 +96,10 @@ namespace PowerVBA.V2013.Connector
                                                    // 발생하는 예외 상황 : 프레젠테이션 창이 하나는 있지만 현재 연결되어 있던 PowerPoint 창이 닫혔을때
                                                    (-2147188720, "오브젝트가 존재하지 않습니다."),
                                                    // 발생하는 예외 상황 : 연결된 PowerPoint 창이 닫히면서 프레제텐이션 창 자체가 닫혔을때
-                                                   (-2146827864, "애플리케이션이 종료된 것 같습니다.")};
-
+                                                   (-2146827864, "애플리케이션이 종료된 것 같습니다."),
+                                                   (-2147467262, "애플리케이션이 종료된 것 같습니다.")};
+                                                    
+                        //
                         var Error = Errors.Where((i) => i.Item1 == e.HResult).FirstOrDefault();
 
                         if (Error.Item2 != null)
@@ -135,14 +136,13 @@ namespace PowerVBA.V2013.Connector
             EventConnectThread?.Start();
         }
 
-
-
-
         public PresentationWrapping Presentation { get => (PresentationWrapping)_Presentation; set => _Presentation = value; }
         public ApplicationWrapping Application { get => (ApplicationWrapping)_PPTApp; set => _PPTApp = value; }
         public VBProjectWrapping VBProject { get => (VBProjectWrapping)_VBProject; set => _VBProject = value; }
 
         public override PPTVersion Version => PPTVersion.PPT2013;
+
+        public override string Name => Presentation.Name;
 
         public bool IsContainsName(string name)
         {
@@ -310,6 +310,80 @@ namespace PowerVBA.V2013.Connector
             Presentation.Close();
             if (Application.Presentations.Count == 0) Application.Quit();
         }
+
+        #region [  Module/Class/Form 존재 여부 확인  ]
+        public override bool ContainsModule(string name)
+        {
+            return VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                         .Where(i => i.Name == name && i.Type == VBA.vbext_ComponentType.vbext_ct_StdModule)
+                                         .Count() > 0;
+        }
+
+        public override bool ContainsClass(string name)
+        {
+            return VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                         .Where(i => i.Name == name && i.Type == VBA.vbext_ComponentType.vbext_ct_ClassModule)
+                                         .Count() > 0;
+        }
+
+        public override bool ContainsForm(string name)
+        {
+            return VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                         .Where(i => i.Name == name && i.Type == VBA.vbext_ComponentType.vbext_ct_MSForm)
+                                         .Count() > 0;
+        }
+
+        public override VBComponentWrappingBase GetModule(string name)
+        {
+            if (ContainsModule(name))
+                return new VBComponentWrapping(VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                                                     .Where(i => i.Name == name && i.Type == VBA.vbext_ComponentType.vbext_ct_StdModule).First());
+
+            return null;
+        }
+
+        public override VBComponentWrappingBase GetClass(string name)
+        {
+            if (ContainsModule(name))
+                return new VBComponentWrapping(VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                                                     .Where(i => i.Name == name && i.Type == VBA.vbext_ComponentType.vbext_ct_ClassModule).First());
+
+            return null;
+        }
+
+        public override VBComponentWrappingBase GetFrm(string name)
+        {
+            if (ContainsModule(name))
+                return new VBComponentWrapping(VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                                                     .Where(i => i.Name == name && i.Type == VBA.vbext_ComponentType.vbext_ct_MSForm).First());
+
+            return null;
+        }
+
+        public override bool Save()
+        {
+            if (Presentation.ReadOnly == MsoTriState.msoTrue) return false;
+            try
+            {
+                Presentation.Save();
+                return true;
+            }
+            catch (Exception)
+            { return false; }
+            
+        }
+
+        public override bool SaveAs(string path)
+        {
+            try
+            {
+                Presentation.SaveAs(path);
+                return true;
+            }
+            catch (Exception)
+            { return false; }   
+        }
+        #endregion
 
 
     }

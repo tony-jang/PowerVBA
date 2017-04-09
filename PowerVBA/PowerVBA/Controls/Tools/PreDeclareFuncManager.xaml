@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="미리 정의된 함수 추가/제거" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
-            <Button Grid.Column="1" Content="저장"  Padding="20,5" Margin="10,0" VerticalAlignment="Center" BorderBrush="Black" Background="White" Foreground="Black" Click="Button_Click"/>
+            <Button x:Name="SaveBtn" Grid.Column="1" Content="저장"  Padding="20,5" Margin="10,0" VerticalAlignment="Center" BorderBrush="Black" Background="White" Foreground="Black" Click="SaveBtn_Click"/>
         </Grid>
         
 
@@ -59,7 +59,7 @@
                 </ScrollViewer>
                 <Rectangle Grid.Row="1" Fill="LightGray" Margin="5,0"/>
                 <Grid Grid.Row="2">
-                    <TextBlock Text="※ 자동으로 파일이름에 따라 파일이 생성됩니다. 만약 내용이 있다면 모두 덮어씌워지니 주의하세요." Margin="5" Foreground="Gray"/>
+                    <TextBlock Text="※ 자동으로 PowerVBA.bas 라는 파일이 생성됩니다. 만약 기존 내용이 있다면 모두 덮어씌워지니 주의하세요." Margin="5" Foreground="Gray"/>
                 </Grid>
             </Grid>
 

@@ -22,10 +22,15 @@ namespace PowerVBA.Global
         public delegate void BlankEventHandler();
         public static IHighlightingDefinition highlightingDefintion;
 
-        
+
         public static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
         {
             return assembly.GetTypes().Where(t => string.Equals(t.Namespace, nameSpace, StringComparison.Ordinal)).ToArray();
+        }
+
+        public static Type[] GetTypesInNamespace(Assembly assembly)
+        {
+            return assembly.GetTypes();
         }
 
 

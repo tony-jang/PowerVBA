@@ -113,8 +113,10 @@ namespace PowerVBA.Codes
         /// </summary>
         public bool AfterElseIf { get; set; }
 
+        public bool AfterThen { get; internal set; }
+
         #endregion
-        
+
         #region [  Select Case  ]
 
         /// <summary>
@@ -150,18 +152,24 @@ namespace PowerVBA.Codes
 
         #endregion
         
-        public bool AfterOperator { get; set; }
-        public bool AfterObject { get; set; }
+        
         public object AfterWend { get; set; }
+
+        #region [  Property  ]
 
         public bool AfterLet { get; set; }
         public bool AfterSet { get; set; }
+
+        #endregion
+
         public bool AfterType { get; set; }
         public bool AfterPropAccessor { get; set; }
         public bool AfterReturn { get; set; }
         public bool UseMultiLine { get; internal set; }
-        public bool AfterThen { get; internal set; }
+        
         public bool AfterLabel { get; internal set; }
         public bool ReadMember { get; internal set; }
+        public bool AfterCallFunction { get; internal set; }
+        public bool AfterExpression { get; internal set; }
     }
 }
