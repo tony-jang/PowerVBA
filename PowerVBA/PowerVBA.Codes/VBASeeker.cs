@@ -36,8 +36,17 @@ namespace PowerVBA.Codes
         // 가장 마지막에 추가된 아이템
         private CodeItemBase LastCodeItm { get; set; }
 
-        public void GetLine(string FileName, string CodeLine, (RangeInt,int) Lines, bool Nested = false)
+        /// <summary>
+        /// 줄을 인식해 오류를 가져옵니다. 단, 처리되지 않은 줄이 있을시 NonHandledLine에 정보를 넣어 반환합니다.
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="CodeLine"></param>
+        /// <param name="Lines"></param>
+        /// <param name="Nested"></param>
+        /// <returns></returns>
+        public NotHandledLine GetLine(string FileName, string CodeLine, (RangeInt,int) Lines, bool Nested = false)
         {
+            NotHandledLine nHandledLine = null;
             CurrentLineCodeList = new LineCodeItem((Lines.Item1.StartInt, Lines.Item1.EndInt));
             //  for 카운터
             int i = 0,
@@ -236,7 +245,7 @@ namespace PowerVBA.Codes
                             }
                             AddItem(new TokenItem(ch.ToString(), (i, 1)));
                         }
-                        if (data.AfterDeclarator || data.AfterIdentifier || data.IsVarDeclaring)
+                        if ((data.AfterDeclarator || data.AfterIdentifier || data.IsVarDeclaring) && !data.AfterArray)
                         {
                             AddError(ErrorCode.VB0008);
                         }
@@ -252,6 +261,8 @@ namespace PowerVBA.Codes
                         break;
 
                     #endregion
+
+                    #region [  멀티 라인 인식  ]
 
                     case ':': // 멀티 라인 인식
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
@@ -276,6 +287,9 @@ namespace PowerVBA.Codes
                         MultiLineRead = true;
 
                         break;
+
+                    #endregion
+
                     //이외 체크
                     default:
                         
@@ -290,12 +304,12 @@ namespace PowerVBA.Codes
 
                     // 빈칸이거나 마지막 단어 일경우 또는 읽을 필요가 있는 경우
                     // 또는 다음 글자가 '('나 ')' 같이 읽을 필요가 있는 경우
-                    if (ch.IsWhiteSpace() || IsLastChar() || nextCh.IsDivision())
+                    if (ch.IsWhiteSpace() || IsLastChar() || nextCh.IsDivision() || MultiLineRead)
                     {
                         // string이거나 전처리기 지시문이거나 코멘트일 경우 넘김
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
 
-                        // 마지막 글자이면서 빈칸이 아니라면 인식할 문자열에 추가
+                        // 마지막 글자이면서 빈칸이 아니고 멀티 라인이 아니다라면 인식할 문자열에 추가
                         if ((IsLastChar() || nextCh.IsDivision()) && !(ch.IsWhiteSpace() || ch.IsOperator() || ch.IsBracket())
                             && !MultiLineRead) SavingText += ch;
 
@@ -356,6 +370,12 @@ namespace PowerVBA.Codes
                                 data.AfterProperty = true;
                                 data.AfterDeclarator = true;
                                 break;
+                            case "declare":
+                                if (data.AfterDeclarator) AddError(ErrorCode.VB0126);
+                                
+
+                                data.AfterDeclare = true;
+                                break;
                             case "enum":
                                 if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Enum, FileName, CurrentOffset));
                                 else AddItem(new DeclaratorItem(DeclaratorType.Enum, CurrentOffset));
@@ -388,10 +408,6 @@ namespace PowerVBA.Codes
                                 data.AfterThen = true;
                                 break;
                             #endregion
-
-                            case "not":
-                                //if (!)
-                                break;
 
                             #region [  Iterative  ]
 
@@ -553,7 +569,7 @@ namespace PowerVBA.Codes
                                     AddItem(new IdentifierItem(SavingText, CurrentOffset));
                                 }
                                 // 식별자 뒤라면
-                                else if (data.AfterIdentifier && !data.AfterAs)
+                                else if (data.AfterIdentifier && !data.AfterAs && !data.AfterArray)
                                 {
                                     // As 이어야 함.
                                     if (SavingText.ToLower() != "as" && !data.AfterAs) AddError(ErrorCode.VB0027, new string[] { "As" });
@@ -574,68 +590,37 @@ namespace PowerVBA.Codes
                                 }
                                 else
                                 {
-                                    // int 인식
-                                    if (int.TryParse(SavingText, out int DataInt))
+                                    string exp = string.Empty;
+                                    // If를 처음 사용했거나 ElseIf 이후 절인 경우
+                                    if ((data.AfterIf || data.AfterElseIf) && WordRecognition == 1)
                                     {
-                                        // 다음 문자가 .이라면
-                                        if (nextCh == '.')
-                                        {
-                                            bool CanCheck = i + 1 < text.Length ? true : false;
-                                            int length = 0;
-                                            // TODO : 완성 (식 계산)
-                                            if (CanCheck)
-                                            {
-                                                length++;
-                                                // 다음 텍스트 체크
-                                                char prevnextCh = i + length + 1 < text.Length ? text[i + length + 1] : '\0';
-                                                // 다음 텍스트 체크
-                                                if (prevnextCh.IsDigit())
-                                                {
-                                                    // TODO : 실수 계산식
-                                                    // 단, Expression으로 계산하는 방식을 추가시켜야 함.
-                                                }
-                                            }
-                                        }
+                                        
+                                        i -= SavingText.Length;
+                                        exp = ExpressionRange(i, RecognitionTypes.BeforeThen);
+                                        SavingText = "";
+                                        
                                     }
-                                    else
+                                    
+                                    else if ((data.AfterCase && (!data.AfterEnd || !data.AfterElse)) ||
+                                             ((data.AfterDo) && data.AfterWhile || data.AfterUntil) ||
+                                             data.AfterWhile)
                                     {
+                                        i -= SavingText.Length;
+                                        exp = ExpressionRange(i, RecognitionTypes.ToEndLine);
+                                        SavingText = "";
+                                    }
+                                    else if (WordRecognition == 0)
+                                    {
+                                        i = 0;
+                                        exp = ExpressionRange(i, RecognitionTypes.ToEndLine);
+                                        SavingText = "";
+                                    }
 
-                                        // If를 처음 사용했거나 ElseIf 이후 절인 경우
-                                        if ((data.AfterIf || data.AfterElseIf) && WordRecognition == 1)
-                                        {
-                                            ExpressionRange(i - 1, RecognitionTypes.BeforeThen);
-                                            SavingText = "";
-                                            goto ExitIf;
-                                        }
-                                        
-                                        else if ((data.AfterCase && (!data.AfterEnd || !data.AfterElse)) ||
-                                                 ((data.AfterDo) && data.AfterWhile || data.AfterUntil) ||
-                                                 data.AfterWhile)
-                                        {
-                                            ExpressionRange(i - 1, RecognitionTypes.ToEndLine);
-                                            SavingText = "";
-                                            goto ExitIf;
-                                        }
-
-                                        // 알 수 없는 아이템
-                                        
-                                        char c = nextCh;
-                                        int Expctr = 0;
-
-                                        do
-                                        {
-                                            if (nextCh == '\0') break;
-                                            Expctr++;
-                                            int txtIndex = i + 1 + Expctr;
-                                            if (txtIndex == text.Length) break;
-                                            c = text[txtIndex];
-
-                                            // .이 발견되면 Member를 읽으라고 명시
-                                            if (c == '.')
-                                            {
-                                                data.ReadMember = true;
-                                            }
-                                        } while (c != ' ') ;
+                                    if (!string.IsNullOrEmpty(exp))
+                                    {
+                                        var Expression = ToExpression(exp);
+                                        //MessageBox.Show(Expression.GetPostFix(out bool Err).GetPostFixStr());
+                                        goto ExitIf;
                                     }
                                 }
                                 break;
@@ -678,7 +663,7 @@ namespace PowerVBA.Codes
                     if (data.AfterAccessor && !data.AfterDeclarator && !data.AfterIdentifier)
                         AddError(ErrorCode.VB0123);
 
-                    if (data.AfterDeclarator && !data.AfterIdentifier && !data.IsVarDeclaring && !data.AfterEnd)
+                    if (data.AfterDeclarator && !data.AfterIdentifier && !data.IsVarDeclaring && (!data.AfterEnd && !data.AfterExit))
                         AddError(ErrorCode.VB0121);
 
                     // 식별자, As까지 나왔는데 Type이 안 나온 경우
@@ -699,16 +684,14 @@ namespace PowerVBA.Codes
                         // Operator나 Object가 하나도 안 나오면
                         if (!data.AfterExpression) AddError(ErrorCode.VB0122);
 
+
+
                     if (data.AfterSelect && (!data.AfterCase && !data.AfterEnd))
                         AddError(ErrorCode.VB0076);
                     if (data.AfterDo && (!data.AfterUntil && !data.AfterWhile) && WordRecognition != 1)
-                    {
                         AddError(ErrorCode.VB0083);
-                    }
                     if (data.AfterIf && data.AfterExpression && !data.AfterThen)
-                    {
                         AddError(ErrorCode.VB0077);
-                    }
 
 
                 }
@@ -718,7 +701,8 @@ namespace PowerVBA.Codes
 
                 if (MultiLineRead)
                 {
-                    new VBASeeker(CodeInfo).GetLine(FileName, CodeLine.Substring(i + 1), Lines, true);
+                    nHandledLine = new NotHandledLine(FileName, CodeLine.Substring(i + 1), Lines);
+                    // 마지막으로 인식 시켜주기
                     i = CodeLine.Length - 1;
                 }
             }
@@ -726,6 +710,7 @@ namespace PowerVBA.Codes
             RecognitionList(CurrentLineCodeList);
             CodeInfo.Childrens.Add(CurrentLineCodeList);
 
+            return nHandledLine;
             //======================================================================================================================
 
 
@@ -780,8 +765,13 @@ namespace PowerVBA.Codes
                     }
                     else if (!(data.AfterAccessor || WordRecognition == 0) && !(data.AfterEnd && WordRecognition == 1))
                     {
-                        AddError(ErrorCode.VB0120);
-                        Handled = true;
+                        // Enum이 아닐때 Exit sub, Exit Property등등을 체크
+                        if (!(Keyword != "enum" && data.AfterExit && WordRecognition == 1))
+                        {
+                            AddError(ErrorCode.VB0120);
+                            Handled = true;
+                        }
+                        
                     }
                     else
                     {
@@ -1202,13 +1192,6 @@ namespace PowerVBA.Codes
             }
             
             // 식을 인식하는 메소드
-            // 중지 인식
-            // 1. RecoBaseOnBracket = True
-            // 이 경우 여는괄호가 열리는 시점을 기점으로 닫는 괄호가 나오게 되면 인식을 종료
-            // 2. RecoBaseOnBracket = False
-            // 이 경우는 닫는 괄호 여는 괄호 상관 없이 모두 인식
-            // 예 B = ~~~
-            // 이후 :가 나오기 전까지 모두 식으로 인식
             string ExpressionRange(int TextOffset, RecognitionTypes RecognitionType)
             {
                 string str = CodeLine.Substring(TextOffset);
@@ -1253,7 +1236,7 @@ namespace PowerVBA.Codes
                         case ')':
                             bracketctr--;
                             saveStr += e_ch;
-                            if (bracketctr == 0)
+                            if (bracketctr == 0 && (RecognitionType == RecognitionTypes.BracketExpression || RecognitionType == RecognitionTypes.Parameter))
                             {
                                 string ExpressionStr = CodeLine.Substring(1, j);
 
@@ -1264,6 +1247,9 @@ namespace PowerVBA.Codes
                             if (bracketctr == 0 && RecognitionType == RecognitionTypes.Parameter) return ReturnStr;
 
                             break;
+                        case '.':
+                            ReturnStr += ".";
+                            break;
                         case ' ':
                             ReturnStr += " ";
                             break;
@@ -1272,13 +1258,10 @@ namespace PowerVBA.Codes
                             break;
                     }
 
-                    if (bracketctr == 0 && RecognitionType == RecognitionTypes.BracketExpression)
-                    {
-                        goto returnPoint;
-                    }
+                    if (bracketctr == 0 && RecognitionType == RecognitionTypes.BracketExpression)  goto returnPoint;
 
 
-                    if (e_nextCh.IsDivision() || e_nextCh == ' ' || LastChar)
+                    if (e_nextCh.IsDivision() || e_nextCh == ' ' || e_nextCh == ':' || LastChar)
                     {
                         bool Handled = true;
                         switch (saveStr.ToLower())
@@ -1298,7 +1281,10 @@ namespace PowerVBA.Codes
 
                         if (!Handled)
                         {
-                            if (Properties.Resources.예약어.ToLower().Split(new string[] { Environment.NewLine}, StringSplitOptions.None).Contains(saveStr.ToLower()))
+                            if (Properties.Resources.예약어.ToLower()
+                                    .Split(new string[] { Environment.NewLine}, StringSplitOptions.None)
+                                    .Where(itm => !itm.ContainsWords(new string[] { "And", "Or", "Not", "True", "False", "Xor", "Text", "Nothing" }))
+                                    .Contains(saveStr.ToLower()))
                             {
                                 AddError(ErrorCode.VB0048,new string[] { saveStr });
                             }
@@ -1380,19 +1366,19 @@ namespace PowerVBA.Codes
             // 식 계산
             Expression ToExpression(string Expression)
             {
-                return new Expression(Expression, CodeInfo.ErrorList, i);
+                return new Expression(Expression, CodeInfo.ErrorList, i, FileName);
             }
             
             void AddError(ErrorCode Code, string[] parameters = null, int Line = -1)
             {
-                if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, new DomRegion(Lines.Item1.StartInt, 0)));
-                else CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, new DomRegion(Line, 0)));
+                if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, FileName, new DomRegion(Lines.Item1.StartInt, 0)));
+                else CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, FileName, new DomRegion(Line, 0)));
             }
 
             void AddWarning(ErrorCode Code, string[] parameters = null, int Line = -1)
             {
-                if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, new DomRegion(Lines.Item1.StartInt, 0)));
-                else CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, new DomRegion(Line, 0)));
+                if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, FileName, new DomRegion(Lines.Item1.StartInt, 0)));
+                else CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, FileName, new DomRegion(Line, 0)));
             }
 
             void AddItem(CodeItemBase codeItm)
@@ -1410,8 +1396,7 @@ namespace PowerVBA.Codes
                 //MessageBox.Show(itm.ToString());
             }
         }
-
-
+        
     }
 
 }

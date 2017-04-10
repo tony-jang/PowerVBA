@@ -67,7 +67,7 @@ namespace PowerVBA
             //new VBAParser(codeInfo).Parse(TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode + TestCode);
 
 
-            codeEditor.TextChanged += CodeEditor_TextChanged;
+            //codeEditor.TextChanged += CodeEditor_TextChanged;
             
             bg = new BackgroundWorker();
             bg.DoWork += bg_DoWork;
@@ -97,13 +97,20 @@ namespace PowerVBA
                     {
                         Stopwatch sw2 = new Stopwatch();
                         sw2.Start();
-                        string s = null;
-                        Dispatcher.Invoke(new Action(() => { s = ((CodeEditor)codeEditor).Text; }));
 
-                        new VBAParser(codeInfo).Parse(s);
+                        List<(string, string)> CodeLists = new List<(string,string)>();
+
+                        Dispatcher.Invoke(new Action(() => {
+                            CodeLists = CodeTabControl.Items
+                                                      .Cast<TabItem>()
+                                                      .Where(t => t.Content.GetType() == typeof(CodeEditor))
+                                                      .Select(t => (((CodeEditor)t.Content).Text, t.Header.ToString())).ToList(); }));
+
+                        new VBAParser(codeInfo).Parse(CodeLists);
                         
                         errorList.Dispatcher.Invoke(new Action(() =>
                         {
+                            this.Title = sw2.ElapsedMilliseconds.ToString();
                             errorList.SetError(codeInfo.ErrorList);
                         }));
                         
@@ -124,12 +131,12 @@ namespace PowerVBA
         {
             try
             {
-                codeEditor.ScrollToLine(err.Region.Begin.Line);
-                codeEditor.SelectionLength = 0;
-                codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Region.Begin);
-                codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
+                //codeEditor.ScrollToLine(err.Region.Begin.Line);
+                //codeEditor.SelectionLength = 0;
+                //codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Region.Begin);
+                //codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
 
-                codeEditor.Focus();
+                //codeEditor.Focus();
             }
             catch (Exception ex)
             {
@@ -478,7 +485,7 @@ namespace PowerVBA
             }
             BtnAddSub.IsEnabled = Flag;
             BtnAddFunc.IsEnabled = Flag;
-            BtnAddForm.IsEnabled = Flag;
+            BtnAddProp.IsEnabled = Flag;
 
             BtnAddVar.IsEnabled = Flag;
             BtnAddConst.IsEnabled = Flag;

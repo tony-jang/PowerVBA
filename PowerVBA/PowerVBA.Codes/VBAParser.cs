@@ -58,19 +58,19 @@ namespace PowerVBA.Codes
             this.CodeInfo = codeInfo;
             CodeInfo.Reset();
         }
-        public void Parse(string code)
+        public void Parse((string, string) code)
         {
-            Parse(new List<string> { code });
+            Parse(new List<(string, string)> { code });
         }
 
-        public void Parse(List<string> codes)
+        public void Parse(List<(string, string)> codes)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
             CodeInfo.ErrorList.Clear();
             
-            foreach (string code in codes)
+            foreach ((string, string) code in codes)
             {
                 RangeInt CodeLine = 0;
                 
@@ -78,7 +78,7 @@ namespace PowerVBA.Codes
                 bool IsMultiLine = false;
                 string data = string.Empty;
 
-                char[] cArr = code.ToCharArray();
+                char[] cArr = code.Item1.ToCharArray();
                 int Length = cArr.Length;
                 
                 string spCode = "";
@@ -121,17 +121,23 @@ namespace PowerVBA.Codes
                         }
                         else
                         {
+                            NotHandledLine nHandledLine = null;
                             // 처리 - 이전 줄이 다중 라인이였을경우
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                seeker.GetLine("", spCode, (CodeLine, i));
+                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i));
                             }
                             // 처리 - 일반 적인 처리
                             else
                             {
                                 CodeLine.StartInt = LineCount;
-                                seeker.GetLine("", spCode, (CodeLine, i));
+                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i));
+                            }
+
+                            while (nHandledLine != null)
+                            {
+                                nHandledLine = seeker.GetLine(nHandledLine.FileName, nHandledLine.CodeLine, nHandledLine.Lines, true);
                             }
                         }
 

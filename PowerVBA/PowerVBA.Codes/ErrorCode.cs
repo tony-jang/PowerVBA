@@ -330,6 +330,10 @@ namespace PowerVBA.Codes
         /// <summary>ByVal, ByRef, ParamArray, Optional, ')' 이 필요합니다.</summary>
         [KoError("ByVal, ByRef, ParamArray, Optional 또는 ')' 이 필요합니다.")]
         VB0125,
+
+        [KoError("Declare은 선언자 앞에 올수 없습니다.")]
+        /// <summary>Declare는 선언자 앞에 올 수 없습니다.</summary>
+        VB0126,
         #endregion
         
         #region [  Property 오류  ]

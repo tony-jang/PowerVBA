@@ -13,47 +13,28 @@ namespace PowerVBA.Codes.Expressions
 {
     public class Expression
     {
-        public Expression(string inFixExpression, List<Error> Errors, int LineNum)
+        public Expression(string inFixExpression, List<Error> Errors, int LineNum, string FileName)
         {
             this.DisplayExpression = inFixExpression;
             this.Errors = Errors;
             this.LineNum = LineNum;
+            this.FileName = FileName;
         }
 
-        public static Expression Empty = new Expression("", null, -1);
+        public static Expression Empty = new Expression("", null, -1, "");
 
-        public List<Error> Errors;
+        private List<Error> Errors;
+        
+        private int LineNum;
+        
+        private string DisplayExpression;
 
-        public int LineNum;
+        private string FileName;
+        
+        private string ErrorMessage;
+        
 
-        public string DisplayExpression;
-        public List<Expression> SubExpressions;
-        public ExpressionType ExpressionType;
-
-        public object Value;
-
-        public string ErrorMessage;
-
-        /// <summary>
-        /// 식을 계산합니다.
-        /// </summary>
-        /// <param name="codeinfo"></param>
-        public void Calculate(CodeInfo codeinfo)
-        {
-            bool IsError = false;
-            List<IMiniExp> PostFixExpression = GetPostFix(codeinfo, out IsError);
-
-            if (IsError) ExpressionType = ExpressionType.ErrorExpression;
-            else
-            {
-                for (int i = 0; i < DisplayExpression.Length; i++)
-                {
-
-                }
-            }
-        }
-
-        public List<IMiniExp> GetPostFix(CodeInfo codeInfo, out bool Error)
+        public List<IMiniExp> GetPostFix(out bool Error)
         {
             string inFixExp = DisplayExpression;
 
@@ -110,11 +91,6 @@ namespace PowerVBA.Codes.Expressions
             void InsertionString(string String)
             {
                 PostfixExpression.Add(new MiniStrExp(String));
-            }
-
-            void InsertionVar(string VarLoc)
-            {
-                PostfixExpression.Add(new MiniVarExp(VarLoc));
             }
             void FinishStack()
             {
@@ -223,7 +199,7 @@ namespace PowerVBA.Codes.Expressions
                         default:
                             // Sub 안의 로컬 변수가 우선,
                             // 이후 없으면 함수 검색
-                            InsertionVar(Word);
+                            InsertionString(Word);
 
                             break;
 
@@ -239,7 +215,7 @@ namespace PowerVBA.Codes.Expressions
 
         public void AddError(ErrorCode code, string[] parameters = null)
         {
-            Errors.Add(new Error(ErrorType.Error, code, parameters, new DomRegion(LineNum, 0)));
+            Errors.Add(new Error(ErrorType.Error, code, parameters, FileName, new DomRegion(LineNum, 0)));
         }
 
     }

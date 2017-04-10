@@ -171,5 +171,6 @@ namespace PowerVBA.Codes
         public bool ReadMember { get; internal set; }
         public bool AfterCallFunction { get; internal set; }
         public bool AfterExpression { get; internal set; }
+        public object AfterDeclare { get; internal set; }
     }
 }

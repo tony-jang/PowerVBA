@@ -274,12 +274,12 @@
                             <TabControl.Resources>
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
-                            <c:CloseableTabItem Header="참조 관리자" Height="20">
+                            <!--<c:CloseableTabItem Header="참조 관리자" Height="20">
                                 <t:ReferenceManager/>
                             </c:CloseableTabItem>
                             <c:CloseableTabItem Header="Module1.bas" Height="20">
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
-                            </c:CloseableTabItem>
+                            </c:CloseableTabItem>-->
                         </TabControl>
                         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
                         <t:ErrorList x:Name="errorList" Grid.Row="2" />

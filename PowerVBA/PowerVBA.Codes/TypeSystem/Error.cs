@@ -29,7 +29,7 @@ namespace PowerVBA.Codes.TypeSystem
         readonly ErrorCode errorCode;
         readonly DomRegion region;
         readonly string[] parameters;
-
+        readonly string fileName;
         public ErrorCode ErrorCode { get => errorCode; }
 
 
@@ -66,12 +66,15 @@ namespace PowerVBA.Codes.TypeSystem
 
         public int Line { get => Region.BeginLine; }
 
-        public Error(ErrorType errorType, ErrorCode errorCode, string[] parameters, DomRegion region)
+        public string FileName { get => this.fileName; }
+
+        public Error(ErrorType errorType, ErrorCode errorCode, string[] parameters, string FileName, DomRegion region)
         {
             this.errorType = errorType;
             this.errorCode = errorCode;
             this.parameters = parameters;
             this.region = region;
+            this.fileName = FileName;
         }
         
 

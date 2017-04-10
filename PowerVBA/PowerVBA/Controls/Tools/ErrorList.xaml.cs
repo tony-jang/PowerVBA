@@ -56,7 +56,7 @@ namespace PowerVBA.Controls.Tools
                 lvErrors.Items.Add(
                     new ListViewItem()
                     {
-                        Content = err.Message + " | (" + err.Line + "번째 줄) <" + err.ErrorCode.ToString() + ">",
+                        Content = $"[{err.FileName}] {err.Message}| ({err.Line}번째 줄) <{err.ErrorCode.ToString()}>",
                         Tag = err
                     }
                     );

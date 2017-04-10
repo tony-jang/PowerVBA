@@ -21,7 +21,7 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class SolutionExplorer : UserControl
     {
-        public List<ListBox> ListBoxes = new List<ListBox>();
+        
         public SolutionExplorer()
         {
             InitializeComponent();
@@ -36,11 +36,62 @@ namespace PowerVBA.Controls.Tools
             {
                 lb.MouseDoubleClick += Item_DoubleClick;
             }
+
+
+            // ContextMenu 초기화
+
+
+            MenuItem itm1 = new MenuItem();
+            MenuItem itm2 = new MenuItem();
+            MenuItem itm3 = new MenuItem();
+
+            itm1.Header = "열기";
+            itm1.Click += Itm1_Click;
+            itm2.Header = "복사";
+            itm2.Click += Itm2_Click;
+            itm3.Header = "삭제";
+            itm3.Click += Itm3_Click;
+
+            itmMenu.Items.Add(itm1);
+            itmMenu.Items.Add(itm2);
+            itmMenu.Items.Add(itm3);
+        }
+
+        public List<ListBox> ListBoxes = new List<ListBox>();
+
+        ContextMenu itmMenu = new ContextMenu();
+
+
+        private void Itm1_Click(object sender, RoutedEventArgs e)
+        {
+            var itm = (ImageListViewItem)GetSelectedItem();
+            VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
+            
+            OpenRequest?.Invoke(this, comp);
+        }
+
+        private void Itm2_Click(object sender, RoutedEventArgs e)
+        {
+            var itm = (ImageListViewItem)GetSelectedItem();
+            VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
+
+            CopyRequest?.Invoke(this, comp);
+        }
+        
+        private void Itm3_Click(object sender, RoutedEventArgs e)
+        {
+            var itm = (ImageListViewItem)GetSelectedItem();
+            VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
+
+            DeleteRequest?.Invoke(this, comp);
         }
 
         public delegate void ComponentDelegate(object sender, VBComponentWrappingBase Data);
 
         public event ComponentDelegate OpenRequest;
+        public event ComponentDelegate CopyRequest;
+        public event ComponentDelegate DeleteRequest;
+
         public event BlankDelegate OpenPropertyRequest;
 
         private void Item_DoubleClick(object sender, MouseButtonEventArgs e)
@@ -49,7 +100,6 @@ namespace PowerVBA.Controls.Tools
             if (source.GetType() == typeof(ContentPresenter)) source = ((ContentPresenter)source).TemplatedParent;
 
             ImageListViewItem itm = (ImageListViewItem)source;
-            
             VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
 
 
@@ -78,6 +128,18 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
+        public ListBoxItem GetSelectedItem()
+        {
+            foreach (ListBox lb in ListBoxes)
+            {
+                foreach(ListBoxItem lbItm in lb.Items)
+                {
+                    if (lbItm.IsSelected) return lbItm;
+                }
+            }
+            return null;
+        }
+
         public void AddItem(VBComponentWrappingBase comp)
         {
             
@@ -91,7 +153,7 @@ namespace PowerVBA.Controls.Tools
             else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = ResourceImage.GetIconImage("FormIcon"); }
             else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = LBSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
 
-            AddLB?.Items.Add(new ImageListViewItem() { Content = comp.ToVBComponent2013().Name, Tag = comp, Source = img });
+            AddLB?.Items.Add(new ImageListViewItem() { Content = comp.ToVBComponent2013().Name, Tag = comp, Source = img, ContextMenu = itmMenu });
         }
 
         public void RemoveItem(VBComponentWrappingBase comp)
