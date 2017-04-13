@@ -46,6 +46,11 @@ namespace PowerVBA.Codes
         public bool IsVarDeclaring { get; set; }
 
         /// <summary>
+        /// 현재 상수 선언 중인지 여부를 나타냅니다. 확실치 않을때도 false를 반환합니다.
+        /// </summary>
+        public bool IsConstDeclaring { get; set; }
+
+        /// <summary>
         /// 현재 Function 선언 중인지 여부를 나타냅니다. 확실치 않을때도 false를 반환합니다.
         /// </summary>
         public bool IsFuncDeclaring { get; set; }
@@ -64,7 +69,6 @@ namespace PowerVBA.Codes
         /// Sub나 Function 같은 선언자 이후인지에 대한 여부를 가져옵니다.
         /// </summary>
         public bool AfterDeclarator { get; set; }
-
         public bool AfterFunction { get; set; }
         public bool AfterSub { get; set; }
         public bool AfterEnum { get; set; }
@@ -113,7 +117,7 @@ namespace PowerVBA.Codes
         /// </summary>
         public bool AfterElseIf { get; set; }
 
-        public bool AfterThen { get; internal set; }
+        public bool AfterThen { get; set; }
 
         #endregion
 
@@ -159,18 +163,30 @@ namespace PowerVBA.Codes
 
         public bool AfterLet { get; set; }
         public bool AfterSet { get; set; }
+        public bool AfterGet { get; set; }
 
         #endregion
 
         public bool AfterType { get; set; }
         public bool AfterPropAccessor { get; set; }
         public bool AfterReturn { get; set; }
-        public bool UseMultiLine { get; internal set; }
+        public bool UseMultiLine { get; set; }
         
-        public bool AfterLabel { get; internal set; }
-        public bool ReadMember { get; internal set; }
-        public bool AfterCallFunction { get; internal set; }
-        public bool AfterExpression { get; internal set; }
-        public object AfterDeclare { get; internal set; }
+        public bool AfterLabel { get; set; }
+        public bool ReadMember { get; set; }
+        public bool AfterCallFunction { get; set; }
+        public bool AfterExpression { get; set; }
+        public bool AfterDeclare { get; set; }
+
+
+        public bool AfterOnErrorResumeNext { get => AfterOn && AfterError && AfterResume && AfterNext; }
+        public bool AfterOnErrorGotoLabel { get => AfterOn && AfterError && AfterGoto && AfterLabel; }
+        public bool AfterOn { get;  set; }
+        public bool AfterError { get; set; }
+        public bool AfterGoto { get;  set; }
+        public bool AfterResume { get;  set; }
+        public bool AfterNext { get;  set; }
+        public bool AfterIn { get;  set; }
+        public bool AfterReDim { get; internal set; }
     }
 }

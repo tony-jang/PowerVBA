@@ -98,22 +98,23 @@ namespace PowerVBA
                         Stopwatch sw2 = new Stopwatch();
                         sw2.Start();
 
-                        List<(string, string)> CodeLists = new List<(string,string)>();
+                        List<(string, string)> CodeLists = new List<(string, string)>();
 
                         Dispatcher.Invoke(new Action(() => {
                             CodeLists = CodeTabControl.Items
                                                       .Cast<TabItem>()
                                                       .Where(t => t.Content.GetType() == typeof(CodeEditor))
-                                                      .Select(t => (((CodeEditor)t.Content).Text, t.Header.ToString())).ToList(); }));
+                                                      .Select(t => (((CodeEditor)t.Content).Text, t.Header.ToString())).ToList();
+                        }));
 
                         new VBAParser(codeInfo).Parse(CodeLists);
-                        
+
                         errorList.Dispatcher.Invoke(new Action(() =>
                         {
                             this.Title = sw2.ElapsedMilliseconds.ToString();
                             errorList.SetError(codeInfo.ErrorList);
                         }));
-                        
+
                         //Dispatcher.Invoke(new Action(() => { this.Title = (((float)sw2.ElapsedTicks) / 1000).ToString(); }));
                         //Dispatcher.Invoke(new Action(() => { this.Title = codeInfo.ToString(); }));
                         //MessageBox.Show(codeInfo.ToString());
@@ -131,12 +132,20 @@ namespace PowerVBA
         {
             try
             {
-                //codeEditor.ScrollToLine(err.Region.Begin.Line);
-                //codeEditor.SelectionLength = 0;
-                //codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Region.Begin);
-                //codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
+                CloseableTabItem tabItm = CodeTabControl.Items.Cast<CloseableTabItem>()
+                                                            .Where(i => i.Header.ToString() == err.FileName).FirstOrDefault();
 
-                //codeEditor.Focus();
+                CodeEditor codeEditor = (CodeEditor)tabItm.Content;
+
+                if (codeEditor == null || tabItm == null) return;
+
+                codeEditor.ScrollToLine(err.Region.Begin.Line);
+                codeEditor.SelectionLength = 0;
+                codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Region.Begin);
+                codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
+
+                CodeTabControl.SelectedItem = tabItm;
+                codeEditor.Focus();
             }
             catch (Exception ex)
             {
@@ -203,8 +212,11 @@ namespace PowerVBA
 
         private void SolutionExplorer_OpenRequest(object sender, VBComponentWrappingBase Data)
         {
-            var itm = Data.ToVBComponent2013();
-            AddCodeTab(Data);
+            if (Data != null)
+            {
+                var itm = Data.ToVBComponent2013();
+                AddCodeTab(Data);
+            }
         }
 
         bool LoadComplete = false;
@@ -344,7 +356,7 @@ namespace PowerVBA
                 case PPTVersion.PPT2013:
                     var comp2013 = component.ToVBComponent2013();
 
-                    var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == comp2013.CodeModule.Name).ToList();
+                    var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString().ToLower() == comp2013.CodeModule.Name.ToLower() + GetExtensions(comp2013.Type)).ToList();
 
                     if (tabItems.Count >= 1)
                     {
@@ -650,21 +662,21 @@ namespace PowerVBA
         {
             AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddType.Class);
 
-            filewindow.ShowDialog();
+            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
         }
 
         private void BtnAddModule_SimpleButtonClicked()
         {
             AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddType.Module);
 
-            filewindow.ShowDialog();
+            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
         }
 
         private void BtnAddForm_SimpleButtonClicked()
         {
             AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddType.Form);
 
-            filewindow.ShowDialog();
+            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
         }
 
 
@@ -707,30 +719,50 @@ namespace PowerVBA
         #region [  초기 화면  ]
         private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
         {
-            TBOpenAnotherPpt.FontStyle = FontStyles.Normal;
-            while (TBOpenAnotherPpt.TextDecorations.Count != 0)
+            TextBlock tb = null;
+            if (((Control)sender).Name.ToLower().Contains("openanotherppt")) tb = TBOpenAnotherPpt;
+            else if (((Control)sender).Name.ToLower().Contains("connectpresentation")) tb = TBConnectPresentation;
+
+            if (tb != null)
             {
-                TBOpenAnotherPpt.TextDecorations.RemoveAt(0);
+                tb.FontStyle = FontStyles.Normal;
+                while (tb.TextDecorations.Count != 0)
+                {
+                    tb.TextDecorations.RemoveAt(0);
+                }
             }
+                
         }
 
         private void GridOpenAnotherPpt_MouseMove(object sender, MouseEventArgs e)
         {
-            TBOpenAnotherPpt.TextDecorations.Add(TextDecorations.Underline);
+            TextBlock tb = null;
+            if (((Control)sender).Name.ToLower().Contains("openanotherppt")) tb = TBOpenAnotherPpt;
+            else if (((Control)sender).Name.ToLower().Contains("connectpresentation")) tb = TBConnectPresentation;
+
+            tb?.TextDecorations.Add(TextDecorations.Underline);
         }
 
         private void GridOpenAnotherPpt_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog()
+            if (((Control)sender).Name.ToLower().Contains("openanotherppt"))
             {
-                Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
-            };
-            if (ofd.ShowDialog().Value)
-            {
-                tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
+                OpenFileDialog ofd = new OpenFileDialog()
+                {
+                    Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
+                };
+                if (ofd.ShowDialog().Value)
+                {
+                    tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
 
-                InitalizeConnector(ofd.FileName);
+                    InitalizeConnector(ofd.FileName);
+                }
             }
+            else if (((Control)sender).Name.ToLower().Contains("connectpresentation"))
+            {
+                
+            }
+            
         }
 
         private void BtnNewPPT_Click(object sender, RoutedEventArgs e)

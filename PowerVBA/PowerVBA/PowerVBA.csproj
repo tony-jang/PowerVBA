@@ -403,6 +403,9 @@
     <Resource Include="Resources\Icon\PauseIcon.png" />
     <Resource Include="Resources\Icon\StopIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ConnectIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

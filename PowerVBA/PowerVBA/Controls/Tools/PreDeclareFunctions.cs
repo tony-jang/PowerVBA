@@ -129,7 +129,7 @@ End Function", "Boolean"));
             // Exists (파일 존재 확인 메소드)
             Functions.Add(new PreDeclareFunction("Exists", "파일이 존재하는지에 대한 여부입니다.", "File",
     @"Public Function Exists(path As String) As Boolean
-    Exists = (Dir(path) = "")
+    Exists = (Dir(path) = """")
 End Function", "Boolean"));
 
             // Copy (파일 복사 메소드)

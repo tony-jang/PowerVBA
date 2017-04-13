@@ -17,6 +17,7 @@ namespace PowerVBA.Codes
     public class VBAParser
     {
         CodeInfo CodeInfo;
+        LineInfo LineInfo;
 
         public static List<string> VBANamespaces = new List<string>();
         public static void AddNameSpace(Assembly asm)
@@ -57,6 +58,7 @@ namespace PowerVBA.Codes
         {
             this.CodeInfo = codeInfo;
             CodeInfo.Reset();
+            LineInfo = new LineInfo();
         }
         public void Parse((string, string) code)
         {
@@ -83,7 +85,7 @@ namespace PowerVBA.Codes
                 
                 string spCode = "";
 
-                VBASeeker seeker = new VBASeeker(CodeInfo);
+                VBASeeker seeker = new VBASeeker(CodeInfo, LineInfo);
 
                 
                 for (int i=0;i< cArr.Length; i++)
@@ -121,7 +123,7 @@ namespace PowerVBA.Codes
                         }
                         else
                         {
-                            NotHandledLine nHandledLine = null;
+                            NotHandledLine nHandledLine = NotHandledLine.Empty;
                             // 처리 - 이전 줄이 다중 라인이였을경우
                             if (IsMultiLine)
                             {
@@ -135,7 +137,7 @@ namespace PowerVBA.Codes
                                 nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i));
                             }
 
-                            while (nHandledLine != null)
+                            while (nHandledLine != NotHandledLine.Empty)
                             {
                                 nHandledLine = seeker.GetLine(nHandledLine.FileName, nHandledLine.CodeLine, nHandledLine.Lines, true);
                             }
@@ -149,7 +151,9 @@ namespace PowerVBA.Codes
                     spCode += cArr[i];
                 }
             }
-            
+
+            GC.Collect();
+
             //Errors.Where((i) => i.ErrorCode.ContainAttribute(typeof(NotSupportedAttribute))).ToList().ForEach((i) => Errors.Remove(i));
             
         }

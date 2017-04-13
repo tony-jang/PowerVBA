@@ -1,6 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
-using PowerVBA.Codes.CodeItems;
 using PowerVBA.Codes.Enums;
 using PowerVBA.Codes.Expressions;
 using PowerVBA.Codes.Extension;
@@ -18,23 +17,22 @@ namespace PowerVBA.Codes
 {
     class VBASeeker
     {
-        public VBASeeker(CodeInfo codeInfo)
+        public VBASeeker(CodeInfo codeInfo, LineInfo lineInfo)
         {
             CodeInfo = codeInfo;
-            CurrentLineCodeList = new LineCodeItem((0, 0));
+            LineInfo = lineInfo;
         }
 
 
         string NamePattern = @"^([_a-zA-z가-힣ㅏ-ㅣㄱ-ㅎ][_a-zA-Z가-힣ㅏ-ㅣㄱ-ㅎ1-9]*)$";
-
+        public static string[] ExpressionReserveWords = Properties.Resources.예약어2.ToLower().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+        public static string[] ReserveWords = Properties.Resources.예약어.ToLower().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
         private CodeInfo CodeInfo;
-        // TODO : LineInfo 추가한 것으로 처리
+        private LineInfo LineInfo;
 
-        private LineCodeItem CurrentLineCodeList { get; set; }
-
-        // 가장 마지막에 추가된 아이템
-        private CodeItemBase LastCodeItm { get; set; }
+        private LineInfo TempLineInfo;
+        
 
         /// <summary>
         /// 줄을 인식해 오류를 가져옵니다. 단, 처리되지 않은 줄이 있을시 NonHandledLine에 정보를 넣어 반환합니다.
@@ -46,8 +44,7 @@ namespace PowerVBA.Codes
         /// <returns></returns>
         public NotHandledLine GetLine(string FileName, string CodeLine, (RangeInt,int) Lines, bool Nested = false)
         {
-            NotHandledLine nHandledLine = null;
-            CurrentLineCodeList = new LineCodeItem((Lines.Item1.StartInt, Lines.Item1.EndInt));
+            NotHandledLine nHandledLine = NotHandledLine.Empty;
             //  for 카운터
             int i = 0,
                 // 여는 괄호 갯수
@@ -64,15 +61,82 @@ namespace PowerVBA.Codes
 
             char[] text = CodeLine.ToCharArray();
 
-            bool IsLastChar()
-            { return i >= text.Length - 1; }
+
+            TempLineInfo = LineInfo.Clone();
 
             for (i = 0;i < text.Length; i++)
             {
                 char ch = text[i];
                 bool Handled = true;
                 bool MultiLineRead = false;
+                bool IsLastChar = i >= text.Length - 1;
                 char nextCh = i + 1 < text.Length ? text[i + 1] : '\0';
+
+
+
+                if (ch == ':')
+                {
+                    if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
+
+                    if (!Nested && WordRecognition == 0)
+                    {
+                        if (ReserveWords.Contains(SavingText.ToLower()))
+                        {
+                            // 예약어가 포함되어 있을때의 오류
+                            AddError(ErrorCode.VB0047, new string[] { SavingText });
+                        }
+                        else
+                        {
+                            // 정상적인 아이템
+                            
+                        }
+
+                        data.AfterLabel = true;
+                    }
+
+                    Handled = false;
+                    MultiLineRead = true;
+                }
+                else if (ch == '"')
+                {
+                    if (data.IsInComment) break;
+
+                    if ((data.AfterIf && WordRecognition == 1) ||
+                        (data.AfterSelect && data.AfterCase && WordRecognition == 2) ||
+                        (data.AfterCase && WordRecognition == 1))
+                    {
+                        i--;
+                        if ((data.AfterIf && WordRecognition == 1))
+                        {
+                            ExpressionRange(i, RecognitionTypes.BeforeThen);
+                            IsLastChar = i >= text.Length - 1;
+                        }
+                        else
+                        {
+                            ExpressionRange(i, RecognitionTypes.ToEndLine);
+                            IsLastChar = i >= text.Length - 1;
+                        }
+                        goto ExitIf;
+                    }
+
+                    if (nextCh == '"')
+                    {
+                        i++;
+                        break;
+                    }
+
+                    data.IsInString = !data.IsInString;
+
+                    if (data.IsInString) Offset.Item1 = i;
+                    else
+                    {
+                        Offset.Item2 = i;
+                    }
+                    break;
+                }
+
+                if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
+
                 // 기본적인 문자
                 switch (ch)
                 {
@@ -91,25 +155,11 @@ namespace PowerVBA.Codes
                         data.IsInComment = true;
 
                         data.IsInPreprocessorDirective = false;
-                        break;
-                    case '"': // string 문자열 시작
-                        if (data.IsInComment) break;
 
-                        if (nextCh == '"')
-                        {
-                            i++;
-                            break;
-                        }
+                        i = text.Length - 1;
+                        IsLastChar = i >= text.Length - 1;
+                        goto ExitIf;
 
-                        data.IsInString = !data.IsInString;
-
-                        if (data.IsInString) Offset.Item1 = i;
-                        else
-                        {
-                            Offset.Item2 = i;
-                            AddItem(new TextItem(CodeLine.Substring(Offset.Item1, i - Offset.Item1), "", Offset));
-                        }
-                        break;
                     #endregion
 
                     #region [  새줄 인식  ]
@@ -137,15 +187,20 @@ namespace PowerVBA.Codes
                     #region [  괄호 (여닫는 괄호)  ]
                     case '(': // 여는 괄호
                         
-
+                        
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment)
                             break;
                         
                         if (data.AfterDeclarator) AddError(ErrorCode.VB0050);
 
+                        if (data.AfterReDim && data.AfterIdentifier)
+                        {
+                            string expression = ExpressionRange(i, RecognitionTypes.BracketExpression);
+                            if (string.IsNullOrEmpty(expression)) AddError(ErrorCode.VB0155);
+                        }
+                            
                         if (data.AfterIdentifier)
                         {
-                            AddItem(new TokenItem("(", (i, 1)));
                             // Array
                             if (data.IsVarDeclaring)
                             {
@@ -159,6 +214,7 @@ namespace PowerVBA.Codes
                             else
                             {
                                 ParameterSeek(i);
+                                IsLastChar = i >= text.Length - 1;
                             }
                         }
                         bracketCount++;
@@ -212,20 +268,20 @@ namespace PowerVBA.Codes
                             switch (multiOperator)
                             {
                                 case "<>":
-                                    AddItem(new TokenItem(multiOperator, (i, 2)));
+                                    
                                     break;
                                 case "=<":
                                 case "<=":
                                     if (multiOperator.StartsWith("="))
                                         AddWarning(ErrorCode.VB0060, new string[] { multiOperator, "<=" });
 
-                                    AddItem(new TokenItem(multiOperator, (i, 2)));
+                                    
                                     break;
                                 case "=>":
                                 case ">=":
                                     if (multiOperator.StartsWith("="))
                                         AddWarning(ErrorCode.VB0060, new string[] { multiOperator, ">=" });
-                                    AddItem(new TokenItem(multiOperator, (i, 2)));
+                                    
 
                                     break;
                                 case "*=": case "/=":
@@ -243,7 +299,6 @@ namespace PowerVBA.Codes
                             {
 
                             }
-                            AddItem(new TokenItem(ch.ToString(), (i, 1)));
                         }
                         if ((data.AfterDeclarator || data.AfterIdentifier || data.IsVarDeclaring) && !data.AfterArray)
                         {
@@ -254,40 +309,32 @@ namespace PowerVBA.Codes
                     #endregion
 
                     #region [  특수 문자  ]
-                    case ';': case '@': case '$': case '^': case '%': case '\\': case '~':
+
+                    case ',':
+                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
+
+                        if (data.IsVarDeclaring && data.AfterIdentifier)
+                        {
+                            data.AfterIdentifier = false;
+                        }
+                        else
+                        {
+                            AddError(ErrorCode.VB0041, new string[] { ch.ToString() });
+                        }
+                        break;
+
+
+                    case ';': case '@': case '$': case '^': case '%': case '~': // 사용되지 않는 특수문자
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
 
                         AddError(ErrorCode.VB0041, new string[] { ch.ToString() });
                         break;
 
-                    #endregion
-
-                    #region [  멀티 라인 인식  ]
-
-                    case ':': // 멀티 라인 인식
-                        if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) break;
-
-                        if (!Nested && WordRecognition == 0)
-                        {
-                            if (SavingText.ContainsWords(Properties.Resources.예약어.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)))
-                            {
-                                // 예약어가 포함되어 있을때의 오류
-                                AddError(ErrorCode.VB0047, new string[] { SavingText });
-                            }
-                            else
-                            {
-                                // 정상적인 아이템
-                                AddItem(new LabelItem(FileName, SavingText, Offset));
-                            }
-                            
-                            data.AfterLabel = true;
-                        }
-
-                        Handled = false;
-                        MultiLineRead = true;
-
+                    case '\\':
+                    case '&':
+                    case '|':
+                        if (WordRecognition == 0) AddError(ErrorCode.VB0041, new string[] { ch.ToString() });
                         break;
-
                     #endregion
 
                     //이외 체크
@@ -304,13 +351,13 @@ namespace PowerVBA.Codes
 
                     // 빈칸이거나 마지막 단어 일경우 또는 읽을 필요가 있는 경우
                     // 또는 다음 글자가 '('나 ')' 같이 읽을 필요가 있는 경우
-                    if (ch.IsWhiteSpace() || IsLastChar() || nextCh.IsDivision() || MultiLineRead)
+                    if (ch.IsWhiteSpace() || IsLastChar || nextCh.IsDivision() || MultiLineRead)
                     {
                         // string이거나 전처리기 지시문이거나 코멘트일 경우 넘김
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
 
                         // 마지막 글자이면서 빈칸이 아니고 멀티 라인이 아니다라면 인식할 문자열에 추가
-                        if ((IsLastChar() || nextCh.IsDivision()) && !(ch.IsWhiteSpace() || ch.IsOperator() || ch.IsBracket())
+                        if ((IsLastChar || nextCh.IsDivision()) && !(ch.IsWhiteSpace() || ch.IsOperator() || ch.IsBracket())
                             && !MultiLineRead) SavingText += ch;
 
                         if (string.IsNullOrEmpty(SavingText)) goto ExitIf;
@@ -328,90 +375,288 @@ namespace PowerVBA.Codes
                             #region [  Accessor  ]
                             case "public":
                                 if (data.AfterAccessor) AddError(ErrorCode.VB0022);
-
-                                AddItem(new AccessorItem(Accessor.Public, "", CurrentOffset));
+                                
                                 data.AfterAccessor = true;
                                 break;
                             case "private":
                                 if (data.AfterAccessor) AddError(ErrorCode.VB0022);
-
-                                AddItem(new AccessorItem(Accessor.Private, "", CurrentOffset));
+                                
                                 data.AfterAccessor = true;
                                 break;
                             case "dim":
                                 if (data.AfterAccessor) AddError(ErrorCode.VB0022);
                                 data.AfterAccessor = true;
                                 data.IsVarDeclaring = true;
-
-                                AddItem(new AccessorItem(Accessor.Dim, "", CurrentOffset));
+                                
                                 break;
+                            case "const":
+                                if (data.AfterAccessor) AddError(ErrorCode.VB0022);
+                                if (LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0144);
+
+                                data.AfterAccessor = true;
+                                data.IsConstDeclaring = true;
+                                break;
+
+                            case "redim":
+
+                                if (data.AfterAccessor) AddError(ErrorCode.VB0021);
+                                if (WordRecognition != 0) AddError(ErrorCode.VB0153);
+
+                                data.AfterAccessor = true;
+                                data.AfterReDim = true;
+
+                                break;
+
+                            #endregion
+
+                            // TODO List ::
+                            // Const                                  (   미 확 인  )
+                            // API 선언                               (구현되지 않음)
+                            // ReDim                                  ( 구 현 완 료 )
+                            // On Error Resume Next                   ( 구 현 완 료 )
+                            // On Error goto Point                    ( 구 현 완 료 )
+                            // 다중 변수 선언                         ( 구 현 완 료 )
+                            // Set 이후 오브젝트로 인식               (구현되지 않음)
+                            // Sub뒤 파라미터로 정상 인식하게 해주기  (구현되지 않음)
+
+                            #region [  On Error [Goto Label / Resume Next]  ]
+                            case "on":
+                                if (WordRecognition != 0) AddError(ErrorCode.VB0180);
+                                
+                                data.AfterOn = true;
+                                break;
+                            case "error":
+                                if (!data.AfterOn) AddError(ErrorCode.VB0181);
+                                data.AfterError = true;
+                                break;
+                            case "goto":
+                                if (!(data.AfterOn && data.AfterError)) AddError(ErrorCode.VB0182);
+                                data.AfterGoto = true;
+                                break;
+                            case "resume":
+                                if (!(data.AfterOn && data.AfterError)) AddError(ErrorCode.VB0183);
+                                data.AfterResume = true;
+                                break;
+
+                            #endregion
+
+                            #region [  For or On Error Resume Next  ]
+
+                            case "next": // For에서의 Next와 On Error Resume Next 잡아내기
+                                
+                                if (!(data.AfterOn && data.AfterError && data.AfterResume))
+                                { // For문의 Next로 인식
+                                    if (LineInfo.IsInFor)
+                                    {
+                                        if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Next" });
+                                        TempLineInfo.IsInFor = false;
+                                    }
+                                    else
+                                    {
+                                        AddError(ErrorCode.VB0173);
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+
+                                    if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "On Error Goto Next" });
+                                }
+
+                                // 아무런 오류가 없다면 On Error Resume 이후의 Next로 인식
+                                
+                                data.AfterNext = true;
+                                break;
+
                             #endregion
 
                             #region [  Declartor  ]
 
                             case "sub":
-                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Sub, FileName, CurrentOffset));
-                                else AddItem(new DeclaratorItem(DeclaratorType.Sub, CurrentOffset));
-
+                                if (data.AfterEnd) // End Sub 인식
+                                {
+                                    if (LineInfo.IsInSub)
+                                    {
+                                        // End Sub 정상 인식
+                                        TempLineInfo.IsInSub = false;
+                                    }
+                                    else
+                                    {
+                                        // Sub가 없는 End Sub
+                                        AddError(ErrorCode.VB0139);
+                                    }
+                                }
+                                else if (data.AfterExit)
+                                {
+                                    if (!LineInfo.IsInSub)
+                                    { AddError(ErrorCode.VB0127, new string[] { "Sub" }); }
+                                }
+                                else
+                                {
+                                    if (LineInfo.IsNestInProcedure) // Nest 오류
+                                    { AddError(ErrorCode.VB0133); }
+                                    if (LineInfo.IsInEnum)
+                                    { AddError(ErrorCode.VB0136); }
+                                    else
+                                    {
+                                        TempLineInfo.IsInSub = true;
+                                    }
+                                }
+                                
                                 data.AfterSub = true;
                                 data.AfterDeclarator = true;
+                                
                                 break;
                             case "function":
-                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Function, FileName, CurrentOffset));
-                                else AddItem(new DeclaratorItem(DeclaratorType.Function, CurrentOffset));
+                                if (data.AfterEnd)
+                                {
+                                    
+                                    if (LineInfo.IsInFunction)
+                                    {
+                                        TempLineInfo.IsInFunction = false;
+                                    }
+                                    else
+                                    {
+                                        AddError(ErrorCode.VB0138);
+                                    }
+                                    
+                                }
+                                else if (data.AfterExit)
+                                {
+                                    if (!LineInfo.IsInFunction)
+                                    {
+                                        AddError(ErrorCode.VB0127, new string[] { "Function" });
+                                    }
+                                }
+                                else
+                                {
+                                    if (LineInfo.IsNestInProcedure) // Nest 오류
+                                    { AddError(ErrorCode.VB0132); }
+                                    if (LineInfo.IsInEnum)
+                                    { AddError(ErrorCode.VB0135); }
+                                    else
+                                    {
+                                        TempLineInfo.IsInFunction = true;
+                                    }
+                                }
 
                                 data.AfterFunction = true;
                                 data.AfterDeclarator = true;
+                                
                                 break;
                             case "property":
-                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Function, FileName, CurrentOffset));
-                                else AddItem(new DeclaratorItem(DeclaratorType.Property, CurrentOffset));
+                                if (data.AfterEnd)
+                                {
+                                    if (data.AfterProperty)
+                                    {
+                                        TempLineInfo.IsInProperty = false;
+                                        
+                                    }
+                                    else
+                                    {
+                                        AddError(ErrorCode.VB0140);
+                                    }
+                                }
+                                else if (data.AfterExit)
+                                {
+                                    if (!LineInfo.IsInFunction)
+                                    {
+                                        AddError(ErrorCode.VB0127, new string[] { "Property" });
+                                    }
+                                }
+                                else
+                                {
+                                    if (LineInfo.IsNestInProcedure) // Nest Error
+                                    { AddError(ErrorCode.VB0134); }
+                                    if (LineInfo.IsInEnum)
+                                    { AddError(ErrorCode.VB0137); }
+                                    else
+                                    {
+                                        TempLineInfo.IsInProperty = true;
+                                        
+                                    }
+                                }
 
                                 data.AfterProperty = true;
                                 data.AfterDeclarator = true;
                                 break;
                             case "declare":
                                 if (data.AfterDeclarator) AddError(ErrorCode.VB0126);
-                                
+
+                                // TODO : Error 부분에서 Declare 이후 Sub나 Function이 나와도 괜찮게 바꿔주기 (아니면 다른데서라도)
 
                                 data.AfterDeclare = true;
+                                data.AfterDeclarator = true;
                                 break;
                             case "enum":
-                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.Enum, FileName, CurrentOffset));
-                                else AddItem(new DeclaratorItem(DeclaratorType.Enum, CurrentOffset));
+                                if (data.AfterEnd)
+                                {
+                                    if (LineInfo.IsInEnum)
+                                    {
+                                        TempLineInfo.IsInEnum = false;
+                                    }
+                                }
+                                else
+                                {
+                                    
+                                }
+                                
 
                                 data.AfterEnum = true;
                                 data.AfterDeclarator = true;
                                 break;
                             #endregion
 
+                            #region [  API  ]
+
+                            case "lib":
+                                
+
+                                break;
+                            case "alias":
+
+                                
+
+                                break;
+
+                            #endregion
+
                             #region [  Conditional  ]
                             case "if":
-                                if (data.AfterEnd) AddItem(new KeywordItem(Keywords.If, FileName, CurrentOffset));
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "If" });
+                                if (data.AfterEnd) 
                                 data.AfterIf = true;
                                 
                                 break;
                             case "elseif":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "ElseIf" });
                                 data.AfterElseIf = true;
 
                                 break;
                             case "else":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Else" });
                                 data.AfterElse = true;
                                 break;
                             case "select":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Select" });
                                 data.AfterSelect = true;
                                 break;
                             case "case":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Case" });
                                 data.AfterCase = true;
                                 break;
                             case "then":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Then" });
                                 data.AfterThen = true;
                                 break;
                             #endregion
 
                             #region [  Iterative  ]
 
+                            #region [  While / Do Until / Do While  ]
+
                             case "while":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "While" });
                                 // Do이후 절 이거나 Loop 이후절일때
                                 if (((data.AfterDo || data.AfterLoop) && WordRecognition == 1) || WordRecognition == 0)
                                 {
@@ -423,69 +668,123 @@ namespace PowerVBA.Codes
                                 }
                                 break;
                             case "until":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Until" });
+
                                 // Do Until or Loop Until
-                                if (data.AfterDo || data.AfterLoop)
-                                {
-                                    data.AfterUntil = true;
-                                }
+                                if ((data.AfterDo || data.AfterLoop) && WordRecognition == 1)
+                                { data.AfterUntil = true; }
+                                else
+                                { AddError(ErrorCode.VB0081); }
                                 
                                 break;
                             case "do":
-                                if (WordRecognition == 0) data.AfterDo = true;
-                                else if (data.AfterExit) data.AfterDo = true;
-                                AddItem(new ExitItem(CanExitItems.Do, CurrentOffset));
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Do" });
+                                if (WordRecognition == 0)
+                                {
+                                    TempLineInfo.IsInDo = true;
+                                    data.AfterDo = true;
+                                }
+                                else if (data.AfterExit)
+                                {
+                                    data.AfterDo = true;
+                                }
+                                
                                 break;
                             case "loop":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Loop" });
+                                if (!LineInfo.IsInDo) AddError(ErrorCode.VB0087);
+
                                 // 이후 Loop Until 또는 Loop While로 식을 사용 가능한 것을 인식 추가
                                 if (WordRecognition != 0) AddError(ErrorCode.VB0084);
-                                else data.AfterLoop = true;
+                                else
+                                {
+                                    TempLineInfo.IsInDo = false;
+                                    data.AfterLoop = true;
+                                }
                                 break;
                             // 특이한 End While의 형태
                             case "wend":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Wend" });
+                                if (!LineInfo.IsInWhile) AddError(ErrorCode.VB0086);
+
                                 if (WordRecognition == 0)
                                 {
                                     data.AfterWend = true;
-                                    AddItem(new KeywordItem(Keywords.Wend, FileName, CurrentOffset));
+                                    
                                 }
                                 else AddError(ErrorCode.VB0082);
                                 break;
+                            #endregion
+                                
+                            #region [  For / For Each  ]
 
                             case "for":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "For" });
                                 if (WordRecognition == 0)
                                 {
                                     data.AfterFor = true;
-                                    AddItem(new KeywordItem(Keywords.For, FileName, CurrentOffset));
+                                    TempLineInfo.IsInFor = true;
                                 }
                                 break;
                             case "each":
+                                if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "Each" });
                                 if (data.AfterFor)
                                 {
                                     data.AfterFor = false;
                                     data.AfterForEach = true;
-                                    
+                                    TempLineInfo.IsInForEach = true;
                                 }
                                 else
                                 {
+                                    // For 이후가 아니라면 Each는 현재 위치에서 사용 불가라는 걸 알려주기
                                     AddError(ErrorCode.VB0171);
                                 }
                                 break;
+                            case "in":
+                                if (data.AfterForEach && data.AfterIdentifier)
+                                {
+                                    data.AfterIn = true;
+                                    data.AfterIdentifier = false;
+                                }
+                                else
+                                {
+                                    AddError(ErrorCode.VB0174);
+                                }
+                                break;
+
+                            #endregion
+
                             #endregion
 
                             #region  [  Get/Set/Let  ]
                             case "get":
                                 // 오류는 이미 확인
-                                if (data.AfterProperty && !data.AfterPropAccessor) data.AfterPropAccessor = true;
+                                if (data.AfterProperty && !data.AfterPropAccessor)
+                                {
+                                    data.AfterPropAccessor = true;
+                                    data.AfterGet = true;
+                                }
                                 else AddError(ErrorCode.VB0130, new string[] { "Get" });
+
+                                data.AfterSet = true;
                                 break;
                             case "set":
                                 // 오류는 이미 확인
                                 if (data.AfterProperty && !data.AfterPropAccessor) data.AfterPropAccessor = true;
-                                else AddError(ErrorCode.VB0130, new string[] { "Set" });
+                                else
+                                {
+                                    if (WordRecognition != 0) AddError(ErrorCode.VB0130, new string[] { "Set" });
+                                    else data.AfterSet = true;
+                                }
 
                                 break;
 
                             case "let":
-                                if (data.AfterProperty && !data.AfterPropAccessor) data.AfterPropAccessor = true;
+                                if (data.AfterProperty && !data.AfterPropAccessor)
+                                {
+                                    data.AfterPropAccessor = true;
+                                    data.AfterLet = true;
+                                }
                                 else AddError(ErrorCode.VB0130, new string[] { "Let" });
 
                                 break;
@@ -505,22 +804,20 @@ namespace PowerVBA.Codes
                             #region [  End/As/Exit/Return  ]
 
                             case "end":
+
                                 if (WordRecognition != 0) AddError(ErrorCode.VB0000);
                                 else
                                 {
-                                    AddItem(new KeywordItem(Keywords.End, FileName, (i, 1)));
                                     data.AfterEnd = true;
                                 }
                                 break;
 
                             case "as":
-                                AddItem(new KeywordItem(Keywords.As, FileName, (i, 1)));
                                 data.AfterAs = true;
                                 break;
 
                             case "exit":
                                 data.AfterExit = true;
-
                                 break;
                             case "return":
                                 data.AfterReturn = true;
@@ -529,8 +826,7 @@ namespace PowerVBA.Codes
                             #endregion
 
                             #region [  VB.NET 미호환 문법  ]
-
-
+                                
                             case "readonly":
                                 AddError(ErrorCode.VB0006);
                                 break;
@@ -540,6 +836,7 @@ namespace PowerVBA.Codes
                             #endregion
 
                             default:
+
                                 // 선언문 이후이거나 선언문이 아니고 엑세서임을 만족하며 | 식별자이후가 아니라면 식별자로 인식
                                 if ((data.AfterDeclarator || (!data.AfterDeclarator && data.AfterAccessor)) && !data.AfterIdentifier)
                                 {
@@ -555,32 +852,59 @@ namespace PowerVBA.Codes
                                         // 아니라면 나가기
                                         else goto ExitIf;
                                     }
+                                    else if (data.AfterReDim && WordRecognition == 1)
+                                    {
+                                        data.AfterIdentifier = true;
+                                    }
                                     else
                                     {
                                         // 식별자 인식
+
+                                        // Accessor 이후이지만 변수 선언이 확실하지 않은 (Public, Private) 키워드의 경우
+                                        // 프로시져 안에 포함되어 있으면 오류로 간주 (프로시져 내부에서는 Dim을 이용한 변수 선언 밖에 안됨)
+                                        if (data.AfterAccessor && !data.IsVarDeclaring && LineInfo.IsNestInProcedure)
+                                        {
+                                            AddError(ErrorCode.VB0143);
+                                        }
 
                                         data.AfterDeclarator = false;
                                         data.AfterIdentifier = true;
                                     }
 
                                     // Public/Private/Dim 뒤에 식별자가 나왔을 경우 변수 선언으로 인식 및 처리
-                                    if (LastCodeItm.GetType() == typeof(AccessorItem)) data.IsVarDeclaring = true;
-
-                                    AddItem(new IdentifierItem(SavingText, CurrentOffset));
+                                    if (data.AfterAccessor && !data.IsConstDeclaring) data.IsVarDeclaring = true;
+                                }
+                                
+                                // For Each 또는 For문 이후라면
+                                else if (data.AfterFor || data.AfterForEach)
+                                {
+                                    // For Each Identifier In 이후
+                                    if (data.AfterForEach && data.AfterIdentifier && data.AfterIn)
+                                    {
+                                        data.AfterIdentifier = true;
+                                    }   
                                 }
                                 // 식별자 뒤라면
                                 else if (data.AfterIdentifier && !data.AfterAs && !data.AfterArray)
                                 {
+                                    // For이나 For Each이후의 식별자는 제외
+                                    if (data.AfterFor || data.AfterForEach) break;
                                     // As 이어야 함.
                                     if (SavingText.ToLower() != "as" && !data.AfterAs) AddError(ErrorCode.VB0027, new string[] { "As" });
                                     // 식별자 해제
                                     data.AfterIdentifier = false;
                                 }
+                                // On Error Goto 이후 절이라면 Label 인식
+                                else if (data.AfterOn && data.AfterError && data.AfterGoto)
+                                {
+                                    if (!LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0141, new string[] { "On Error Goto " + SavingText });
+                                    data.AfterLabel = true;
+                                }
                                 // 식별자 이후이면서, As 뒤이고, (Function이거나 변수 선언중) 이라는 걸 동시에 만족 시키면
                                 else if (data.AfterIdentifier && data.AfterAs && !data.AfterType)
                                 {
                                     // 타입으로 인식
-                                    AddItem(new TypeItem(SavingText, CurrentOffset));
+                                    
                                     data.AfterType = true;
                                 }
                                 // 배열 선언 이후라면
@@ -597,6 +921,7 @@ namespace PowerVBA.Codes
                                         
                                         i -= SavingText.Length;
                                         exp = ExpressionRange(i, RecognitionTypes.BeforeThen);
+                                        IsLastChar = i >= text.Length - 1;
                                         SavingText = "";
                                         
                                     }
@@ -607,19 +932,20 @@ namespace PowerVBA.Codes
                                     {
                                         i -= SavingText.Length;
                                         exp = ExpressionRange(i, RecognitionTypes.ToEndLine);
+                                        IsLastChar = i >= text.Length - 1;
                                         SavingText = "";
                                     }
                                     else if (WordRecognition == 0)
                                     {
                                         i = 0;
                                         exp = ExpressionRange(i, RecognitionTypes.ToEndLine);
+                                        IsLastChar = i >= text.Length - 1;
                                         SavingText = "";
                                     }
 
                                     if (!string.IsNullOrEmpty(exp))
                                     {
                                         var Expression = ToExpression(exp);
-                                        //MessageBox.Show(Expression.GetPostFix(out bool Err).GetPostFixStr());
                                         goto ExitIf;
                                     }
                                 }
@@ -634,37 +960,45 @@ namespace PowerVBA.Codes
                         if (data.IsInString || data.IsInPreprocessorDirective || data.IsInComment) goto ExitIf;
 
                         SavingText += ch;
-                        
                     }
                     else if (ch.IsOperator())
                     {
                         // DEBUG : 위쪽에서 처리 되었을 가능성 존재 확인후 삭제
-                        AddItem(new TokenItem(SavingText, CurrentOffset));
+                        
                     }
                 }
                 ExitIf:
                 // 마지막 문자일시
-                if (IsLastChar() || MultiLineRead)
+                if (IsLastChar || MultiLineRead)
                 {
                     if (bracketCount != 0) AddError(ErrorCode.VB0052, new string[] { bracketCount.ToString() });
 
-                    // 전처리기 지시문, 코멘트 등 아이템으로 추가시키기
-
-                    if (data.IsInComment)
-                    {
-                        AddItem(new CommentItem("", Offset));
-                    }
-                    else if (data.IsInPreprocessorDirective)
-                    {
-                        AddItem(new PreprocessorDirectiveItem("", Offset));
-                    }
                     // 미완성된 구문 체크
+
+                    if (data.AfterOn && WordRecognition == 1)
+                        AddError(ErrorCode.VB0186);
+
+                    if (data.AfterOn && data.AfterError && WordRecognition == 2)
+                        AddError(ErrorCode.VB0187);
+
+                    if (data.AfterOn && data.AfterError && data.AfterGoto && WordRecognition == 3)
+                        AddError(ErrorCode.VB0188);
+
+                    if (data.AfterOn && data.AfterError && data.AfterResume && WordRecognition == 3)
+                        AddError(ErrorCode.VB0189);
 
                     if (data.AfterAccessor && !data.AfterDeclarator && !data.AfterIdentifier)
                         AddError(ErrorCode.VB0123);
 
                     if (data.AfterDeclarator && !data.AfterIdentifier && !data.IsVarDeclaring && (!data.AfterEnd && !data.AfterExit))
                         AddError(ErrorCode.VB0121);
+
+                    if (data.AfterReDim && !data.AfterIdentifier && WordRecognition == 0)
+                        AddError(ErrorCode.VB0154);
+
+                    if (data.AfterReDim && data.AfterIdentifier && !data.IsInBracket)
+                        AddError(ErrorCode.VB0155);
+
 
                     // 식별자, As까지 나왔는데 Type이 안 나온 경우
                     if (data.AfterIdentifier && data.AfterAs && !data.AfterType)
@@ -707,8 +1041,7 @@ namespace PowerVBA.Codes
                 }
             }
 
-            RecognitionList(CurrentLineCodeList);
-            CodeInfo.Childrens.Add(CurrentLineCodeList);
+            LineInfo = TempLineInfo;
 
             return nHandledLine;
             //======================================================================================================================
@@ -721,6 +1054,17 @@ namespace PowerVBA.Codes
                 bool Handled = false;
                 if (data.IsInString || data.IsInComment || data.IsInPreprocessorDirective) return false;
 
+                if (data.AfterOnErrorResumeNext)
+                {
+                    AddError(ErrorCode.VB0184);
+                    Handled = true;
+                }
+                if (data.AfterOnErrorGotoLabel)
+                {
+                    AddError(ErrorCode.VB0185);
+                    Handled = true;
+                }
+                // Return뒤에 식을 작성했을 경우 오류 안내
                 if (data.AfterReturn)
                 {
                     AddError(ErrorCode.VB0012);
@@ -733,7 +1077,7 @@ namespace PowerVBA.Codes
                     if (Keyword == "class") AddError(ErrorCode.VB0001);
                     if (Keyword == "module") AddError(ErrorCode.VB0002);
 
-                    AddItem(new UnknownItem(ErrOffset));
+                    
                     Handled = true;
                 }
                 // public, private, dim 오류
@@ -744,11 +1088,13 @@ namespace PowerVBA.Codes
                         AddError(ErrorCode.VB0022);
                         Handled = true;
                     }
+                    // 현재 키워드가 Dim이면서 이미 선언자 이후라면 중복
                     if (Keyword == "dim" && data.AfterDeclarator)
                     {
                         AddError(ErrorCode.VB0021);
                         Handled = true;
                     }
+                    // 현재 키워드가 Dim이면서 단어 인식 횟수가 처음이 아니라면 오류
                     if (Keyword == "dim" && WordRecognition != 0)
                     {
                         AddError(ErrorCode.VB0040, new string[] { "Dim" });
@@ -792,9 +1138,8 @@ namespace PowerVBA.Codes
                         Handled = true;
                     }
 
-                    if (WordRecognition == 0 && Keyword != "let") {
-                        if (Keyword == "get") AddError(ErrorCode.VB0003);
-                        if (Keyword == "set") AddError(ErrorCode.VB0004);
+                    if (WordRecognition == 0 && Keyword != "get") {
+                        AddError(ErrorCode.VB0003);
                         Handled = true;
                     }
                 }
@@ -803,7 +1148,7 @@ namespace PowerVBA.Codes
                 {
                     if (!data.AfterIdentifier)
                     {
-                        AddError(ErrorCode.VB0140);
+                        AddError(ErrorCode.VB0151);
                         Handled = true;
                     }
                 }
@@ -851,6 +1196,12 @@ namespace PowerVBA.Codes
                     Handled = true;
                 }
 
+                if (ReserveWords.Contains(Keyword) && data.AfterOn && data.AfterError && data.AfterGoto && WordRecognition == 3) 
+                {
+                    AddError(ErrorCode.VB0190);
+                    Handled = true;
+                }
+
                 // 기본 처리
                 if (!Handled)
                 {
@@ -864,9 +1215,7 @@ namespace PowerVBA.Codes
                         AddError(ErrorCode.VB0131);
                         Handled = true;
                     }
-
-
-
+                    
                     if (data.IsVarDeclaring && WordRecognition == 1 &&
                         Properties.Resources.예약어.ToLower().Split(new string[] { "\r\n" }, StringSplitOptions.None).Contains(Keyword.ToLower()))
                     {
@@ -897,6 +1246,7 @@ namespace PowerVBA.Codes
                         char[] cArr = ParamString.ToCharArray();
 
                         i += ParamString.Length;
+                        
 
                         string savText = string.Empty;
 
@@ -1087,7 +1437,7 @@ namespace PowerVBA.Codes
                                             break;
                                         }
                                         if (AfterIdentifier) AfterAs = true;
-                                        else AddError(ErrorCode.VB0140);
+                                        else AddError(ErrorCode.VB0151);
                                         break;
                                     default:
 
@@ -1112,17 +1462,17 @@ namespace PowerVBA.Codes
 
                                             if (AfterByVal)
                                             {
-                                                AddItem(new ParameterItem(ParamAccessor.ByVal, name, type, "","", ParamOffset));
+                                                
                                                 NeedRest = true;
                                             }
                                             else if (AfterByRef)
                                             {
-                                                AddItem(new ParameterItem(ParamAccessor.ByRef, name, type, "", "", ParamOffset));
+                                                
                                                 NeedRest = true;
                                             }
                                             else if (AfterOptional)
                                             {
-                                                AddItem(new ParameterItem(ParamAccessor.Optional, name, type, "", "", ParamOffset));
+                                                
 
                                                 UseOptional = true;
 
@@ -1134,12 +1484,12 @@ namespace PowerVBA.Codes
                                             }
                                             else if (AfterParamArray)
                                             {
-                                                AddItem(new ParameterItem(ParamAccessor.ParamArray, name, type, "", "", ParamOffset));
+                                                
                                                 NeedRest = true;   
                                             }
                                             else
                                             {
-                                                AddItem(new ParameterItem(ParamAccessor.ByRef, name, type, "", "", ParamOffset));
+                                                
                                                 NeedRest = true;
                                             }
 
@@ -1150,7 +1500,7 @@ namespace PowerVBA.Codes
                                         }
                                         else if (AfterIdentifier && !AfterAs)
                                         {
-                                            AddError(ErrorCode.VB0141);
+                                            AddError(ErrorCode.VB0152);
                                         }
                                         else
                                         {
@@ -1212,14 +1562,19 @@ namespace PowerVBA.Codes
                     else LastChar = false;
                     char e_ch = cArr[j];
                     char e_nextCh = j + 1 < cArr.Length ? cArr[j + 1] : '\0';
-
+                    if (e_ch == '\'')
+                    {
+                        j--;
+                        goto returnPoint;
+                    }
                     if (e_ch == '\"') IsInString = !IsInString;
                     if (e_ch == ':' && !IsInString)
                     {
                         j--;
                         goto returnPoint;
                     }
-                    if (e_ch == '_' && !IsInString) continue;
+                    if (e_ch == '_' && !IsInString)
+                        continue;
                     if (IsInString)
                     {
                         // String 내부면 반환 텍스트에 추가
@@ -1231,6 +1586,10 @@ namespace PowerVBA.Codes
                     {
                         case '(':
                             bracketctr++;
+
+                            if ((RecognitionType == RecognitionTypes.BracketExpression || RecognitionType == RecognitionTypes.Parameter) &&
+                                bracketctr == 1) continue;
+
                             saveStr += e_ch;
                             break;
                         case ')':
@@ -1238,9 +1597,8 @@ namespace PowerVBA.Codes
                             saveStr += e_ch;
                             if (bracketctr == 0 && (RecognitionType == RecognitionTypes.BracketExpression || RecognitionType == RecognitionTypes.Parameter))
                             {
-                                string ExpressionStr = CodeLine.Substring(1, j);
-
-                                return ExpressionStr;
+                                
+                                return ReturnStr.Trim();
                             }
                             break;
                         case ',':
@@ -1248,14 +1606,17 @@ namespace PowerVBA.Codes
 
                             break;
                         case '.':
-                            ReturnStr += ".";
-                            break;
                         case ' ':
-                            ReturnStr += " ";
+                            // 빈칸 중복 방지
+                            if (e_nextCh != ' ') ReturnStr += e_ch;
+                            break;
+                        case '\r':
+                        case '\n':
                             break;
                         default:
                             saveStr += e_ch;
                             break;
+                            
                     }
 
                     if (bracketctr == 0 && RecognitionType == RecognitionTypes.BracketExpression)  goto returnPoint;
@@ -1281,10 +1642,7 @@ namespace PowerVBA.Codes
 
                         if (!Handled)
                         {
-                            if (Properties.Resources.예약어.ToLower()
-                                    .Split(new string[] { Environment.NewLine}, StringSplitOptions.None)
-                                    .Where(itm => !itm.ContainsWords(new string[] { "And", "Or", "Not", "True", "False", "Xor", "Text", "Nothing" }))
-                                    .Contains(saveStr.ToLower()))
+                            if (ExpressionReserveWords.Contains(saveStr.ToLower()))
                             {
                                 AddError(ErrorCode.VB0048,new string[] { saveStr });
                             }
@@ -1379,21 +1737,6 @@ namespace PowerVBA.Codes
             {
                 if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, FileName, new DomRegion(Lines.Item1.StartInt, 0)));
                 else CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, FileName, new DomRegion(Line, 0)));
-            }
-
-            void AddItem(CodeItemBase codeItm)
-            {
-                CurrentLineCodeList.Childrens.Add(codeItm);
-                LastCodeItm = codeItm;
-            }
-        }
-
-        void RecognitionList(LineCodeItem codeItm)
-        {
-
-            foreach (var itm in codeItm.Childrens)
-            {
-                //MessageBox.Show(itm.ToString());
             }
         }
         

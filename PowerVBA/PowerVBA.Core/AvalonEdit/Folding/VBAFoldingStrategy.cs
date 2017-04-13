@@ -47,7 +47,7 @@ namespace PowerVBA.Core.AvalonEdit.Folding
             var foldings = new List<NewFolding>();
 
             string sPattern = $@"(\t|\f|\b| )+(((public|private).+|)({string.Join("|", foldablewords)}) +(.+))";
-            string sPattern2 = $@"(\t|\f|\b| )+(((({string.Join("|", foldablewords)})))(.+))";
+            string sPattern2 = $@"(\t|\f|\b| )+(((({string.Join("|", foldablewords)}))) (.+))";
             string ePattern = $@"end(\t|\f|\b| )+({string.Join("|", foldablewords)})";
 
             string commPattern = $@"^(\t|\f|\b| |)+'(.+|)$";
@@ -66,8 +66,25 @@ namespace PowerVBA.Core.AvalonEdit.Folding
             {
                 counter++;
 
+                if (System.Text.RegularExpressions.Regex.IsMatch(line, commPattern))
+                {
+                    Match m = System.Text.RegularExpressions.Regex.Match(line, commPattern);
+
+                    string value = m.Groups[2].Value;
+
+
+                    if (stacks.Count != 0)
+                    {
+                        var stack = stacks.Peek();
+                        if (!(stack.Item3 == FoldingLineType.Remark)) goto Last;
+                    }
+
+
+                    stacks.Push(new Tuple<Match, int, FoldingLineType>(m, Index, FoldingLineType.Remark));
+                }
+                
                 #region [ 선언 패턴 확인 ]
-                if (System.Text.RegularExpressions.Regex.IsMatch(line, sPattern))
+                else if (System.Text.RegularExpressions.Regex.IsMatch(line, sPattern))
                 {
                     Match m = System.Text.RegularExpressions.Regex.Match(line, sPattern);
 
@@ -120,23 +137,7 @@ namespace PowerVBA.Core.AvalonEdit.Folding
                     newFolding.Name = stack.Item1.Groups[3].Value;
                     foldings.Add(newFolding);
                 }
-                else if (System.Text.RegularExpressions.Regex.IsMatch(line, commPattern))
-                {
-                    Match m = System.Text.RegularExpressions.Regex.Match(line, commPattern);
-
-                    string value = m.Groups[2].Value;
-
-
-                    if (stacks.Count != 0)
-                    {
-                        var stack = stacks.Peek();
-                        if (!(stack.Item3 == FoldingLineType.Remark)) goto Last;
-                    }
-
-
-                    stacks.Push(new Tuple<Match, int, FoldingLineType>(m, Index, FoldingLineType.Remark));
-                }
-
+                
 
                 if (counter == lines.Count() || !System.Text.RegularExpressions.Regex.IsMatch(line, commPattern))
                 {

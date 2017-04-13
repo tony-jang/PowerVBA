@@ -313,7 +313,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
-                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="120"/>
                         </Grid.RowDefinitions>
                         <StackPanel>
                             <TextBlock Margin="20,35,0,0" FontSize="40" Foreground="White">
@@ -369,7 +369,7 @@
 
                         <Grid Grid.Row="2">
                             <Rectangle Margin="25,0" Height="1" VerticalAlignment="Top" Fill="#FFE48F7B"/>
-                            <Button x:Name="GridOpenAnotherPpt" Margin="25,15,0,35" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
+                            <Button x:Name="GridOpenAnotherPpt" Margin="25,15,0,75" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Background" Value="Transparent"/>
@@ -396,12 +396,40 @@
                                 </Grid>
                             </Button>
 
+                            <Button x:Name="GridConnectPresentation" Margin="25,60,0,35" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                                                    </Grid>
+
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="Resources/Icon/ConnectIcon.png" IsHitTestVisible="False"/>
+                                    <TextBlock x:Name="TBConnectPresentation" VerticalAlignment="Center" Grid.Column="2" Foreground="White" FontSize="15" Text="기존 프레젠테이션과 연결하기" IsHitTestVisible="False"/>
+                                </Grid>
+                            </Button>
+
                         </Grid>
                     </Grid>
                 </Border>
                 <Grid Grid.Column="1" Margin="0,40,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="23"/>
@@ -420,14 +448,14 @@
                         </WrapPanel>
                     </ScrollViewer>
 
-                    <Grid Grid.Row="2" Margin="0,10">
+                    <Grid Grid.Row="3" Margin="0,10">
 
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">
                         PowerVBA가 아닌 PowerPoint를 사용하시려고 하시나요? <Run x:Name="OpenPPTRun"  Text="파워포인트 열기" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
                         </TextBlock>
                     </Grid>
 
-                    <Grid Grid.Row="3" Background="#FFD24726" Margin="0,0,0,0">
+                    <Grid Grid.Row="4" Background="#FFD24726" Margin="0,0,0,0">
                         <TextBlock Margin="5,0" x:Name="tbProcessInfoTB" Text="사용하실 템플릿을 선택해주세요." Foreground="White"
                                    TextWrapping="Wrap" VerticalAlignment="Center" />
                     </Grid>

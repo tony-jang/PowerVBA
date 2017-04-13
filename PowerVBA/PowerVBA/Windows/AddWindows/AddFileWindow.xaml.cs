@@ -38,9 +38,11 @@ namespace PowerVBA.Windows.AddWindows
             this.Close();
         }
 
+        VBComponentWrappingBase wrap = null;
+
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            VBComponentWrappingBase wrap;
+            
             bool Result = false;
             if (btnClass.IsChecked.Value)
             { Result = conn.AddClass(TBName.Text, out wrap); }
@@ -52,6 +54,12 @@ namespace PowerVBA.Windows.AddWindows
             if (!Result)
             { MessageBox.Show("파일 추가에 실패했습니다. 명명 규칙이 잘못 되었습니다.\r\n명명 규칙은 다음과 같습니다.\r\n - 이름의 시작은 문자만 올 수 있습니다.\r\n - 이외에는 빈칸을 제외한 _이나 문자 또는 숫자가 올 수 있습니다."); }
             else this.Close();
+        }
+
+        public new VBComponentWrappingBase ShowDialog()
+        {
+            base.ShowDialog();
+            return wrap;
         }
 
         public enum AddType

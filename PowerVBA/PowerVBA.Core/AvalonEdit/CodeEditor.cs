@@ -124,7 +124,7 @@ namespace PowerVBA.Core.AvalonEdit
 
             
 
-            this.TextArea.TextEntering += delegate (object sender, TextCompositionEventArgs e)
+            this.TextChanged += delegate (object sender, EventArgs e)
             {
                 codeParser.Seek();
                 sw.Restart();

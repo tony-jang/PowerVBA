@@ -31,10 +31,7 @@ namespace PowerVBA.Codes
         [NotSupported]
         [KoError("'Get'은 VBA에서 지원하지 않습니다. 대신 Public Property Get을 이용해보세요.")]
         VB0003,
-        /// <summary>미지원 문법 - Set</summary>
-        [NotSupported]
-        [KoError("'Set'은 VBA에서 지원하지 않습니다. 대신 Public Property Set/Let을 이용해보세요.")]
-        VB0004,
+        
         /// <summary>미지원 문법 - End While</summary>
         [NotSupported]
         [KoError("'End While'은 VBA에서 지원하지 않습니다. 대신 Wend를 이용해보세요.")]
@@ -134,14 +131,14 @@ namespace PowerVBA.Codes
         [KoError("배열 크기 선언에는 예약어가 올 수 없습니다.")]
         VB0046,
 
-        [CanReplace(1)]
         /// <summary>라벨 선언에는 예약어 사용 불가</summary>
+        [CanReplace(1)]
         [KoError("라벨 선언에는 '%1'와 같은 예약어가 올 수 없습니다.")]
         VB0047,
 
+        /// <summary>현재 컨텍스트에서 예약어 유효하지 않음</summary>
         [CanReplace(1)]
         [KoError("현재 컨텍스트에서는 '%1'와 같은 예약어가 유효하지 않습니다.")]
-        /// <summary>현재 컨텍스트에서 예약어 유효하지 않음</summary>
         VB0048,
 
 
@@ -264,6 +261,12 @@ namespace PowerVBA.Codes
         [KoError("Wend문 이후에는 식을 사용 할 수 없습니다.")]
         VB0085,
 
+        [KoError("Wend로 닫을 While문을 찾을 수 없습니다.")]
+        VB0086,
+
+        [KoError("Loop으로 닫을 Do문을 찾을 수 없습니다.")]
+        VB0087,
+
         #endregion
 
 
@@ -330,13 +333,21 @@ namespace PowerVBA.Codes
         /// <summary>ByVal, ByRef, ParamArray, Optional, ')' 이 필요합니다.</summary>
         [KoError("ByVal, ByRef, ParamArray, Optional 또는 ')' 이 필요합니다.")]
         VB0125,
-
-        [KoError("Declare은 선언자 앞에 올수 없습니다.")]
-        /// <summary>Declare는 선언자 앞에 올 수 없습니다.</summary>
-        VB0126,
-        #endregion
         
-        #region [  Property 오류  ]
+        /// <summary>Declare는 선언자 앞에 올 수 없습니다.</summary>
+        [KoError("Declare은 선언자 앞에 올수 없습니다.")]
+        VB0126,
+
+
+        /// <summary>Exit .. Sub/Function/Property/Do/For</summary>
+        [CanReplace(1)]
+        [KoError("Exit %1로 닫을 %1문을 찾을 수 없습니다.")]
+        VB0127,
+
+
+        #endregion
+
+        #region [  라인 위치 오류  ]
 
         /// <summary>Set/Get/Let 위치 오류</summary>
         [CanReplace(1)]
@@ -346,25 +357,85 @@ namespace PowerVBA.Codes
         /// <summary>Property + Get/Let/Set</summary>
         [KoError("Property 절 뒤에는 Get이나 Let 또는 Set만 올 수 있습니다.")]
         VB0131,
-        #endregion
 
-        #region [  As 오류  ]
+        /// <summary>Function Nest 사용 불가능</summary>
+        [KoError("Function은 메소드에 네스트해 사용할 수 없습니다.")]
+        VB0132,
 
-        /// <summary>As 절은 식별자 다음에만 올 수 있습니다.</summary>
-        [KoError("As 절은 식별자 다음에만 올 수 있습니다.")]
-        VB0140 = 140,
+        /// <summary>Sub Nest 사용 불가능</summary>
+        [KoError("Sub는 메소드에 네스트해 사용할 수 없습니다.")]
+        VB0133,
 
-        /// <summary>As가 와야 합니다.</summary>
-        [KoError("As가 와야 합니다.")]
+        /// <summary>Property Nest 사용 불가능</summary>
+        [KoError("Property는 메소드에 네스트해 사용할 수 없습니다.")]
+        VB0134,
+
+        /// <summary>Function Enum 안에 사용 불가능</summary>
+        [KoError("Function은 Enum 안에 쓸 수 없습니다.")]
+        VB0135,
+
+        /// <summary>Sub Enum 안에 사용 불가능</summary>
+        [KoError("Sub는 Enum 안에 쓸 수 없습니다.")]
+        VB0136,
+
+        /// <summary>Property Enum 안에 사용 불가능</summary>
+        [KoError("Property는 Enum 안에 쓸 수 없습니다.")]
+        VB0137,
+
+        /// <summary>End Function 단독 사용 불가능</summary>
+        [KoError("End Function은 Function 뒤에만 올 수 있습니다.")]
+        VB0138,
+
+        /// <summary>End Sub 단독 사용 불가능</summary>
+        [KoError("End Sub는 Sub 뒤에만 올 수 있습니다.")]
+        VB0139,
+
+        /// <summary>End Property 단독 사용 불가능</summary>
+        [KoError("End Property는 Property 뒤에만 올 수 있습니다.")]
+        VB0140,
+
+        
+        /// <summary>While/If/Do/For 프로시져 내부에서만 사용 가능 명시</summary>
+        [CanReplace(1)]
+        [KoError("%1은(는) 프로시져 내부에서만 사용할 수 있습니다.")]
         VB0141,
 
+        /// <summary>프로시져 내부에서 사용 불가능 명시</summary>
+        [CanReplace(1)]
+        [KoError("%1은(는) 프로시져 내부에서 사용 할 수 없습니다.")]
+        VB0142,
+
+        [KoError("프로시져 내부의 변수 선언은 Dim 키워드로 선언해야 합니다.")]
+        VB0143,
+
+        [KoError("프로시져 내부에서는 상수를 정의할 수 없습니다.")]
+        VB0144,
+
         #endregion
 
-        #region [  배열 오류  ]
+        #region [  배열/As 오류  ]
 
         /// <summary>배열 크기 뒤에는 상수 필요</summary>
         [KoError("배열 크기 선언에는 상수가 와야합니다")]
         VB0150 = 150,
+
+        /// <summary>As 절은 식별자 다음에만 올 수 있습니다.</summary>
+        [KoError("As 절은 식별자 다음에만 올 수 있습니다.")]
+        VB0151,
+
+        /// <summary>As가 와야 합니다.</summary>
+        [KoError("As가 와야 합니다.")]
+        VB0152,
+
+        [KoError("ReDim은 맨 처음에만 올 수 있습니다.")]
+        VB0153,
+
+        [KoError("ReDim 뒤에는 식별자가 필요합니다.")]
+        VB0154,
+
+        [KoError("ReDim의 배열 크기 부분은 비워둘수 없습니다.")]
+        VB0155,
+
 
         #endregion
 
@@ -387,8 +458,52 @@ namespace PowerVBA.Codes
 
         [KoError("For문은 End로 닫을 수 없습니다. End For문 대신 Next를 사용하세요.")]
         VB0172,
-        #endregion
+
+        [KoError("Next로 닫을 For문을 찾을 수 없습니다. 또는 On Error Resume Next로 사용 가능합니다.")]
+        VB0173,
+
+        [KoError("In 키워드는 For Each 문에서만 사용 할 수 있습니다.")]
+        VB0174,
+
         
+        #endregion
+
+        #region [  On Error [Goto Label / Resume Next]  ]
+
+        [KoError("On 키워드는 맨처음에만 올 수 있습니다.")]
+        VB0180 = 180,
+
+        [KoError("Error 키워드는 On 이후에만 올 수 있습니다.")]
+        VB0181,
+
+        [KoError("Goto 키워드는 On Error 이후에만 올 수 있습니다.")]
+        VB0182,
+
+        [KoError("Resume 키워드는 On Error 이후에만 올 수 있습니다.")]
+        VB0183,
+
+        [KoError("On Error Resume Next 이후에는 아무것도 올 수 없습니다.")]
+        VB0184,
+
+        [KoError("On Error GoTo Label 이후에는 아무것도 올 수 없습니다.")]
+        VB0185,
+
+        [KoError("On 키워드 이후에는 Error이 나와야 합니다.")]
+        VB0186,
+
+        [KoError("On Error이후에는 GoTo Label 또는 Resume Next가 나와야 합니다.")]
+        VB0187,
+
+        [KoError("On Error GoTo 이후에는 라벨 이름이 나와야 합니다.")]
+        VB0188,
+
+        [KoError("On Error Resume 이후에는 Next이 나와야 합니다.")]
+        VB0189,
+
+        [KoError("On Error Goto 이후에는 예약어가 올 수 없습니다.")]
+        VB0190,
+
+        #endregion
 
 
         #region [  식 오류  ]

@@ -22,7 +22,7 @@ namespace PowerVBA.Codes.Extension
 
         public static bool ContainsWords(this string str, string[] Words)
         {
-            return Words.Select((i)=> i.ToLower()).Contains(str);
+            return Words.Contains(str);
         }
     }
 }

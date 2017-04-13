@@ -57,6 +57,6 @@ namespace PowerVBA.Codes.CodeItems
         Function,
 
         Enum,
-
+        Property,
     }
 }
