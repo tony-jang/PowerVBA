@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Core.Connector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,17 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ReferenceManager : UserControl
     {
-        public ReferenceManager()
+        PPTConnectorBase Connector;
+
+        public ReferenceManager(PPTConnectorBase Connector)
         {
+            this.Connector = Connector;
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

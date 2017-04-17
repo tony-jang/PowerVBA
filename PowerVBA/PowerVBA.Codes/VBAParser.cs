@@ -57,12 +57,19 @@ namespace PowerVBA.Codes
         public VBAParser(CodeInfo codeInfo)
         {
             this.CodeInfo = codeInfo;
+            
             CodeInfo.Reset();
-            LineInfo = new LineInfo();
+            
         }
         public void Parse((string, string) code)
         {
             Parse(new List<(string, string)> { code });
+        }
+
+        public CodeFileInfo GetFileInfo(string FileName)
+        {
+            // TODO : 구현
+            return null;
         }
 
         public void Parse(List<(string, string)> codes)
@@ -71,21 +78,27 @@ namespace PowerVBA.Codes
             sw.Start();
 
             CodeInfo.ErrorList.Clear();
+            CodeInfo.Lines.Clear();
             
             foreach ((string, string) code in codes)
             {
+                LineInfo = new LineInfo();
+                LineInfo.FileName = code.Item2;
+
                 RangeInt CodeLine = 0;
                 
                 int LineCount = 0;
                 bool IsMultiLine = false;
                 string data = string.Empty;
 
+                
+
                 char[] cArr = code.Item1.ToCharArray();
                 int Length = cArr.Length;
                 
                 string spCode = "";
 
-                VBASeeker seeker = new VBASeeker(CodeInfo, LineInfo);
+                VBASeeker seeker = new VBASeeker(CodeInfo);
 
                 
                 for (int i=0;i< cArr.Length; i++)
@@ -128,21 +141,20 @@ namespace PowerVBA.Codes
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i));
+                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i), ref LineInfo);
                             }
                             // 처리 - 일반 적인 처리
                             else
                             {
                                 CodeLine.StartInt = LineCount;
-                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i));
+                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i), ref LineInfo);
                             }
 
                             while (nHandledLine != NotHandledLine.Empty)
                             {
-                                nHandledLine = seeker.GetLine(nHandledLine.FileName, nHandledLine.CodeLine, nHandledLine.Lines, true);
+                                nHandledLine = seeker.GetLine(nHandledLine.FileName, nHandledLine.CodeLine, nHandledLine.Lines, ref LineInfo, true);
                             }
                         }
-
                         i++;
                         spCode = string.Empty;
                         continue;
@@ -150,6 +162,24 @@ namespace PowerVBA.Codes
 
                     spCode += cArr[i];
                 }
+
+                if (LineInfo.IsInFunction) AddError(ErrorCode.VB0210);
+                else if (LineInfo.IsInSub) AddError(ErrorCode.VB0211);
+                else if (LineInfo.IsInProperty) AddError(ErrorCode.VB0212);
+                else if (LineInfo.IsInSelectCase) AddError(ErrorCode.VB0213);
+                else if (LineInfo.IsInIf) AddError(ErrorCode.VB0214);
+                else if (LineInfo.IsInDo) AddError(ErrorCode.VB0215);
+                else if (LineInfo.IsInDoWhile) AddError(ErrorCode.VB0216);
+                else if (LineInfo.IsInDoUntil) AddError(ErrorCode.VB0217);
+                else if (LineInfo.IsInEnum) AddError(ErrorCode.VB0218);
+                else if (LineInfo.IsInFor) AddError(ErrorCode.VB0219);
+                else if (LineInfo.IsInForEach) AddError(ErrorCode.VB0210);
+
+                void AddError(ErrorCode Code, string[] parameters = null)
+                {
+                    CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, code.Item2, new DomRegion(LineCount, 0)));
+                }
+                CodeInfo.Lines.Add(LineInfo);
             }
 
             GC.Collect();
@@ -157,6 +187,8 @@ namespace PowerVBA.Codes
             //Errors.Where((i) => i.ErrorCode.ContainAttribute(typeof(NotSupportedAttribute))).ToList().ForEach((i) => Errors.Remove(i));
             
         }
+
+
     }
     
 

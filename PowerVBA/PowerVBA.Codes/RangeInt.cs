@@ -10,30 +10,16 @@ namespace PowerVBA.Codes
     {
         public RangeInt(int value)
         {
-            _StartInt = value;
-            _EndInt = value;
+            StartInt = value;
+            EndInt = value;
         }
 
         public static implicit operator RangeInt(int i)
         {
             return new RangeInt(i);
         }
-
-        private int _StartInt;
-        public int StartInt
-        {
-            get { return _StartInt; }
-            set {
-                if (value <= _EndInt) _StartInt = value;
-                else { _StartInt = value; _EndInt = value; }
-            }
-        }
-        private int _EndInt;
-        public int EndInt
-        {
-            get { return _EndInt; }
-            set { if (value <= _StartInt) _EndInt = value; }
-        }
+        public int StartInt { get; set; }
+        public int EndInt { get; set; }
 
         public int[] GetRange()
         {

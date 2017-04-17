@@ -17,12 +17,14 @@ namespace PowerVBA.Core.Connector
 
         public abstract PPTVersion Version { get; }
         public abstract string Name { get; }
+        public abstract int SlideCount { get; }
 
         public event BlankDelegate VBAComponentChange;
         public event BlankDelegate PresentationClosed;
         public event BlankDelegate ShapeChanged;
         public event BlankDelegate SlideChanged;
         public event BlankDelegate SectionChanged;
+        
         
         public void OnVBAComponentChange()
         {
@@ -52,6 +54,12 @@ namespace PowerVBA.Core.Connector
 
 
         public abstract List<ShapeWrappingBase> Shapes();
+
+        public abstract List<ShapeWrappingBase> Shapes(int Slide);
+
+
+
+        public abstract bool AddReference(string Path);
 
 
 
@@ -141,7 +149,10 @@ namespace PowerVBA.Core.Connector
         /// <param name="name">확인할 사용자 지정 폼의 이름입니다.</param>
         /// <returns></returns>
         public abstract bool ContainsForm(string name);
-        
+
+        public abstract bool DeleteComponent(VBComponentWrappingBase comp);
+
+
         public abstract VBComponentWrappingBase GetModule(string name);
 
         public abstract VBComponentWrappingBase GetClass(string name);
@@ -150,5 +161,7 @@ namespace PowerVBA.Core.Connector
 
         public abstract bool Save();
         public abstract bool SaveAs(string path);
+
+        
     }
 }

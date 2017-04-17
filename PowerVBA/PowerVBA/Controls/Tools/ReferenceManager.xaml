@@ -24,17 +24,23 @@
         
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="20">                
+
+            <Grid Margin="20,20,20,0">
+                <TextBlock Text="현재 프로젝트에 추가되어 있는 참조 라이브러리 목록입니다."/>
+            </Grid>
+            
+            <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="20">                
                 <CheckBox Content="abc"/>
                 <CheckBox Content="abc"/>
                 <CheckBox Content="abc"/>
             </ListView>
 
-            <Grid Grid.Row="1" Margin="25,15">
+            <Grid Grid.Row="2" Margin="25,15">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -47,12 +53,12 @@
                 </TextBlock>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                 <Grid HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="찾아보기 .." Padding="30,0" Grid.Column="0" Margin="10" />
+                    <Button Content="찾아보기 .." Padding="30,0" Grid.Column="0" Margin="10" Click="Button_Click" />
                 </Grid>
 
             </Grid>

@@ -45,6 +45,16 @@ namespace PowerVBA.Controls.Customize
             ContextMenu.Items.Add(menuCopyOpen);
             ContextMenu.Items.Add(menuCopyPath);
             ContextMenu.Items.Add(menuDelete);
+
+            MouseDown += RecentFileListViewItem_MouseDown;
+        }
+
+        private void RecentFileListViewItem_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                OpenRequest?.Invoke();
+            }
         }
 
         public RecentFileListViewItem(string FileName) : this()
@@ -136,8 +146,5 @@ namespace PowerVBA.Controls.Customize
             get { return (string)GetValue(FileLocationProperty); }
             set { SetValue(FileLocationProperty, value); }
         }
-
-
-        
     }
 }

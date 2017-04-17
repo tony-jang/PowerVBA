@@ -149,6 +149,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceImage.cs" />
+    <Compile Include="Windows\AddWindows\AddVarWindow.xaml.cs">
+      <DependentUpon>AddVarWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddWindows\AddFileWindow.xaml.cs">
       <DependentUpon>AddFileWindow.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,9 @@
       <DependentUpon>AddTriggerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ChromeWindow.cs" />
+    <Compile Include="Windows\ConnectWindows.xaml.cs">
+      <DependentUpon>ConnectWindows.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StartupWindow.xaml.cs">
       <DependentUpon>StartupWindow.xaml</DependentUpon>
     </Compile>
@@ -223,6 +229,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\AddWindows\AddVarWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddWindows\AddFileWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddWindows\AddTriggerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ConnectWindows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -405,6 +419,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\ConnectIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ConnectBlackIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

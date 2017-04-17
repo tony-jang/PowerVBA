@@ -182,6 +182,7 @@ namespace PowerVBA.Controls.Tools
             var LocalItm = LBClass.Items.Cast<ImageListViewItem>()
                 .Concat(LBForms.Items.Cast<ImageListViewItem>())
                 .Concat(LBModule.Items.Cast<ImageListViewItem>())
+                .Concat(LBSlideDoc.Items.Cast<ImageListViewItem>())
                 .Select(i => (VBComponentWrappingBase)i.Tag);
 
 

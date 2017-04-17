@@ -13,57 +13,14 @@ namespace PowerVBA.Codes
     /// </summary>
     public class CodeInfo
     {
-        /// <summary>
-        /// 커스텀 메소드들을 가져옵니다.
-        /// </summary>
-        public List<MethodInfo> CustomMethods { get; }
 
-
-        /// <summary>
-        /// 현재 프로젝트에서 선언된 속성들을 가져옵니다.
-        /// </summary>
-        public PropertyInfo[] Properties
+        public CodeInfo()
         {
-            get => CustomMethods.Where((m) => m.GetType() == typeof(PropertyInfo)).Cast<PropertyInfo>().ToArray();
+            ErrorList = new List<Error>();
+            Childrens = new List<CodeItemBase>();
+            Lines = new List<LineInfo>();
         }
         
-
-        /// <summary>
-        /// 현재 프로젝트에서 선언된 메소드중 반환 값이 없는 메소드만 가져옵니다.
-        /// </summary>
-        public BasisMethodInfo[] SubMethods
-        {
-            get => CustomMethods.Where((m) => m.GetType() == typeof(BasisMethodInfo)).Cast<BasisMethodInfo>().ToArray();
-        }
-
-        /// <summary>
-        /// 현재 프로젝트에서 선언된 메소드중 반환하는 메소드만 가져옵니다.
-        /// </summary>
-        public FunctionInfo[] FuncMethods
-        {
-            get => CustomMethods.Where((m) => m.GetType() == typeof(FunctionInfo)).Cast<FunctionInfo>().ToArray();
-        }
-        
-
-        //public VariableInfo FindVariable()
-        //{
-
-        //}
-        //public MethodInfo FindMethod(int FindLine, string stringFindName)
-        //{
-            
-        //}
-        //public IMember FindMember()
-        //{
-
-        //}
-
-
-        /// <summary>
-        /// 현재 프로젝트의 변수들을 나타냅니다.
-        /// </summary>
-        public List<VariableInfo> Variables { get; set; }
-
         /// <summary>
         /// 현재 프로젝트 코드의 오류를 나타냅니다.
         /// </summary>
@@ -73,19 +30,11 @@ namespace PowerVBA.Codes
         /// CodeInfo의 Node들 정보입니다.
         /// </summary>
         public List<CodeItemBase> Childrens { get; set; }
+        public List<LineInfo> Lines { get; set; }
 
-        public CodeInfo()
-        {
-            CustomMethods = new List<MethodInfo>();
-            Variables = new List<VariableInfo>();
-            
-            ErrorList = new List<Error>();
-            Childrens = new List<CodeItemBase>();
-        }
 
         public void Reset()
         {
-            
             ErrorList = new List<Error>();
             Childrens = new List<CodeItemBase>();
         }

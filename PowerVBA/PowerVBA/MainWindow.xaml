@@ -8,8 +8,6 @@
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
         xmlns:local="clr-namespace:PowerVBA"
-        xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
-        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         x:Name="ThisWindow" Title="Untitle Presentation - PowerVBA" Height="800" Width="1300"
                 Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico" IsSubWindow="false"
@@ -34,9 +32,9 @@
     </w:ChromeWindow.Resources>
 
     <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
-        <TabControl.Style>
+        <!--<TabControl.Style>
             <Style TargetType="{x:Type TabControl}">
-                <!--<Setter Property="Template">
+                <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TabControl}">
                             <Grid x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
@@ -55,9 +53,9 @@
                             </Grid>
                         </ControlTemplate>
                     </Setter.Value>
-                </Setter>-->
+                </Setter>
             </Style>
-        </TabControl.Style>
+        </TabControl.Style>-->
         <TabItem Foreground="Black" Style="{StaticResource BlankTabItemStyle}">
             <Grid x:Name="MainGrid">
                 <Grid.RowDefinitions>
@@ -114,7 +112,7 @@
                                                 <corec:CustomToolTip Title="새 슬라이드" Text="현재 프레젠테이션에 슬라이드를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드 삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked">
+                                        <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드&#x0a;삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="슬라이드 삭제" Text="현재 프레젠테이션에 슬라이드를 삭제합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -135,7 +133,7 @@
                                         </c:ImageButton>
                                         <c:ImageButton x:Name="BtnAddModule" Content="모듈 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddModule_SimpleButtonClicked" >
                                             <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="모듈 추가" Text="현재 VBA 프로젝트에 모듈을 추가합니다."/>
+                                                <corec:CustomToolTip Title="모듈 추가 (Ctrl+Shift+A)" Text="현재 VBA 프로젝트에 모듈을 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton x:Name="BtnAddForm" Content="사용자 폼&#x0a;추가" BackImage="Resources/Icon/FormIcon.png" SimpleButtonClicked="BtnAddForm_SimpleButtonClicked" >
@@ -150,7 +148,7 @@
                                     <WrapPanel>
                                         <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked">
                                             <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="Sub 함수 추가" Text="현재 VBA 프로젝트에 Sub 함수를 추가합니다."/>
+                                                <corec:CustomToolTip Title="Sub 함수 추가 (Ctrl+Shift+D)" Text="현재 VBA 프로젝트에 Sub 함수를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked">
@@ -158,7 +156,7 @@
                                                 <corec:CustomToolTip Title="Function 함수 추가" Text="현재 VBA 프로젝트에 Function 함수를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked">
+                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddProp_SimpleButtonClicked">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Property 추가" Text="현재 VBA 프로젝트에 Property를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -168,12 +166,12 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="변수/상수 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" >
+                                        <c:ImageButton x:Name="BtnAddVar" Content="변수 추가" BackImage="Resources/Icon/VariableIcon.png" SimpleButtonClicked="BtnAddVar_SimpleButtonClicked" IsEnabled="False" >
                                             <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="변수 추가" Text="현재 VBA 프로젝트에 변수를 추가합니다."/>
+                                                <corec:CustomToolTip Title="변수 추가 (Ctrl+Shift+V)" Text="현재 VBA 프로젝트에 변수를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" >
+                                        <c:ImageButton x:Name="BtnAddConst" Content="상수 추가" BackImage="Resources/Icon/ConstIcon.png" SimpleButtonClicked="BtnAddConst_SimpleButtonClicked" IsEnabled="False" >
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="상수 추가" Text="현재 VBA 프로젝트에 상수를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -188,46 +186,22 @@
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                                <GroupBox Header="열거형 삽입">
-                                    <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddEnum" Content="열거형(Enum)&#x0a;추가" BackImage="Resources/Icon/EnumIcon.png" SimpleButtonClicked="BtnAddEnum_SimpleButtonClicked"/>
-                                    </WrapPanel>
-                                </GroupBox>
-                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                                <GroupBox Header="타입 삽입">
-                                    <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddType" Content="타입 추가" BackImage="Resources/Icon/ModuleIcon.png" SimpleButtonClicked="BtnAddType_SimpleButtonClicked" IsEnabled="False" />
-                                    </WrapPanel>
-                                </GroupBox>
-                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                             </WrapPanel>
                         </TabItem>
-                        <TabItem Header="동기화">
+                        <TabItem Header="프로젝트">
                             <WrapPanel>
-                                <GroupBox Header="파일 동기화">
+                                <GroupBox Header="구성 요소">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnFileSync" Content="현재 파일&#x0a;동기화" BackImage="Resources/Icon/SyncIcon.png">
-                                            <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="현재 파일 동기화 (Ctrl+S)" Text="현재 선택된 파일을 VBA 프로젝트와 동기화시킵니다."/>
-                                            </c:ImageButton.ToolTip>
-                                        </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnAllFileSync" Content="모든 파일&#x0a;동기화" BackImage="Resources/Icon/AllSyncIcon.png">
-                                            <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="모든 파일 동기화 (Ctrl+Shift+S)" Text="모든 변경된 파일들을 VBA 프로젝트와 동기화시킵니다.
-                                                                     파워포인트에서 저장을 요청합니다."/>
-                                            </c:ImageButton.ToolTip>
-                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="PreDeclareFuncBtn" Content="미리 정의된&#x0a;함수 추가" BackImage="Resources/Icon/AddFuncsIcon.png" SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="PreDeclareAPIBtn" Content="미리 정의된&#x0a;API 추가" BackImage="Resources/Icon/AddFuncsIcon.png" SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked"/>
+
+                                        <c:ImageButton x:Name="AddRefBtn" Content="참조 추가" BackImage="Resources/Icon/ReferenceIcon.png"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                                <GroupBox Header="개체 동기화">
+                                <GroupBox Header="코드 관리">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnSlideSync" Content="슬라이드&#x0a;동기화" BackImage="Resources/Icon/SlideSyncIcon.png">
-                                            <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+M)" Text="현재 프레젠테이션에서 선택된 개체들을 수동으로 동기화시킵니다."/>
-                                            </c:ImageButton.ToolTip>
-                                        </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnAllSlideSync" Content="모든 개체&#x0a;동기화" BackImage="Resources/Icon/AllSlideSyncIcon.png">
+                                        <c:ImageButton x:Name="CheckError" Content="코드 분석" BackImage="Resources/Icon/AddFuncsIcon.png" SimpleButtonClicked="CheckError_SimpleButtonClicked">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+Shift+M)" Text="현재 프레젠테이션의 모든 개체들을 수동으로 동기화시킵니다."/>
                                             </c:ImageButton.ToolTip>
@@ -235,14 +209,18 @@
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
-                            </WrapPanel>
-                        </TabItem>
-                        <TabItem Header="프로젝트">
-                            <WrapPanel>
-                                <GroupBox Header="구성 요소">
+                                <GroupBox Header="파일 동기화">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="AddRefBtn" Content="참조 추가" BackImage="Resources/Icon/ReferenceIcon.png"/>
-                                        <c:ImageButton x:Name="PreDeclareFuncBtn" Content="미리 정의된&#x0a;함수 추가" BackImage="Resources/Icon/AddFuncsIcon.png" SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnFileSync" Content="현재 파일&#x0a;동기화" BackImage="Resources/Icon/SyncIcon.png" SimpleButtonClicked="BtnFileSync_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="현재 파일 동기화 (Ctrl+S)" Text="현재 선택된 파일을 VBA 프로젝트와 동기화시킵니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                        <c:ImageButton x:Name="BtnAllFileSync" Content="모든 파일&#x0a;동기화" BackImage="Resources/Icon/AllSyncIcon.png" SimpleButtonClicked="BtnAllFileSync_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="모든 파일 동기화 (Ctrl+Shift+S)" Text="모든 변경된 파일들을 VBA 프로젝트와 동기화 시킨 뒤 저장합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
@@ -274,13 +252,19 @@
                             <TabControl.Resources>
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
+
+                            <!--<c:CloseableTabItem Header="프로젝트 속성" Height="20">
+                                <t:ProjectProperty/>
+                            </c:CloseableTabItem>-->
+
                             <!--<c:CloseableTabItem Header="참조 관리자" Height="20">
                                 <t:ReferenceManager/>
-                            </c:CloseableTabItem>
-                            <c:CloseableTabItem Header="Module1.bas" Height="20">
+                            </c:CloseableTabItem>-->
+                            <!--<c:CloseableTabItem Header="Module1.bas" Height="20">
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>-->
                         </TabControl>
+                        
                         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
                         <t:ErrorList x:Name="errorList" Grid.Row="2" />
                     </Grid>
@@ -369,7 +353,7 @@
 
                         <Grid Grid.Row="2">
                             <Rectangle Margin="25,0" Height="1" VerticalAlignment="Top" Fill="#FFE48F7B"/>
-                            <Button x:Name="GridOpenAnotherPpt" Margin="25,15,0,75" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
+                            <Button x:Name="GridOpenAnotherPpt" Margin="25,15,0,75" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="OpenButtons_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="OpenButtons_Click">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Background" Value="Transparent"/>
@@ -396,7 +380,7 @@
                                 </Grid>
                             </Button>
 
-                            <Button x:Name="GridConnectPresentation" Margin="25,60,0,35" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="GridOpenAnotherPpt_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="GridOpenAnotherPpt_Click">
+                            <Button x:Name="GridConnectPresentation" Margin="25,60,0,35" Padding="5" HorizontalAlignment="Left" Background="#00000000" MouseMove="OpenButtons_MouseMove" MouseLeave="GridOpenAnotherPpt_MouseLeave" Cursor="Hand" BorderBrush="{x:Null}" Click="OpenButtons_Click">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Background" Value="Transparent"/>
@@ -448,10 +432,19 @@
                         </WrapPanel>
                     </ScrollViewer>
 
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="도움말" Foreground="#FFDA6C51" Margin="20,0,0,0"/>
+
+                    </Grid>
+                    
                     <Grid Grid.Row="3" Margin="0,10">
 
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">
-                        PowerVBA가 아닌 PowerPoint를 사용하시려고 하시나요? <Run x:Name="OpenPPTRun"  Text="파워포인트 열기" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
+                        PowerVBA가 아닌 PowerPoint를 사용하시려고 하시나요? <Run x:Name="OpenPPTRun" MouseLeftButtonDown="OpenPPTRun_MouseLeftButtonDown" Text="파워포인트 열기" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"/>
                         </TextBlock>
                     </Grid>
 
@@ -493,7 +486,7 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                        <Style TargetType="TabItem">
+                        <Style TargetType="{x:Type TabItem}">
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="BorderBrush" Value="{x:Null}"/>
                             <Setter Property="Foreground" Value="White"/>
@@ -515,6 +508,9 @@
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter Property="Background" Value="#FFF0623E"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="#FFE55735"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -672,6 +668,11 @@
 
                                                 </Grid>
                                             </c:ImageTabItem>
+                                            <c:ImageTabItem Header="기존 프레젠테이션과 연결" Source="Resources/Icon/connectBlackIcon.png"  >
+                                                <Grid>
+
+                                                </Grid>
+                                            </c:ImageTabItem>
 
                                         </TabControl>
                                     </Grid>
@@ -679,7 +680,7 @@
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="저장"/>
+                    <TabItem Header="저장" IsEnabled="False"/>
                     <TabItem x:Name="SaveAsTabItem" Header="다른 이름으로&#xd;저장">
                         <Grid>
                             <Grid.RowDefinitions>

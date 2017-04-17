@@ -25,6 +25,11 @@ namespace PowerVBA.V2013.Wrap.WrapClass
 
         public override PPTVersion ClassVersion => PPTVersion.PPT2013;
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
 
         #region [  Code Implements  ]
         public ActionSettings ActionSettings => Shape.ActionSettings;
@@ -96,7 +101,7 @@ namespace PowerVBA.V2013.Wrap.WrapClass
         public int ZOrderPosition => Shape.ZOrderPosition;
         #endregion
 
-
+        #region [  Method Implements  ]
 
         public void Apply()
         {
@@ -228,6 +233,7 @@ namespace PowerVBA.V2013.Wrap.WrapClass
             Shape.ZOrder(ZOrderCmd);
         }
 
+        #endregion
 
     }
 }

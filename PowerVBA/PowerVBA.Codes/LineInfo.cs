@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Folding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,27 @@ using System.Threading.Tasks;
 
 namespace PowerVBA.Codes
 {
-    class LineInfo
+    public class LineInfo
     {
-        
+
+        public LineInfo()
+        {
+            IsGlobalVarDeclaring = true;
+            Foldings = new List<RangeInt>();
+        }
+
+        public string FileName { get; set; }
+
+        public List<RangeInt> Foldings { get; set; }
+
+
+        public Stack<(int, FoldingTypes)> TempLine = new Stack<(int, FoldingTypes)>();
+
+        /// <summary>
+        /// 마지막으로 글로벌 변수가 선언된 위치를 확인합니다. 0을 반환하면 처음 부분에 새 줄을 만든 뒤 선언합니다.
+        /// </summary>
+        public int LastGlobalVarInt { get; set; }
+
         /// <summary>
         /// Sub나 Function 또는 Property 내부에 있는지에 대한 여부를 가져옵니다.
         /// </summary>
@@ -112,7 +131,9 @@ namespace PowerVBA.Codes
         public bool IsInDoUntil { get; set; }
 
 
-        public bool IsInEnum { get; internal set; }
+        public bool IsInEnum { get; set; }
+        public bool IsGlobalVarDeclaring { get; set; }
+
 
         public LineInfo Clone()
         {
@@ -140,8 +161,16 @@ namespace PowerVBA.Codes
 
                 IsInProperty = IsInProperty,
                 IsInSelectCase = IsInSelectCase,
-                
-                IsInWith = IsInWith
+
+                IsInWith = IsInWith,
+
+                IsGlobalVarDeclaring = IsGlobalVarDeclaring,
+
+                FileName = FileName,
+                LastGlobalVarInt = LastGlobalVarInt,
+
+                Foldings = Foldings,
+                TempLine = TempLine,
             };
         }
     }

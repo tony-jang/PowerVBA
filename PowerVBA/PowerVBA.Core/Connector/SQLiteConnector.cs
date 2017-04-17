@@ -29,8 +29,7 @@ namespace PowerVBA.Core.Connector
 
 
             // RecentFileTable이 없을때에는 생성한다.
-            strQuery = "CREATE TABLE IF NOT EXISTS RecentFileTable ( Location  VARCHAR(100) " +
-                ", Type  INT )";
+            strQuery = "CREATE TABLE IF NOT EXISTS RecentFileTable ( Location  VARCHAR(100) )";
 
             dbCommand = dbConnection.CreateCommand();
             dbCommand.CommandText = strQuery;
@@ -75,9 +74,10 @@ namespace PowerVBA.Core.Connector
         /// </summary>
         /// <param name="FileLocation">추가할 파일 위치입니다.</param>
         /// <returns></returns>
-        public bool RecentFile_Add(string FileLocation, PresentationType type)
+        public bool RecentFile_Add(string FileLocation)
         {
             if (!Enabled) return false;
+            if (RecentFile_Contains(FileLocation)) return true;
             strQuery = "INSERT INTO RecentFileTable (Location) VALUES (?)";
             dbCommand.CommandText = strQuery;
             dbCommand.Parameters.Clear();
@@ -104,6 +104,29 @@ namespace PowerVBA.Core.Connector
             if (!Enabled) return false;
 
             return true;
+        }
+
+        public bool RecentFile_Contains(string FileLocation)
+        {
+            var strList = new List<string>();
+            if (!Enabled) return false;
+            strQuery = $"SELECT * FROM RecentFileTable WHERE Location = \"{FileLocation}\";";
+
+            dbCommand.CommandText = strQuery;
+
+            dbCommand.Parameters.Clear();
+
+            using (SQLiteDataReader SQLiteReader = dbCommand.ExecuteReader())
+            {
+                while (SQLiteReader.Read())
+                {
+                    string data = SQLiteReader.GetValue(0).ToString();
+                    string type = SQLiteReader.GetValue(1).ToString();
+                    strList.Add(data);
+                }
+            }
+
+            return strList.Count != 0;
         }
         
         /// <summary>

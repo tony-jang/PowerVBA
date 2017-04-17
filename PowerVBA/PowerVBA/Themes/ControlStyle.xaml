@@ -411,15 +411,15 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Image Source="{TemplateBinding Source}" Margin="5"/>
+                        <Image Source="{TemplateBinding Source}" Margin="5" IsHitTestVisible="False"/>
                         
                         <Grid Grid.Column="1" Margin="10,5,0,5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="4*"/>
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="TBFileName" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0"/>
-                            <TextBlock x:Name="TBFileLoc" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1"/>
+                            <TextBlock x:Name="TBFileName" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0" IsHitTestVisible="False"/>
+                            <TextBlock x:Name="TBFileLoc" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1" IsHitTestVisible="False"/>
                         </Grid>
                     </Grid>
 

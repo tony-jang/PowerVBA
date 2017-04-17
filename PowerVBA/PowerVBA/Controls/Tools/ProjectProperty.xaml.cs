@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Core.Connector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,20 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ProjectProperty : UserControl
     {
-        public ProjectProperty()
+        public bool IsChanged = false;
+
+        public ProjectProperty(PPTConnectorBase conn)
         {
             InitializeComponent();
+
+            Connector = conn;
+        }
+
+        PPTConnectorBase Connector;
+
+        private void FileTabControl_Changed(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

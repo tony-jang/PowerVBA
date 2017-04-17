@@ -21,14 +21,27 @@ namespace PowerVBA.Windows.AddWindows
     /// </summary>
     public partial class AddFileWindow : ChromeWindow
     {
-        public AddFileWindow(IPPTConnector connector, AddType AddType)
+        public AddFileWindow(IPPTConnector connector, AddFileType AddType)
         {
             InitializeComponent();
-            if (AddType == AddType.Class) btnClass.IsChecked = true;
-            else if (AddType == AddType.Module) btnModule.IsChecked = true;
-            else if(AddType == AddType.Form) btnForm.IsChecked = true;
+            if (AddType == AddFileType.Class) btnClass.IsChecked = true;
+            else if (AddType == AddFileType.Module) btnModule.IsChecked = true;
+            else if(AddType == AddFileType.Form) btnForm.IsChecked = true;
 
             conn = connector;
+
+            RoutedCommand AddItem = new RoutedCommand();
+            AddItem.InputGestures.Add(new KeyGesture(Key.Escape));
+
+            CommandBinding cb1 = new CommandBinding(AddItem, Comm_Close);
+
+            this.CommandBindings.Add(cb1);
+
+        }
+
+        private void Comm_Close(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
         }
 
         IPPTConnector conn;
@@ -62,7 +75,7 @@ namespace PowerVBA.Windows.AddWindows
             return wrap;
         }
 
-        public enum AddType
+        public enum AddFileType
         {
             /// <summary>
             /// Class를 추가합니다.
@@ -76,6 +89,14 @@ namespace PowerVBA.Windows.AddWindows
             /// 사용자 폼을 추가합니다.
             /// </summary>
             Form
+        }
+
+        private void TBName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AddBtn_Click(this, null);
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ namespace PowerVBA.Core.AvalonEdit
         protected OverloadInsightWindow insightWindow;
         protected Thread thr;
 
-        protected FoldingManager foldingManager;
+        public FoldingManager foldingManager;
         protected VBAFoldingStrategy foldingStrategy;
 
 
@@ -111,9 +111,9 @@ namespace PowerVBA.Core.AvalonEdit
                     if (sw.ElapsedMilliseconds > 500)
                     {
                         sw.Reset();
-                        Dispatcher.Invoke(new Action(() => {
-                            foldingStrategy.UpdateFoldings(foldingManager, this.Document);
-                        }), System.Windows.Threading.DispatcherPriority.Background);
+                        //Dispatcher.Invoke(new Action(() => {
+                        //    foldingStrategy.UpdateFoldings(foldingManager, this.Document);
+                        //}), System.Windows.Threading.DispatcherPriority.Background);
                         
                     }
                     Thread.Sleep(10);
@@ -121,12 +121,9 @@ namespace PowerVBA.Core.AvalonEdit
             });
 
             thr.Start();
-
             
-
             this.TextChanged += delegate (object sender, EventArgs e)
             {
-                codeParser.Seek();
                 sw.Restart();
             };
 
@@ -259,6 +256,11 @@ namespace PowerVBA.Core.AvalonEdit
         }
 
         private void OnCtrlSCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            RaiseSaveRequest();
+        }
+
+        public void RaiseSaveRequest()
         {
             Document.UndoStack.MarkAsOriginalFile();
             SaveRequest?.Invoke();
@@ -434,13 +436,13 @@ namespace PowerVBA.Core.AvalonEdit
         #region Code Completion
         private void OnTextEntered(object sender, TextCompositionEventArgs textCompositionEventArgs)
         {
-            if (this.CaretOffset >= 2)
-            {
-                string prevStr = Text.Substring(this.CaretOffset - 2, 1);
-                Console.WriteLine(prevStr);
-                if (prevStr == " ") return;
-            }
-            ShowCompletion(textCompositionEventArgs.Text, false);
+            //if (this.CaretOffset >= 2)
+            //{
+            //    string prevStr = Text.Substring(this.CaretOffset - 2, 1);
+            //    Console.WriteLine(prevStr);
+            //    if (prevStr == " ") return;
+            //}
+            //ShowCompletion(textCompositionEventArgs.Text, false);
 
         }
 

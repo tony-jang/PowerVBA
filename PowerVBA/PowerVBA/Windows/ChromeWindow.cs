@@ -17,6 +17,7 @@ namespace PowerVBA.Windows
 {
     public class ChromeWindow : Window
     {
+        
 
         public static DependencyProperty NoTitleProperty = DependencyHelper.Register();
 

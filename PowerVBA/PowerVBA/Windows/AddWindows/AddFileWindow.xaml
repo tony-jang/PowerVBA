@@ -54,7 +54,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="이름 : " FontSize="15"/>
-                <TextBox x:Name="TBName" Grid.Column="1" FontSize="15"/>
+                <TextBox x:Name="TBName" Grid.Column="1" FontSize="15" KeyDown="TBName_KeyDown"/>
             </Grid>
 
             <Grid Margin="0,15,0,0" HorizontalAlignment="Right">

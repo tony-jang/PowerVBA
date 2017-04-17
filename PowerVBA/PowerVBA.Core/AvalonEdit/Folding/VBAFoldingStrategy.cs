@@ -42,6 +42,20 @@ namespace PowerVBA.Core.AvalonEdit.Folding
         }
         
 
+        //public IEnumerable<NewFolding> GetFolding(string text, string lowerCaseText, string keyword)
+        //{
+        //    var foldings = new List<NewFolding>();
+
+            
+
+        //    string[] lines = text.ToLower().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+        //    foreach(string line in lines)
+        //    {
+
+        //    }
+        //}
+
         public IEnumerable<NewFolding> GetFoldings(string text, string lowerCaseText, string keyword)
         {
             var foldings = new List<NewFolding>();
@@ -190,7 +204,7 @@ namespace PowerVBA.Core.AvalonEdit.Folding
             return foldings;
 
         }
-        public IEnumerable<NewFolding> GetFoldings_old(string text, string lowerCaseText, string keyword)
+        public IEnumerable<NewFolding> GetFoldings_old2(string text, string lowerCaseText, string keyword)
         {
             var foldings = new List<NewFolding>();
 

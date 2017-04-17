@@ -4,74 +4,200 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+             xmlns:corec="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
              mc:Ignorable="d" Foreground="Black"
              d:DesignHeight="500" d:DesignWidth="800">
-    <Grid Background="White" Margin="5">
+    <Grid Background="White">
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <TabControl TabStripPlacement="Left">
-                <TabItem Header="일반" Padding="40,5" FontSize="15">
-                    <StackPanel Margin="20">
-                        <Grid Margin="0,12,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="프로젝트 이름 : "  TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                            <TextBox Grid.Column="1" Margin="0,5" Text="Presentation1" FontSize="15"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Column="0" Fill="#FFD24726"/>
+                <TextBlock Text="{Binding ElementName=ThisWindow, Path=Title}" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                <TabControl x:Name="FileTabControl" Grid.ColumnSpan="2" Margin="0,20,0,0" Padding="0" Background="#00000000" BorderBrush="Transparent" TabStripPlacement="Left"
+                            SelectionChanged="FileTabControl_Changed">
+                    <TabControl.Resources>
+                        <Style TargetType="{x:Type TabControl}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabControl}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TabPanel Grid.Column="0" Panel.ZIndex="1" Margin="0,10,0,-1" IsItemsHost="True" Background="Transparent" />
+                                            <Border Grid.Column="1">
+                                                <ContentPresenter ContentSource="SelectedContent" />
+                                            </Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="{x:Null}"/>
+                            <Setter Property="Foreground" Value="White"/>
 
-                            <TextBlock Grid.Row="1" Text="프로젝트 설명 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="15"/>
-
-                            <TextBlock Grid.Row="2" Text="조건부 컴파일 인수 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="15"/>
-                        </Grid>
-                        
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="보호" Padding="5" FontSize="15">
-                    <StackPanel Margin="20">
-
-                        <CheckBox Margin="0,12,0,0" Content="읽기 전용으로 프로젝트 잠금"/>
-                        <Grid Margin="0,12,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="암호 : "  TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                            <PasswordBox Grid.Column="1" Margin="0,5" Password="asdf" FontSize="15"/>
-
-                            <TextBlock Grid.Row="1" Text="암호 확인 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                            <PasswordBox Grid.Row="1" Grid.Column="1" Margin="0,5" FontSize="15" Password="asdf"/>
-                        </Grid>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="프로젝트" Padding="5" FontSize="15">
-                    <StackPanel Margin="20">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
+                                            <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="0"/>
+                                            <ContentPresenter Margin="25,10,0,10" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                          ContentSource="Header" Focusable="False"
+                                          HorizontalAlignment="Left"
+                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          VerticalAlignment="Center"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FFB83B1D"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#FFF0623E"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
+                    <TabItem Header="일반">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="프로젝트 타입" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="0">
-                                <ComboBoxItem Content="일반 프레젠테이션 프로젝트"/>
-                                <ComboBoxItem Content="VBA 보조 프레젠테이션 프로젝트"/>
-                                <ComboBoxItem Content="가상 프레젠테이션 프로젝트"/>
-                            </ComboBox>
+                            <StackPanel Margin="30,20,30,0">
+                                <Grid Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Foreground="Black" Text="프로젝트 이름 : "  TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <TextBox Grid.Column="1" Margin="0,5" Text="Presentation1" FontSize="14"/>
+
+                                    <TextBlock Foreground="Black" Grid.Row="1" Text="프로젝트 설명 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
+
+                                    <TextBlock Foreground="Black" Grid.Row="2" Text="도움말 파일 이름 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="2" Grid.Column="1" Margin="0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Text="(null)" FontSize="14" Grid.Column="0"/>
+                                        <Button Content="..." FontSize="14" Grid.Column="1" Margin="5,0,0,0" Padding="5,0"/>
+                                    </Grid>
+                                    
+                                    
+                                    <TextBlock Foreground="Black" Grid.Row="3" Text="조건부 컴파일 인수 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
+                                </Grid>
+                            </StackPanel>
                         </Grid>
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
-            
+                    </TabItem>
+                    <TabItem Header="보호">
+                        <Grid>
+                            <StackPanel Margin="30,20,30,0">
+                                <Grid Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Foreground="Black" Text="읽기 전용 잠금"  TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <CheckBox Grid.Column="1" Margin="0,5" Content="활성화" FontSize="14"/>
+
+                                    <TextBlock Foreground="Black" Grid.Row="1" Text="암호 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
+
+                                    <TextBlock Foreground="Black" Grid.Row="2" Text="암호 확인 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+
+                </TabControl>
+
+            </Grid>
         </ScrollViewer>
+        <!--<TabControl TabStripPlacement="Left">
+            <TabItem Header="일반" Padding="40,5" FontSize="15">
+                <StackPanel Margin="20">
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="프로젝트 이름 : "  TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                        <TextBox Grid.Column="1" Margin="0,5" Text="Presentation1" FontSize="15"/>
+
+                        <TextBlock Grid.Row="1" Text="프로젝트 설명 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="15"/>
+
+                        <TextBlock Grid.Row="2" Text="조건부 컴파일 인수 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="15"/>
+                    </Grid>
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="보호" Padding="5" FontSize="15">
+                <StackPanel Margin="20">
+
+                    <CheckBox Margin="0,12,0,0" Content="읽기 전용으로 프로젝트 잠금"/>
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="암호 : "  TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                        <PasswordBox Grid.Column="1" Margin="0,5" Password="asdf" FontSize="15"/>
+
+                        <TextBlock Grid.Row="1" Text="암호 확인 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                        <PasswordBox Grid.Row="1" Grid.Column="1" Margin="0,5" FontSize="15" Password="asdf"/>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="프로젝트" Padding="5" FontSize="15">
+                <StackPanel Margin="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="프로젝트 타입" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" SelectedIndex="0">
+                            <ComboBoxItem Content="일반 프레젠테이션 프로젝트"/>
+                            <ComboBoxItem Content="VBA 보조 프레젠테이션 프로젝트"/>
+                            <ComboBoxItem Content="가상 프레젠테이션 프로젝트"/>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>-->
     </Grid>
 </UserControl>

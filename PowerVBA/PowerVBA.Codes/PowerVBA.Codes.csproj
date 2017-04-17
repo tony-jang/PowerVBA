@@ -59,6 +59,7 @@
     <Compile Include="Attributes\PriorityAttribute.cs" />
     <Compile Include="Attributes\ValueAttribute.cs" />
     <Compile Include="CodeData.cs" />
+    <Compile Include="CodeFileInfo.cs" />
     <Compile Include="CodeInfo.cs" />
     <Compile Include="CodeItems\AccessorItem.cs" />
     <Compile Include="CodeItems\ClosingItem.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Extension\EnumEx.cs" />
     <Compile Include="Extension\stringEx.cs" />
     <Compile Include="CodeItems\PreprocessorDirectiveItem.cs" />
+    <Compile Include="FoldingTypes.cs" />
     <Compile Include="LineInfo.cs" />
     <Compile Include="NotHandledLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -120,8 +120,16 @@ namespace PowerVBA.V2013.Connector
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
             Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, NewFile.BoolToState(), OpenWithWindow.BoolToState()));
-            
             VBProject = new VBProjectWrapping(Presentation.VBProject);
+
+
+            EventConnectThread?.Start();
+        }
+        public PPTConnector2013(PresentationWrapping ppt) : this()
+        {
+            Presentation = ppt;
+            VBProject = new VBProjectWrapping(Presentation.VBProject);
+
 
             EventConnectThread?.Start();
         }
@@ -132,7 +140,6 @@ namespace PowerVBA.V2013.Connector
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
             //compWrap.CodeModule.DeleteLines()
             
-
             EventConnectThread?.Start();
         }
 
@@ -143,6 +150,8 @@ namespace PowerVBA.V2013.Connector
         public override PPTVersion Version => PPTVersion.PPT2013;
 
         public override string Name => Presentation.Name;
+
+        public override int SlideCount { get => Presentation.Slides.Count; }
 
         public bool IsContainsName(string name)
         {
@@ -158,40 +167,38 @@ namespace PowerVBA.V2013.Connector
 
         public override bool AddClass(string name, out VBComponentWrappingBase vbcomp)
         {
-            vbcomp = null;
-            if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
-            if (IsContainsName(name)) return false;
-            VBComponentWrapping newStandardClass = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_ClassModule))
-            {
-                Name = name
-            };
-            vbcomp = newStandardClass;
-            return true;
+            return AddComponent(name, out vbcomp, VBA.vbext_ComponentType.vbext_ct_ClassModule);
         }
 
         public override bool AddForm(string name, out VBComponentWrappingBase vbcomp)
         {
-            vbcomp = null;
-            if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
-            if (IsContainsName(name)) return false;
-            VBComponentWrapping newStandardForm = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_MSForm))
-            {
-                Name = name
-            };
-            vbcomp = newStandardForm;
-            return true;
+            return AddComponent(name, out vbcomp, VBA.vbext_ComponentType.vbext_ct_MSForm);
         }
 
         public override bool AddModule(string name, out VBComponentWrappingBase vbcomp)
         {
+            return AddComponent(name, out vbcomp, VBA.vbext_ComponentType.vbext_ct_StdModule);
+        }
+
+        private bool AddComponent(string name, out VBComponentWrappingBase vbcomp, VBA.vbext_ComponentType type)
+        {
             vbcomp = null;
             if (!Regex.IsMatch(name, CodePattern.ComponentNameRule)) return false;
             if (IsContainsName(name)) return false;
-            VBComponentWrapping newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(VBA.vbext_ComponentType.vbext_ct_StdModule))
+            VBComponentWrapping newStandardModule = null;
+            try
             {
-                Name = name
-            };
-            vbcomp = newStandardModule;
+                newStandardModule = new VBComponentWrapping(VBProject.VBComponents.Add(type));
+
+                newStandardModule.Name = name;
+                vbcomp = newStandardModule;
+            }
+            catch (Exception)
+            {
+                if (newStandardModule != null) VBProject.VBComponents.Remove(newStandardModule.VBComponent);
+                return false;
+            }
+
             return true;
         }
 
@@ -221,11 +228,27 @@ namespace PowerVBA.V2013.Connector
             return true;
         }
 
+
+        public override bool DeleteComponent(VBComponentWrappingBase comp)
+        {
+            try
+            {
+                VBA.VBComponent itm = ((VBComponentWrapping)comp).VBComponent;
+
+                VBProject.VBComponents.Remove(itm);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
         #endregion
 
         #region [  Class/Module 코드 관리  ]
 
-        
+
 
         #endregion
 
@@ -305,6 +328,18 @@ namespace PowerVBA.V2013.Connector
         }
 
 
+        public override List<ShapeWrappingBase> Shapes(int Slide)
+        {
+            List<ShapeWrappingBase> shapes = Presentation.Slides[Slide].Shapes
+                                                                       .Cast<Microsoft.Office.Interop.PowerPoint.Shape>()
+                                                                       .Select(i => new ShapeWrapping(i))
+                                                                       .Cast<ShapeWrappingBase>().ToList();
+            
+            return shapes;
+        }
+
+
+
         public override void Dispose()
         {
             Presentation.Close();
@@ -368,8 +403,11 @@ namespace PowerVBA.V2013.Connector
                 Presentation.Save();
                 return true;
             }
-            catch (Exception)
-            { return false; }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return false;
+            }
             
         }
 
@@ -383,6 +421,21 @@ namespace PowerVBA.V2013.Connector
             catch (Exception)
             { return false; }   
         }
+
+        public override bool AddReference(string Path)
+        {
+            try
+            {
+                VBProject.References.AddFromFile(Path);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         #endregion
 
 

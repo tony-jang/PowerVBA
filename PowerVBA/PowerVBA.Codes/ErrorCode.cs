@@ -173,6 +173,9 @@ namespace PowerVBA.Codes
         /// <summary>처음에 End가 나오지 않은 오류</summary>
         [KoError("End는 맨 처음에만 올 수 있습니다.")]
         VB0056,
+
+        [KoError("닫는 키워드는 End 바로 다음에만 올 수 있습니다.")]
+        VB0057,
         #endregion
 
         #region [  연산자 오류  ]
@@ -235,8 +238,12 @@ namespace PowerVBA.Codes
 
         [KoError("Then이 누락되었습니다. If문의 마지막에는 Then이 필요합니다.")]
         VB0077,
+
         [KoError("조건문 뒤에는 바로 연산자가 올 수 없습니다.")]
         VB0078,
+
+        [KoError("End If로 닫을 If문을 찾을 수 없습니다.")]
+        VB0079,
 
         #endregion
 
@@ -333,17 +340,11 @@ namespace PowerVBA.Codes
         /// <summary>ByVal, ByRef, ParamArray, Optional, ')' 이 필요합니다.</summary>
         [KoError("ByVal, ByRef, ParamArray, Optional 또는 ')' 이 필요합니다.")]
         VB0125,
-        
-        /// <summary>Declare는 선언자 앞에 올 수 없습니다.</summary>
-        [KoError("Declare은 선언자 앞에 올수 없습니다.")]
-        VB0126,
-
 
         /// <summary>Exit .. Sub/Function/Property/Do/For</summary>
         [CanReplace(1)]
         [KoError("Exit %1로 닫을 %1문을 찾을 수 없습니다.")]
         VB0127,
-
 
         #endregion
 
@@ -410,6 +411,9 @@ namespace PowerVBA.Codes
 
         [KoError("프로시져 내부에서는 상수를 정의할 수 없습니다.")]
         VB0144,
+
+        [KoError("전역 변수는 프로시져가 시작하기 전 위치까지만 사용 할 수 있습니다.")]
+        VB0145,
 
         #endregion
 
@@ -506,8 +510,83 @@ namespace PowerVBA.Codes
         #endregion
 
 
-        #region [  식 오류  ]
+        #region [  Declare(API) 선언 오류  ]
 
+        /// <summary>Declare는 선언자 앞에 올 수 없습니다.</summary>
+        [KoError("Declare은 선언자 앞에 올수 없습니다.")]
+        VB0200 = 200,
+
+        [KoError("Declare문은 Sub나 Function으로만 정의가 가능합니다.")]
+        VB0201,
+
+        [KoError("Declare Sub/Function Name 뒤에는 Lib가 와야 합니다.")]
+        VB0202,
+
+        [KoError("Lib 뒤에는 String으로 변환 가능한 식이 필요합니다.")]
+        VB0203,
+
+        [KoError("Alias가 필요합니다.")]
+        VB0204,
+
+        [KoError("Alias 뒤에는 String으로 변환 가능한 식이 필요합니다.")]
+        VB0205,
+
+        [KoError("Lib는 Declare Sub/Function Name 뒤에 나와야 합니다.")]
+        VB0206,
+
+        [KoError("Alias는 Declare Sub/Function Name Lib LibName 뒤에 나와야 합니다.")]
+        VB0207,
+
+        [CanReplace(1)]
+        [KoError("%1(은)는 중복해서 사용 할 수 없습니다.")]
+        VB0208,
+
+        [KoError("Sub나 Function이 필요합니다.")]
+        VB0209,
+        #endregion
+
+        #region [  Nest 오류  ]
+
+        [KoError("Function 블록이 닫히지 않았습니다. End Function로 닫아주세요.")]
+        VB0210 = 210,
+
+        [KoError("Sub 블록이 닫히지 않았습니다. End Sub로 닫아주세요.")]
+        VB0211,
+
+        [KoError("Property 블록이 닫히지 않았습니다. End Property로 닫아주세요.")]
+        VB0212,
+
+        [KoError("Select Case 블록이 닫히지 않았습니다. End Select로 닫아주세요.")]
+        VB0213,
+
+        [KoError("If 블록이 닫히지 않았습니다. End If로 닫아주세요.")]
+        VB0214,
+
+        [KoError("Do 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
+        VB0215,
+
+        [KoError("Do While 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
+        VB0216,
+
+        [KoError("Do Until 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
+        VB0217,
+
+        [KoError("Enum 블록이 닫히지 않았습니다. End Enum으로 닫아주세요.")]
+        VB0218,
+
+        [KoError("For 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
+        VB0219,
+
+        [KoError("For Each 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
+        VB0220,
+
+        #endregion
+
+
+        #region [  With 오류  ]
+
+        [KoError("End With는 With문 다음에만 올 수 있습니다.")]
+        VB0230 = 230,
 
 
         #endregion

@@ -188,5 +188,9 @@ namespace PowerVBA.Codes
         public bool AfterNext { get;  set; }
         public bool AfterIn { get;  set; }
         public bool AfterReDim { get; internal set; }
+        public bool AfterLib { get; internal set; }
+        public bool AfterAlias { get; internal set; }
+        public bool AfterString { get; internal set; }
+        public bool AfterWith { get; internal set; }
     }
 }
