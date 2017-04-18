@@ -149,6 +149,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceImage.cs" />
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddWindows\AddVarWindow.xaml.cs">
       <DependentUpon>AddVarWindow.xaml</DependentUpon>
     </Compile>
@@ -229,6 +232,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddWindows\AddVarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -296,6 +303,10 @@
     <ProjectReference Include="..\PowerVBA.Core\PowerVBA.Core.csproj">
       <Project>{4d02935e-9f9a-4b75-ae11-2539229e53e4}</Project>
       <Name>PowerVBA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerVBA.V2010\PowerVBA.V2010.csproj">
+      <Project>{a87cc0fc-ad2c-41e4-bf3c-9d6a57ded6ab}</Project>
+      <Name>PowerVBA.V2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\PowerVBA.V2013\PowerVBA.V2013.csproj">
       <Project>{4540c84d-9cd2-4f40-8477-f31c61757f1b}</Project>

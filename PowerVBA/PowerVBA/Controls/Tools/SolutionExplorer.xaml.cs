@@ -9,7 +9,6 @@ using VBA = Microsoft.Vbe.Interop;
 using PowerVBA.Controls.Customize;
 using PowerVBA.Resources;
 using PowerVBA.Global;
-using PowerVBA.V2013.Wrap.WrapClass;
 using PowerVBA.Core.Wrap.WrapBase;
 using static PowerVBA.Wrap.WrappedClassManager;
 using System.Windows;
@@ -189,13 +188,18 @@ namespace PowerVBA.Controls.Tools
             // 버전별 분류
             IEnumerable<VBComponentWrappingBase> PPTItm = null;
 
-            if (pptConn.GetType() == typeof(PowerVBA.V2013.Connector.PPTConnector2013))
+            if (pptConn.GetType() == typeof(V2013.Connector.PPTConnector2013))
             {
                 var Conn2013 = (V2013.Connector.PPTConnector2013)pptConn;
-                PPTItm = Conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new VBComponentWrapping(i));
+                PPTItm = Conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2013.WrapClass.VBComponentWrapping(i));
+            }
+            else if (pptConn.GetType() == typeof(V2010.Connector.PPTConnector2010))
+            {
+                var Conn2013 = (V2010.Connector.PPTConnector2010)pptConn;
+                PPTItm = Conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2010.WrapClass.VBComponentWrapping(i));
             }
 
-            
+
 
             AddComp = PPTItm.Where((i) => !LocalItm.Contains(i)).Copy();
             RemoveComp = LocalItm.Where(i => !PPTItm.Contains(i)).Copy();

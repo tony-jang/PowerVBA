@@ -4,7 +4,7 @@ using PowerVBA.Core.Interface;
 using PowerVBA.Core.Wrap;
 using PowerVBA.Core.Wrap.WrapBase;
 
-namespace PowerVBA.V2013.Wrap.WrapClass
+namespace PowerVBA.V2013.WrapClass
 
 {
     [Wrapped(typeof(VBComponent))]

@@ -121,7 +121,6 @@ namespace PowerVBA.Windows
                     break;
 
                 case NativeMethods.WM_SYSCOMMAND:
-                    // TODO: Catch maximize, restore
                     if (!IsEnableMove)
                     {
                         int command = wParam.ToInt32() & 0xfff0;

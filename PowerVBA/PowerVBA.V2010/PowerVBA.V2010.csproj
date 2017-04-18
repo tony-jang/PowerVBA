@@ -30,8 +30,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Users\uutak\Desktop\PowerVBA 2010 Dll\Microsoft.Office.Interop.PowerPoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Users\uutak\Desktop\PowerVBA 2010 Dll\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="OFFICE, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Users\uutak\Desktop\PowerVBA 2010 Dll\OFFICE.DLL</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,12 +61,22 @@
   <ItemGroup>
     <Compile Include="Connector\PPTConnector2010.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WrapClass\ApplicationWrapping.cs" />
+    <Compile Include="WrapClass\DocumentWindowWrapping.cs" />
+    <Compile Include="WrapClass\PresentationWrapping.cs" />
+    <Compile Include="WrapClass\ShapeWrapping.cs" />
+    <Compile Include="WrapClass\SlideWrapping.cs" />
+    <Compile Include="WrapClass\VBComponentWrapping.cs" />
+    <Compile Include="WrapClass\VBProjectWrapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PowerVBA.Core\PowerVBA.Core.csproj">
       <Project>{4d02935e-9f9a-4b75-ae11-2539229e53e4}</Project>
       <Name>PowerVBA.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

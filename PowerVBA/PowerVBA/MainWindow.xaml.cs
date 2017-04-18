@@ -20,7 +20,7 @@ using System.Threading;
 using System.ComponentModel;
 using System.Collections.Generic;
 using ICSharpCode.AvalonEdit.Document;
-using PowerVBA.V2013.Wrap.WrapClass;
+using PowerVBA.V2013.WrapClass;
 using PowerVBA.Controls.Tools;
 using PowerVBA.Codes;
 using System.Diagnostics;
@@ -33,6 +33,8 @@ using PowerVBA.Codes.Expressions;
 using PowerVBA.Core.Reference;
 using System.IO;
 using ICSharpCode.AvalonEdit.Folding;
+using PowerVBA.V2010.Connector;
+using PowerVBA.Core.AvalonEdit.Replace;
 
 namespace PowerVBA
 {
@@ -382,17 +384,63 @@ namespace PowerVBA
         {
             CodeEditor codeEditor = null;
 
+            List<CloseableTabItem> tabItems;
+            CloseableTabItem codeTab;
 
             switch (component.ClassVersion)
             {
                 case PPTVersion.PPT2010:
-                    // TODO : PPT 2010 Version 추가
-                    return;
+                    var comp2010 = component.ToVBComponent2010();
+
+                    tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString().ToLower() == comp2010.CodeModule.Name.ToLower() + GetExtensions(comp2010.Type)).ToList();
+
+                    if (tabItems.Count >= 1)
+                    {
+                        CodeTabControl.SelectedItem = tabItems.First();
+                        return;
+                    }
+
+                    codeEditor = new CodeEditor(component);
+
+                    try
+                    {
+                        var module = comp2010.VBComponent.CodeModule;
+
+                        if (comp2010.VBComponent.CodeModule.CountOfLines == 0) codeEditor.Text = "";
+                        else codeEditor.Text = comp2010.VBComponent.CodeModule.get_Lines(1, comp2010.VBComponent.CodeModule.CountOfLines);
+                    }
+                    catch (Exception)
+                    { MessageBox.Show("예외가 발생했습니다!"); }
+
+                    codeTab = new CloseableTabItem()
+                    {
+                        Header = comp2010.Name + GetExtensions(comp2010.Type),
+                        Content = codeEditor
+                    };
+
+                    CodeTabControl.Items.Add(codeTab);
+
+
+                    codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
+                    codeEditor.TextChanged += CodeEditor_TextChanged;
+                    codeEditor.SaveRequest += () =>
+                    {
+                        SetMessage("저장되었습니다.");
+                        comp2010.CodeModule.DeleteLines(1, comp2010.CodeModule.CountOfLines);
+                        comp2010.CodeModule.AddFromString(codeEditor.Text);
+                        CodeSync(codeEditor);
+                    };
+
+                    codeEditor.RaiseFolding();
+
+                    CodeTabControl.SelectedItem = codeTab;
+
+                    break;
                 case PPTVersion.PPT2016:
                 case PPTVersion.PPT2013:
                     var comp2013 = component.ToVBComponent2013();
 
-                    var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString().ToLower() == comp2013.CodeModule.Name.ToLower() + GetExtensions(comp2013.Type)).ToList();
+                    tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString().ToLower() == comp2013.CodeModule.Name.ToLower() + GetExtensions(comp2013.Type)).ToList();
 
                     if (tabItems.Count >= 1)
                     {
@@ -412,7 +460,7 @@ namespace PowerVBA
                     catch (Exception)
                     { MessageBox.Show("예외가 발생했습니다!"); }
 
-                    CloseableTabItem codeTab = new CloseableTabItem()
+                    codeTab = new CloseableTabItem()
                     {
                         Header = comp2013.Name + GetExtensions(comp2013.Type),
                         Content = codeEditor
@@ -550,6 +598,8 @@ namespace PowerVBA
 
         private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            FindReplaceDialog.CloseWindow();
+
             if (CodeTabControl.SelectedItem == null)
             {
                 ChangeBtnState(false, true);
@@ -603,31 +653,46 @@ namespace PowerVBA
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
+
+            bool Flag = false;
             if (Connector != null)
             {
-                if (Connector.ToConnector2013().Presentation.Saved != Microsoft.Office.Core.MsoTriState.msoTrue)
+                switch (VersionSelector.GetPPTVersion())
                 {
-                    MessageBoxResult result =
-                        MessageBox.Show(Connector.Name + "에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?",
-                        "저장되지 않은 내용",
-                        MessageBoxButton.YesNoCancel);
+                    case PPTVersion.PPT2010:
+                        if (Connector.ToConnector2010().Presentation.Saved != Microsoft.Office.Core.MsoTriState.msoTrue) Flag = true;
+                        break;
+                    case PPTVersion.PPT2013:
+                    case PPTVersion.PPT2016:
+                        if (Connector.ToConnector2013().Presentation.Saved != Microsoft.Office.Core.MsoTriState.msoTrue) Flag = true;
+                        break;
+                    default:
+                        break;
+                }   
+            }
 
-                    switch (result)
-                    {
-                        case MessageBoxResult.Yes:
-                            if (!Connector.Save())
-                            {
-                                MessageBox.Show("저장에 실패했습니다. [읽기 전용]이거나 폰트가 없을 수 있습니다. 다른 이름으로 저장하기를 해주세요.", "저장 실패");
-                                e.Cancel = true;
-                                return;
-                            }
-                            break;
-                        case MessageBoxResult.No:
-                            break;
-                        case MessageBoxResult.Cancel:
+            if (Flag)
+            {
+                MessageBoxResult result =
+                               MessageBox.Show(Connector.Name + "에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?",
+                               "저장되지 않은 내용",
+                               MessageBoxButton.YesNoCancel);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        if (!Connector.Save())
+                        {
+                            MessageBox.Show("저장에 실패했습니다. [읽기 전용]이거나 폰트가 없을 수 있습니다. 다른 이름으로 저장하기를 해주세요.", "저장 실패");
                             e.Cancel = true;
                             return;
-                    }
+                        }
+                        break;
+                    case MessageBoxResult.No:
+                        break;
+                    case MessageBoxResult.Cancel:
+                        e.Cancel = true;
+                        return;
                 }
             }
 
@@ -708,7 +773,12 @@ namespace PowerVBA
             switch (Connector.Version)
             {
                 case PPTVersion.PPT2010:
+                    PPTConnector2010 conn2010 = (PPTConnector2010)Connector;
 
+                    if (conn2010.Presentation.Slides.Count != 0) SlideNumber = conn2010.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+
+                    conn2010.Presentation.Slides.AddSlide(SlideNumber + 1, conn2010.Presentation.SlideMaster.CustomLayouts[1]);
+                    conn2010.Presentation.Application.ActiveWindow.View.GotoSlide(SlideNumber + 1);
                     break;
                 case PPTVersion.PPT2016:
                 case PPTVersion.PPT2013:
@@ -726,14 +796,31 @@ namespace PowerVBA
 
         private void BtnDelSlide_SimpleButtonClicked()
         {
-            PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
-
-            int SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
-            if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
-                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            switch (VersionSelector.GetPPTVersion())
             {
-                conn2013.Presentation.Slides[SlideNumber].Delete();
+                case PPTVersion.PPT2010:
+                    PPTConnector2010 conn2010 = (PPTConnector2010)Connector;
+
+                    int SlideNumber = conn2010.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+                    if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        conn2010.Presentation.Slides[SlideNumber].Delete();
+                    }
+                    break;
+                case PPTVersion.PPT2016:
+                case PPTVersion.PPT2013:
+                    PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+
+                    int SlideNumber2 = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+                    if (MessageBox.Show(SlideNumber2 + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        conn2013.Presentation.Slides[SlideNumber2].Delete();
+                    }
+                    break;
             }
+            
         }
 
         #endregion
@@ -945,18 +1032,37 @@ namespace PowerVBA
             {
                 this.NoTitle = false;
                 PPTConnectorBase tmpConn;
+
+                switch (VersionSelector.GetPPTVersion())
+                {
+                    case PPTVersion.PPT2010:
+                        tmpConn = new PPTConnector2010(pptWrapping.ToPresentation2010());
+
+                        tmpConn.PresentationClosed += PPTCloseDetect;
+                        tmpConn.VBAComponentChange += ProjectFileChange;
+                        tmpConn.SlideChanged += SlideChangedDetect;
+                        tmpConn.ShapeChanged += ShapeChangedDetect;
+                        tmpConn.SectionChanged += SectionChangedDetect;
+
+                        Connector = tmpConn;
+                        PropGrid.SelectedObject = Connector.ToConnector2010().Presentation;
+                        break;
+                    case PPTVersion.PPT2016:
+                    case PPTVersion.PPT2013:
+                        tmpConn = new PPTConnector2013(pptWrapping.ToPresentation2013());
+
+                        tmpConn.PresentationClosed += PPTCloseDetect;
+                        tmpConn.VBAComponentChange += ProjectFileChange;
+                        tmpConn.SlideChanged += SlideChangedDetect;
+                        tmpConn.ShapeChanged += ShapeChangedDetect;
+                        tmpConn.SectionChanged += SectionChangedDetect;
+
+                        Connector = tmpConn;
+                        PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
+                        break;
+                }
                 
-                tmpConn = new PPTConnector2013(pptWrapping.ToPresentation2013());
-
-                tmpConn.PresentationClosed += PPTCloseDetect;
-                tmpConn.VBAComponentChange += ProjectFileChange;
-                tmpConn.SlideChanged += SlideChangedDetect;
-                tmpConn.ShapeChanged += ShapeChangedDetect;
-                tmpConn.SectionChanged += SectionChangedDetect;
-
-                Connector = tmpConn;
-
-                PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
+                
 
                 CodeSync(null);
                 ProgramTabControl.SelectedIndex = 0;
@@ -970,27 +1076,49 @@ namespace PowerVBA
             {
                 this.NoTitle = false;
                 PPTConnectorBase tmpConn;
-                if (FileLocation == "")
-                { tmpConn = new PPTConnector2013(); }
-                else
+
+                if (FileLocation != "" && !File.Exists(FileLocation))
                 {
-                    if (File.Exists(FileLocation)) tmpConn = new PPTConnector2013(FileLocation);
-                    else
-                    {
-                        MessageBox.Show("파일 위치가 올바르지 않습니다.");
-                        return;
-                    }
+                    MessageBox.Show("파일 위치가 올바르지 않습니다.");
+                    return;
                 }
+                switch (VersionSelector.GetPPTVersion())
+                {
+                    case PPTVersion.PPT2010:
+                        if (FileLocation == string.Empty) tmpConn = new PPTConnector2010();
+                        else tmpConn = new PPTConnector2010(FileLocation);
 
-                tmpConn.PresentationClosed += PPTCloseDetect;
-                tmpConn.VBAComponentChange += ProjectFileChange;
-                tmpConn.SlideChanged += SlideChangedDetect;
-                tmpConn.ShapeChanged += ShapeChangedDetect;
-                tmpConn.SectionChanged += SectionChangedDetect;
+                        tmpConn.PresentationClosed += PPTCloseDetect;
+                        tmpConn.VBAComponentChange += ProjectFileChange;
+                        tmpConn.SlideChanged += SlideChangedDetect;
+                        tmpConn.ShapeChanged += ShapeChangedDetect;
+                        tmpConn.SectionChanged += SectionChangedDetect;
 
+                        PropGrid.SelectedObject = tmpConn.ToConnector2010().Presentation;
+
+                        break;
+                    case PPTVersion.PPT2016:
+                    case PPTVersion.PPT2013:
+                        if (FileLocation == string.Empty) tmpConn = new PPTConnector2013();
+                        else tmpConn = new PPTConnector2013(FileLocation);
+
+                        tmpConn.PresentationClosed += PPTCloseDetect;
+                        tmpConn.VBAComponentChange += ProjectFileChange;
+                        tmpConn.SlideChanged += SlideChangedDetect;
+                        tmpConn.ShapeChanged += ShapeChangedDetect;
+                        tmpConn.SectionChanged += SectionChangedDetect;
+
+                        PropGrid.SelectedObject = tmpConn.ToConnector2013().Presentation;
+
+                        break;
+                    default:
+                        MessageBox.Show("지원하지 않는 버전입니다.");
+                        return;
+                }
+                
                 Connector = tmpConn;
 
-                PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
+                
                 
                 CodeSync(null);
                 ProgramTabControl.SelectedIndex = 0;
@@ -1005,14 +1133,12 @@ namespace PowerVBA
 
         private void ShapeChangedDetect()
         {
-            int count = 0;
-            Connector.ToConnector2013().Presentation.Slides.Cast<Microsoft.Office.Interop.PowerPoint.Slide>().ToList().ForEach((i) => count += i.Shapes.Count);
-            projAnalyzer.ShapeCount = count;
+            projAnalyzer.ShapeCount = Connector.Shapes().Count(); 
         }
 
         private void SlideChangedDetect()
         {
-            projAnalyzer.SlideCount = Connector.ToConnector2013().Presentation.Slides.Count;
+            projAnalyzer.SlideCount = Connector.SlideCount;
         }
 
         private void BtnNewAssistPPT_Click(object sender, RoutedEventArgs e)

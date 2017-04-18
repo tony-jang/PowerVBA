@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.V2013.Wrap.WrapClass
+namespace PowerVBA.V2013.WrapClass
 {
     [Wrapped(typeof(VBProject))]
     public class VBProjectWrapping : VBProjectWrappingBase

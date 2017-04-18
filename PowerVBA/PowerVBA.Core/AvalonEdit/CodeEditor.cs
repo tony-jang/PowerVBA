@@ -30,6 +30,7 @@ using static PowerVBA.Global.Globals;
 using static PowerVBA.Core.Extension.HighlightingRuleEx;
 using PowerVBA.Core.Controls;
 using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.Core.AvalonEdit.Replace;
 
 namespace PowerVBA.Core.AvalonEdit
 {
@@ -226,16 +227,37 @@ namespace PowerVBA.Core.AvalonEdit
             var ctrlShiftS = new RoutedCommand();
             ctrlShiftS.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
 
+            var ctrlF = new RoutedCommand();
+            ctrlF.InputGestures.Add(new KeyGesture(Key.F, ModifierKeys.Control));
+
+            var ctrlH = new RoutedCommand();
+            ctrlH.InputGestures.Add(new KeyGesture(Key.H, ModifierKeys.Control));
+
             var cb1 = new CommandBinding(ctrlSpace, OnCtrlSpaceCommand);
             var cb2 = new CommandBinding(ctrlS, OnCtrlSCommand);
             var cb3 = new CommandBinding(ctrlShiftZ, OnCtrlShiftZCommand);
             var cb4 = new CommandBinding(ctrlShiftS, OnCtrlShiftSCommand);
+            var cb5 = new CommandBinding(ctrlF, OnCtrlFCommand);
+            var cb6 = new CommandBinding(ctrlH, OnCtrlHCommand);
 
             this.CommandBindings.Add(cb1);
             this.CommandBindings.Add(cb2);
             this.CommandBindings.Add(cb3);
+            this.CommandBindings.Add(cb4);
+            this.CommandBindings.Add(cb5);
+            this.CommandBindings.Add(cb6);
 
             #endregion
+        }
+
+        private void OnCtrlHCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            FindReplaceDialog.ShowForReplace(this);
+        }
+
+        private void OnCtrlFCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            FindReplaceDialog.ShowForSearch(this);
         }
 
         public CodeEditor(VBComponentWrappingBase wrappingFile) : this() 

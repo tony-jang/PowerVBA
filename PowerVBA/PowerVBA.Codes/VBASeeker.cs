@@ -596,9 +596,6 @@ namespace PowerVBA.Codes
                                 break;
                             case "declare":
                                 if (data.AfterDeclarator) AddError(ErrorCode.VB0200);
-
-                                // TODO : Error 부분에서 Declare 이후 Sub나 Function이 나와도 괜찮게 바꿔주기 (아니면 다른데서라도)
-
                                 data.AfterDeclare = true;
                                 data.AfterDeclarator = true;
                                 break;

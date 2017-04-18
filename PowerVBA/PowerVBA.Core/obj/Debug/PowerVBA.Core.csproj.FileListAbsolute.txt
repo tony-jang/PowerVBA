@@ -33,3 +33,5 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bi
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\ICSharpCode.AvalonEdit.xml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Interop.VBA.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.csproj.ResolveComReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Replace\FindReplaceDialog.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Replace\FindReplaceDialog.g.cs

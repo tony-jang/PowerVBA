@@ -14,7 +14,7 @@ namespace PowerVBA.Core.Connector
         public PresentationWrappingBase _Presentation { get; set; }
         public ApplicationWrappingBase _PPTApp { get; set; }
         public VBProjectWrappingBase _VBProject { get; set; }
-
+        
         public abstract PPTVersion Version { get; }
         public abstract string Name { get; }
         public abstract int SlideCount { get; }
@@ -48,10 +48,6 @@ namespace PowerVBA.Core.Connector
         {
             try { MainDispatcher.Invoke(new Action(() => { SectionChanged?.Invoke(); })); } catch (Exception) { }
         }
-
-
-
-
 
         public abstract List<ShapeWrappingBase> Shapes();
 
@@ -158,6 +154,9 @@ namespace PowerVBA.Core.Connector
         public abstract VBComponentWrappingBase GetClass(string name);
 
         public abstract VBComponentWrappingBase GetFrm(string name);
+
+        public abstract DocumentWindowWrappingBase GetWindow();
+
 
         public abstract bool Save();
         public abstract bool SaveAs(string path);

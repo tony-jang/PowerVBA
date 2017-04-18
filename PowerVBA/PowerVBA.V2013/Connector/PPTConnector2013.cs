@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PowerVBA.Core.Interface;
-using PowerVBA.V2013.Wrap.WrapClass;
+using PowerVBA.V2013.WrapClass;
 using Microsoft.Office.Core;
 using static PowerVBA.Core.Extension.BoolEx;
 using VBA = Microsoft.Vbe.Interop;
@@ -433,6 +433,15 @@ namespace PowerVBA.V2013.Connector
                 return false;
             }
             return true;
+        }
+
+        public override DocumentWindowWrappingBase GetWindow()
+        {
+            var itm = Application.Windows.Cast<DocumentWindow>()
+                                         .Where(i => i.Caption == Name).First();
+
+            if (itm == null) return null;
+            return new DocumentWindowWrapping(itm);
         }
 
 

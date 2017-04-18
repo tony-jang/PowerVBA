@@ -68,12 +68,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Wrap\WrapClass\ApplicationWrapping.cs" />
-    <Compile Include="Wrap\WrapClass\PresentationWrapping.cs" />
-    <Compile Include="Wrap\WrapClass\ShapeWrapping.cs" />
-    <Compile Include="Wrap\WrapClass\SlideWrapping.cs" />
-    <Compile Include="Wrap\WrapClass\VBComponentWrapping.cs" />
-    <Compile Include="Wrap\WrapClass\VBProjectWrapping.cs" />
+    <Compile Include="WrapClass\ApplicationWrapping.cs" />
+    <Compile Include="WrapClass\DocumentWindowWrapping.cs" />
+    <Compile Include="WrapClass\PresentationWrapping.cs" />
+    <Compile Include="WrapClass\ShapeWrapping.cs" />
+    <Compile Include="WrapClass\SlideWrapping.cs" />
+    <Compile Include="WrapClass\VBComponentWrapping.cs" />
+    <Compile Include="WrapClass\VBProjectWrapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

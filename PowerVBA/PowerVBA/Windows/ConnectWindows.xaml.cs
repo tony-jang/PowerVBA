@@ -89,13 +89,10 @@ namespace PowerVBA.Windows
                         switch (ver)
                         {
                             case PPTVersion.PPT2010:
-                                MessageBox.Show("2010 버전은 아직 지원하지 않습니다.");
+                                returnPpt = new V2010.WrapClass.PresentationWrapping(ppt);
                                 break;
                             case PPTVersion.PPT2013:
-                                returnPpt = new V2013.Wrap.WrapClass.PresentationWrapping(ppt);
-                                break;
-                            case PPTVersion.PPT2016:
-                                MessageBox.Show("2016 버전은 아직 지원하지 않습니다.");
+                                returnPpt = new V2013.WrapClass.PresentationWrapping(ppt);
                                 break;
                         }
                     }
