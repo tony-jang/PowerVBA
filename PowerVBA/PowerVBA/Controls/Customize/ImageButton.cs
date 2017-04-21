@@ -50,7 +50,7 @@ namespace PowerVBA.Controls.Customize
 
         private Border SimpleBtn;
         private Border ExBtn;
-        public event BlankEventHandler SimpleButtonClicked;
+        public event SenderEventHandler SimpleButtonClicked;
         public event BlankEventHandler ExButtonClicked;
 
         public override void OnApplyTemplate()
@@ -90,7 +90,7 @@ namespace PowerVBA.Controls.Customize
         }
         private void SimpleBtn_LeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (SimpleDown && SimpleButtonClicked != null) SimpleButtonClicked();
+            if (SimpleDown && SimpleButtonClicked != null) SimpleButtonClicked(this);
             SimpleDown = false;
         }
         

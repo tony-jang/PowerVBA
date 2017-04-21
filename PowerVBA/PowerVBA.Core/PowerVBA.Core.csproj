@@ -110,7 +110,6 @@
     <Compile Include="Controls\CustomToolTip.cs" />
     <Compile Include="Controls\PathButton.cs" />
     <Compile Include="AvalonEdit\Folding\FoldingLineType.cs" />
-    <Compile Include="AvalonEdit\Folding\VBAFoldingStrategy.cs" />
     <Compile Include="AvalonEdit\Indentation\CodeIndentation.cs" />
     <Compile Include="AvalonEdit\Parser\CodeParser.cs" />
     <Compile Include="AvalonEdit\Parser\Data\Accessor.cs" />

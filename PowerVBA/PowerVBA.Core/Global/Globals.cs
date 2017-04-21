@@ -14,12 +14,14 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
+using Microsoft.Vbe.Interop;
 
 namespace PowerVBA.Global
 {
     public static class Globals
     {
         public delegate void BlankEventHandler();
+        public delegate void SenderEventHandler(object sender);
         public static IHighlightingDefinition highlightingDefintion;
 
 
@@ -98,6 +100,23 @@ namespace PowerVBA.Global
             }
 
             return returnlist;
+        }
+
+        public static string GetExtensions(vbext_ComponentType Type)
+        {
+            switch (Type)
+            {
+                case vbext_ComponentType.vbext_ct_StdModule:
+                    return ".bas";
+                case vbext_ComponentType.vbext_ct_ClassModule:
+                case vbext_ComponentType.vbext_ct_Document:
+                    return ".cls";
+                case vbext_ComponentType.vbext_ct_MSForm:
+                    return ".frm";
+                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
+                default:
+                    return "";
+            }
         }
 
     }

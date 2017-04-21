@@ -52,20 +52,36 @@ namespace PowerVBA.Controls.Tools
         {
             lvErrors.Items.Clear();
 
+            int errCount = CodeErrors.Where(i => i.ErrorType == ErrorType.Error).Count(),
+                warnCount = CodeErrors.Where(i => i.ErrorType == ErrorType.Warning).Count();
+
+
+            int errVisCount = 0, warnVisCount = 0;
+
             CodeErrors.Where((i) => (i.Message.Contains(TBSearchError.Text) || TBSearchError.Text == string.Empty)).ToList().ForEach(err => {
                 lvErrors.Items.Add(
                     new ListViewItem()
                     {
                         Content = $"[{err.FileName}] {err.Message}| ({err.Line}번째 줄) <{err.ErrorCode.ToString()}>",
                         Tag = err
-                    }
-                    );
+                    });
+                if (err.ErrorType == ErrorType.Error) errVisCount++;
+                else if (err.ErrorType == ErrorType.Warning) warnVisCount++;
+
             });
 
+            
+
             if (lvErrors.Items.Count != CodeErrors.Count)
-                RunErrorCount.Text = $"({lvErrors.Items.Count}/{CodeErrors.Count})";
+            {
+                RunWarnCount.Text = $"({warnVisCount}/{warnCount})";
+                RunErrorCount.Text = $"({errVisCount}/{errCount})";
+            }
             else
-                RunErrorCount.Text = CodeErrors.Count.ToString();
+            {
+                RunErrorCount.Text = errCount.ToString();
+                RunWarnCount.Text = warnCount.ToString();
+            }
         }
         public delegate void MoveRequestEventHandler(Error err);
         public event MoveRequestEventHandler LineMoveRequest;
@@ -74,7 +90,5 @@ namespace PowerVBA.Controls.Tools
         {
             SetErrorCtrl();
         }
-
-        
     }
 }

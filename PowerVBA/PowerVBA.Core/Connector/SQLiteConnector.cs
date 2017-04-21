@@ -103,7 +103,15 @@ namespace PowerVBA.Core.Connector
         {
             if (!Enabled) return false;
 
-            return true;
+            strQuery = $"DELETE FROM RecentFileTable WHERE Location = \"{FileLocation}\";";
+
+            dbCommand.CommandText = strQuery;
+
+            dbCommand.Parameters.Clear();
+
+            int DelRow = dbCommand.ExecuteNonQuery();
+
+            return (DelRow == 1);
         }
 
         public bool RecentFile_Contains(string FileLocation)

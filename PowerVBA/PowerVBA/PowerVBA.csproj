@@ -114,6 +114,10 @@
       <DependentUpon>RecentFileListViewItemDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Controls\Tools\APIManager.xaml.cs">
+      <DependentUpon>APIManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\APIs.cs" />
     <Compile Include="Controls\Tools\ErrorList.xaml.cs">
       <DependentUpon>ErrorList.xaml</DependentUpon>
     </Compile>
@@ -149,9 +153,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceImage.cs" />
-    <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\AddWindows\AddVarWindow.xaml.cs">
       <DependentUpon>AddVarWindow.xaml</DependentUpon>
     </Compile>
@@ -168,6 +169,9 @@
     <Compile Include="Windows\ConnectWindows.xaml.cs">
       <DependentUpon>ConnectWindows.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\HelperWindow.xaml.cs">
+      <DependentUpon>HelperWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StartupWindow.xaml.cs">
       <DependentUpon>StartupWindow.xaml</DependentUpon>
     </Compile>
@@ -183,6 +187,10 @@
     <Page Include="Controls\Design\RecentFileListViewItemDesign.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Tools\APIManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Tools\ErrorList.xaml">
       <SubType>Designer</SubType>
@@ -232,10 +240,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Windows\AddWindows\AddVarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -253,6 +257,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ConnectWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HelpDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HelperWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -433,6 +445,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\ConnectBlackIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\HelpIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\pptIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\Class1.jpg" />
+    <Resource Include="Resources\HelpImages\Form1.jpg" />
+    <Resource Include="Resources\HelpImages\Module1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\ComponentHelp1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,123 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PowerVBA.Windows"
+                    xmlns:c="clr-namespace:PowerVBA.Controls.Customize">
+    
+    <!--기본 도움말-->
+    <Grid x:Key="BasicHelp">
+        <StackPanel>
+            <TextBlock Text="기본 도움말" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                해당 도움말은 여러분이 PowerVBA를 효율적으로 사용할 수 있도록 PowerVBA의 기능에 대해서 정리해두었습니다.
+                왼쪽의 메뉴를 통해 원하시는 메뉴를 검색하시거나 클릭해 내용을 숙지하시기 바랍니다.
+                <LineBreak/><LineBreak/>
+                다음의 메뉴들로 기본적인 정보들로 바로 이동할 수 있습니다.
+            </TextBlock>
+            <WrapPanel Margin="0,20,0,0">
+                <c:ImageButton Width="120" BackImage="/PowerVBA;component/Resources/Icon/ClassIcon.png" Content="컴포넌트 (구성 요소)&#x0a;추가/제거" Tag="ComponentHelp"/>
+                <c:ImageButton Width="120" BackImage="/PowerVBA;component/Resources/Icon/ReferenceIcon.png" Content="참조&#x0a;추가/제거" Tag="ReferenceHelp"/>
+                <Image/>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+
+    <!--컴포넌트 추가 / 제거 도움말-->
+    <Grid x:Key="ComponentHelp">
+        <StackPanel>
+            <TextBlock Text="컴포넌트 추가/제거" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                해당 도움말은 PowerVBA 내에서 컴포넌트를 추가하고 제거하는 방법에 대해서 설명합니다.
+                해당 내용을 숙지하시면 클래스/모듈/사용자 폼 파일을 추가하거나 제거 하실 수 있습니다.
+            </TextBlock>
+            <TextBlock Margin="0,30,0,0" Text="컴포넌트 추가" FontSize="18"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                해당 파트에서는 컴포넌트를 추가하는 방법에 대해서 설명합니다. 우선, 컴포넌트를 추가하기 위해서는 두가지의 방법이 있습니다.
+                <LineBreak/>
+                1. <Run Text="Control(컨트롤 키) + Shift(쉬프트 키) + A 버튼을 동시에 누른다. (모듈 추가)" FontWeight="Bold"/>
+                <LineBreak/>
+                2. 메인 탭에서 <Run Text="[삽입] 탭" FontWeight="Bold"/>의 <Run Text="[클래스 추가]" FontWeight="Bold"/> 또는
+                <Run Text="[모듈 추가]" FontWeight="Bold"/> 또는 <Run Text="[사용자 폼 추가]" FontWeight="Bold"/>을 통해 추가하실 수 있습니다.
+                <LineBreak/>
+                <Image Source="/PowerVBA;component/Resources/HelpImages/ComponentHelp1.jpg" Width="200"/>
+                <LineBreak/>
+                <Run Text="▲ 다음의 메뉴중에서 하나를 선택한다."/>
+                <LineBreak/>
+                <LineBreak/>
+                그럼 다음과 같은 화면을 보실 수 있습니다.
+                <LineBreak/>
+                <LineBreak/>
+                <Image Source="/PowerVBA;component/Resources/HelpImages/Module1.jpg" Width="500"/>
+                <LineBreak/>
+                다음 화면에서 클래스 / 모듈 / 유저폼을 선택할 수 있으며 이름을 입력하신 뒤 확인 버튼으로 생성하실 수 있습니다.
+                <LineBreak/>
+                파일 이름은 명명 규칙을 따라야 합니다.
+            </TextBlock>
+            <TextBlock Margin="0,30,0,0" Text="명명 규칙" FontSize="18"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                자세한 내용은 <Hyperlink TargetName="NamingHelp">명명 규칙</Hyperlink> 도움말 에서 확인하세요.
+            </TextBlock>
+            <TextBlock Margin="0,30,0,0" Text="컴포넌트 제거" FontSize="18"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                해당 파트에서는 컴포넌트를 제거하는 방법에 대해서 설명합니다.
+                <LineBreak/>
+                <Image Source="/PowerVBA;component/Resources/HelpImages/ComponentHelp1.jpg" Width="200"/>
+                <LineBreak/>
+                <Run Text="▲ 다음의 메뉴중에서 하나를 선택한다."/>
+                <LineBreak/>
+                <LineBreak/>
+                다음 화면에서 클래스 / 모듈 / 유저폼을 선택할 수 있으며 이름을 입력하신 뒤 확인 버튼으로 생성하실 수 있습니다.
+                <LineBreak/>
+                파일 이름은 명명 규칙을 따라야 합니다.
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+
+    <!--명명 규칙 도움말-->
+    <Grid x:Key="NamingHelp">
+        <StackPanel>
+            <TextBlock Text="명명 규칙" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                해당 도움말은 컴포넌트의 이름과 같은 명명 규칙에 대해서 설명합니다. 해당 명명 규칙을 어겼을시에는 정상적인 파일 생성이 불가능합니다.
+            </TextBlock>
+            
+            <TextBlock Margin="0,30,0,0" Text="컴포넌트 명명 규칙" FontSize="18"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                컴포넌트 명명 규칙입니다. 일반 변수 명명 규칙이랑 차이가 존재합니다.
+                <LineBreak/>
+                <LineBreak/>
+                1. <Run Text="첫글자 _(언더바), 숫자 사용 불가능"/>
+                <LineBreak/>
+                2. <Run Text="대소문자 구분 없음 (Star와 STAR은 동일하게 인식)"/>
+                <LineBreak/>
+                3. <Run Text="한글, 영어, 숫자, _(언더바)만 사용가능."/>
+                <LineBreak/><LineBreak/>
+                변수 이름 명명 규칙과의 차이점은 첫글자에 언더바가 올 수 없다는 점입니다.
+                따라서 '_FileName'와 같이 작성 할 수 없습니다.
+            </TextBlock>
+            <TextBlock Margin="0,30,0,0" Text="변수 이름 명명 규칙" FontSize="18"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                변수 명명 규칙입니다.
+                <LineBreak/>
+                <LineBreak/>
+                1. <Run Text="대소문자 구분 없음 (Star와 STAR은 동일하게 인식)"/>
+                <LineBreak/>
+                2. <Run Text="한글, 영어, 숫자, _(언더바)만 사용가능. (첫글자에도 동일하게 적용)"/>                
+                <LineBreak/><LineBreak/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+
+    <!--참조 도움말-->
+    <Grid x:Key="ReferenceHelp">
+        <StackPanel>
+            <TextBlock Text="참조 추가/제거" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                해당 도움말은 PowerVBA에서의 참조에 대해서 설명합니다.
+            </TextBlock>
+            <TextBlock Margin="0,30,0,0" Text="참조 추가" FontSize="18"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                참조를 추가 하기 위해서는 다음의 방법을 사용 합니다.
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</ResourceDictionary>

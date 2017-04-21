@@ -11,6 +11,7 @@ using PowerVBA.Resources;
 using PowerVBA.Global;
 using PowerVBA.Core.Wrap.WrapBase;
 using static PowerVBA.Wrap.WrappedClassManager;
+using static PowerVBA.Global.Globals;
 using System.Windows;
 
 namespace PowerVBA.Controls.Tools
@@ -81,8 +82,10 @@ namespace PowerVBA.Controls.Tools
         {
             var itm = (ImageListViewItem)GetSelectedItem();
             VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
-
-            DeleteRequest?.Invoke(this, comp);
+            if (MessageBox.Show($"'{itm.Content}'가 영구적으로 삭제됩니다.", "삭제 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                DeleteRequest?.Invoke(this, comp);
+            }
         }
 
         public delegate void ComponentDelegate(object sender, VBComponentWrappingBase Data);
@@ -152,7 +155,7 @@ namespace PowerVBA.Controls.Tools
             else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = ResourceImage.GetIconImage("FormIcon"); }
             else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = LBSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
 
-            AddLB?.Items.Add(new ImageListViewItem() { Content = comp.ToVBComponent2013().Name, Tag = comp, Source = img, ContextMenu = itmMenu });
+            AddLB?.Items.Add(new ImageListViewItem() { Content = $"{comp.ToVBComponent2013().Name}{GetExtensions(t)}", Tag = comp, Source = img, ContextMenu = itmMenu });
         }
 
         public void RemoveItem(VBComponentWrappingBase comp)

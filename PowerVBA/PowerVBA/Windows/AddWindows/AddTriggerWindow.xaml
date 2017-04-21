@@ -10,6 +10,7 @@
         Title="트리거 추가" Height="300" Width="500" AllowsTransparency="True" WindowStyle="None">
     <Window.Resources>
         <Style TargetType="{x:Type c:ImageRadioButton}">
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type c:ImageRadioButton}">

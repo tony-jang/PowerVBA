@@ -8,10 +8,10 @@
         xmlns:t="clr-namespace:PowerVBA.Controls.Tools"
         xmlns:w="clr-namespace:PowerVBA.Windows"
         xmlns:local="clr-namespace:PowerVBA"
-        mc:Ignorable="d"
         x:Name="ThisWindow" Title="Untitle Presentation - PowerVBA" Height="800" Width="1300"
-                Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico" IsSubWindow="false"
-                WindowStyle="None" AllowsTransparency="True" IsEnableMove="True" NoTitle="True" WindowStartupLocation="CenterScreen">
+        Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico" IsSubWindow="false" mc:Ignorable="d" WindowState="Maximized"
+        WindowStyle="None" AllowsTransparency="True" IsEnableMove="True" NoTitle="True" WindowStartupLocation="CenterScreen">
+
     <w:ChromeWindow.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -31,7 +31,7 @@
 
     </w:ChromeWindow.Resources>
 
-    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0">
+    <TabControl x:Name="ProgramTabControl" BorderBrush="Transparent" SelectedIndex="1" Margin="0" Padding="0" BorderThickness="0" Background="White">
         <!--<TabControl.Style>
             <Style TargetType="{x:Type TabControl}">
                 <Setter Property="Template">
@@ -60,13 +60,13 @@
             <Grid x:Name="MainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="140"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition/>
                     <RowDefinition Height="23"/>
                 </Grid.RowDefinitions>
 
                 <Grid>
 
-                    <TabControl x:Name="MenuTabControl" SelectedIndex="1" BorderBrush="#FFD4D4D4" Style="{StaticResource TabControlStyle}">
+                    <TabControl x:Name="MenuTabControl" SelectedIndex="1" BorderBrush="#FFD4D4D4" Style="{StaticResource TabControlStyle}" Background="White">
                         <TabControl.Resources>
                             <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource GroupBoxStyle}"/>
                             <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource TabItemStyle}"/>
@@ -115,6 +115,26 @@
                                         <c:ImageButton x:Name="BtnDelSlide" Content="슬라이드&#x0a;삭제" BackImage="Resources/Icon/DeleteSlideIcon.png" SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="슬라이드 삭제" Text="현재 프레젠테이션에 슬라이드를 삭제합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="도움말">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnHelp" Content="도움말 열기" BackImage="Resources/Icon/HelpIcon.png" SimpleButtonClicked="BtnHelp_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="새 슬라이드" Text="현재 프레젠테이션에 슬라이드를 추가합니다."/>
+                                            </c:ImageButton.ToolTip>
+                                        </c:ImageButton>
+                                    </WrapPanel>
+                                </GroupBox>
+                                <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
+                                <GroupBox Header="탭 이동">
+                                    <WrapPanel>
+                                        <c:ImageButton x:Name="BtnToPPT" Content="파워포인트로&#x0a;이동" BackImage="Resources/Icon/pptIcon.png" SimpleButtonClicked="BtnToPPT_SimpleButtonClicked">
+                                            <c:ImageButton.ToolTip>
+                                                <corec:CustomToolTip Title="새 슬라이드" Text="현재 프레젠테이션에 슬라이드를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                     </WrapPanel>
@@ -238,7 +258,6 @@
                     </Grid.ColumnDefinitions>
                     <Grid>
                         <t:ProjectAnalyzer x:Name="projAnalyzer"/>
-
                     </Grid>
 
                     <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
@@ -253,6 +272,10 @@
                                 <Style TargetType="{x:Type c:CloseableTabItem}" BasedOn="{StaticResource CodeTabItemStyle}"/>
                             </TabControl.Resources>
 
+                            <!--<c:CloseableTabItem Header="API 추가/제거">
+                                <t:APIManager/>
+                            </c:CloseableTabItem>-->
+
                             <!--<c:CloseableTabItem Header="프로젝트 속성" Height="20">
                                 <t:ProjectProperty/>
                             </c:CloseableTabItem>-->
@@ -264,7 +287,7 @@
                                 <av:CodeEditor x:Name="codeEditor" Text="Dim A As Slide" FontFamily="DotumChe" SnapsToDevicePixels="True"/>
                             </c:CloseableTabItem>-->
                         </TabControl>
-                        
+
                         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
                         <t:ErrorList x:Name="errorList" Grid.Row="2" />
                     </Grid>
@@ -280,7 +303,7 @@
                         <c:WpfPropertyGrid Grid.Row="2" x:Name="PropGrid"/>
                     </Grid>
                 </Grid>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="3">
                     <Rectangle Fill="#FFD24726"/>
                     <TextBlock x:Name="tbMessage" Margin="5, 0" Text="준비" VerticalAlignment="Center" Foreground="White"/>
                 </Grid>
@@ -413,7 +436,7 @@
                 <Grid Grid.Column="1" Margin="0,40,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
                         <RowDefinition/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="23"/>
@@ -423,12 +446,6 @@
                         <WrapPanel>
                             <c:ProjectTemplateButton x:Name="BtnNewPPT" Content="새 프레젠테이션" Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다."
                                        Padding="10" Click="BtnNewPPT_Click" />
-                            <c:ProjectTemplateButton x:Name="BtnNewAssistPPT" Content="보조 파일을 사용하는 새 프레젠테이션" Padding="10"
-                                       Description="보조 파일을 사용한 상태로 새 프레젠테이션을 만들게 되면 항상 프레젠테이션과 이름이 같은 .vba 파일이 생성됩니다.
-&#x0a;해당 파일이 같이 있는 상태에선 보조 문법을 사용할 수 있습니다. 보조 문법이란 기존 VBA 문법을 더 확장시킨 것으로 기존보다 더 효율적인 문법 사용이 가능합니다." Click="BtnNewAssistPPT_Click" Source="Resources/Icon/AssistProjectIcon.png"/>
-                            <c:ProjectTemplateButton x:Name="BtnNewVirtualPPT" Content="가상 프레젠테이션" Padding="10"
-                                       Description="가상 프레젠테이션은 .pptx를 사용하지 않고 가상으로 슬라이드에 도형이 있다고 가정한 상태에서 코드만 작성하는 것을 말합니다.&#x0a;PPT 프레젠테이션과 연결하여 사용하지 않습니다." Click="BtnNewVirtualPPT_Click" 
-                                                     Source="Resources/Icon/VirtualProjectIcon.png"/>
                         </WrapPanel>
                     </ScrollViewer>
 
@@ -440,7 +457,7 @@
                         <TextBlock Text="도움말" Foreground="#FFDA6C51" Margin="20,0,0,0"/>
 
                     </Grid>
-                    
+
                     <Grid Grid.Row="3" Margin="0,10">
 
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap">
@@ -597,9 +614,9 @@
                                     <TextBlock Margin="30,50,30,0" Text="열기" Foreground="Black" FontSize="30"/>
                                     <TextBlock Margin="30,10,30,0" Text="※ PowerPoint의 내용과 동기화되지 않습니다." Foreground="Gray" FontSize="12"/>
                                 </StackPanel>
-                                
+
                             </Grid>
-                            
+
                             <Grid Grid.Row="1" Margin="50,20">
                                 <Grid>
                                     <Grid>
@@ -676,7 +693,7 @@
 
                                         </TabControl>
                                     </Grid>
-                                </Grid>  
+                                </Grid>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -757,7 +774,7 @@
                                 </Grid>
                             </Grid>
                         </Grid>
-                        
+
                     </TabItem>
                     <TabItem Header="닫기" />
 

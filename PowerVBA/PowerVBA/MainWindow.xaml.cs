@@ -20,16 +20,9 @@ using System.Threading;
 using System.ComponentModel;
 using System.Collections.Generic;
 using ICSharpCode.AvalonEdit.Document;
-using PowerVBA.V2013.WrapClass;
 using PowerVBA.Controls.Tools;
 using PowerVBA.Codes;
 using System.Diagnostics;
-using PowerVBA.Core.AvalonEdit.Parser;
-using PowerVBA.Core.Error;
-using ICSharpCode.AvalonEdit;
-using exp = PowerVBA.Codes.Expressions;
-using Microsoft.Vbe.Interop;
-using PowerVBA.Codes.Expressions;
 using PowerVBA.Core.Reference;
 using System.IO;
 using ICSharpCode.AvalonEdit.Folding;
@@ -103,34 +96,43 @@ namespace PowerVBA
 
                         errorList.Dispatcher.Invoke(new Action(() =>
                         {
-                            this.Title = sw2.ElapsedMilliseconds.ToString();
+                            SetMessage("코드 파싱에 소요된 시간 : " + sw2.ElapsedMilliseconds.ToString() + "ms");
                             errorList.SetError(codeInfo.ErrorList);
                         }));
 
 
                         Dispatcher.Invoke(new Action(() => {
-
-                            foreach (CloseableTabItem itm in CodeTabControl.Items)
+                            try
                             {
-                                if (itm.Content.GetType() == typeof(CodeEditor))
+                                foreach (CloseableTabItem itm in CodeTabControl.Items)
                                 {
-                                    CodeEditor editor = itm.Content as CodeEditor;
-                                    var list = codeInfo.Lines.Where(i => i.FileName == itm.Header.ToString());
-
-                                    if (list.Count() >= 1)
+                                    if (itm.Content.GetType() == typeof(CodeEditor))
                                     {
+                                        CodeEditor editor = itm.Content as CodeEditor;
+                                        var list = codeInfo.Lines.Where(i => i.FileName == itm.Header.ToString());
 
-                                        var nFolding = list.First().Foldings.Select(i => new NewFolding(editor.Document.GetOffset(i.StartInt, 0),
-                                            editor.Document.GetLineByNumber(i.EndInt).EndOffset) {
-                                            Name = editor.Text.Substring(editor.Document.GetOffset(i.StartInt, 0),
-                                                                         editor.Document.GetLineByNumber(i.StartInt).Length) });
+                                        if (list.Count() >= 1)
+                                        {
 
-                                        editor.foldingManager.UpdateFoldings(nFolding, -1);
+                                            var nFolding = list.First().Foldings.Select(i => new NewFolding(editor.Document.GetOffset(i.StartInt, 0),
+                                                editor.Document.GetLineByNumber(i.EndInt).EndOffset)
+                                            {
+                                                Name = editor.Text.Substring(editor.Document.GetOffset(i.StartInt, 0),
+                                                                             editor.Document.GetLineByNumber(i.StartInt).Length)
+                                            });
+
+                                            editor.foldingManager.UpdateFoldings(nFolding, -1);
+                                        }
+
+
                                     }
-
-                                    
                                 }
                             }
+                            catch
+                            {
+                                SetMessage("코드 폴딩 처리중에 오류가 발생한 것 같습니다.");
+                            }
+                            
                         }));
 
 
@@ -156,7 +158,11 @@ namespace PowerVBA
 
         private void SolutionExplorer_DeleteRequest(object sender, VBComponentWrappingBase Data)
         {
-            Connector.DeleteComponent(Data);
+            string Name = Data.CompName;
+            if (Connector.DeleteComponent(Data))
+            {
+                CodeTabControl.Items.Remove(GetAllCodeTabs().Where(i => i.Header.ToString() == Name));
+            }
         }
 
         private void Comm_ItmAdd(object sender, ExecutedRoutedEventArgs e)
@@ -193,10 +199,11 @@ namespace PowerVBA
         }
 
         #region [  윈도우 코드  ]
-
+        Thread thr;
         public void SetMessage(string Message, int Delay = 3000)
         {
-            Thread thr = new Thread(() =>
+            thr?.Abort();
+            thr = new Thread(() =>
             {
                 Dispatcher.Invoke(() => { tbMessage.Text = Message; });
 
@@ -287,6 +294,7 @@ namespace PowerVBA
                     var itm = new RecentFileListViewItem(fl);
                     itm.OpenRequest += Itm_OpenRequest;
                     itm.CopyOpenRequest += Itm_CopyOpenRequest;
+                    itm.DeleteRequest += Itm_DeleteRequest;
                     LVrecentFile.Items.Add(itm);
                 });
 
@@ -332,14 +340,30 @@ namespace PowerVBA
             }
         }
 
-        private void Itm_CopyOpenRequest()
+        private void Itm_DeleteRequest(object sender)
         {
-            
+            if (!dbConnector.RecentFile_Remove(((RecentFileListViewItem)sender).FileLocation))
+            {
+                MessageBox.Show("알 수 없는 이유로 삭제에 실패했습니다.");
+            }
+            else
+            {
+                LVrecentFile.Items.Remove(sender);
+            }
         }
 
-        private void Itm_OpenRequest()
+        private void Itm_CopyOpenRequest(object sender)
         {
-            MessageBox.Show("!");
+            RecentFileListViewItem itm = (RecentFileListViewItem)sender;
+            SetMessage($"'{new FileInfo(itm.FileLocation).Name}' 프레젠테이션을 열고 있습니다.");
+            InitalizeConnector(itm.FileLocation, true);
+        }
+
+        private void Itm_OpenRequest(object sender)
+        {
+            RecentFileListViewItem itm = (RecentFileListViewItem)sender;
+            SetMessage($"'{new FileInfo(itm.FileLocation).Name}' 프레젠테이션을 열고 있습니다.");
+            InitalizeConnector(itm.FileLocation);
         }
 
         public void AddCodeTab(string Name)
@@ -366,17 +390,10 @@ namespace PowerVBA
 
         public void CodeSync(object sender)
         {
-            int lines = 0;
-            Connector.ToConnector2013().VBProject.VBComponents.Cast<VBComponent>()
-                                                              .ToList()
-                                                              .ForEach((i) => lines += i.CodeModule.CountOfLines);
-
-            int ComponentCount = Connector.ToConnector2013().VBProject.VBComponents.Count;
-
             int CurrLine = 0;
             if (sender?.GetType() == typeof(CodeEditor)) CurrLine = ((CodeEditor)sender).Text.SplitByNewLine().Count();
 
-            projAnalyzer.CodeSync(lines, ComponentCount, CurrLine);
+            projAnalyzer.CodeSync(Connector.AllLineCount, Connector.ComponentCount, CurrLine);
         }
 
 
@@ -497,33 +514,25 @@ namespace PowerVBA
                 return null;
         }
 
-        public List<CodeEditor> GetAllCodeTabs()
+        public List<CodeEditor> GetAllCodeEditors()
         {
             List<CodeEditor> editorList = new List<CodeEditor>();
-            foreach(CloseableTabItem tItm in CodeTabControl.Items)
-            {
+            foreach (CloseableTabItem tItm in CodeTabControl.Items)
                 if (tItm.Content.GetType() == typeof(CodeEditor)) editorList.Add((CodeEditor)tItm.Content);
-            }
 
             return editorList;
         }
 
-        public string GetExtensions(vbext_ComponentType Type)
+        public List<CloseableTabItem> GetAllCodeTabs()
         {
-            switch (Type)
-            {
-                case vbext_ComponentType.vbext_ct_StdModule:
-                    return ".bas";
-                case vbext_ComponentType.vbext_ct_ClassModule:
-                case vbext_ComponentType.vbext_ct_Document:
-                    return ".cls";
-                case vbext_ComponentType.vbext_ct_MSForm:
-                    return ".frm";
-                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
-                default:
-                    return "";
-            }
+            List<CloseableTabItem> editorList = new List<CloseableTabItem>();
+            foreach (CloseableTabItem tItm in CodeTabControl.Items)
+                if (tItm.Content.GetType() == typeof(CodeEditor)) editorList.Add(tItm);
+
+            return editorList;
         }
+
+
 
         private string ProjName;
 
@@ -536,13 +545,12 @@ namespace PowerVBA
             }
             else if (Connector != null)
             {
-                PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
+                
+                this.Title = Connector.Name + " - PowerVBA";
 
-                this.Title = conn2013.Presentation.Name + " - PowerVBA";
+                ProjName = Connector.Name;
 
-                ProjName = conn2013.Presentation.Name;
-
-                if (conn2013.Presentation.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
+                if (Connector.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
                     this.Title += " [읽기 전용]";
                 
             }
@@ -711,7 +719,8 @@ namespace PowerVBA
             {
                 ProgramTabControl.SelectedIndex = 2;
                 MenuTabControl.SelectedIndex = 1;
-                this.NoTitle = true;
+
+                if (MenuTabControl.SelectedIndex == 1) this.NoTitle = true;
             }
         }
         #endregion
@@ -723,12 +732,12 @@ namespace PowerVBA
 
 
         #region [  클립보드  ]
-        private void BtnCopy_SimpleButtonClicked()
+        private void BtnCopy_SimpleButtonClicked(object sender)
         {
             Clipboard.Clear();
             Clipboard.SetText(((CodeEditor)CodeTabControl.SelectedContent).SelectedText);
         }
-        private void BtnPaste_SimpleButtonClicked()
+        private void BtnPaste_SimpleButtonClicked(object sender)
         {
             if (Clipboard.ContainsText())
             {
@@ -742,7 +751,7 @@ namespace PowerVBA
         #endregion
         
         #region [  작업  ]
-        private void BtnUndo_SimpleButtonClicked()
+        private void BtnUndo_SimpleButtonClicked(object sender)
         {
             CodeEditor editor = ((CodeEditor)CodeTabControl.SelectedItem);
             if (editor == null) return;
@@ -752,7 +761,7 @@ namespace PowerVBA
             editor.Focus();
         }
 
-        private void BtnRedo_SimpleButtonClicked()
+        private void BtnRedo_SimpleButtonClicked(object sender)
         {
             CodeEditor editor = ((CodeEditor)CodeTabControl.SelectedItem);
             if (editor == null) return;
@@ -765,7 +774,7 @@ namespace PowerVBA
         #endregion
         
         #region [  슬라이드 관리  ]
-        private void BtnNewSlide_SimpleButtonClicked()
+        private void BtnNewSlide_SimpleButtonClicked(object sender)
         {
             int SlideNumber = 0;
 
@@ -792,16 +801,25 @@ namespace PowerVBA
                 
             }
 
+            SetMessage((SlideNumber + 1) + "번째 슬라이드를 추가했습니다.");
+
         }
 
-        private void BtnDelSlide_SimpleButtonClicked()
+        private void BtnDelSlide_SimpleButtonClicked(object sender)
         {
+            int SlideNumber = 0;
+            if (Connector.SlideCount == 0)
+            {
+                SetMessage("삭제할 슬라이드가 없습니다.");
+
+                return;
+            }
             switch (VersionSelector.GetPPTVersion())
             {
                 case PPTVersion.PPT2010:
                     PPTConnector2010 conn2010 = (PPTConnector2010)Connector;
 
-                    int SlideNumber = conn2010.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+                    SlideNumber = conn2010.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
                     if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
@@ -812,40 +830,46 @@ namespace PowerVBA
                 case PPTVersion.PPT2013:
                     PPTConnector2013 conn2013 = (PPTConnector2013)Connector;
 
-                    int SlideNumber2 = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
-                    if (MessageBox.Show(SlideNumber2 + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
+                    SlideNumber = conn2013.Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex;
+                    if (MessageBox.Show(SlideNumber + "슬라이드를 삭제합니다. 계속하시려면 예로 계속하세요.", "슬라이드 삭제 확인",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        conn2013.Presentation.Slides[SlideNumber2].Delete();
+                        conn2013.Presentation.Slides[SlideNumber].Delete();
                     }
                     break;
             }
-            
+            SetMessage((SlideNumber) + "번째 슬라이드를 삭제했습니다.");
         }
 
         #endregion
 
+
+        private void BtnHelp_SimpleButtonClicked(object sender)
+        {
+            HelperWindow hWdw = new HelperWindow();
+            hWdw.ShowDialog();
+        }
 
         #endregion
 
 
         #region [  삽입 탭 이벤트  ]
 
-        private void BtnAddClass_SimpleButtonClicked()
+        private void BtnAddClass_SimpleButtonClicked(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddFileType.Class);
 
             SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
         }
 
-        private void BtnAddModule_SimpleButtonClicked()
+        private void BtnAddModule_SimpleButtonClicked(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddFileType.Module);
 
             SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
         }
 
-        private void BtnAddForm_SimpleButtonClicked()
+        private void BtnAddForm_SimpleButtonClicked(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddFileType.Form);
 
@@ -853,7 +877,7 @@ namespace PowerVBA
         }
 
 
-        private void BtnAddSub_SimpleButtonClicked()
+        private void BtnAddSub_SimpleButtonClicked(object sender)
         {
             var procWindow =
                 new AddProcedureWindow(GetCodeTab(),
@@ -863,24 +887,24 @@ namespace PowerVBA
             procWindow.ShowDialog();
         }
 
-        private void BtnAddFunc_SimpleButtonClicked()
+        private void BtnAddFunc_SimpleButtonClicked(object sender)
         {
             new AddProcedureWindow(GetCodeTab(), GetCodeTabName(), 
                                    codeInfo, AddProcedureWindow.AddProcedureType.Function).ShowDialog();   
         }
-        private void BtnAddProp_SimpleButtonClicked()
+        private void BtnAddProp_SimpleButtonClicked(object sender)
         {
             new AddProcedureWindow(GetCodeTab(), GetCodeTabName(),
                                    codeInfo, AddProcedureWindow.AddProcedureType.Property).ShowDialog();
             
         }
 
-        private void BtnAddMouseOverTrigger_SimpleButtonClicked()
+        private void BtnAddMouseOverTrigger_SimpleButtonClicked(object sender)
         {
             new AddTriggerWindow(true,GetCodeTab(), codeInfo, GetCodeTabName()).ShowDialog(Connector);
         }
 
-        private void BtnAddMouseClickTrigger_SimpleButtonClicked()
+        private void BtnAddMouseClickTrigger_SimpleButtonClicked(object sender)
         {
             new AddTriggerWindow(false, GetCodeTab(), codeInfo, GetCodeTabName()).ShowDialog(Connector);
         }
@@ -891,13 +915,13 @@ namespace PowerVBA
         }
 
 
-        private void BtnAddVar_SimpleButtonClicked()
+        private void BtnAddVar_SimpleButtonClicked(object sender)
         {
             new AddVarWindow(GetCodeTab(), ((TabItem)CodeTabControl.SelectedItem).Header.ToString(),
                              codeInfo, true).ShowDialog();
         }
 
-        private void BtnAddConst_SimpleButtonClicked()
+        private void BtnAddConst_SimpleButtonClicked(object sender)
         {
             new AddVarWindow(GetCodeTab(), ((TabItem)CodeTabControl.SelectedItem).Header.ToString(),
                              codeInfo, false).ShowDialog();
@@ -906,7 +930,7 @@ namespace PowerVBA
 
         #region [  프로젝트 탭  ]
         
-        private void PreDeclareFuncBtn_SimpleButtonClicked()
+        private void PreDeclareFuncBtn_SimpleButtonClicked(object sender)
         {
             var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "미리 정의된 함수").ToList();
             if (tabItems.Count >= 1)
@@ -925,21 +949,21 @@ namespace PowerVBA
             }
         }
 
-        private void CheckError_SimpleButtonClicked()
+        private void CheckError_SimpleButtonClicked(object sender)
         {
 
         }
 
-        private void BtnFileSync_SimpleButtonClicked()
+        private void BtnFileSync_SimpleButtonClicked(object sender)
         {
             var itm = GetCodeTab();
             if (itm != null) itm.RaiseSaveRequest();
             SetMessage("저장되었습니다.");
         }
 
-        private void BtnAllFileSync_SimpleButtonClicked()
+        private void BtnAllFileSync_SimpleButtonClicked(object sender)
         {
-            var itm = GetAllCodeTabs();
+            var itm = GetAllCodeEditors();
             itm.ForEach(editor => editor.RaiseSaveRequest());
             SetMessage("전체 저장되었습니다.");
         }
@@ -1003,9 +1027,9 @@ namespace PowerVBA
                     {
                         InitalizeConnector(ppt);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("오류가 발생 했습니다.");
+                        MessageBox.Show(ex.ToString());
                     }
                 }
             }
@@ -1070,7 +1094,7 @@ namespace PowerVBA
             }), DispatcherPriority.Background);
         }
 
-        public void InitalizeConnector(string FileLocation = "")
+        public void InitalizeConnector(string FileLocation = "", bool CopyOpen = false)
         {
             Dispatcher.Invoke(new Action(() =>
             {
@@ -1086,7 +1110,7 @@ namespace PowerVBA
                 {
                     case PPTVersion.PPT2010:
                         if (FileLocation == string.Empty) tmpConn = new PPTConnector2010();
-                        else tmpConn = new PPTConnector2010(FileLocation);
+                        else tmpConn = new PPTConnector2010(FileLocation, CopyOpen);
 
                         tmpConn.PresentationClosed += PPTCloseDetect;
                         tmpConn.VBAComponentChange += ProjectFileChange;
@@ -1100,7 +1124,7 @@ namespace PowerVBA
                     case PPTVersion.PPT2016:
                     case PPTVersion.PPT2013:
                         if (FileLocation == string.Empty) tmpConn = new PPTConnector2013();
-                        else tmpConn = new PPTConnector2013(FileLocation);
+                        else tmpConn = new PPTConnector2013(FileLocation, CopyOpen);
 
                         tmpConn.PresentationClosed += PPTCloseDetect;
                         tmpConn.VBAComponentChange += ProjectFileChange;
@@ -1156,7 +1180,7 @@ namespace PowerVBA
 
         #endregion
 
-        private void DebugBtn_SimpleButtonClicked()
+        private void DebugBtn_SimpleButtonClicked(object sender)
         {
             //CodeTabEditor
             
@@ -1176,6 +1200,11 @@ namespace PowerVBA
         {
             Process.Start(VersionSelector.GetPowerPointPath());
             this.Close();
+        }
+
+        private void BtnToPPT_SimpleButtonClicked(object sender)
+        {
+            Connector.ActivateWindow();
         }
     }
 }

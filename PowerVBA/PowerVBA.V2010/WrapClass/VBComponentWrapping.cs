@@ -47,5 +47,7 @@ namespace PowerVBA.V2010.WrapClass
         public bool HasOpenDesigner => VBComponent.HasOpenDesigner;
         public Properties Properties => VBComponent.Properties;
         public string DesignerID => VBComponent.DesignerID;
+
+        public override string CompName => Name;
     }
 }

@@ -152,6 +152,24 @@ namespace PowerVBA.V2010.Connector
 
         public override int SlideCount { get => Presentation.Slides.Count; }
 
+        public override int AllLineCount
+        {
+            get
+            {
+                int lines = 0;
+                VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                      .ToList()
+                                      .ForEach((i) => lines += i.CodeModule.CountOfLines);
+
+                return lines;
+            }
+        }
+
+
+        public override int ComponentCount => VBProject.VBComponents.Count;
+
+        public override MsoTriState ReadOnly => Presentation.ReadOnly;
+
         public bool IsContainsName(string name)
         {
             foreach (VBA.VBComponent comp in VBProject.VBComponents)
@@ -236,7 +254,7 @@ namespace PowerVBA.V2010.Connector
 
                 VBProject.VBComponents.Remove(itm);
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -441,6 +459,13 @@ namespace PowerVBA.V2010.Connector
 
             if (itm == null) return null;
             return new DocumentWindowWrapping(itm);
+        }
+
+        public override void ActivateWindow()
+        {
+            var itm = (DocumentWindowWrapping)GetWindow();
+            
+            itm.Activate();
         }
 
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static PowerVBA.Global.Globals;
+using Microsoft.Office.Core;
 
 namespace PowerVBA.Core.Connector
 {
@@ -18,6 +19,9 @@ namespace PowerVBA.Core.Connector
         public abstract PPTVersion Version { get; }
         public abstract string Name { get; }
         public abstract int SlideCount { get; }
+        public abstract int ComponentCount { get; }
+        public abstract int AllLineCount { get; }
+        public abstract MsoTriState ReadOnly { get; }
 
         public event BlankDelegate VBAComponentChange;
         public event BlankDelegate PresentationClosed;
@@ -160,7 +164,6 @@ namespace PowerVBA.Core.Connector
 
         public abstract bool Save();
         public abstract bool SaveAs(string path);
-
-        
+        public abstract void ActivateWindow();
     }
 }

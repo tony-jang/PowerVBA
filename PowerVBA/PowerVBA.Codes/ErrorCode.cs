@@ -588,8 +588,14 @@ namespace PowerVBA.Codes
         [KoError("End With는 With문 다음에만 올 수 있습니다.")]
         VB0230 = 230,
 
-
         #endregion
 
+
+        #region [  Option 오류  ]
+
+        [KoError("Explicit은 Option 뒤에만 올 수 있습니다.")]
+        VB0240 = 240,
+
+        #endregion
     }
 }

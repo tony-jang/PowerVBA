@@ -28,13 +28,13 @@ namespace PowerVBA.V2013.Connector
         private PPTConnector2013()
         {
             Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
-            
+
             EventConnectThread = new Thread(() =>
             {
                 int LastComponentCount = 0;
                 int LastShapeCount = 0;
                 int LastSlideCount = 0;
-                
+
                 int DelayCounter = 0;
 
                 while (true)
@@ -98,7 +98,7 @@ namespace PowerVBA.V2013.Connector
                                                    // 발생하는 예외 상황 : 연결된 PowerPoint 창이 닫히면서 프레제텐이션 창 자체가 닫혔을때
                                                    (-2146827864, "애플리케이션이 종료된 것 같습니다."),
                                                    (-2147467262, "애플리케이션이 종료된 것 같습니다.")};
-                                                    
+
                         //
                         var Error = Errors.Where((i) => i.Item1 == e.HResult).FirstOrDefault();
 
@@ -139,7 +139,7 @@ namespace PowerVBA.V2013.Connector
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
             //compWrap.CodeModule.DeleteLines()
-            
+
             EventConnectThread?.Start();
         }
 
@@ -152,6 +152,23 @@ namespace PowerVBA.V2013.Connector
         public override string Name => Presentation.Name;
 
         public override int SlideCount { get => Presentation.Slides.Count; }
+
+        public override int AllLineCount
+        {
+            get
+            {
+                int lines = 0;
+                VBProject.VBComponents.Cast<VBA.VBComponent>()
+                                      .ToList()
+                                      .ForEach((i) => lines += i.CodeModule.CountOfLines);
+
+                return lines;
+            }
+        }
+
+        public override int ComponentCount => VBProject.VBComponents.Count;
+
+        public override MsoTriState ReadOnly => Presentation.ReadOnly;
 
         public bool IsContainsName(string name)
         {
@@ -237,7 +254,7 @@ namespace PowerVBA.V2013.Connector
 
                 VBProject.VBComponents.Remove(itm);
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -342,8 +359,16 @@ namespace PowerVBA.V2013.Connector
 
         public override void Dispose()
         {
-            Presentation.Close();
-            if (Application.Presentations.Count == 0) Application.Quit();
+            try
+            {
+                Presentation.Close();
+                if (Application.Presentations.Count == 0) Application.Quit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("프레젠테이션을 해제하던 중 오류가 발생했습니다." + Environment.NewLine + Environment.NewLine + ex.ToString());
+            }
+            
         }
 
         #region [  Module/Class/Form 존재 여부 확인  ]
@@ -442,6 +467,13 @@ namespace PowerVBA.V2013.Connector
 
             if (itm == null) return null;
             return new DocumentWindowWrapping(itm);
+        }
+
+        public override void ActivateWindow()
+        {
+            var itm = (DocumentWindowWrapping)GetWindow();
+            
+            itm.Activate();
         }
 
 

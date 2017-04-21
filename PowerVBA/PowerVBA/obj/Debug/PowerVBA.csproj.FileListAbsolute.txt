@@ -123,5 +123,8 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Deb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddVarWindow.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2010.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2010.pdb
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Window1.g.cs
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Window1.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\HelperWindow.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\HelpDictionary.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\HelperWindow.baml

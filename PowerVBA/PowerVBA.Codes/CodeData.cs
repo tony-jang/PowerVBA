@@ -192,5 +192,6 @@ namespace PowerVBA.Codes
         public bool AfterAlias { get; internal set; }
         public bool AfterString { get; internal set; }
         public bool AfterWith { get; internal set; }
+        public bool AfterOption { get; internal set; }
     }
 }

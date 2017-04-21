@@ -405,21 +405,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:RecentFileListViewItem}">
-                    <Grid Background="{TemplateBinding Background}" ContextMenu="{TemplateBinding ContextMenu}">
+                    <Grid Background="{TemplateBinding Background}" ContextMenu="{TemplateBinding ContextMenu}" x:Name="mainGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Image Source="{TemplateBinding Source}" Margin="5" IsHitTestVisible="False"/>
+                        <Rectangle Margin="5" Fill="White" Stroke="LightGray" StrokeThickness="1"/>
+                        <Image Source="/PowerVBA;component/Resources/Icon/pptIcon.png" Margin="5" IsHitTestVisible="False"/>
                         
                         <Grid Grid.Column="1" Margin="10,5,0,5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="4*"/>
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="TBFileName" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0" IsHitTestVisible="False"/>
-                            <TextBlock x:Name="TBFileLoc" Foreground="White" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1" IsHitTestVisible="False"/>
+                            <TextBlock x:Name="TBFileName" Foreground="White" TextWrapping="NoWrap" 
+                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0" IsHitTestVisible="False"/>
+                            
+                            <TextBlock x:Name="TBFileLoc" Foreground="White" TextWrapping="NoWrap" 
+                                       TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1" IsHitTestVisible="False"/>
                         </Grid>
                     </Grid>
 

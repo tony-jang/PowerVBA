@@ -11,7 +11,7 @@ using WPFExtension;
 
 namespace PowerVBA.Controls.Customize
 {
-    class CloseableTabItem : TabItem
+    public class CloseableTabItem : TabItem
     {
         public CloseableTabItem()
         {

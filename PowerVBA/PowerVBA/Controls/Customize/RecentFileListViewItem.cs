@@ -12,18 +12,20 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFExtension;
+using static PowerVBA.Global.Globals;
 
 namespace PowerVBA.Controls.Customize
 {
     [TemplatePart(Name = "TBFileName", Type = typeof(TextBlock))]
     [TemplatePart(Name = "TBFileLoc", Type = typeof(TextBlock))]
+    [TemplatePart(Name = "mainGrid", Type = typeof(Grid))]
 
     class RecentFileListViewItem : ListViewItem
     {
         public delegate void BlankEventHandler();
-        public event BlankEventHandler OpenRequest;
-        public event BlankEventHandler CopyOpenRequest;
-        public event BlankEventHandler DeleteRequest;
+        public event SenderEventHandler OpenRequest;
+        public event SenderEventHandler CopyOpenRequest;
+        public event SenderEventHandler DeleteRequest;
 
         public RecentFileListViewItem()
         {
@@ -46,6 +48,7 @@ namespace PowerVBA.Controls.Customize
             ContextMenu.Items.Add(menuCopyPath);
             ContextMenu.Items.Add(menuDelete);
 
+            
             MouseDown += RecentFileListViewItem_MouseDown;
         }
 
@@ -53,7 +56,7 @@ namespace PowerVBA.Controls.Customize
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
-                OpenRequest?.Invoke();
+                OpenRequest?.Invoke(this);
             }
         }
 
@@ -68,7 +71,7 @@ namespace PowerVBA.Controls.Customize
 
         private void MenuDelete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteRequest?.Invoke();
+            DeleteRequest?.Invoke(this);
         }
 
         private void MenuCopyPath_Click(object sender, RoutedEventArgs e)
@@ -79,24 +82,27 @@ namespace PowerVBA.Controls.Customize
 
         private void MenuCopyOpen_Click(object sender, RoutedEventArgs e)
         {
-            CopyOpenRequest?.Invoke();
+            CopyOpenRequest?.Invoke(this);
         }
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {
-            OpenRequest?.Invoke();
+            OpenRequest?.Invoke(this);
         }
 
         #endregion
 
 
         TextBlock TBFileName, TBFileLocation;
+        Grid mainGrid;
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
             TBFileName = Template.FindName("TBFileName", this) as TextBlock;
             TBFileLocation = Template.FindName("TBFileLoc", this) as TextBlock;
+            mainGrid = Template.FindName("mainGrid", this) as Grid;
+            mainGrid.MouseDown += RecentFileListViewItem_MouseDown;
 
             var prop = DependencyPropertyDescriptor.FromProperty(FileLocationProperty, typeof(RecentFileListViewItem));
             prop.AddValueChanged(TBFileName, FileNameChanged);

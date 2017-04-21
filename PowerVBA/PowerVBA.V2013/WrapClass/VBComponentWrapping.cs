@@ -16,18 +16,6 @@ namespace PowerVBA.V2013.WrapClass
             this.VBComponent = vbcomponent;
         }
 
-        public override PPTVersion ClassVersion => PPTVersion.PPT2013;
-
-        public CodeModule CodeModule => VBComponent.CodeModule;
-        public VBComponents Collection => VBComponent.Collection;
-        public dynamic Designer => VBComponent.Designer;
-        public string DesignerID => VBComponent.DesignerID;
-        public bool HasOpenDesigner => VBComponent.HasOpenDesigner;
-        public string Name { set { VBComponent.Name = value; } get { return VBComponent.Name; } }
-        public Microsoft.Vbe.Interop.Properties Properties => VBComponent.Properties;
-        public bool Saved => VBComponent.Saved;
-        public vbext_ComponentType Type => VBComponent.Type;
-        public VBE VBE => VBComponent.VBE;
         public void Activate()
         {
             VBComponent.Activate();
@@ -42,6 +30,20 @@ namespace PowerVBA.V2013.WrapClass
         {
             VBComponent.Export(FileName);
         }
+        public override PPTVersion ClassVersion => PPTVersion.PPT2013;
+
+        public CodeModule CodeModule => VBComponent.CodeModule;
+        public VBComponents Collection => VBComponent.Collection;
+        public dynamic Designer => VBComponent.Designer;
+        public string DesignerID => VBComponent.DesignerID;
+        public bool HasOpenDesigner => VBComponent.HasOpenDesigner;
+        public string Name { set { VBComponent.Name = value; } get { return VBComponent.Name; } }
+        public Microsoft.Vbe.Interop.Properties Properties => VBComponent.Properties;
+        public bool Saved => VBComponent.Saved;
+        public vbext_ComponentType Type => VBComponent.Type;
+        public VBE VBE => VBComponent.VBE;
+        
+        public override string CompName => Name;
 
     }
 }

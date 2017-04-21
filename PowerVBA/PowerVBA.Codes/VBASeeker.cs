@@ -292,7 +292,7 @@ namespace PowerVBA.Codes
 
                             }
                         }
-                        if ((data.AfterDeclarator && data.AfterIdentifier && data.IsVarDeclaring) && !data.AfterArray)
+                        if ((data.AfterIdentifier && data.IsVarDeclaring) && !data.AfterArray)
                         {
                             AddError(ErrorCode.VB0008);
                         }
@@ -364,6 +364,38 @@ namespace PowerVBA.Codes
 
                         switch (SavingText.ToString().ToLower())
                         {
+                            /*
+                            Option Compare {Binary|Text} 
+
+                             */
+
+                            #region [  Option  ]
+
+                            case "option":
+                                data.AfterOption = true;
+
+                                break;
+                            case "explicit":
+                                if (!data.AfterOption) AddError(ErrorCode.VB0240);
+
+                                break;
+                            case "compare":
+
+                                break;
+                            case "text":
+
+                                break;
+                            case "binary":
+
+                                break;
+                            case "base":
+                            case "module":
+                                if (SavingText.ToString() == "module") AddError(ErrorCode.VB0002);
+
+                                break;
+
+                            #endregion
+                                
                             #region [  Accessor  ]
                             case "public":
                                 if (data.AfterAccessor) AddError(ErrorCode.VB0022);
@@ -371,9 +403,12 @@ namespace PowerVBA.Codes
                                 data.AfterAccessor = true;
                                 break;
                             case "private":
+                                // 엑세서로 서의 private
                                 if (data.AfterAccessor) AddError(ErrorCode.VB0022);
 
                                 data.AfterAccessor = true;
+
+                                // TODO : Option Private Module 구현
                                 break;
                             case "dim":
                                 if (data.AfterAccessor) AddError(ErrorCode.VB0022);
@@ -382,7 +417,7 @@ namespace PowerVBA.Codes
 
                                 break;
                             case "const":
-                                if (data.AfterAccessor) AddError(ErrorCode.VB0022);
+                                if (data.IsVarDeclaring && data.AfterAccessor) AddError(ErrorCode.VB0022);
                                 if (LineInfo.IsNestInProcedure) AddError(ErrorCode.VB0144);
 
                                 data.AfterAccessor = true;
@@ -1173,11 +1208,9 @@ namespace PowerVBA.Codes
                 }
 
                 // class, module 오류
-                if (Keyword.ContainsWords(new string[] { "class", "module" }))
+                if (Keyword.ContainsWords(new string[] { "class"}))
                 {
                     if (Keyword == "class") AddError(ErrorCode.VB0001);
-                    if (Keyword == "module") AddError(ErrorCode.VB0002);
-
                     
                     Handled = true;
                 }

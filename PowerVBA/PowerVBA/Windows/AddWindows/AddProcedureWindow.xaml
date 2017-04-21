@@ -10,6 +10,7 @@
         Title="프로시져 추가" Height="300" Width="500" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="{x:Type c:ImageRadioButton}">
+            <Setter Property="Background" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type c:ImageRadioButton}">

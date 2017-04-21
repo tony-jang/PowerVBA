@@ -45,7 +45,6 @@ namespace PowerVBA.Core.AvalonEdit
         protected Thread thr;
 
         public FoldingManager foldingManager;
-        protected VBAFoldingStrategy foldingStrategy;
 
 
         protected Stopwatch sw = new Stopwatch();
@@ -62,7 +61,7 @@ namespace PowerVBA.Core.AvalonEdit
         protected VBComponentWrappingBase ConnectedFile = null;
 
         public static List<string> Classes;
-        public static bool IsInitLibRead = false;
+        public static bool LibraryRead = false;
 
         public event BlankEventHandler SaveRequest;
 
@@ -73,7 +72,7 @@ namespace PowerVBA.Core.AvalonEdit
         {
             Classes = new List<string>();
 
-            if (!IsInitLibRead)
+            if (!LibraryRead)
             {
                 foreach (Assembly asm in new Assembly[] { Assembly.Load(Properties.Resources.LibPowerPoint),
                                                           Assembly.Load(Properties.Resources.Interop_VBA)})
@@ -85,12 +84,10 @@ namespace PowerVBA.Core.AvalonEdit
                         {
                             if (t.Name.StartsWith("_")) continue;
                             Classes.Add(t.Name);
-
                         }
                 }
-                
 
-                IsInitLibRead = true;
+                LibraryRead = true;
             }
         }
 
@@ -104,8 +101,6 @@ namespace PowerVBA.Core.AvalonEdit
             #region [  코드 폴딩  ]
 
             foldingManager = FoldingManager.Install(this.TextArea);
-            foldingStrategy = new VBAFoldingStrategy();
-
             thr = new Thread(() => {
                 do
                 {
