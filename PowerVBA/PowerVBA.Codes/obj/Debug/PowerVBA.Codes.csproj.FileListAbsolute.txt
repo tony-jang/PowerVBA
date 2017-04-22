@@ -10,3 +10,15 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\b
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\Interop.VBA.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csproj.ResolveComReference.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csprojResolveAssemblyReference.cache
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\PowerVBA.Codes.dll
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\PowerVBA.Codes.pdb
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\ICSharpCode.AvalonEdit.dll
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\System.ValueTuple.dll
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\ICSharpCode.AvalonEdit.xml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csprojResolveAssemblyReference.cache
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\Interop.VBA.dll
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csproj.ResolveComReference.cache
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.Properties.Resources.resources
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csproj.GenerateResource.Cache
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.dll
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.pdb

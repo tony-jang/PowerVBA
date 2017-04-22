@@ -118,7 +118,7 @@ namespace PowerVBA.V2010.Connector
         }
         public PPTConnector2010(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
-            Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, NewFile.BoolToState(), OpenWithWindow.BoolToState()));
+            Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
             VBProject = new VBProjectWrapping(Presentation.VBProject);
 
 
@@ -132,9 +132,9 @@ namespace PowerVBA.V2010.Connector
 
             EventConnectThread?.Start();
         }
-        public PPTConnector2010(bool OpenWithWindow = true) : this()
+        public PPTConnector2010(bool openWithWindow = true) : this()
         {
-            Presentation = new PresentationWrapping(Application.Presentations.Add(OpenWithWindow.BoolToState()));
+            Presentation = new PresentationWrapping(Application.Presentations.Add((Bool2)openWithWindow));
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
             //compWrap.CodeModule.DeleteLines()
@@ -168,7 +168,21 @@ namespace PowerVBA.V2010.Connector
 
         public override int ComponentCount => VBProject.VBComponents.Count;
 
-        public override MsoTriState ReadOnly => Presentation.ReadOnly;
+        public override bool ReadOnly => Presentation.ReadOnly == MsoTriState.msoTrue;
+
+        public override string SelectionShapeName
+        {
+            get
+            {
+                DocumentWindowWrapping wdw = (DocumentWindowWrapping)GetWindow();
+                 
+                if (wdw.Selection.ShapeRange.Count == 1) return wdw.Selection.ShapeRange[1].Name;
+                else if (wdw.Selection.ShapeRange.Count == 0) return "선택되지 않음";
+                else return "다중 선택";
+            }
+        }
+
+        public override int CurrentSlide => ((DocumentWindowWrapping)GetWindow()).View.Slide.SlideNumber;
 
         public bool IsContainsName(string name)
         {

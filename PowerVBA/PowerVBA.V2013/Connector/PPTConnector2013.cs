@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 using PowerVBA.Core.Interface;
 using PowerVBA.V2013.WrapClass;
 using Microsoft.Office.Core;
-using static PowerVBA.Core.Extension.BoolEx;
 using VBA = Microsoft.Vbe.Interop;
 using PowerVBA.Core.Wrap.WrapBase;
 using Microsoft.Office.Interop.PowerPoint;
+using PPT=Microsoft.Office.Interop.PowerPoint;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using PowerVBA.Global.RegexExpressions;
 using System.Diagnostics;
+using PowerVBA.Core.Extension;
 
 namespace PowerVBA.V2013.Connector
 {
@@ -37,6 +38,8 @@ namespace PowerVBA.V2013.Connector
 
                 int DelayCounter = 0;
 
+                PPT.ShapeRange LastSelection = null;
+
                 while (true)
                 {
                     // PPT 종료 확인
@@ -53,6 +56,21 @@ namespace PowerVBA.V2013.Connector
                             OnVBAComponentChange();
                         }
 
+                        var itm = ((DocumentWindowWrapping)GetWindow()).Selection;
+
+                        if (itm.Type == PpSelectionType.ppSelectionNone)
+                        {
+                            if (LastSelection != null){
+                                OnSelectionChanged();
+                            }
+                            LastSelection = null;
+                        }
+                        else if (itm.ShapeRange != LastSelection)
+                        {
+                            LastSelection = itm.ShapeRange;
+                            OnSelectionChanged();
+                        }
+                        
                         DelayCounter++;
 
                         if (DelayCounter > 4)
@@ -119,7 +137,7 @@ namespace PowerVBA.V2013.Connector
         }
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
-            Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, NewFile.BoolToState(), OpenWithWindow.BoolToState()));
+            Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
             VBProject = new VBProjectWrapping(Presentation.VBProject);
 
 
@@ -135,7 +153,7 @@ namespace PowerVBA.V2013.Connector
         }
         public PPTConnector2013(bool OpenWithWindow = true) : this()
         {
-            Presentation = new PresentationWrapping(Application.Presentations.Add(OpenWithWindow.BoolToState()));
+            Presentation = new PresentationWrapping(Application.Presentations.Add((Bool2)OpenWithWindow));
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
             //compWrap.CodeModule.DeleteLines()
@@ -168,7 +186,22 @@ namespace PowerVBA.V2013.Connector
 
         public override int ComponentCount => VBProject.VBComponents.Count;
 
-        public override MsoTriState ReadOnly => Presentation.ReadOnly;
+        public override bool ReadOnly => (Bool2)Presentation.ReadOnly;
+
+        public override string SelectionShapeName
+        {
+            get
+            {
+                DocumentWindowWrapping wdw = (DocumentWindowWrapping)GetWindow();
+                var itm = wdw.Selection;
+                if (itm.Type == PpSelectionType.ppSelectionNone) return "선택되지 않음";
+                if (itm.ShapeRange.Count == 1) return itm.ShapeRange[1].Name;
+                else return "다중 선택";
+                
+            }
+        }
+
+        public override int CurrentSlide => ((DocumentWindowWrapping)GetWindow()).View.Slide.SlideNumber;
 
         public bool IsContainsName(string name)
         {
@@ -475,6 +508,8 @@ namespace PowerVBA.V2013.Connector
             
             itm.Activate();
         }
+
+        
 
 
         #endregion

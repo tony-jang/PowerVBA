@@ -134,11 +134,7 @@ namespace PowerVBA
                             }
                             
                         }));
-
-
-                        //Dispatcher.Invoke(new Action(() => { this.Title = (((float)sw2.ElapsedTicks) / 1000).ToString(); }));
-                        //Dispatcher.Invoke(new Action(() => { this.Title = codeInfo.ToString(); }));
-                        //MessageBox.Show(codeInfo.ToString());
+                        
                         ParseSw.Reset();
                     }
                     Thread.Sleep(10);
@@ -151,9 +147,37 @@ namespace PowerVBA
             RoutedCommand AddItem = new RoutedCommand();
             AddItem.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control | ModifierKeys.Shift));
 
+
+            RoutedCommand AddMethod = new RoutedCommand();
+            AddMethod.InputGestures.Add(new KeyGesture(Key.D, ModifierKeys.Control | ModifierKeys.Shift));
+
+            RoutedCommand AddVar = new RoutedCommand();
+            AddVar.InputGestures.Add(new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift));
+
+
+
             CommandBinding cb1 = new CommandBinding(AddItem, Comm_ItmAdd);
+            CommandBinding cb2 = new CommandBinding(AddMethod, Comm_ItmMethod);
+            CommandBinding cb3 = new CommandBinding(AddVar, Comm_ItmVar);
 
             this.CommandBindings.Add(cb1);
+        }
+
+        private void Comm_ItmVar(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Comm_ItmMethod(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Comm_ItmAdd(object sender, ExecutedRoutedEventArgs e)
+        {
+            AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddFileType.Module);
+
+            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
         }
 
         private void SolutionExplorer_DeleteRequest(object sender, VBComponentWrappingBase Data)
@@ -165,12 +189,6 @@ namespace PowerVBA
             }
         }
 
-        private void Comm_ItmAdd(object sender, ExecutedRoutedEventArgs e)
-        {
-            AddFileWindow filewindow = new AddFileWindow(Connector, AddFileWindow.AddFileType.Module);
-
-            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
-        }
 
         private void ErrorList_LineMoveRequest(Codes.TypeSystem.Error err)
         {
@@ -550,7 +568,7 @@ namespace PowerVBA
 
                 ProjName = Connector.Name;
 
-                if (Connector.ReadOnly == Microsoft.Office.Core.MsoTriState.msoTrue)
+                if (Connector.ReadOnly)
                     this.Title += " [읽기 전용]";
                 
             }
@@ -1066,7 +1084,7 @@ namespace PowerVBA
                         tmpConn.VBAComponentChange += ProjectFileChange;
                         tmpConn.SlideChanged += SlideChangedDetect;
                         tmpConn.ShapeChanged += ShapeChangedDetect;
-                        tmpConn.SectionChanged += SectionChangedDetect;
+                        tmpConn.SelectionChanged += SelectionChangedDetect;
 
                         Connector = tmpConn;
                         PropGrid.SelectedObject = Connector.ToConnector2010().Presentation;
@@ -1079,7 +1097,7 @@ namespace PowerVBA
                         tmpConn.VBAComponentChange += ProjectFileChange;
                         tmpConn.SlideChanged += SlideChangedDetect;
                         tmpConn.ShapeChanged += ShapeChangedDetect;
-                        tmpConn.SectionChanged += SectionChangedDetect;
+                        tmpConn.SelectionChanged += SelectionChangedDetect;
 
                         Connector = tmpConn;
                         PropGrid.SelectedObject = Connector.ToConnector2013().Presentation;
@@ -1116,7 +1134,7 @@ namespace PowerVBA
                         tmpConn.VBAComponentChange += ProjectFileChange;
                         tmpConn.SlideChanged += SlideChangedDetect;
                         tmpConn.ShapeChanged += ShapeChangedDetect;
-                        tmpConn.SectionChanged += SectionChangedDetect;
+                        tmpConn.SelectionChanged += SelectionChangedDetect;
 
                         PropGrid.SelectedObject = tmpConn.ToConnector2010().Presentation;
 
@@ -1130,7 +1148,7 @@ namespace PowerVBA
                         tmpConn.VBAComponentChange += ProjectFileChange;
                         tmpConn.SlideChanged += SlideChangedDetect;
                         tmpConn.ShapeChanged += ShapeChangedDetect;
-                        tmpConn.SectionChanged += SectionChangedDetect;
+                        tmpConn.SelectionChanged += SelectionChangedDetect;
 
                         PropGrid.SelectedObject = tmpConn.ToConnector2013().Presentation;
 
@@ -1150,14 +1168,15 @@ namespace PowerVBA
             }), DispatcherPriority.Background);
         }
 
-        private void SectionChangedDetect()
+        private void SelectionChangedDetect()
         {
-            //projAnalyzer.SectionCount = Connector.ToConnector2013().Presentation.SectionCount;
+            projAnalyzer.CurrentShapeName = Connector.SelectionShapeName;
         }
 
         private void ShapeChangedDetect()
         {
-            projAnalyzer.ShapeCount = Connector.Shapes().Count(); 
+            projAnalyzer.ShapeCount = Connector.Shapes().Count();
+            projAnalyzer.CurrentShapeCount = Connector.Shapes(Connector.CurrentSlide).Count();
         }
 
         private void SlideChangedDetect()

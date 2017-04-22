@@ -53,6 +53,24 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
+        private int _CurrentShapeCount;
+        public int CurrentShapeCount
+        {
+            get { return _CurrentShapeCount; }
+            set
+            {
+                _CurrentShapeCount = value;
+                RunSelSlideShapeCount.Text = _CurrentShapeCount.ToString();
+            }
+        }
+
+        public string CurrentShapeName
+        {
+            get { return RunSelShape.Text; }
+            set
+            { RunSelShape.Text = value; }
+        }
+
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             OpenShapeExplorer?.Invoke();

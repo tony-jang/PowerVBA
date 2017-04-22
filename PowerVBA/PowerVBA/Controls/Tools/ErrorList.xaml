@@ -74,7 +74,6 @@
                 </DataTemplate>
             </Grid.Resources>
             <ListBox x:Name="lvErrors">
-                
             </ListBox>
             <!--<ListView x:Name="lvErrors">
                 <ListView.View>

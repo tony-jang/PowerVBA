@@ -73,8 +73,7 @@
                         </TabControl.Resources>
                         <TabItem x:Name="FileTab" Header="파일" Style="{StaticResource FileTabItemStyle}"/>
                         <TabItem Header="홈">
-                            <WrapPanel>
-
+                            <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
                                 <GroupBox Header="클립보드">
                                     <WrapPanel>
                                         <c:ImageButton x:Name="BtnCopy" Content="복사" BackImage="Resources/Icon/CopyIcon.png" SimpleButtonClicked="BtnCopy_SimpleButtonClicked">
@@ -143,7 +142,7 @@
                             </WrapPanel>
                         </TabItem>
                         <TabItem Header="삽입">
-                            <WrapPanel>
+                            <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
                                 <GroupBox Header="파일 삽입">
                                     <WrapPanel>
                                         <c:ImageButton x:Name="BtnAddClass" Content="클래스 추가" BackImage="Resources/Icon/ClassIcon.png" SimpleButtonClicked="BtnAddClass_SimpleButtonClicked" >
@@ -166,17 +165,17 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="프로시져 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked">
+                                        <c:ImageButton x:Name="BtnAddSub" Content="Sub&#x0a;함수 추가" BackImage="Resources/Icon/MethodSubIcon.png" SimpleButtonClicked="BtnAddSub_SimpleButtonClicked" IsEnabled="False">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Sub 함수 추가 (Ctrl+Shift+D)" Text="현재 VBA 프로젝트에 Sub 함수를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked">
+                                        <c:ImageButton x:Name="BtnAddFunc" Content="Function&#x0a;함수 추가" BackImage="Resources/Icon/MethodIcon.png" SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked" IsEnabled="False">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Function 함수 추가" Text="현재 VBA 프로젝트에 Function 함수를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
-                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddProp_SimpleButtonClicked">
+                                        <c:ImageButton x:Name="BtnAddProp" Content="Property&#x0a;추가" BackImage="Resources/Icon/PropertyIcon.png" SimpleButtonClicked="BtnAddProp_SimpleButtonClicked" IsEnabled="False">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Property 추가" Text="현재 VBA 프로젝트에 Property를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -201,15 +200,15 @@
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                                 <GroupBox Header="트리거 삽입">
                                     <WrapPanel>
-                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked"/>
-                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked"/>
+                                        <c:ImageButton x:Name="BtnAddMouseOverTrigger" Content="MouseOver&#x0a;트리거 추가" BackImage="Resources/Icon/MouseOverIcon.png" SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked" IsEnabled="False"/>
+                                        <c:ImageButton x:Name="BtnAddMouseClickTrigger" Content="MouseClick&#x0a;트리거 추가" BackImage="Resources/Icon/MouseClickIcon.png" SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked" IsEnabled="False"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border Width="1" Margin="0,4" Background="#E1E1E1"/>
                             </WrapPanel>
                         </TabItem>
                         <TabItem Header="프로젝트">
-                            <WrapPanel>
+                            <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
                                 <GroupBox Header="구성 요소">
                                     <WrapPanel>
                                         <c:ImageButton x:Name="PreDeclareFuncBtn" Content="미리 정의된&#x0a;함수 추가" BackImage="Resources/Icon/AddFuncsIcon.png" SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked"/>
@@ -332,7 +331,8 @@
                         </StackPanel>
                         <TextBlock x:Name="NoRecentInfoTB" Grid.Row="1" Visibility="Hidden" TextWrapping="Wrap" Margin="30" Foreground="White" VerticalAlignment="Top"  FontSize="13" Text="최근에 열었던 프레젠테이션이(가) 없습니다. 프레젠테이션을(를) 찾아보려면 다른 프로젠테이션 열기을(를) 클릭하여 시작합니다."/>
                         <ListView x:Name="LVrecentFile" Grid.Row="1" Margin="15,20,15,0" Background="{x:Null}" BorderBrush="{x:Null}"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel />
@@ -443,7 +443,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="프로젝트 템플릿 선택" Foreground="#FFDA6C51" Margin="20,0,0,0"/>
                     <ScrollViewer Margin="20" Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <WrapPanel>
+                        <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <c:ProjectTemplateButton x:Name="BtnNewPPT" Content="새 프레젠테이션" Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다."
                                        Padding="10" Click="BtnNewPPT_Click" />
                         </WrapPanel>

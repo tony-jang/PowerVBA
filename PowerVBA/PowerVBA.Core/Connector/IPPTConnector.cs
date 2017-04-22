@@ -35,7 +35,7 @@ namespace PowerVBA.Core.Connector
         /// <summary>
         /// Section (섹션) 이 변경되었습니다.
         /// </summary>
-        event BlankDelegate SectionChanged;
+        event BlankDelegate SelectionChanged;
 
 
         bool ContainsModule(string name);

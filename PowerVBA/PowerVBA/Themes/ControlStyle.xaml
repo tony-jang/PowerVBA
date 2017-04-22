@@ -1,11 +1,12 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:cm="clr-namespace:PowerVBA.Commands"
-                    xmlns:w="clr-namespace:PowerVBA.Windows"
-                    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
-                    xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
-                    xmlns:corec="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
-                    xmlns:h="clr-namespace:PowerVBA.Controls.Helper">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+    xmlns:cm="clr-namespace:PowerVBA.Commands"
+    xmlns:corec="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
+    xmlns:h="clr-namespace:PowerVBA.Controls.Helper"
+    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
+    xmlns:w="clr-namespace:PowerVBA.Windows">
 
 
     <StreamGeometry x:Key="EndPath">M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z</StreamGeometry>
@@ -15,86 +16,143 @@
 
 
 
-    <!--ChromeWindow Style-->
+    <!--#region [  ChromeWindow Style  ]-->
     <Style x:Key="ChromeWindowStyle" TargetType="{x:Type w:ChromeWindow}">
         <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
-                <shell:WindowChrome x:Name="WdwChrome" CaptionHeight="32" CornerRadius="0" GlassFrameThickness="1" ResizeBorderThickness="5"/>
+                <shell:WindowChrome
+                    x:Name="WdwChrome"
+                    CaptionHeight="32"
+                    CornerRadius="0"
+                    GlassFrameThickness="1"
+                    ResizeBorderThickness="5" />
             </Setter.Value>
-            
+
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type w:ChromeWindow}">
 
-                    <Grid x:Name="ContentGrid" Margin="3" Background="{TemplateBinding Background}">
+                    <Grid
+                        x:Name="ContentGrid"
+                        Margin="3"
+                        Background="{TemplateBinding Background}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="28"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="28" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Grid.Effect>
-                            <DropShadowEffect Direction="230" ShadowDepth="0"/>
+                            <DropShadowEffect Direction="230" ShadowDepth="0" />
                         </Grid.Effect>
 
-                        <ContentPresenter x:Name="contentPresenter" Margin="1" Content="{TemplateBinding Content}" Grid.Row="1"/>
-                        
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Grid.Row="1"
+                            Margin="1"
+                            Content="{TemplateBinding Content}" />
+
                         <Grid x:Name="TitleGrid">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="90" />
                             </Grid.ColumnDefinitions>
 
-                            <Image x:Name="LogoImg" Margin="3" Source="{TemplateBinding Icon}" IsHitTestVisible="False"/>
-                            <TextBlock x:Name="TitleTB" Margin="5,0" Grid.Column="1" TextAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Title}" IsHitTestVisible="False"/>
+                            <Image
+                                x:Name="LogoImg"
+                                Margin="3"
+                                IsHitTestVisible="False"
+                                Source="{TemplateBinding Icon}" />
+                            <TextBlock
+                                x:Name="TitleTB"
+                                Grid.Column="1"
+                                Margin="5,0"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                Text="{TemplateBinding Title}"
+                                TextAlignment="Center" />
 
                             <Grid Grid.Column="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
 
-                                <corec:PathButton x:Name="MiniButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="0"
-                                              Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}" Background="#00000000" />
-                                <corec:PathButton x:Name="MiniButt" Data="{StaticResource MiniMizePath}" Margin="8,17,8,8" Background="#FF919191" Grid.Column="0"
-                                                                 shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}"/>
+                                <corec:PathButton
+                                    x:Name="MiniButt_t"
+                                    Grid.Column="0"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
+                                    Background="#00000000"
+                                    Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}" />
+                                <corec:PathButton
+                                    x:Name="MiniButt"
+                                    Grid.Column="0"
+                                    Margin="8,17,8,8"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
+                                    Background="#FF919191"
+                                    Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}"
+                                    Data="{StaticResource MiniMizePath}" />
 
-                                <corec:PathButton x:Name="RestoreButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="1"
-                                              Command="{x:Static cm:WindowSystemCommand.RestoreCommand}" Background="#00000000" />
-                                <corec:PathButton x:Name="RestoreButt" Data="{StaticResource MaximizePath}" Margin="8" Background="#FF919191" Grid.Column="1"
-                                                                 shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.RestoreCommand}"/>
+                                <corec:PathButton
+                                    x:Name="RestoreButt_t"
+                                    Grid.Column="1"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
+                                    Background="#00000000"
+                                    Command="{x:Static cm:WindowSystemCommand.RestoreCommand}" />
+                                <corec:PathButton
+                                    x:Name="RestoreButt"
+                                    Grid.Column="1"
+                                    Margin="8"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
+                                    Background="#FF919191"
+                                    Command="{x:Static cm:WindowSystemCommand.RestoreCommand}"
+                                    Data="{StaticResource MaximizePath}" />
 
-                                <corec:PathButton x:Name="EndButt_t" shell:WindowChrome.IsHitTestVisibleInChrome="true" Grid.Column="2"
-                                              Command="{x:Static cm:WindowSystemCommand.CloseCommand}" Background="#00000000" />
-                                <corec:PathButton x:Name="EndButt" Data="{StaticResource EndPath}" Margin="8" Background="#FF919191" Grid.Column="2"
-                                                                 shell:WindowChrome.IsHitTestVisibleInChrome="true" Command="{x:Static cm:WindowSystemCommand.CloseCommand}"/>
-                                
+                                <corec:PathButton
+                                    x:Name="EndButt_t"
+                                    Grid.Column="2"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
+                                    Background="#00000000"
+                                    Command="{x:Static cm:WindowSystemCommand.CloseCommand}" />
+                                <corec:PathButton
+                                    x:Name="EndButt"
+                                    Grid.Column="2"
+                                    Margin="8"
+                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
+                                    Background="#FF919191"
+                                    Command="{x:Static cm:WindowSystemCommand.CloseCommand}"
+                                    Data="{StaticResource EndPath}" />
+
                             </Grid>
                         </Grid>
-                        <Border Grid.RowSpan="2" BorderBrush="#FFD24726" BorderThickness="1" IsHitTestVisible="False"/>
-                        
+                        <Border
+                            Grid.RowSpan="2"
+                            BorderBrush="#FFD24726"
+                            BorderThickness="1"
+                            IsHitTestVisible="False" />
+
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
-                            <Setter Property="Margin" TargetName="ContentGrid" Value="0"/>
-                            <Setter Property="Data" TargetName="RestoreButt" Value="{StaticResource RestorePath}"/>
+                            <Setter TargetName="ContentGrid" Property="Margin" Value="0" />
+                            <Setter TargetName="RestoreButt" Property="Data" Value="{StaticResource RestorePath}" />
                         </Trigger>
 
                         <Trigger Property="ResizeMode" Value="NoResize">
-                            <Setter Property="Visibility" TargetName="RestoreButt" Value="Hidden"/>
-                            <Setter Property="Visibility" TargetName="RestoreButt_t" Value="Hidden"/>
+                            <Setter TargetName="RestoreButt" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="RestoreButt_t" Property="Visibility" Value="Hidden" />
 
-                            <Setter Property="Grid.Column" TargetName="MiniButt" Value="1"/>
-                            <Setter Property="Grid.Column" TargetName="MiniButt_t" Value="1"/>
+                            <Setter TargetName="MiniButt" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="MiniButt_t" Property="Grid.Column" Value="1" />
                         </Trigger>
 
                         <Trigger Property="NoTitle" Value="True">
-                            <Setter Property="Grid.Row" Value="0" TargetName="contentPresenter"/>
-                            <Setter Property="Grid.RowSpan" Value="2" TargetName="contentPresenter"/>
-                            <Setter Property="Visibility" Value="Hidden" TargetName="LogoImg"/>
-                            <Setter Property="Visibility" Value="Hidden" TargetName="TitleTB"/>
+                            <Setter TargetName="contentPresenter" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="contentPresenter" Property="Grid.RowSpan" Value="2" />
+                            <Setter TargetName="LogoImg" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="TitleTB" Property="Visibility" Value="Hidden" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -102,180 +160,231 @@
         </Setter>
     </Style>
 
-    <!--PathButton Style-->
+    <!--#endregion-->
+
+    <!--#region [  PathButton Style  ]-->
     <Style TargetType="{x:Type corec:PathButton}">
-        <Setter Property="ContentHorizontalAlignment" Value="Stretch"/>
-        <Setter Property="ContentVerticalAlignment" Value="Stretch"/>
-        <Setter Property="ContentWidth" Value="NaN"/>
-        <Setter Property="ContentHeight" Value="NaN"/>
-        
+        <Setter Property="ContentHorizontalAlignment" Value="Stretch" />
+        <Setter Property="ContentVerticalAlignment" Value="Stretch" />
+        <Setter Property="ContentWidth" Value="NaN" />
+        <Setter Property="ContentHeight" Value="NaN" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type corec:PathButton}">
                     <Border x:Name="border" Background="#00000000">
                         <Grid>
-                            <Path x:Name="pth" Data="{TemplateBinding Data}"
-                                  Fill="{TemplateBinding Background}"
-                                  Width="{TemplateBinding ContentWidth}"
-                                  Height="{TemplateBinding ContentHeight}"
-                                  VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
-                                  HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
-                                  Margin="{TemplateBinding ContentMargin}"
-                                  Stretch="Fill">
-                            </Path>
-                            <Path x:Name="mouseOverpth" Data="{TemplateBinding Data}"
-                                  Fill="{TemplateBinding MouseOverColor}"
-                                  Width="{TemplateBinding ContentWidth}"
-                                  Height="{TemplateBinding ContentHeight}"
-                                  VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
-                                  HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
-                                  Margin="{TemplateBinding ContentMargin}"
-                                  Visibility="Hidden"
-                                  Stretch="Fill">
-                            </Path>
+                            <Path
+                                x:Name="pth"
+                                Width="{TemplateBinding ContentWidth}"
+                                Height="{TemplateBinding ContentHeight}"
+                                Margin="{TemplateBinding ContentMargin}"
+                                HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
+                                Data="{TemplateBinding Data}"
+                                Fill="{TemplateBinding Background}"
+                                Stretch="Fill" />
+                            <Path
+                                x:Name="mouseOverpth"
+                                Width="{TemplateBinding ContentWidth}"
+                                Height="{TemplateBinding ContentHeight}"
+                                Margin="{TemplateBinding ContentMargin}"
+                                HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
+                                Data="{TemplateBinding Data}"
+                                Fill="{TemplateBinding MouseOverColor}"
+                                Stretch="Fill"
+                                Visibility="Hidden" />
                         </Grid>
-                        
+
                     </Border>
                     <ControlTemplate.Triggers>
 
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Visibility" TargetName="mouseOverpth" Value="Visible"/>
+                            <Setter TargetName="mouseOverpth" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="UseMouseOverColor" Value="false">
-                            <Setter Property="Visibility" TargetName="mouseOverpth" Value="Hidden"/>
+                            <Setter TargetName="mouseOverpth" Property="Visibility" Value="Hidden" />
                         </Trigger>
-                        
+
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-    <!--TabItem Style-->
+    <!--#region [  TabItem Style  ]-->
     <Style x:Key="TabItemStyle" TargetType="{x:Type TabItem}">
 
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Margin" Value="0,0,0,0" />
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TabItem}" >
-                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True" Margin="1,0">
-                        <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="1,1,1,0"
-                                Background="{TemplateBinding Background}" Margin="0">
-
-                        </Border>
-                        <ContentPresenter Margin="15,5" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                          ContentSource="Header" Focusable="False"
-                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
-                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid
+                        x:Name="templateRoot"
+                        Margin="1,0"
+                        SnapsToDevicePixels="True">
+                        <Border
+                            x:Name="mainBorder"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1,1,1,0" />
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="15,5"
+                            HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                            VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                            Content="{TemplateBinding Header}"
+                            ContentSource="Header"
+                            ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="#FFDB6D52"/>
+                            <Setter Property="Foreground" Value="#FFDB6D52" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Foreground" Value="#FFDB6D52"/>
-                            <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
-                            <Setter Property="Margin" Value="0,0,0,-1"/>
+                            <Setter Property="Foreground" Value="#FFDB6D52" />
+                            <Setter Property="BorderBrush" Value="#FFD4D4D4" />
+                            <Setter Property="Margin" Value="0,0,0,-1" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
+    <!--#region [  BlankTabItemStyle  ]-->
     <Style x:Key="BlankTabItemStyle" TargetType="{x:Type TabItem}">
-        <Setter Property="Background" Value="{x:Null}"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Height" Value="0"/>
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Height" Value="0" />
     </Style>
+    <!--#endregion-->
 
-    <!--CanCloseTabItem Style-->
+    <!--#region [  CanCloseTabItem Style  ]-->
 
     <Style x:Key="CodeTabItemStyle" TargetType="{x:Type c:CloseableTabItem}">
 
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Margin" Value="0,0,0,0" />
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type c:CloseableTabItem}" >
+                <ControlTemplate TargetType="{x:Type c:CloseableTabItem}">
                     <Grid x:Name="templateRoot" SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition x:Name="ColumnC" Width="Auto"/>
-                            <ColumnDefinition x:Name="ColumnD" Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition x:Name="ColumnC" Width="Auto" />
+                            <ColumnDefinition x:Name="ColumnD" Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="1,1,1,0" Grid.ColumnSpan="3"
-                                Background="{TemplateBinding Background}" Margin="0">
-
-                        </Border>
-                        <ContentPresenter Margin="10,2,0,2" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                          ContentSource="Header" Focusable="False"
-                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
-                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
-                        <TextBlock x:Name="TBChanged" Margin="0,2,10,2" Grid.Column="1" Text="*"/>
-                        <corec:PathButton x:Name="EndBtn" Command="{x:Static cm:TabItemCommand.DeleteCommand}" Visibility="Hidden" Grid.Column="2" Background="White" Data="{StaticResource EndPath}" Width="10" Height="10" Margin="0,0,5,0"/>
+                        <Border
+                            x:Name="mainBorder"
+                            Grid.ColumnSpan="3"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1,1,1,0" />
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="10,2,0,2"
+                            HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                            VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                            Content="{TemplateBinding Header}"
+                            ContentSource="Header"
+                            ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <TextBlock
+                            x:Name="TBChanged"
+                            Grid.Column="1"
+                            Margin="0,2,10,2"
+                            Text="*" />
+                        <corec:PathButton
+                            x:Name="EndBtn"
+                            Grid.Column="2"
+                            Width="10"
+                            Height="10"
+                            Margin="0,0,5,0"
+                            Background="White"
+                            Command="{x:Static cm:TabItemCommand.DeleteCommand}"
+                            Data="{StaticResource EndPath}"
+                            Visibility="Hidden" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFD24726"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="#FFD24726" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#FFD24726"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="EndBtn"/>
+                            <Setter Property="Background" Value="#FFD24726" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="BorderBrush" Value="#FFD4D4D4" />
+                            <Setter TargetName="EndBtn" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFD24726"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="EndBtn"/>
+                            <Setter Property="Background" Value="#FFD24726" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter TargetName="EndBtn" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="Changed" Value="False">
-                            <Setter Property="Text" Value="" TargetName="TBChanged"/>
+                            <Setter TargetName="TBChanged" Property="Text" Value="" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-    <!--TabItem (File) Style-->
+    <!--#region [  TabItem (File) Style  ]-->
     <Style x:Key="FileTabItemStyle" TargetType="{x:Type TabItem}">
-        <Setter Property="Background" Value="#FFD24726"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="#FFD24726"/>
+        <Setter Property="Background" Value="#FFD24726" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderBrush" Value="#FFD24726" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TabItem}" >
-                    <Grid x:Name="templateRoot" SnapsToDevicePixels="True" Margin="1,0">
-                        <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="1,1,1,0"
-                                Background="{TemplateBinding Background}" Margin="0">
-                        </Border>
-                        <ContentPresenter Margin="15,5" x:Name="contentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                          Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                          ContentSource="Header" Focusable="False"
-                                          HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
-                                          RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid
+                        x:Name="templateRoot"
+                        Margin="1,0"
+                        SnapsToDevicePixels="True">
+                        <Border
+                            x:Name="mainBorder"
+                            Margin="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1,1,1,0" />
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="15,5"
+                            HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                            VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"
+                            Content="{TemplateBinding Header}"
+                            ContentSource="Header"
+                            ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFF0623E"/>
+                            <Setter Property="Background" Value="#FFF0623E" />
                         </Trigger>
                         <!--<Trigger Property="IsSelected" Value="True">
                             <Setter Property="BorderBrush" Value="#FFD4D4D4"/>
@@ -287,68 +396,89 @@
         </Setter>
     </Style>
 
-    <!--GroupBox Style-->
+    <!--#endregion-->
+
+    <!--#region [  GroupBox Style  ]-->
     <Style x:Key="GroupBoxStyle" TargetType="{x:Type GroupBox}">
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Height" Value="105"/>
-        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Height" Value="105" />
+        <Setter Property="Width" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type GroupBox}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ContentPresenter Margin="5"/>
-                        <TextBlock Grid.Row="1" Text="{TemplateBinding Header}" TextAlignment="Center"/>
+                        <ContentPresenter Margin="5" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Text="{TemplateBinding Header}"
+                            TextAlignment="Center" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-    <!--ImageButton Style-->
+    <!--#region [  ImageButton Style  ]-->
     <Style x:Key="ImageButtonStyle" TargetType="{x:Type c:ImageButton}">
-        <Setter Property="MinWidth" Value="50"/>
-        <Setter Property="MinHeight" Value="80"/>
-        <Setter Property="Height" Value="Auto"/>
-        <Setter Property="h:MouseDownHelper.IsEnabled" Value="True"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="MinWidth" Value="50" />
+        <Setter Property="MinHeight" Value="80" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="h:MouseDownHelper.IsEnabled" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Style.Triggers>
             <Trigger Property="buttonMode" Value="Default">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type c:ImageButton}">
-                            <Grid Background="Transparent" >
-                                <Border x:Name="SimpleButton" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Grid.RowSpan="2" />
+                            <Grid Background="Transparent">
+                                <Border
+                                    x:Name="SimpleButton"
+                                    Grid.RowSpan="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}" />
                                 <Grid Margin="{TemplateBinding Padding}">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="45"/>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="45" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    
-                                    <Image x:Name="BtnImg" IsHitTestVisible="False" Width="40" Source="{TemplateBinding BackImage}" 
-                                        Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                                    <Image
+                                        x:Name="BtnImg"
+                                        Width="40"
+                                        Height="40"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        IsHitTestVisible="False"
+                                        Source="{TemplateBinding BackImage}" />
 
 
-                                    <ContentPresenter Margin="2,0" Grid.Row="1" VerticalAlignment="Top"
-                                        TextBlock.TextAlignment="Center" IsHitTestVisible="False"/>
+                                    <ContentPresenter
+                                        Grid.Row="1"
+                                        Margin="2,0"
+                                        VerticalAlignment="Top"
+                                        IsHitTestVisible="False"
+                                        TextBlock.TextAlignment="Center" />
                                 </Grid>
-                                
-                                
+
+
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" TargetName="SimpleButton" Value="#FCE4DC"/>
+                                    <Setter TargetName="SimpleButton" Property="Background" Value="#FCE4DC" />
                                 </Trigger>
                                 <Trigger Property="h:MouseDownHelper.IsMouseLeftButtonDown" Value="True">
-                                    <Setter Property="Background" TargetName="SimpleButton" Value="#F5BA9D"/>
+                                    <Setter TargetName="SimpleButton" Property="Background" Value="#F5BA9D" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Foreground" Value="Gray"/>
+                                    <Setter Property="Foreground" Value="Gray" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -361,16 +491,21 @@
                         <ControlTemplate TargetType="{x:Type c:ImageButton}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Image Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                <Border x:Name="SimpleButton" Background="{TemplateBinding Background}"/>
-                                <Border x:Name="ExButton" Background="Aqua" Grid.Row="1"/>
+                                <Image
+                                    Width="50"
+                                    Height="50"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" />
+                                <Border x:Name="SimpleButton" Background="{TemplateBinding Background}" />
+                                <Border
+                                    x:Name="ExButton"
+                                    Grid.Row="1"
+                                    Background="Aqua" />
                             </Grid>
-                            <ControlTemplate.Triggers>
-
-                            </ControlTemplate.Triggers>
+                            <ControlTemplate.Triggers />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -381,16 +516,21 @@
                         <ControlTemplate TargetType="{x:Type c:ImageButton}">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Image Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                <Border x:Name="SimpleButton" Background="{TemplateBinding Background}"/>
-                                <Border x:Name="ExButton" Background="Aqua" Grid.Row="1"/>
+                                <Image
+                                    Width="50"
+                                    Height="50"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" />
+                                <Border x:Name="SimpleButton" Background="{TemplateBinding Background}" />
+                                <Border
+                                    x:Name="ExButton"
+                                    Grid.Row="1"
+                                    Background="Aqua" />
                             </Grid>
-                            <ControlTemplate.Triggers>
-
-                            </ControlTemplate.Triggers>
+                            <ControlTemplate.Triggers />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -398,90 +538,134 @@
         </Style.Triggers>
     </Style>
 
-    <!--RecentFileListViemItem Style-->
+    <!--#endregion-->
+
+    <!--#region [  RecentFileListViemItem Style  ]-->
     <Style x:Key="RecentFileListViewItemStyle" TargetType="{x:Type c:RecentFileListViewItem}">
-        <Setter Property="Height" Value="45"/>
-        <Setter Property="MinHeight" Value="45"/>
+        <Setter Property="Height" Value="45" />
+        <Setter Property="MinHeight" Value="45" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:RecentFileListViewItem}">
-                    <Grid Background="{TemplateBinding Background}" ContextMenu="{TemplateBinding ContextMenu}" x:Name="mainGrid">
+                    <Grid
+                        x:Name="mainGrid"
+                        Background="{TemplateBinding Background}"
+                        ContextMenu="{TemplateBinding ContextMenu}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <Rectangle Margin="5" Fill="White" Stroke="LightGray" StrokeThickness="1"/>
-                        <Image Source="/PowerVBA;component/Resources/Icon/pptIcon.png" Margin="5" IsHitTestVisible="False"/>
-                        
+                        <Rectangle
+                            Margin="5"
+                            Fill="White"
+                            Stroke="LightGray"
+                            StrokeThickness="1" />
+                        <Image
+                            Margin="5"
+                            IsHitTestVisible="False"
+                            Source="/PowerVBA;component/Resources/Icon/pptIcon.png" />
+
                         <Grid Grid.Column="1" Margin="10,5,0,5">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="4*"/>
-                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="4*" />
+                                <RowDefinition Height="3*" />
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="TBFileName" Foreground="White" TextWrapping="NoWrap" 
-                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="15" Grid.Row="0" IsHitTestVisible="False"/>
-                            
-                            <TextBlock x:Name="TBFileLoc" Foreground="White" TextWrapping="NoWrap" 
-                                       TextTrimming="CharacterEllipsis"  VerticalAlignment="Center" FontSize="12" Grid.Row="1" IsHitTestVisible="False"/>
+                            <TextBlock
+                                x:Name="TBFileName"
+                                Grid.Row="0"
+                                VerticalAlignment="Center"
+                                FontSize="15"
+                                Foreground="White"
+                                IsHitTestVisible="False"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+
+                            <TextBlock
+                                x:Name="TBFileLoc"
+                                Grid.Row="1"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                Foreground="White"
+                                IsHitTestVisible="False"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
                         </Grid>
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFB83B1D"/>
+                            <Setter Property="Background" Value="#FFB83B1D" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!--TabControl Style-->
+    <!--#endregion-->
+
+    <!--#region [  TabControl Style  ]-->
     <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
-                    <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                    <Grid
+                        x:Name="templateRoot"
+                        ClipToBounds="true"
+                        KeyboardNavigation.TabNavigation="Local"
+                        SnapsToDevicePixels="true">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="ColumnDefinition0"/>
-                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            <ColumnDefinition x:Name="ColumnDefinition0" />
+                            <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
-                            <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            <RowDefinition x:Name="RowDefinition0" Height="Auto" />
+                            <RowDefinition x:Name="RowDefinition1" Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.Resources>
                             <Style TargetType="{x:Type c:ScrollBarEx}">
-                                <Setter Property="MinHeight" Value="1"/>
-                                <Setter Property="MaxHeight" Value="10000"/>
-                                <Setter Property="Height" Value="Auto"/>
+                                <Setter Property="MinHeight" Value="1" />
+                                <Setter Property="MaxHeight" Value="10000" />
+                                <Setter Property="Height" Value="Auto" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type c:ScrollBarEx}">
                                             <Grid x:Name="Bg" SnapsToDevicePixels="true">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition x:Name="cd1" MaxWidth="12"/>
-                                                    <ColumnDefinition Width="0.00001*"/>
-                                                    <ColumnDefinition x:Name="cd2" MaxWidth="12"/>
+                                                    <ColumnDefinition x:Name="cd1" MaxWidth="12" />
+                                                    <ColumnDefinition Width="0.00001*" />
+                                                    <ColumnDefinition x:Name="cd2" MaxWidth="12" />
                                                 </Grid.ColumnDefinitions>
-                                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Row="1"/>
+                                                <Border
+                                                    Grid.Row="1"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}" />
                                                 <RepeatButton x:Name="PART_LineLeftButton" Command="{x:Static ScrollBar.LineLeftCommand}">
-                                                    <TextBlock Text="◀" FontSize="6" IsHitTestVisible="False"/>
+                                                    <TextBlock
+                                                        FontSize="6"
+                                                        IsHitTestVisible="False"
+                                                        Text="◀" />
                                                 </RepeatButton>
-                                                <RepeatButton x:Name="PART_LineRightButton" Command="{x:Static ScrollBar.LineRightCommand}" Grid.Column="2">
-                                                    <TextBlock Text="▶" FontSize="6" IsHitTestVisible="False"/>
+                                                <RepeatButton
+                                                    x:Name="PART_LineRightButton"
+                                                    Grid.Column="2"
+                                                    Command="{x:Static ScrollBar.LineRightCommand}">
+                                                    <TextBlock
+                                                        FontSize="6"
+                                                        IsHitTestVisible="False"
+                                                        Text="▶" />
                                                 </RepeatButton>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMaximum" Value="True">
-                                                    <Setter Property="Background" Value="Black"/>
-                                                    <Setter Property="Visibility" TargetName="PART_LineRightButton" Value="Hidden"/>
-                                                    <Setter Property="MaxWidth" TargetName="cd2" Value="0"/>
+                                                    <Setter Property="Background" Value="Black" />
+                                                    <Setter TargetName="PART_LineRightButton" Property="Visibility" Value="Hidden" />
+                                                    <Setter TargetName="cd2" Property="MaxWidth" Value="0" />
                                                 </Trigger>
                                                 <Trigger Property="Value" Value="0">
-                                                    <Setter Property="Visibility" TargetName="PART_LineLeftButton" Value="Hidden"/>
-                                                    <Setter Property="MaxWidth" TargetName="cd1" Value="0"/>
+                                                    <Setter TargetName="PART_LineLeftButton" Property="Visibility" Value="Hidden" />
+                                                    <Setter TargetName="cd1" Property="MaxWidth" Value="0" />
                                                 </Trigger>
 
                                             </ControlTemplate.Triggers>
@@ -489,19 +673,19 @@
                                     </Setter.Value>
                                 </Setter>
                             </Style>
-                            
+
                             <Style TargetType="ScrollViewer">
                                 <Setter Property="HorizontalContentAlignment" Value="Left" />
                                 <Setter Property="VerticalContentAlignment" Value="Top" />
                                 <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
-                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderThickness" Value="1" />
                                 <Setter Property="BorderBrush">
                                     <Setter.Value>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="#FFA3AEB9" Offset="0"/>
-                                            <GradientStop Color="#FF8399A9" Offset="0.375"/>
-                                            <GradientStop Color="#FF718597" Offset="0.375"/>
-                                            <GradientStop Color="#FF617584" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <GradientStop Offset="0" Color="#FFA3AEB9" />
+                                            <GradientStop Offset="0.375" Color="#FF8399A9" />
+                                            <GradientStop Offset="0.375" Color="#FF718597" />
+                                            <GradientStop Offset="1" Color="#FF617584" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
@@ -510,14 +694,45 @@
                                         <ControlTemplate TargetType="ScrollViewer">
                                             <Grid x:Name="Grid" Background="{TemplateBinding Background}">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
-                                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Column="0" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
-                                                <c:ScrollBarEx x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Grid.Row="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ActualHeight}"/>
-                                                <c:ScrollBarEx x:Name="PART_HorizontalScrollBar"  AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Grid.ColumnSpan="3" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="0" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                                <ScrollContentPresenter
+                                                    x:Name="PART_ScrollContentPresenter"
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    CanHorizontallyScroll="False"
+                                                    CanVerticallyScroll="False"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                                <c:ScrollBarEx
+                                                    x:Name="PART_VerticalScrollBar"
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    AutomationProperties.AutomationId="VerticalScrollBar"
+                                                    Cursor="Arrow"
+                                                    Maximum="{TemplateBinding ScrollableHeight}"
+                                                    Minimum="0"
+                                                    ViewportSize="{TemplateBinding ActualHeight}"
+                                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                                    Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                <c:ScrollBarEx
+                                                    x:Name="PART_HorizontalScrollBar"
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="3"
+                                                    AutomationProperties.AutomationId="HorizontalScrollBar"
+                                                    Cursor="Arrow"
+                                                    Maximum="{TemplateBinding ScrollableWidth}"
+                                                    Minimum="0"
+                                                    Orientation="Horizontal"
+                                                    ViewportSize="{TemplateBinding ViewportWidth}"
+                                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                    Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                                             </Grid>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -527,233 +742,313 @@
 
 
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                            <TabPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true" Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                            <TabPanel
+                                x:Name="headerPanel"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="2,2,2,0"
+                                Panel.ZIndex="1"
+                                Background="Transparent"
+                                IsItemsHost="true"
+                                KeyboardNavigation.TabIndex="1" />
                         </ScrollViewer>
-                        
-                        <Border x:Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+
+                        <Border
+                            x:Name="contentPanel"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            KeyboardNavigation.DirectionalNavigation="Contained"
+                            KeyboardNavigation.TabIndex="2"
+                            KeyboardNavigation.TabNavigation="Local">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <ContentPresenter
+                                    x:Name="PART_SelectedContentHost"
+                                    Margin="{TemplateBinding Padding}"
+                                    ContentSource="SelectedContent"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
-                            <Setter Property="Grid.Row" TargetName="headerPanel" Value="1"/>
-                            <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
-                            <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                            <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
-                            <Setter Property="Margin" TargetName="headerPanel" Value="2,0,2,2"/>
+                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
+                            <Setter TargetName="headerPanel" Property="Margin" Value="2,0,2,2" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Left">
-                            <Setter Property="Grid.Row" TargetName="headerPanel" Value="0"/>
-                            <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
-                            <Setter Property="Grid.Column" TargetName="headerPanel" Value="0"/>
-                            <Setter Property="Grid.Column" TargetName="contentPanel" Value="1"/>
-                            <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
-                            <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
-                            <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                            <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                            <Setter Property="Margin" TargetName="headerPanel" Value="2,2,0,2"/>
+                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="headerPanel" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="contentPanel" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+                            <Setter TargetName="headerPanel" Property="Margin" Value="2,2,0,2" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Right">
-                            <Setter Property="Grid.Row" TargetName="headerPanel" Value="0"/>
-                            <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
-                            <Setter Property="Grid.Column" TargetName="headerPanel" Value="1"/>
-                            <Setter Property="Grid.Column" TargetName="contentPanel" Value="0"/>
-                            <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
-                            <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
-                            <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                            <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                            <Setter Property="Margin" TargetName="headerPanel" Value="0,2,2,2"/>
+                            <Setter TargetName="headerPanel" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="contentPanel" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="headerPanel" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="contentPanel" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+                            <Setter TargetName="headerPanel" Property="Margin" Value="0,2,2,2" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            <Setter TargetName="templateRoot" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-    <!--ProjectTemplateButton Style-->
+    <!--#region [  ProjectTemplateButton Style  ]-->
     <Style x:Key="ProjectListViewItemStyle" TargetType="{x:Type c:ProjectTemplateButton}">
-        <Setter Property="Width" Value="Auto"/>
-        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:ProjectTemplateButton}">
                     <Grid Width="Auto" Height="180">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Rectangle x:Name="BgRect" Grid.RowSpan="2" Grid.ColumnSpan="3" Fill="White"/>
-                        <Rectangle Margin="10" Fill="White" Stroke="#FFACACAD" StrokeThickness="1"/>
-                        <Image Source="{TemplateBinding Source}" Width="202" Height="113" Margin="11"/>
-                        <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Left" Grid.Row="1" Margin="10" VerticalAlignment="Top" FontWeight="Bold"/>
+                        <Rectangle
+                            x:Name="BgRect"
+                            Grid.RowSpan="2"
+                            Grid.ColumnSpan="3"
+                            Fill="White" />
+                        <Rectangle
+                            Margin="10"
+                            Fill="White"
+                            Stroke="#FFACACAD"
+                            StrokeThickness="1" />
+                        <Image
+                            Width="202"
+                            Height="113"
+                            Margin="11"
+                            Source="{TemplateBinding Source}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            FontWeight="Bold"
+                            Text="{TemplateBinding Content}" />
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Fill" TargetName="BgRect" Value="#FFFCE4DC"/>
+                            <Setter TargetName="BgRect" Property="Fill" Value="#FFFCE4DC" />
                         </Trigger>
-                        
+
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Fill" TargetName="BgRect" Value="#FFFCCDB6"/>
+                            <Setter TargetName="BgRect" Property="Fill" Value="#FFFCCDB6" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-    <!--ImageListViewItem Style-->
+    <!--#region [  ImageListViewItem Style  ]-->
     <Style x:Key="ImageListViewItemStyle" TargetType="{x:Type c:ImageListViewItem}">
-        <Setter Property="Height" Value="20"/>
+        <Setter Property="Height" Value="20" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:ImageListViewItem}">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                    <Border
+                        x:Name="Bd"
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="true">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Image Source="{TemplateBinding Source}"/>
-                            <ContentPresenter Grid.Column="2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <Image Source="{TemplateBinding Source}" />
+                            <ContentPresenter
+                                Grid.Column="2"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </Grid>
 
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#FFD24726"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="#FFD24726" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-
-    
-    <!--ToggleButton Style-->
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Fill" Color="#FF595959"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Stroke" Color="#FF262626"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Stroke" Color="#FF27C7F7"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Fill" Color="#FFCCEEFB"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Stroke" Color="#FF1CC4F7"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Fill" Color="#FF82DFFB"/>
-    <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Fill" Color="#FFFFFFFF"/>
-    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Stroke" Color="#FF818181"/>
+    <!--#region [  ToggleButton Style  ]-->
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Fill" Color="#FF595959" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Stroke" Color="#FF262626" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Stroke" Color="#FF27C7F7" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Fill" Color="#FFCCEEFB" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Stroke" Color="#FF1CC4F7" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Fill" Color="#FF82DFFB" />
+    <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Fill" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Stroke" Color="#FF818181" />
 
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Width" Value="16"/>
-        <Setter Property="Height" Value="16"/>
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border Background="Transparent" Height="16" Padding="5,5,5,5" Width="16">
-                        <Path x:Name="ExpandPath" Data="{StaticResource TreeArrow}" Fill="{StaticResource TreeViewItem.TreeArrow.Static.Fill}" Stroke="{StaticResource TreeViewItem.TreeArrow.Static.Stroke}">
+                    <Border
+                        Width="16"
+                        Height="16"
+                        Padding="5,5,5,5"
+                        Background="Transparent">
+                        <Path
+                            x:Name="ExpandPath"
+                            Data="{StaticResource TreeArrow}"
+                            Fill="{StaticResource TreeViewItem.TreeArrow.Static.Fill}"
+                            Stroke="{StaticResource TreeViewItem.TreeArrow.Static.Stroke}">
                             <Path.RenderTransform>
-                                <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                <RotateTransform Angle="135" CenterX="3" CenterY="3" />
                             </Path.RenderTransform>
                         </Path>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="RenderTransform" TargetName="ExpandPath">
+                            <Setter TargetName="ExpandPath" Property="RenderTransform">
                                 <Setter.Value>
-                                    <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                    <RotateTransform Angle="180" CenterX="3" CenterY="3" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Fill" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Fill}"/>
-                            <Setter Property="Stroke" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Stroke}"/>
+                            <Setter TargetName="ExpandPath" Property="Fill" Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Fill}" />
+                            <Setter TargetName="ExpandPath" Property="Stroke" Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Stroke}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Stroke" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Stroke}"/>
-                            <Setter Property="Fill" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Fill}"/>
+                            <Setter TargetName="ExpandPath" Property="Stroke" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Stroke}" />
+                            <Setter TargetName="ExpandPath" Property="Fill" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Fill}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsChecked" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Stroke" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Stroke}"/>
-                            <Setter Property="Fill" TargetName="ExpandPath" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Fill}"/>
+                            <Setter TargetName="ExpandPath" Property="Stroke" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Stroke}" />
+                            <Setter TargetName="ExpandPath" Property="Fill" Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Fill}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
-
-    <!--ImageTreeViewItem Style-->
+    <!--#region [  ImageTreeViewItem Style  ]-->
     <Style x:Key="ImageTreeViewItemStyle" TargetType="{x:Type c:ImageTreeViewItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:ImageTreeViewItem}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="19" Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" MinWidth="19" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ExpandCollapseToggleStyle}"/>
-                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <ToggleButton
+                            x:Name="Expander"
+                            ClickMode="Press"
+                            IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                            Style="{StaticResource ExpandCollapseToggleStyle}" />
+                        <Border
+                            x:Name="Bd"
+                            Grid.Column="1"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="true">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{TemplateBinding Source}"/>
-                                <ContentPresenter Grid.Column="3" x:Name="PART_Header" ContentSource="Header" VerticalAlignment="Center" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <Image Source="{TemplateBinding Source}" />
+                                <ContentPresenter
+                                    x:Name="PART_Header"
+                                    Grid.Column="3"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="Center"
+                                    ContentSource="Header"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Grid>
-                            
+
                         </Border>
-                        <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
+                        <ItemsPresenter
+                            x:Name="ItemsHost"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2" />
                     </Grid>
                     <ControlTemplate.Triggers>
-                        
+
                         <Trigger Property="IsExpanded" Value="false">
-                            <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="HasItems" Value="false">
-                            <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="#FFD24726"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="#FFD24726" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="true"/>
-                                <Condition Property="IsSelectionActive" Value="false"/>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="IsSelectionActive" Value="false" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}" />
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!--#endregion-->
 
 
 </ResourceDictionary>

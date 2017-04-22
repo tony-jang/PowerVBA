@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static PowerVBA.Global.Globals;
-using Microsoft.Office.Core;
 
 namespace PowerVBA.Core.Connector
 {
@@ -21,13 +20,13 @@ namespace PowerVBA.Core.Connector
         public abstract int SlideCount { get; }
         public abstract int ComponentCount { get; }
         public abstract int AllLineCount { get; }
-        public abstract MsoTriState ReadOnly { get; }
+        public abstract bool ReadOnly { get; }
 
         public event BlankDelegate VBAComponentChange;
         public event BlankDelegate PresentationClosed;
         public event BlankDelegate ShapeChanged;
         public event BlankDelegate SlideChanged;
-        public event BlankDelegate SectionChanged;
+        public event BlankDelegate SelectionChanged;
         
         
         public void OnVBAComponentChange()
@@ -48,9 +47,9 @@ namespace PowerVBA.Core.Connector
             try { MainDispatcher.Invoke(new Action(() => { SlideChanged?.Invoke(); })); } catch (Exception) { }    
         }
         
-        public void OnSectionChanged()
+        public void OnSelectionChanged()
         {
-            try { MainDispatcher.Invoke(new Action(() => { SectionChanged?.Invoke(); })); } catch (Exception) { }
+            try { MainDispatcher.Invoke(new Action(() => { SelectionChanged?.Invoke(); })); } catch (Exception) { }
         }
 
         public abstract List<ShapeWrappingBase> Shapes();
@@ -149,6 +148,15 @@ namespace PowerVBA.Core.Connector
         /// <param name="name">확인할 사용자 지정 폼의 이름입니다.</param>
         /// <returns></returns>
         public abstract bool ContainsForm(string name);
+
+        /// <summary>
+        /// 선택된 도형의 이름을 가져옵니다.
+        /// </summary>
+        public abstract string SelectionShapeName { get; }
+        /// <summary>
+        /// 현재 슬라이드의 인덱스를 구합니다.
+        /// </summary>
+        public abstract int CurrentSlide { get; }
 
         public abstract bool DeleteComponent(VBComponentWrappingBase comp);
 
