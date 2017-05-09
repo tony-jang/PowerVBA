@@ -234,7 +234,7 @@
                             Margin="0"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1,1,1,0" />
+                            BorderThickness="1" />
                         <ContentPresenter
                             x:Name="contentPresenter"
                             Margin="15,5"
@@ -740,19 +740,6 @@
                             </Style>
                         </Grid.Resources>
 
-
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                            <TabPanel
-                                x:Name="headerPanel"
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="2,2,2,0"
-                                Panel.ZIndex="1"
-                                Background="Transparent"
-                                IsItemsHost="true"
-                                KeyboardNavigation.TabIndex="1" />
-                        </ScrollViewer>
-
                         <Border
                             x:Name="contentPanel"
                             Grid.Row="1"
@@ -771,6 +758,23 @@
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </ScrollViewer>
                         </Border>
+
+
+                        <ScrollViewer
+                            Margin="-1"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Disabled">
+                            <TabPanel
+                                x:Name="headerPanel"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="2,2,2,0"
+                                Panel.ZIndex="1"
+                                Background="Transparent"
+                                IsItemsHost="true"
+                                KeyboardNavigation.TabIndex="1" />
+                        </ScrollViewer>
+
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="TabStripPlacement" Value="Bottom">

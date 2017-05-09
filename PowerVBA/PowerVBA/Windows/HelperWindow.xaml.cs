@@ -26,7 +26,6 @@ namespace PowerVBA.Windows
             InitializeComponent();
             
             MoveHelpContext("BasicHelp");
-            
         }
 
         private void MoveHelpContext(object sender)
