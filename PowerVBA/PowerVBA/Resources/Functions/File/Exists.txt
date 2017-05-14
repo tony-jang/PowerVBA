@@ -1,0 +1,5 @@
+﻿'Return:Boolean
+'Description:파일이 존재하는지에 대한 여부입니다.
+Public Function Exists(path As String) As Boolean
+    Exists = (Dir(path) = "")
+End Function

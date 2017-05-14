@@ -1,0 +1,3 @@
+﻿Public Sub %name()
+	
+End Sub

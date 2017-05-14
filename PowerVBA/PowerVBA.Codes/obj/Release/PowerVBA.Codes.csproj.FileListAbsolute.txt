@@ -3,3 +3,15 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\b
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Release\ICSharpCode.AvalonEdit.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Release\PowerVBA.Codes.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Release\PowerVBA.Codes.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Release\ICSharpCode.AvalonEdit.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Release\System.ValueTuple.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Release\ICSharpCode.AvalonEdit.xml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.csprojResolveAssemblyReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\Interop.VBA.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.csproj.ResolveComReference.cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.Properties.Resources.resources
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.csproj.GenerateResource.Cache
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Release\PowerVBA.Codes.pdb

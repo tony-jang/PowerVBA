@@ -1,0 +1,8 @@
+﻿'Return:Shape
+'Description:지정된 슬라이드 번호에 도형을 추가합니다.
+Public Function AddShape(slidenum As Integer, ShapeType As MsoAutoShapeType, _
+        Optional Left As Integer = 0, Optional Top As Integer = 0, _
+        Optional Width As Integer = 100, Optional Height As Integer = 100) As Shape
+        
+    Set AddShape = ActivePresentation.Slides(1).Shapes.AddShape(ShapeType, 0, 0, 100, 100)
+End Function

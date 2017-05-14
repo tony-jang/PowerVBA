@@ -28,6 +28,8 @@ using System.IO;
 using ICSharpCode.AvalonEdit.Folding;
 using PowerVBA.V2010.Connector;
 using PowerVBA.Core.AvalonEdit.Replace;
+using PowerVBA.Resources;
+using PowerVBA.Resources.Functions;
 
 namespace PowerVBA
 {
@@ -43,13 +45,12 @@ namespace PowerVBA
         SQLiteConnector dbConnector;
         CodeInfo codeInfo;
         List<FileInfo> LibraryFiles = new List<FileInfo>();
-
         Stopwatch ParseSw = new Stopwatch();
 
         public MainWindow()
         {
             InitializeComponent();
-            
+
             codeInfo = new CodeInfo();
 
             new VBAParser(codeInfo);
@@ -154,23 +155,35 @@ namespace PowerVBA
             RoutedCommand AddVar = new RoutedCommand();
             AddVar.InputGestures.Add(new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift));
 
+            RoutedCommand SaveAll = new RoutedCommand();
+            SaveAll.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
+
 
 
             CommandBinding cb1 = new CommandBinding(AddItem, Comm_ItmAdd);
-            CommandBinding cb2 = new CommandBinding(AddMethod, Comm_ItmMethod);
-            CommandBinding cb3 = new CommandBinding(AddVar, Comm_ItmVar);
+            CommandBinding cb2 = new CommandBinding(AddMethod, Comm_MethodAdd);
+            CommandBinding cb3 = new CommandBinding(AddVar, Comm_VarAdd);
+            CommandBinding cb4 = new CommandBinding(SaveAll, Comm_SaveAll);
 
             this.CommandBindings.Add(cb1);
+            this.CommandBindings.Add(cb2);
+            this.CommandBindings.Add(cb3);
+            this.CommandBindings.Add(cb4);
         }
 
-        private void Comm_ItmVar(object sender, ExecutedRoutedEventArgs e)
+        private void Comm_SaveAll(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            BtnAllFileSync_SimpleButtonClicked(sender);
         }
 
-        private void Comm_ItmMethod(object sender, ExecutedRoutedEventArgs e)
+        private void Comm_VarAdd(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            BtnAddVar_SimpleButtonClicked(sender);
+        }
+
+        private void Comm_MethodAdd(object sender, ExecutedRoutedEventArgs e)
+        {
+            BtnAddFunc_SimpleButtonClicked(sender);
         }
 
         private void Comm_ItmAdd(object sender, ExecutedRoutedEventArgs e)
@@ -185,7 +198,8 @@ namespace PowerVBA
             string Name = Data.CompName;
             if (Connector.DeleteComponent(Data))
             {
-                CodeTabControl.Items.Remove(GetAllCodeTabs().Where(i => i.Header.ToString() == Name));
+                var itm = GetAllCodeTabs().Where(i => i.Header.ToString() == Name);
+                CodeTabControl.Items.Remove(itm.First());
             }
         }
 
@@ -366,6 +380,7 @@ namespace PowerVBA
             }
             else
             {
+                
                 LVrecentFile.Items.Remove(sender);
             }
         }
@@ -415,6 +430,11 @@ namespace PowerVBA
         }
 
 
+        public CloseableTabItem FindCodeTab(string name)
+        {
+            return CodeTabControl.Items.Cast<CloseableTabItem>().Where(i => i.Header.ToString() == name).FirstOrDefault();
+        }
+
         public void AddCodeTab(VBComponentWrappingBase component)
         {
             CodeEditor codeEditor = null;
@@ -442,7 +462,7 @@ namespace PowerVBA
                         var module = comp2010.VBComponent.CodeModule;
 
                         if (comp2010.VBComponent.CodeModule.CountOfLines == 0) codeEditor.Text = "";
-                        else codeEditor.Text = comp2010.VBComponent.CodeModule.get_Lines(1, comp2010.VBComponent.CodeModule.CountOfLines);
+                        else codeEditor.Text = (comp2010.VBComponent.CodeModule.CountOfLines != 0 ? comp2010.VBComponent.CodeModule.get_Lines(1, comp2010.VBComponent.CodeModule.CountOfLines) : "");
                     }
                     catch (Exception)
                     { MessageBox.Show("예외가 발생했습니다!"); }
@@ -490,7 +510,7 @@ namespace PowerVBA
                         var module = comp2013.VBComponent.CodeModule;
 
                         if (comp2013.VBComponent.CodeModule.CountOfLines == 0) codeEditor.Text = "";
-                        else codeEditor.Text = comp2013.VBComponent.CodeModule.get_Lines(1, comp2013.VBComponent.CodeModule.CountOfLines);
+                        else codeEditor.Text = (comp2013.VBComponent.CodeModule.CountOfLines != 0 ? comp2013.VBComponent.CodeModule.get_Lines(1, comp2013.VBComponent.CodeModule.CountOfLines) : "");
                     }
                     catch (Exception)
                     { MessageBox.Show("예외가 발생했습니다!"); }
@@ -738,7 +758,7 @@ namespace PowerVBA
                 ProgramTabControl.SelectedIndex = 2;
                 MenuTabControl.SelectedIndex = 1;
 
-                if (MenuTabControl.SelectedIndex == 1) this.NoTitle = true;
+                if (ProgramTabControl.SelectedIndex == 2) this.NoTitle = true;
             }
         }
         #endregion
@@ -969,7 +989,24 @@ namespace PowerVBA
 
         private void CheckError_SimpleButtonClicked(object sender)
         {
+            var result = MessageBox.Show("코드 분석을 시작합니다.\r\n코드 분석은 현재 프로젝트에 있는 파일 모두를 분석해 오류를 확인합니다.\r\n" +
+                            "저장되지 않은 내용은 검사되지 않으며 문법적 검사만 실행합니다.\r\n계속하시겠습니까?", "코드 분석 확인", MessageBoxButton.OKCancel);
 
+            if (result == MessageBoxResult.OK)
+            {
+                var itm = Connector.GetFiles();
+
+                if (itm.Count != 0)
+                {
+                    ErrorWindow errWdw = new ErrorWindow(itm);
+
+                    errWdw.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("파일이 없습니다!");
+                }
+            }
         }
 
         private void BtnFileSync_SimpleButtonClicked(object sender)

@@ -1,0 +1,10 @@
+﻿'Return:String
+'Description:웹 페이지에 있는 페이지 소스를 읽어옵니다.
+'Dependency:Microsoft WinHTTP Services, version 5.0과 같거나 유사한 DLL 파일이 추가되어 있어야 합니다. 만약 없으면 정상 작동하지 않습니다.
+Public Function GetWebSource(url As String) As String
+    Dim WinHttp As New WinHttpRequest
+    WinHttp.Open "Get", url
+    WinHttp.Send
+
+    GetURL = WinHttp.ResponseText
+End Function

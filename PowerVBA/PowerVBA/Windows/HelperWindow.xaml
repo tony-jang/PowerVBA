@@ -20,41 +20,50 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="35"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.ColumnSpan="2">
-            <WrapPanel HorizontalAlignment="Right">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid>
+                                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>                
+                </Style>
+            </Grid.Resources>
+            <WrapPanel HorizontalAlignment="Left" Margin="5">
                 <Button Background="Transparent" BorderBrush="Transparent">
                     <Button.Content>
                         <Image
-                            Margin="5"
                             RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/HomeIcon.png" />
+                            Source="/PowerVBA;component/Resources/Icon/HomeBtn.png" />
                     </Button.Content>
                 </Button>
                 <Button Background="Transparent" BorderBrush="Transparent">
                     <Button.Content>
                         <Image
-                            Margin="5"
                             RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/BackIcon.png" />
+                            Source="/PowerVBA;component/Resources/Icon/BackBtn.png" />
                     </Button.Content>
                 </Button>
                 <Button Background="Transparent" BorderBrush="Transparent">
                     <Button.Content>
                         <Image
-                            Margin="5"
                             RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/FrontIcon.png" />
+                            Source="/PowerVBA;component/Resources/Icon/FrontBtn.png" />
                     </Button.Content>
                 </Button>
                 <Button Background="Transparent" BorderBrush="Transparent">
                     <Button.Content>
                         <Image
-                            Margin="5"
                             RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/UndoIcon.png" />
+                            Source="/PowerVBA;component/Resources/Icon/UpperBtn.png" />
                     </Button.Content>
                 </Button>
             </WrapPanel>
@@ -68,7 +77,7 @@
             <Frame
                 x:Name="HelpFrame"
                 Grid.Column="1"
-                Content="{StaticResource NamingHelp}"
+                Content="{StaticResource ConditionalHelp}"
                 NavigationUIVisibility="Hidden" />
         </ScrollViewer>
 

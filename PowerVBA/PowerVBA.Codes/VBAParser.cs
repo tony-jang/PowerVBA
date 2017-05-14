@@ -39,14 +39,6 @@ namespace PowerVBA.Codes
                     //MessageBox.Show(type.ToString() + " :: Abstract Class");
                 }
             }
-
-
-
-            //StringBuilder sb = new StringBuilder();
-            //foreach(Type t in asm.GetTypes())
-            //{
-            //    sb.AppendLine(t.Namespace + "." + t.Name + $" ({(t.IsNotPublic ? "Private" : "Public" )})");
-            //}
         }
 
         static VBAParser()

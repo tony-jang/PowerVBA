@@ -1,0 +1,7 @@
+﻿'Return:Shape
+'Description:현재 선택되어 있는 프레젠테이션의 도형을 가져옵니다.
+Public Function Shape(SlideNumber As Integer, Name As String) As Shape
+    Dim shpe As Shape
+    Set shpe = ActivePresentation.Slides(SlideNumber).Shapes(Name)
+    Set Shape = shpe
+End Function

@@ -137,8 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\LibPowerPoint.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,5 @@
+﻿'Return:Slide
+'Description:현재 선택되어 있는 프레젠테이션의 슬라이드를 가져옵니다.
+Public Function Slide(SlideNumber As Integer) As Slide
+    Set Slide = ActivePresentation.Slides(SlideNumber)
+End Function

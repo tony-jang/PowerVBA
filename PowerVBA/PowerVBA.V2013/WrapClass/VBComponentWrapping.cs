@@ -42,8 +42,26 @@ namespace PowerVBA.V2013.WrapClass
         public bool Saved => VBComponent.Saved;
         public vbext_ComponentType Type => VBComponent.Type;
         public VBE VBE => VBComponent.VBE;
-        
-        public override string CompName => Name;
+
+        public override string CompName => $"{Name}{GetExtensions(Type)}";
+
+
+        public string GetExtensions(vbext_ComponentType Type)
+        {
+            switch (Type)
+            {
+                case vbext_ComponentType.vbext_ct_StdModule:
+                    return ".bas";
+                case vbext_ComponentType.vbext_ct_ClassModule:
+                case vbext_ComponentType.vbext_ct_Document:
+                    return ".cls";
+                case vbext_ComponentType.vbext_ct_MSForm:
+                    return ".frm";
+                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
+                default:
+                    return "";
+            }
+        }
 
     }
 }

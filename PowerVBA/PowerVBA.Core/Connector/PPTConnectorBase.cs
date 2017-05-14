@@ -169,6 +169,8 @@ namespace PowerVBA.Core.Connector
 
         public abstract DocumentWindowWrappingBase GetWindow();
 
+        public abstract List<VBComponentWrappingBase> GetFiles();
+
 
         public abstract bool Save();
         public abstract bool SaveAs(string path);

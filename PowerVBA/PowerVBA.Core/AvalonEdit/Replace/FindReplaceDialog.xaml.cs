@@ -14,8 +14,8 @@ namespace PowerVBA.Core.AvalonEdit.Replace
     public partial class FindReplaceDialog : Window
     {
         private static string textToFind = "";
-        private static bool caseSensitive = true;
-        private static bool wholeWord = true;
+        private static bool caseSensitive = false;
+        private static bool wholeWord = false;
         private static bool useRegex = false;
         private static bool useWildcards = false;
         private static bool searchUp = false;
@@ -78,14 +78,32 @@ namespace PowerVBA.Core.AvalonEdit.Replace
         private void FindNextClick(object sender, RoutedEventArgs e)
         {
             if (!FindNext(txtFind.Text))
-                SystemSounds.Beep.Play();
+                MessageBox.Show("찾을 텍스트가 없습니다.");
+        }
+
+        private void txtFind_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                FindNextClick(sender, null);
+            }
         }
 
         private void FindNext2Click(object sender, RoutedEventArgs e)
         {
             if (!FindNext(txtFind2.Text))
-                SystemSounds.Beep.Play();
+                MessageBox.Show("찾을 텍스트가 없습니다.");
         }
+
+
+        private void txtReplace_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                FindNext2Click(sender, null);
+            }
+        }
+
 
         private void ReplaceClick(object sender, RoutedEventArgs e)
         {
@@ -100,7 +118,7 @@ namespace PowerVBA.Core.AvalonEdit.Replace
             }
 
             if (!FindNext(txtFind2.Text) && !replaced)
-                SystemSounds.Beep.Play();
+                MessageBox.Show("찾을 텍스트가 없습니다.");
         }
 
         private void ReplaceAllClick(object sender, RoutedEventArgs e)
@@ -227,5 +245,6 @@ namespace PowerVBA.Core.AvalonEdit.Replace
                 theDialog.txtFind2.Focus();
             }
         }
+
     }
 }

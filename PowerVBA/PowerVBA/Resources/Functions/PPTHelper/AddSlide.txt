@@ -1,0 +1,5 @@
+﻿'Return:Slide
+'Description:슬라이드를 추가합니다.
+Public Function AddSlide(slidenum As Integer, layoutIndex As Integer) As slide
+    Call ActivePresentation.Slides.AddSlide(slidenum, ActivePresentation.SlideMaster.CustomLayouts(layoutIndex))
+End Function

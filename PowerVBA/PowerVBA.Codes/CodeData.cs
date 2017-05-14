@@ -108,6 +108,12 @@ namespace PowerVBA.Codes
         public bool IsInBracket { get; set; }
 
         #region [  If  ]
+
+        /// <summary>
+        /// If문이 전부 완성되었는지에 대한 여부를 가져옵니다.
+        /// </summary>
+        public bool AfterIfProcessing { get => AfterIf && AfterThen; }
+
         /// <summary>
         /// If 절 이후인지에 대한 여부를 가져옵니다. 이후에는 Expression이 나와야 합니다.
         /// </summary>
@@ -192,6 +198,18 @@ namespace PowerVBA.Codes
         public bool AfterAlias { get; internal set; }
         public bool AfterString { get; internal set; }
         public bool AfterWith { get; internal set; }
+
+        #region [  Option Private Module  ]
+        public bool AfterOptionPrivateModule { get => AfterOption && AfterPrivate && AfterModule; }
+
         public bool AfterOption { get; internal set; }
+        public bool AfterPrivate { get; internal set; }
+        public bool AfterModule { get; internal set; }
+        public bool AfterCompare { get; internal set; }
+        public bool AfterBase { get; internal set; }
+        public bool AfterExplicit { get; internal set; }
+        public bool AfterText { get; internal set; }
+        public bool AfterBinary { get; internal set; }
+        #endregion
     }
 }

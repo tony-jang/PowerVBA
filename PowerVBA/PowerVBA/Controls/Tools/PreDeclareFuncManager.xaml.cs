@@ -1,22 +1,13 @@
 ﻿using PowerVBA.Core.Connector;
 using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.Resources.Functions;
 using PowerVBA.Wrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static PowerVBA.Global.Globals;
-
 namespace PowerVBA.Controls.Tools
 {
     /// <summary>
@@ -32,43 +23,62 @@ namespace PowerVBA.Controls.Tools
             FileListView.SelectionChanged += FileListView_SelectionChanged;
             FunctionsListView.SelectionChanged += FunctionsListView_SelectionChanged;
 
-            foreach (var func in PreDeclareFunctions.Functions)
+            Functions = FunctionReader.GetFunctions();
+
+
+            foreach (var func in Functions)
             {
                 bool FileExists = FileListView.Items.Cast<ListViewItem>()
-                                                    .Where((itm) => itm.Content.ToString() == func.File).Count() != 0;
+                                                    .Where((itm) => itm.Name == func.Name.Folder).Count() != 0;
 
-                if (!FileExists) FileListView.Items.Add(new ListViewItem() { Content = func.File });
+                if (!FileExists) FileListView.Items.Add(new ListViewItem() { Name = func.Name.Folder });
 
                 var FileLvItm = FileListView.Items.Cast<ListViewItem>()
-                                                  .Where((itm) => itm.Content.ToString() == func.File).First();
+                                                  .Where((itm) => itm.Name == func.Name.Folder).First();
 
+
+
+                // 파일이 새로 만들어졌을 경우
                 if (FileLvItm.Tag == null)
                 {
-                    var list = new List<PreDeclareFunction>();
+                    var list = new List<Function>();
+
+                    var selList = list.Where(i => i.IsUse);
+
                     FileLvItm.Tag = list;
 
                     list.Add(func);
+
+                    FileLvItm.Content = $"{FileLvItm.Name} ({selList.Count()}/{list.Count}개)";
+
                 }
+                // 파일이 이미 있을 경우
                 else
                 {
-                    List<PreDeclareFunction> list = FileLvItm.Tag as List<PreDeclareFunction>;
+                    List<Function> list = FileLvItm.Tag as List<Function>;
+
+                    var selList = list.Where(i => i.IsUse);
 
                     list.Add(func);
+
+                    FileLvItm.Content = $"{FileLvItm.Name} ({selList.Count()}/{list.Count}개)";
                 }
             }
         }
 
+        List<Function> Functions;
+
         private void FileListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<PreDeclareFunction> list = ((ListViewItem)FileListView.SelectedItem).Tag as List<PreDeclareFunction>;
+            List<Function> list = ((ListViewItem)FileListView.SelectedItem).Tag as List<Function>;
 
 
             FunctionsListView.Items.Clear();
 
             foreach (var func in list)
             {
-                string str = func.Identifier;
-                if (func.ReturnData != "") str += $" ({func.ReturnData})";
+                string str = func.Name.FileName;
+                if (func.ReturnType != "") str += $" ({func.ReturnType})";
 
                 CheckBox cb = new CheckBox()
                 {
@@ -88,9 +98,9 @@ namespace PowerVBA.Controls.Tools
         private void FunctionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FunctionsListView.SelectedItem == null) return;
-            PreDeclareFunction func = ((CheckBox)FunctionsListView.SelectedItem).Tag as PreDeclareFunction;
+            Function func = ((CheckBox)FunctionsListView.SelectedItem).Tag as Function;
 
-            RunFuncName.Text = func.File + "." + func.Identifier;
+            RunFuncName.Text = func.Name;
             TBDescription.Text = func.Description;
         }
 
@@ -100,20 +110,42 @@ namespace PowerVBA.Controls.Tools
         {
             ListView lv = (ListView)(((CheckBox)sender).Parent);
             lv.SelectedItem = sender;
-            ((PreDeclareFunction)((CheckBox)sender).Tag).IsUse = ((CheckBox)sender).IsChecked.Value;
+            ((Function)((CheckBox)sender).Tag).IsUse = ((CheckBox)sender).IsChecked.Value;
+
+            var FileLvItm = (ListViewItem)FileListView.SelectedItem;
+            var list = FileLvItm.Tag as List<Function>;
+            var selList = list.Where(i => i.IsUse);
+
+
+            FileLvItm.Content = $"{FileLvItm.Name} ({selList.Count()}/{list.Count}개)";
         }
         
         public bool Saved { get; set; }
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
 
-            List<PreDeclareFunction> list = new List<PreDeclareFunction>();
+            List<Function> list = new List<Function>();
             FileListView.Items.Cast<ListViewItem>()
                               .ToList()
-                              .Select((i) => (List<PreDeclareFunction>)i.Tag)
+                              .Select((i) => (List<Function>)i.Tag)
                               .ToList()
                               .ForEach((lst) => list.AddRange(lst));
             list = list.Where((i) => i.IsUse).ToList();
+
+
+            // 종속성 함수
+            List<Function> DependencyFunction = new List<Function>();
+
+            DependencyFunction = list.Where((i) => !string.IsNullOrEmpty(i.DependencyMessage)).ToList();
+
+            if (DependencyFunction.Count >= 1)
+            {
+                foreach (var itm in DependencyFunction)
+                {
+                    MessageBox.Show($"종속성 정보를 발견했습니다.\r\n\r\n{itm.DependencyMessage}");
+                }
+            }
+
 
             VBComponentWrappingBase module;
             if (!Connector.ContainsModule("PowerVBA"))
@@ -141,19 +173,19 @@ namespace PowerVBA.Controls.Tools
 
             foreach (var itm in list)
             {
-                if (lastFile != itm.File)
+                if (lastFile != itm.Name.Folder)
                 {
                     if (lastFile != "") sb.AppendLine($"'#endregion");
                     sb.AppendLine();
-                    sb.AppendLine($"'#region \"Part Of {itm.File}\"");
+                    sb.AppendLine($"'#region \"Part Of {itm.Name.Folder}\"");
 
-                    lastFile = itm.File;
+                    lastFile = itm.Name.Folder;
                 }
                 sb.AppendLine(itm.Code);
                 
                 sb.AppendLine();
 
-                infoSb.AppendLine("'" + itm.File + "." + itm.Identifier);
+                infoSb.AppendLine("'" + itm.Name);
             }
 
             sb.AppendLine($"'#endregion");
@@ -166,9 +198,60 @@ namespace PowerVBA.Controls.Tools
             module.ToVBComponent2013().CodeModule.AddFromString(infoSb.ToString() + Environment.NewLine + sb.ToString());
         }
 
-        public int compare(PreDeclareFunction f1, PreDeclareFunction f2)
+        public void SyncItem()
         {
-            return f1.File.CompareTo(f2.File);
+            foreach (ListViewItem itm in FileListView.Items)
+            {
+                List<Function> list = itm.Tag as List<Function>;
+                var selList = list.Where(i => i.IsUse);
+
+                itm.Content = $"{itm.Name} ({selList.Count()}/{list.Count}개)";
+            }
+
+            foreach (CheckBox cb in FunctionsListView.Items)
+            {
+                Function func = cb.Tag as Function;
+                cb.IsChecked = func.IsUse;
+            }
+        }
+
+
+        // 전체 선택
+        private void btnSelect_Click(object sender, RoutedEventArgs e)
+        {
+            Functions.ForEach(i => i.IsUse = true);
+            SyncItem();
+        }
+
+        // 전체 선택 해제
+        private void btnDeSelect_Click(object sender, RoutedEventArgs e)
+        {
+            Functions.ForEach(i => i.IsUse = false);
+            SyncItem();
+        }
+
+        // 함수 전체 선택
+        private void btnFuncSelect_Click(object sender, RoutedEventArgs e)
+        {
+            List<Function> list = ((ListViewItem)FileListView.SelectedItem).Tag as List<Function>;
+
+            list.ForEach(i => i.IsUse = true);
+            SyncItem();
+        }
+
+        // 함수 전체 해제
+        private void btnFuncDeSelect_Click(object sender, RoutedEventArgs e)
+        {
+            List<Function> list = ((ListViewItem)FileListView.SelectedItem).Tag as List<Function>;
+
+            list.ForEach(i => i.IsUse = false);
+            SyncItem();
+        }
+
+
+        public int compare(Function f1, Function f2)
+        {
+            return f1.Name.ToString().CompareTo(f2.Name);
         }
 
         public PPTConnectorBase Connector { get; set; }

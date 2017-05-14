@@ -403,6 +403,13 @@ namespace PowerVBA.V2013.Connector
             }
             
         }
+        
+        public override List<VBComponentWrappingBase> GetFiles()
+        {
+            return VBProject.VBComponents
+                .Cast<VBA.VBComponent>()
+                .Select(i => (VBComponentWrappingBase)(new VBComponentWrapping(i))).ToList();
+        }
 
         #region [  Module/Class/Form 존재 여부 확인  ]
         public override bool ContainsModule(string name)
@@ -495,11 +502,17 @@ namespace PowerVBA.V2013.Connector
 
         public override DocumentWindowWrappingBase GetWindow()
         {
-            var itm = Application.Windows.Cast<DocumentWindow>()
+            try
+            {
+                var itm = Application.Windows.Cast<DocumentWindow>()
                                          .Where(i => i.Caption == Name).First();
-
-            if (itm == null) return null;
-            return new DocumentWindowWrapping(itm);
+                if (itm == null) return null;
+                return new DocumentWindowWrapping(itm);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override void ActivateWindow()
@@ -508,10 +521,6 @@ namespace PowerVBA.V2013.Connector
             
             itm.Activate();
         }
-
-        
-
-
         #endregion
 
 

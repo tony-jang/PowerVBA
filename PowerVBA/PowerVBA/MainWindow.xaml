@@ -504,7 +504,7 @@
                                 Margin="20,35,0,0"
                                 FontSize="40"
                                 Foreground="White">
-                                PowerVBA<Run
+                                PowerVBA <Run
                                     x:Name="RunVersion"
                                     FontSize="20"
                                     Text="버전 없음" />

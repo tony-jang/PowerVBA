@@ -213,9 +213,12 @@ namespace PowerVBA.Codes
 
         #region [  If / Select Case 오류  ]
 
+        [KoError("If문을 닫은 다음에 다른 문법 처리를 시작해야 합니다.")]
+        VB0069 = 69,
+
         /// <summary>ElseIf If문 이후에 사용 가능 오류</summary>
         [KoError("ElseIf문은 If문 이후에 사용 할 수 있습니다.")]
-        VB0070 = 70,
+        VB0070,
 
         /// <summary>Else If문 이후에 사용 가능 오류</summary>
         [KoError("Else문은 If문 이후에 사용 할 수 있습니다.")]
@@ -244,6 +247,7 @@ namespace PowerVBA.Codes
 
         [KoError("End If로 닫을 If문을 찾을 수 없습니다.")]
         VB0079,
+
 
         #endregion
 
@@ -318,9 +322,16 @@ namespace PowerVBA.Codes
         [KoError("현 위치에서는 String 값을 사용할 수 없습니다.")]
         VB0104,
 
+        [KoError("열린 String은 새줄이 시작하기 전에 닫혀야 합니다.")]
+        VB0105,
+
+        [KoError("열린 String은 새줄이 시작하기 전에 닫혀야 합니다.")]
+        VB0106,
+
         #endregion
 
         #region [  선언문 오류  ]
+
         /// <summary>선언문 (Dim, Sub, Function) 오류</summary>
         [KoError("선언문은 엑세서를 생략하고 쓰거나 엑세서 이후에만 사용 할 수 있습니다.")]
         VB0120 = 120,
@@ -593,8 +604,62 @@ namespace PowerVBA.Codes
 
         #region [  Option 오류  ]
 
-        [KoError("Explicit은 Option 뒤에만 올 수 있습니다.")]
+
+        [KoError("Option은 첫번째 단어에만 올 수 있습니다.")]
         VB0240 = 240,
+
+        [KoError("Option 이후에는 Base, Compare, Explicit 또는 Private가 필요합니다.")]
+        VB0241,
+        [KoError("Option 이후에는 Base, Compare, Explicit 또는 Private만 와야합니다.")]
+        VB0242,
+        [KoError("Option은 첫번째 단어에만 올 수 있습니다.")]
+        VB0243,
+
+        // Option Compare {Text|Binary}
+        [KoError("Option Compare 다음에는 Text나 Binary가 와야 합니다.")]
+        VB0245,
+        [KoError("Option Compare 다음에는 Text나 Binary만 와야 합니다.")]
+        VB0246,
+
+        [KoError("Option Base 다음에는 0이나 1이 와야 합니다.")]
+        VB0247,
+
+        [KoError("Option Base 다음에는 0이나 1만 와야 합니다.")]
+        VB0248,
+
+        // Option Explicit
+        [KoError("Explicit은 Option 뒤에만 올 수 있습니다.")]
+        VB0253,
+
+        [KoError("Compare은 Option 뒤에만 올 수 있습니다.")]
+        VB0254,
+
+
+        [KoError("Option Compare 다음에는 Text나 Binary만 와야 합니다.")]
+        VB0255,
+
+        [KoError("Text는 Option Compare 다음에만 올 수 있습니다.")]
+        VB0256,
+
+        [KoError("Binary는 Option Compare 다음에만 올 수 있습니다.")]
+        VB0257,
+
+        // Option Private Module
+
+        [KoError("Option Private 다음에는 Module이 와야 합니다.")]
+        VB0258,
+
+        [KoError("Option Private 다음에는 Module만 와야 합니다.")]
+        VB0259,
+
+        [KoError("Option Private Module 이후에는 다른 식이 올 수 없습니다.")]
+        VB0260,
+
+        [KoError("Base는 Option 뒤에만 올 수 있습니다.")]
+        VB0261,
+
+        [KoError("Option Explicit 이후에는 문을 사용 할 수 없습니다.")]
+        VB0262,
 
         #endregion
     }

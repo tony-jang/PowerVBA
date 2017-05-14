@@ -1,0 +1,7 @@
+﻿Public Property Get %name() As Variant
+    
+End Property
+
+Public Property Let %name(ByVal vNewValue As Variant)
+    
+End Property

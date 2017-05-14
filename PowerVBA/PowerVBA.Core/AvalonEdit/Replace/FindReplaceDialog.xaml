@@ -21,47 +21,30 @@
             <TabItem Header="검색">
                 <StackPanel>
                     <TextBlock Margin="3">찾을 텍스트:</TextBlock>
-                    <TextBox Margin="3" TabIndex="1" Name="txtFind" />
-                    <Button Margin="5" HorizontalAlignment="Right" 
-
-                    Width="80" Content="다음 찾기" Click="FindNextClick" TabIndex="2" />
+                    <TextBox Margin="3" TabIndex="1" Name="txtFind" KeyDown="txtFind_KeyDown"/>
+                    <Button Margin="5" HorizontalAlignment="Right" Width="80" Content="다음 찾기" Click="FindNextClick" TabIndex="2" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="바꾸기">
                 <StackPanel>
                     <TextBlock Margin="3">찾을 텍스트:</TextBlock>
-                    <TextBox Margin="3" Name="txtFind2" TabIndex="10" />
+                    <TextBox Margin="3" Name="txtFind2" TabIndex="10" KeyDown="txtReplace_KeyDown"/>
                     <TextBlock Margin="3" Text="바꿀 텍스트:" />
-                    <TextBox Margin="3" Name="txtReplace" TabIndex="11" />
+                    <TextBox Margin="3" Name="txtReplace" TabIndex="11" KeyDown="txtReplace_KeyDown" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Margin="5" HorizontalAlignment="Right" 
-
-                        Width="80" Content="다음 찾기" Click="FindNext2Click" TabIndex="12" />
-                        <Button Margin="5" HorizontalAlignment="Right" 
-
-                        Width="80" Content="바꾸기" Click="ReplaceClick" TabIndex="13" />
-                        <Button Margin="5" HorizontalAlignment="Right" 
-
-                        Width="80" Content="모두 바꾸기" Click="ReplaceAllClick" TabIndex="14" />
+                        <Button Margin="5" HorizontalAlignment="Right" Width="80" Content="다음 찾기" Click="FindNext2Click" TabIndex="12" />
+                        <Button Margin="5" HorizontalAlignment="Right" Width="80" Content="바꾸기" Click="ReplaceClick" TabIndex="13" />
+                        <Button Margin="5" HorizontalAlignment="Right" Width="80" Content="모두 바꾸기" Click="ReplaceAllClick" TabIndex="14" />
                     </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>
 
-        <CheckBox Grid.Row="1" Grid.Column="0" Margin="10,2" 
-
-        Name="cbCaseSensitive" Content="대/소문자 구분" IsChecked="true" />
-        <CheckBox Grid.Row="2" Grid.Column="0" Margin="10,2" 
-
-        Name="cbWholeWord" Content="단어 단위로" IsChecked="true" />
-        <CheckBox Grid.Row="1" Grid.Column="1" Margin="10,2" 
-
-        Name="cbRegex" Content="정규식 사용" />
-        <CheckBox Grid.Row="2" Grid.Column="1" Margin="10,2" 
-
-        Name="cbWildcards" Content="와일드 카드 문자" />
-        <CheckBox Grid.Row="3" Grid.Column="1" Margin="10,2" 
-
-        Name="cbSearchUp" Content="위로 검색" />
+        <CheckBox Name="cbCaseSensitive" Grid.Row="1" Grid.Column="0" Margin="10,2" Content="대/소문자 구분"/>
+        <CheckBox Name="cbWholeWord" Grid.Row="2" Grid.Column="0" Margin="10,2" Content="단어 단위로"/>
+        
+        <CheckBox Name="cbRegex" Grid.Row="1" Grid.Column="1" Margin="10,2"  Content="정규식 사용" />
+        <CheckBox Name="cbWildcards" Grid.Row="2" Grid.Column="1" Margin="10,2" Content="와일드 카드 문자" />
+        <CheckBox Name="cbSearchUp" Grid.Row="3" Grid.Column="1" Margin="10,2" Content="위로 검색" />
     </Grid>
 </Window>

@@ -1,0 +1,4 @@
+﻿'Description:슬라이드를 삭제합니다.
+Public Sub DelSlide(slidenum As Integer)
+    ActivePresentation.Slides(slidenum).Delete
+End Sub

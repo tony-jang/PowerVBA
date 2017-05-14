@@ -36,9 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=0.0.0.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\PowerVBA\PowerVBA\bin\Debug\ICSharpCode.AvalonEdit.dll</HintPath>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.5.0.3\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -53,7 +52,6 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Windows.Shell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Windows.Shell.3.0.1.0\lib\net40\Microsoft.Windows.Shell.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="OFFICE, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,7 +82,6 @@
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFExtension.1.0.1\lib\net45\WPFExtension.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +92,7 @@
     <Compile Include="Commands\TabItemCommand.cs" />
     <Compile Include="Commands\WindowsSystemCommand.cs" />
     <Compile Include="Controls\Customize\CloseableTabItem.cs" />
+    <Compile Include="Controls\Customize\ExampleBox.cs" />
     <Compile Include="Controls\Customize\ImageButton.cs" />
     <Compile Include="Controls\Customize\ImageListViewItem.cs" />
     <Compile Include="Controls\Customize\ImageRadioButton.cs" />
@@ -127,7 +125,6 @@
     <Compile Include="Controls\Tools\PreDeclareFuncManager.xaml.cs">
       <DependentUpon>PreDeclareFuncManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Tools\PreDeclareFunctions.cs" />
     <Compile Include="Controls\Tools\ProjectAnalyzer.xaml.cs">
       <DependentUpon>ProjectAnalyzer.xaml</DependentUpon>
     </Compile>
@@ -152,7 +149,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Functions\FuncAttributes.cs" />
+    <Compile Include="Resources\Functions\FuncName.cs" />
+    <Compile Include="Resources\Functions\Function.cs" />
+    <Compile Include="Resources\Functions\FunctionReader.cs" />
     <Compile Include="Resources\ResourceImage.cs" />
+    <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Windows\AddWindows\AddVarWindow.xaml.cs">
       <DependentUpon>AddVarWindow.xaml</DependentUpon>
     </Compile>
@@ -168,6 +170,9 @@
     <Compile Include="Windows\ChromeWindow.cs" />
     <Compile Include="Windows\ConnectWindows.xaml.cs">
       <DependentUpon>ConnectWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\HelperWindow.xaml.cs">
       <DependentUpon>HelperWindow.xaml</DependentUpon>
@@ -257,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ConnectWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -461,11 +470,30 @@
     <Resource Include="Resources\HelpImages\ComponentHelp1.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\HomeIcon.png" />
+    <Resource Include="Resources\Codes\Function.txt" />
+    <Resource Include="Resources\Codes\Property.txt" />
+    <Resource Include="Resources\Codes\Void.txt" />
+    <EmbeddedResource Include="Resources\Functions\File\Copy.txt" />
+    <EmbeddedResource Include="Resources\Functions\File\Create.txt" />
+    <EmbeddedResource Include="Resources\Functions\File\Delete.txt" />
+    <EmbeddedResource Include="Resources\Functions\File\Exists.txt" />
+    <EmbeddedResource Include="Resources\Functions\File\Move.txt" />
+    <EmbeddedResource Include="Resources\Functions\MathEx\Max.txt" />
+    <EmbeddedResource Include="Resources\Functions\MathEx\Min.txt" />
+    <EmbeddedResource Include="Resources\Functions\PPTHelper\AddShape.txt" />
+    <EmbeddedResource Include="Resources\Functions\PPTHelper\AddSlide.txt" />
+    <EmbeddedResource Include="Resources\Functions\PPTHelper\DelShape.txt" />
+    <EmbeddedResource Include="Resources\Functions\PPTHelper\DelSlide.txt" />
+    <EmbeddedResource Include="Resources\Functions\PPTHelper\Shape.txt" />
+    <EmbeddedResource Include="Resources\Functions\PPTHelper\Slide.txt" />
+    <EmbeddedResource Include="Resources\Functions\Web\GetWebSource.txt" />
+    <Resource Include="Resources\Rules\SlideNameRule.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icon\BackIcon.png" />
-    <Resource Include="Resources\Icon\FrontIcon.png" />
+    <Resource Include="Resources\Icon\BackBtn.png" />
+    <Resource Include="Resources\Icon\FrontBtn.png" />
+    <Resource Include="Resources\Icon\HomeBtn.png" />
+    <Resource Include="Resources\Icon\UpperBtn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

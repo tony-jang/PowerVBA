@@ -1,0 +1,11 @@
+﻿'Return:Boolean
+'Description:파일을 삭제합니다. 단, 파일이 존재하지 않거나 오류가 발생하면 False를 반환합니다.
+Public Function Delete(path As String) As Boolean
+    If Dir(path) <> "" Then
+        Call SetAttr(path, vbNormal)
+        Call Kill(path)
+        Delete = True
+    Else
+        Delete = False
+    End If
+End Function

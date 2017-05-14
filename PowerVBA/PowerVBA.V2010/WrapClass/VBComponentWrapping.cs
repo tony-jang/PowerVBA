@@ -48,6 +48,24 @@ namespace PowerVBA.V2010.WrapClass
         public Properties Properties => VBComponent.Properties;
         public string DesignerID => VBComponent.DesignerID;
 
-        public override string CompName => Name;
+        public override string CompName => $"{Name}{GetExtensions(Type)}";
+
+
+        public string GetExtensions(vbext_ComponentType Type)
+        {
+            switch (Type)
+            {
+                case vbext_ComponentType.vbext_ct_StdModule:
+                    return ".bas";
+                case vbext_ComponentType.vbext_ct_ClassModule:
+                case vbext_ComponentType.vbext_ct_Document:
+                    return ".cls";
+                case vbext_ComponentType.vbext_ct_MSForm:
+                    return ".frm";
+                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
+                default:
+                    return "";
+            }
+        }
     }
 }

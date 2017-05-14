@@ -1,0 +1,9 @@
+﻿'Return:Integer
+'Description:두 값을 비교해 더 작은 값을 반환합니다.
+Public Function Min(val1 As Integer, val2 As Integer) As Integer
+    If val1 < val2 Then 
+        Min = val1
+    Else
+        Min = val2
+    End If
+End Function

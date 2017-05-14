@@ -29,7 +29,7 @@ namespace PowerVBA.Codes.TypeSystem
         readonly ErrorCode errorCode;
         readonly DomRegion region;
         readonly string[] parameters;
-        readonly string fileName;
+        public string fileName;
         public ErrorCode ErrorCode { get => errorCode; }
 
 

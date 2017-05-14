@@ -1,0 +1,4 @@
+﻿'Description:도형을 삭제합니다.
+Public Sub DelShape(slidenum As Integer, shapeName As String)
+    ActivePresentation.Slides(slidenum).Shapes(shapeName).Delete
+End Sub

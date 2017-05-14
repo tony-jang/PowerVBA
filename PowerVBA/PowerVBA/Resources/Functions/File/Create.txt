@@ -1,0 +1,16 @@
+﻿'Return:Boolean
+'Description:파일을 생성합니다. override가 False로 설정되면 파일 존재시 파일을 새로 만들지 않습니다.
+Public Function Create(path As String, Optional override As Boolean = False) As Boolean
+    On Error GoTo Exception
+    If Dir(path) <> "" And override Then
+        Dim fso As Object
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Dim oFile As Object
+        Set oFile = fso.CreateTextFile(path)
+    End If
+    Create = True
+Exception:
+    If Err.Description <> "" Then
+        Create = False
+    End If
+End Function

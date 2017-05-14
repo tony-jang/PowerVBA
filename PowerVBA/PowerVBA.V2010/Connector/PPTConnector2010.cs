@@ -377,6 +377,13 @@ namespace PowerVBA.V2010.Connector
             if (Application.Presentations.Count == 0) Application.Quit();
         }
 
+        public override List<VBComponentWrappingBase> GetFiles()
+        {
+            return VBProject.VBComponents
+                .Cast<VBA.VBComponent>()
+                .Select(i => (VBComponentWrappingBase)(new VBComponentWrapping(i))).ToList();
+        }
+
         #region [  Module/Class/Form 존재 여부 확인  ]
         public override bool ContainsModule(string name)
         {

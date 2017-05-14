@@ -1,0 +1,3 @@
+﻿Public Function %name()
+    
+End Function

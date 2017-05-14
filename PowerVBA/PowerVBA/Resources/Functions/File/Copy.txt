@@ -1,0 +1,10 @@
+﻿'Return:Boolean
+'Description:파일을 복사합니다. 파일이 존재하지 않거나 오류가 발생하면 False를 반환합니다. override가 False라면 목적지에 파일이 있을때도 False를 반환합니다.
+Public Function Copy(source As String, destination As String, Optional override As Boolean = False) As Boolean
+    If Dir(source) <> "" And (Dir(destination) = "" Or override) Then
+        Call FileCopy(source, destination)
+        Copy = True
+    Else
+        Copy = False
+    End If
+End Function

@@ -6,7 +6,6 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Rendering;
 using PowerVBA.Core.AvalonEdit.CodeCompletion;
-using PowerVBA.Core.AvalonEdit.Folding;
 using PowerVBA.Core.AvalonEdit.Indentation;
 using PowerVBA.Core.AvalonEdit.Parser;
 using PowerVBA.Core.AvalonEdit.Renderer;
@@ -21,7 +20,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
@@ -219,8 +217,7 @@ namespace PowerVBA.Core.AvalonEdit
             var ctrlShiftZ = new RoutedCommand();
             ctrlShiftZ.InputGestures.Add(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
 
-            var ctrlShiftS = new RoutedCommand();
-            ctrlShiftS.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
+            
 
             var ctrlF = new RoutedCommand();
             ctrlF.InputGestures.Add(new KeyGesture(Key.F, ModifierKeys.Control));
@@ -231,16 +228,14 @@ namespace PowerVBA.Core.AvalonEdit
             var cb1 = new CommandBinding(ctrlSpace, OnCtrlSpaceCommand);
             var cb2 = new CommandBinding(ctrlS, OnCtrlSCommand);
             var cb3 = new CommandBinding(ctrlShiftZ, OnCtrlShiftZCommand);
-            var cb4 = new CommandBinding(ctrlShiftS, OnCtrlShiftSCommand);
-            var cb5 = new CommandBinding(ctrlF, OnCtrlFCommand);
-            var cb6 = new CommandBinding(ctrlH, OnCtrlHCommand);
+            var cb4 = new CommandBinding(ctrlF, OnCtrlFCommand);
+            var cb5 = new CommandBinding(ctrlH, OnCtrlHCommand);
 
             this.CommandBindings.Add(cb1);
             this.CommandBindings.Add(cb2);
             this.CommandBindings.Add(cb3);
             this.CommandBindings.Add(cb4);
             this.CommandBindings.Add(cb5);
-            this.CommandBindings.Add(cb6);
 
             #endregion
         }
@@ -261,16 +256,11 @@ namespace PowerVBA.Core.AvalonEdit
             ConnectedFile = wrappingFile;
         }
 
-
         private void OnCtrlShiftZCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (CanRedo) Redo();
         }
-
-        private void OnCtrlShiftSCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            
-        }
+        
 
         private void OnCtrlSCommand(object sender, ExecutedRoutedEventArgs e)
         {

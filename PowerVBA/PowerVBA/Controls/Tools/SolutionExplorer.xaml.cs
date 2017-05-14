@@ -155,7 +155,17 @@ namespace PowerVBA.Controls.Tools
             else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = ResourceImage.GetIconImage("FormIcon"); }
             else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = LBSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
 
-            AddLB?.Items.Add(new ImageListViewItem() { Content = $"{comp.ToVBComponent2013().Name}{GetExtensions(t)}", Tag = comp, Source = img, ContextMenu = itmMenu });
+            var item = new ImageListViewItem() { Content = $"{comp.ToVBComponent2013().Name}{GetExtensions(t)}", Tag = comp, Source = img, ContextMenu = itmMenu };
+            item.KeyDown += Item_KeyDown;
+            AddLB?.Items.Add(item);
+        }
+
+        private void Item_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                Itm3_Click(sender, e);
+            }
         }
 
         public void RemoveItem(VBComponentWrappingBase comp)

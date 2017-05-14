@@ -1,0 +1,9 @@
+﻿'Return:Integer
+'Description:두 값을 비교해 더 큰 값을 반환합니다.
+Public Function Max(val1 As Integer, val2 As Integer) As Integer
+    If val1 > val2 Then 
+        Max = val1
+    Else
+        Max = val2
+    End If
+End Function

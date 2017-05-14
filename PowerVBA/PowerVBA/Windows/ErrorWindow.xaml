@@ -1,0 +1,64 @@
+﻿<l:ChromeWindow 
+        x:Class="PowerVBA.Windows.ErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:PowerVBA.Windows"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="전체 파일 오류 확인" Height="600" Width="900" AllowsTransparency="True" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="파일 오류 확인" Grid.Row="0" Margin="5" FontSize="15"/>
+        <Grid Grid.Row="1" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="4" 
+                       HorizontalAlignment="Center" 
+                       Grid.Column="0">확인한 파일 갯수 : <Run x:Name="RunFileCount" Text="0" FontWeight="Bold"/>개</TextBlock>
+            <TextBlock Margin="4" 
+                       HorizontalAlignment="Center" 
+                       Grid.Column="1">오류 + 경고 : <Run x:Name="RunAllErrCount" Text="0" Foreground="Red" FontWeight="Bold"/>개</TextBlock>
+            <TextBlock Margin="4" 
+                       HorizontalAlignment="Center" 
+                       Grid.Column="2">오류 : <Run x:Name="RunErrorCount" Text="0" Foreground="Red" FontWeight="Bold"/>개</TextBlock>
+            <TextBlock Margin="4" 
+                       HorizontalAlignment="Center" 
+                       Grid.Column="3">경고 : <Run x:Name="RunWarningCount" Text="0" Foreground="Orange" FontWeight="Bold"/>개</TextBlock>
+        </Grid>
+        <ListView Grid.Row="2" x:Name="lvUsers">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="파일" Width="100" DisplayMemberBinding="{Binding FileName}"/>
+                    <GridViewColumn Header="줄" Width="50" DisplayMemberBinding="{Binding Line}"/>
+                    <GridViewColumn Header="오류 코드" Width="80" DisplayMemberBinding="{Binding ErrorCode}"/>
+                    <GridViewColumn Header="오류 내용" Width="500" DisplayMemberBinding="{Binding Message}"/>
+                </GridView>
+            </ListView.View>
+
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Rectangle VerticalAlignment="Center" Height="1" Fill="#FF8B8B8B"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+        </ListView>
+    </Grid>
+</l:ChromeWindow>
