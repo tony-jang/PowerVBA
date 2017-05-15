@@ -8,11 +8,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using f=System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Vbe.Interop;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -31,7 +33,17 @@ namespace PowerVBA.Controls.Tools
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var ofd = new f.OpenFileDialog();
 
+            if (ofd.ShowDialog() == f.DialogResult.OK)
+            {
+                Connector.AddReference(ofd.FileName);
+            }
+        }
+
+        public void AddItem(Reference reference)
+        {
+            
         }
     }
 }

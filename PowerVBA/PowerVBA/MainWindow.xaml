@@ -353,16 +353,17 @@
                                             BackImage="Resources/Icon/AddFuncsIcon.png"
                                             Content="미리 정의된&#x0a;함수 추가"
                                             SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked" />
-                                        <c:ImageButton
+                                        <!--<c:ImageButton
                                             x:Name="PreDeclareAPIBtn"
                                             BackImage="Resources/Icon/AddFuncsIcon.png"
                                             Content="미리 정의된&#x0a;API 추가"
-                                            SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked" />
+                                            SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked" />-->
 
                                         <c:ImageButton
                                             x:Name="AddRefBtn"
                                             BackImage="Resources/Icon/ReferenceIcon.png"
-                                            Content="참조 추가" />
+                                            Content="참조 추가" 
+                                            SimpleButtonClicked="AddRefBtn_SimpleButtonClicked"/>
                                     </WrapPanel>
                                 </GroupBox>
                                 <Border
@@ -377,7 +378,7 @@
                                             Content="코드 분석"
                                             SimpleButtonClicked="CheckError_SimpleButtonClicked">
                                             <c:ImageButton.ToolTip>
-                                                <corec:CustomToolTip Title="슬라이드 동기화 (Ctrl+Shift+M)" Text="현재 프레젠테이션의 모든 개체들을 수동으로 동기화시킵니다." />
+                                                <corec:CustomToolTip Title="코드 분석" Text="현재 PowerVBA 프로젝트의 모든 파일의 오류를 확인합니다." />
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                     </WrapPanel>

@@ -1262,5 +1262,24 @@ namespace PowerVBA
         {
             Connector.ActivateWindow();
         }
+
+        private void AddRefBtn_SimpleButtonClicked(object sender)
+        {
+            var tabItems = CodeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "참조 관리자").ToList();
+            if (tabItems.Count >= 1)
+            {
+                CodeTabControl.SelectedItem = tabItems.First();
+            }
+            else
+            {
+                CloseableTabItem itm = new CloseableTabItem()
+                {
+                    Header = "참조 관리자",
+                    Content = new ReferenceManager(Connector)
+                };
+                CodeTabControl.Items.Add(itm);
+                CodeTabControl.SelectedItem = itm;
+            }
+        }
     }
 }

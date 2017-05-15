@@ -64,6 +64,7 @@
     <Compile Include="WrapClass\ApplicationWrapping.cs" />
     <Compile Include="WrapClass\DocumentWindowWrapping.cs" />
     <Compile Include="WrapClass\PresentationWrapping.cs" />
+    <Compile Include="WrapClass\ReferenceWrapping.cs" />
     <Compile Include="WrapClass\ShapeWrapping.cs" />
     <Compile Include="WrapClass\SlideWrapping.cs" />
     <Compile Include="WrapClass\VBComponentWrapping.cs" />

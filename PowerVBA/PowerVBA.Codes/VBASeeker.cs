@@ -1064,7 +1064,6 @@ namespace PowerVBA.Codes
                                         AddError(ErrorCode.VB0046);
                                     }
                                 }
-
                                 else
                                 {
                                     string exp = string.Empty;
@@ -1117,7 +1116,6 @@ namespace PowerVBA.Codes
                     else if (ch.IsOperator())
                     {
                         // DEBUG : 위쪽에서 처리 되었을 가능성 존재 확인후 삭제
-                        
                     }
                 }
                 ExitIf:
@@ -1282,6 +1280,10 @@ namespace PowerVBA.Codes
                     Handled = true;
 
                     goto PassHandle;
+                }
+                if (data.AfterCallFunction)
+                {
+                    ExpressionRange(i + 1, RecognitionTypes.Parameter);
                 }
 
                 if (data.AfterOnErrorResumeNext)
@@ -1602,11 +1604,11 @@ namespace PowerVBA.Codes
                                     break;
                                 case ',':
                                     if (IsInString) continue;
-                                    if (!NeedRest)
-                                    {
-                                        AddError(ErrorCode.VB0098);
-                                        break;
-                                    }
+                                    //if (!NeedRest)
+                                    //{
+                                    //    AddError(ErrorCode.VB0098);
+                                    //    break;
+                                    //}
                                     NeedRest = false;
                                     UseRest = true;
                                     break;
@@ -1884,12 +1886,16 @@ namespace PowerVBA.Codes
                             saveStr += e_ch;
                             if (bracketctr == 0 && (RecognitionType == RecognitionTypes.BracketExpression || RecognitionType == RecognitionTypes.Parameter))
                             {
-                                
+                                i += j + 1;
                                 return ReturnStr.Trim();
                             }
                             break;
                         case ',':
-                            if (bracketctr == 0 && RecognitionType == RecognitionTypes.Parameter) return ReturnStr;
+                            if (bracketctr == 0 && RecognitionType == RecognitionTypes.Parameter)
+                            {
+                                i += j;
+                                return ReturnStr;
+                            }
 
                             break;
                         case '.':

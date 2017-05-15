@@ -157,6 +157,7 @@
     <Compile Include="Wrap\WrapBase\ApplicationWrappingBase.cs" />
     <Compile Include="Wrap\WrapBase\DocumentWindowWrappingBase.cs" />
     <Compile Include="Wrap\WrapBase\PresentationWrappingBase.cs" />
+    <Compile Include="Wrap\WrapBase\ReferenceWrappingBase.cs" />
     <Compile Include="Wrap\WrapBase\ShapeWrappingBase.cs" />
     <Compile Include="Wrap\WrapBase\SlideWrappingBase.cs" />
     <Compile Include="Wrap\WrapBase\VBComponentWrappingBase.cs" />
