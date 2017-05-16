@@ -90,7 +90,7 @@ namespace PowerVBA.Windows.AddWindows
     
 End Sub{Environment.NewLine}");
 
-                Editor.RaiseSaveRequest();
+                Editor.Save();
 
                 switch (VersionSelector.GetPPTVersion())
                 {

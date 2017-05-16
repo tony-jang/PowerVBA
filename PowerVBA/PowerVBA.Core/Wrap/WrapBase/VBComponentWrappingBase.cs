@@ -7,5 +7,6 @@ namespace PowerVBA.Core.Wrap.WrapBase
     {
         public abstract PPTVersion ClassVersion { get; }
         public abstract string CompName { get; }
+        public abstract string Code { get; set; }
     }
 }

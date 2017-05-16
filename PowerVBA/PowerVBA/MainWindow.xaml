@@ -48,7 +48,7 @@
     </w:ChromeWindow.Resources>
 
     <TabControl
-        x:Name="ProgramTabControl"
+        x:Name="programTabControl"
         Margin="0"
         Padding="0"
         Background="White"
@@ -90,7 +90,7 @@
                 <Grid>
 
                     <TabControl
-                        x:Name="MenuTabControl"
+                        x:Name="menuTabControl"
                         Background="White"
                         BorderBrush="#FFD4D4D4"
                         SelectedIndex="1"
@@ -134,7 +134,7 @@
                                 <GroupBox Header="작업">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnUndo"
+                                            x:Name="btnUndo"
                                             BackImage="Resources/Icon/UndoIcon.png"
                                             Content="실행 취소"
                                             SimpleButtonClicked="BtnUndo_SimpleButtonClicked">
@@ -143,7 +143,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnRedo"
+                                            x:Name="btnRedo"
                                             BackImage="Resources/Icon/RedoIcon.png"
                                             Content="다시 실행"
                                             SimpleButtonClicked="BtnRedo_SimpleButtonClicked">
@@ -259,7 +259,7 @@
                                 <GroupBox Header="프로시져 삽입">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnAddSub"
+                                            x:Name="btnAddSub"
                                             BackImage="Resources/Icon/MethodSubIcon.png"
                                             Content="Sub&#x0a;함수 추가"
                                             IsEnabled="False"
@@ -269,7 +269,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnAddFunc"
+                                            x:Name="btnAddFunc"
                                             BackImage="Resources/Icon/MethodIcon.png"
                                             Content="Function&#x0a;함수 추가"
                                             IsEnabled="False"
@@ -279,7 +279,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnAddProp"
+                                            x:Name="btnAddProp"
                                             BackImage="Resources/Icon/PropertyIcon.png"
                                             Content="Property&#x0a;추가"
                                             IsEnabled="False"
@@ -297,7 +297,7 @@
                                 <GroupBox Header="변수/상수 삽입">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnAddVar"
+                                            x:Name="btnAddVar"
                                             BackImage="Resources/Icon/VariableIcon.png"
                                             Content="변수 추가"
                                             IsEnabled="False"
@@ -307,7 +307,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnAddConst"
+                                            x:Name="btnAddConst"
                                             BackImage="Resources/Icon/ConstIcon.png"
                                             Content="상수 추가"
                                             IsEnabled="False"
@@ -325,13 +325,13 @@
                                 <GroupBox Header="트리거 삽입">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnAddMouseOverTrigger"
+                                            x:Name="btnAddMouseOverTrigger"
                                             BackImage="Resources/Icon/MouseOverIcon.png"
                                             Content="MouseOver&#x0a;트리거 추가"
                                             IsEnabled="False"
                                             SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked" />
                                         <c:ImageButton
-                                            x:Name="BtnAddMouseClickTrigger"
+                                            x:Name="btnAddMouseClickTrigger"
                                             BackImage="Resources/Icon/MouseClickIcon.png"
                                             Content="MouseClick&#x0a;트리거 추가"
                                             IsEnabled="False"
@@ -390,7 +390,7 @@
                                 <GroupBox Header="파일 동기화">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnFileSync"
+                                            x:Name="btnFileSync"
                                             BackImage="Resources/Icon/SyncIcon.png"
                                             Content="현재 파일&#x0a;동기화"
                                             SimpleButtonClicked="BtnFileSync_SimpleButtonClicked">
@@ -436,7 +436,7 @@
                             <RowDefinition Height="5" />
                             <RowDefinition Height="180" />
                         </Grid.RowDefinitions>
-                        <TabControl x:Name="CodeTabControl">
+                        <TabControl x:Name="codeTabControl">
                             <TabControl.Resources>
                                 <Style BasedOn="{StaticResource CodeTabItemStyle}" TargetType="{x:Type c:CloseableTabItem}" />
                             </TabControl.Resources>
@@ -939,20 +939,6 @@
                                                 Click="BtnNewPPT_Click"
                                                 Content="새 프레젠테이션"
                                                 Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다." />
-                                            <c:ProjectTemplateButton
-                                                x:Name="BtnNewAssistPPT2"
-                                                Padding="10"
-                                                Click="BtnNewAssistPPT_Click"
-                                                Content="보조 파일을 사용하는 새 프레젠테이션"
-                                                Description="보조 파일을 사용한 상태로 새 프레젠테이션을 만들게 되면 항상 프레젠테이션과 이름이 같은 .vba 파일이 생성됩니다. &#x0a;해당 파일이 같이 있는 상태에선 보조 문법을 사용할 수 있습니다. 보조 문법이란 기존 VBA 문법을 더 확장시킨 것으로 기존보다 더 효율적인 문법 사용이 가능합니다."
-                                                Source="Resources/Icon/AssistProjectIcon.png" />
-                                            <c:ProjectTemplateButton
-                                                x:Name="BtnNewVirtualPPT2"
-                                                Padding="10"
-                                                Click="BtnNewVirtualPPT_Click"
-                                                Content="가상 프레젠테이션"
-                                                Description="가상 프레젠테이션은 .pptx를 사용하지 않고 가상으로 슬라이드에 도형이 있다고 가정한 상태에서 코드만 작성하는 것을 말합니다.&#x0a;PPT 프레젠테이션과 연결하여 사용하지 않습니다."
-                                                Source="Resources/Icon/VirtualProjectIcon.png" />
                                         </WrapPanel>
                                     </ScrollViewer>
                                 </Grid>

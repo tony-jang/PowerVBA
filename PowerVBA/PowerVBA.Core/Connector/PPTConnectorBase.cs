@@ -21,6 +21,10 @@ namespace PowerVBA.Core.Connector
         public abstract int ComponentCount { get; }
         public abstract int AllLineCount { get; }
         public abstract bool ReadOnly { get; }
+        public abstract bool Saved { get; }
+
+
+        public abstract int Slide { get; }
 
         public event BlankDelegate VBAComponentChange;
         public event BlankDelegate PresentationClosed;
@@ -153,10 +157,7 @@ namespace PowerVBA.Core.Connector
         /// 선택된 도형의 이름을 가져옵니다.
         /// </summary>
         public abstract string SelectionShapeName { get; }
-        /// <summary>
-        /// 현재 슬라이드의 인덱스를 구합니다.
-        /// </summary>
-        public abstract int CurrentSlide { get; }
+
 
         public abstract bool DeleteComponent(VBComponentWrappingBase comp);
 

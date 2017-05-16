@@ -168,6 +168,7 @@ namespace PowerVBA.Core.AvalonEdit
 
             Completion = new VBACompletion();
             codeParser = new CodeParser(this, CodeErrors);
+            LastText = "";
 
             #endregion
             
@@ -254,24 +255,28 @@ namespace PowerVBA.Core.AvalonEdit
         {
             IsConnectedFile = true;
             ConnectedFile = wrappingFile;
+            LastText = wrappingFile.Code;
         }
 
         private void OnCtrlShiftZCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (CanRedo) Redo();
         }
-        
 
+        public string LastText { get; set; }
         private void OnCtrlSCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            RaiseSaveRequest();
+            Save();
         }
 
-        public void RaiseSaveRequest()
+        public void Save()
         {
+            LastText = Text;
             Document.UndoStack.MarkAsOriginalFile();
             SaveRequest?.Invoke();
         }
+
+        public bool Saved { get => Document.UndoStack.IsOriginalFile; }
 
         private static void Send(Key key, bool Shift = false, bool Ctrl = false)
         {

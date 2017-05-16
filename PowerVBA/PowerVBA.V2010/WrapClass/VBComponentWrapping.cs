@@ -50,6 +50,11 @@ namespace PowerVBA.V2010.WrapClass
 
         public override string CompName => $"{Name}{GetExtensions(Type)}";
 
+        public override string Code {
+            get => (VBComponent.CodeModule.CountOfLines != 0 ? VBComponent.CodeModule.get_Lines(1, VBComponent.CodeModule.CountOfLines) : "");
+            set { CodeModule.DeleteLines(1, CodeModule.CountOfLines);
+                  CodeModule.AddFromString(value); }
+        }
 
         public string GetExtensions(vbext_ComponentType Type)
         {

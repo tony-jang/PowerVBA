@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using ppt = Microsoft.Office.Interop.PowerPoint;
 using System.Windows.Shapes;
 using PowerVBA.Core.Connector;
+using PowerVBA.Core.Extension;
 
 namespace PowerVBA.Windows
 {
@@ -50,7 +51,7 @@ namespace PowerVBA.Windows
 
             foreach (ppt.Presentation presentation in itm.Presentations)
             {
-                PptList.Items.Add(new ListViewItem() { Content = presentation.Name,
+                PptList.Items.Add(new ListViewItem() { Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
                                                        Tag = presentation });
             }
         }

@@ -88,7 +88,7 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
-        public delegate void ComponentDelegate(object sender, VBComponentWrappingBase Data);
+        public delegate void ComponentDelegate(object sender, VBComponentWrappingBase data);
 
         public event ComponentDelegate OpenRequest;
         public event ComponentDelegate CopyRequest;

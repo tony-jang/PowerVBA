@@ -58,7 +58,7 @@ namespace PowerVBA.Controls.Tools
 
             int errVisCount = 0, warnVisCount = 0;
 
-            CodeErrors.Where((i) => (i.Message.Contains(TBSearchError.Text) || TBSearchError.Text == string.Empty)).ToList().ForEach(err => {
+            CodeErrors.Where((i) => (i.Message.ToLower().Contains(TBSearchError.Text.ToLower()) || TBSearchError.Text == string.Empty)).ToList().ForEach(err => {
                 lvErrors.Items.Add(
                     new ListViewItem()
                     {

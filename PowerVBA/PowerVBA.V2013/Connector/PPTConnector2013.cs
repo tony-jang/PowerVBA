@@ -56,20 +56,33 @@ namespace PowerVBA.V2013.Connector
                             OnVBAComponentChange();
                         }
 
-                        var itm = ((DocumentWindowWrapping)GetWindow()).Selection;
-
-                        if (itm.Type == PpSelectionType.ppSelectionNone)
+                        try
                         {
-                            if (LastSelection != null){
+                            var itm = ((DocumentWindowWrapping)GetWindow()).Selection;
+
+                            if (itm.Type == PpSelectionType.ppSelectionNone)
+                            {
+                                if (LastSelection != null)
+                                {
+                                    OnSelectionChanged();
+                                }
+                                LastSelection = null;
+                            }
+                            else if (itm.ShapeRange != LastSelection)
+                            {
+                                LastSelection = itm.ShapeRange;
+                                OnSelectionChanged();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            if (LastSelection != null)
+                            {
                                 OnSelectionChanged();
                             }
                             LastSelection = null;
                         }
-                        else if (itm.ShapeRange != LastSelection)
-                        {
-                            LastSelection = itm.ShapeRange;
-                            OnSelectionChanged();
-                        }
+                        
                         
                         DelayCounter++;
 
@@ -110,12 +123,15 @@ namespace PowerVBA.V2013.Connector
                     catch (Exception e)
                     {
                         // 발생하는 예외 상황 : Modelless 창이 떴을 경우
-                        (int, string)[] Errors = { (-2147417846, "응용 프로그램이 사용 중입니다."),
-                                                   // 발생하는 예외 상황 : 프레젠테이션 창이 하나는 있지만 현재 연결되어 있던 PowerPoint 창이 닫혔을때
-                                                   (-2147188720, "오브젝트가 존재하지 않습니다."),
-                                                   // 발생하는 예외 상황 : 연결된 PowerPoint 창이 닫히면서 프레제텐이션 창 자체가 닫혔을때
-                                                   (-2146827864, "애플리케이션이 종료된 것 같습니다."),
-                                                   (-2147467262, "애플리케이션이 종료된 것 같습니다.")};
+                        (int, string)[] Errors = 
+                        {
+                            (-2147417846, "응용 프로그램이 사용 중입니다."),
+                            // 발생하는 예외 상황 : 프레젠테이션 창이 하나는 있지만 현재 연결되어 있던 PowerPoint 창이 닫혔을때
+                            (-2147188720, "오브젝트가 존재하지 않습니다."),
+                            // 발생하는 예외 상황 : 연결된 PowerPoint 창이 닫히면서 프레제텐이션 창 자체가 닫혔을때
+                            (-2146827864, "애플리케이션이 종료된 것 같습니다."),
+                            (-2147467262, "애플리케이션이 종료된 것 같습니다.")
+                        };
 
                         //
                         var Error = Errors.Where((i) => i.Item1 == e.HResult).FirstOrDefault();
@@ -201,7 +217,9 @@ namespace PowerVBA.V2013.Connector
             }
         }
 
-        public override int CurrentSlide => ((DocumentWindowWrapping)GetWindow()).View.Slide.SlideNumber;
+        public override bool Saved => (Bool2)Presentation.Saved;
+
+        public override int Slide => ((DocumentWindowWrapping)GetWindow()).Selection.SlideRange.SlideIndex;
 
         public bool IsContainsName(string name)
         {
@@ -340,7 +358,7 @@ namespace PowerVBA.V2013.Connector
         {
             try
             {
-                Presentation.Slides[Presentation.Application.ActiveWindow.Selection.SlideRange.SlideIndex].Delete();
+                Presentation.Slides[Slide].Delete();
             }
             catch (Exception) { return false; }
 
