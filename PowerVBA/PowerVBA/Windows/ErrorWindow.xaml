@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Margin="4" 
                        HorizontalAlignment="Center" 
-                       Grid.Column="0">확인한 파일 갯수 : <Run x:Name="RunFileCount" Text="0" FontWeight="Bold"/>개</TextBlock>
+                       Grid.Column="0">확인한 파일 개수 : <Run x:Name="RunFileCount" Text="0" FontWeight="Bold"/>개</TextBlock>
             <TextBlock Margin="4" 
                        HorizontalAlignment="Center" 
                        Grid.Column="1">오류 + 경고 : <Run x:Name="RunAllErrCount" Text="0" Foreground="Red" FontWeight="Bold"/>개</TextBlock>

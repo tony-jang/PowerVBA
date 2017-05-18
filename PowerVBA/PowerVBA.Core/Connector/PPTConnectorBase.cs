@@ -24,6 +24,9 @@ namespace PowerVBA.Core.Connector
         public abstract bool Saved { get; }
 
 
+        /// <summary>
+        /// 현재 슬라이드 위치입니다.
+        /// </summary>
         public abstract int Slide { get; }
 
         public event BlankDelegate VBAComponentChange;
@@ -163,10 +166,13 @@ namespace PowerVBA.Core.Connector
 
 
         public abstract VBComponentWrappingBase GetModule(string name);
+        public abstract List<VBComponentWrappingBase> GetModules();
 
         public abstract VBComponentWrappingBase GetClass(string name);
+        public abstract List<VBComponentWrappingBase> GetClasses();
 
-        public abstract VBComponentWrappingBase GetFrm(string name);
+        public abstract VBComponentWrappingBase GetForm(string name);
+        public abstract List<VBComponentWrappingBase> GetForms();
 
         public abstract DocumentWindowWrappingBase GetWindow();
 

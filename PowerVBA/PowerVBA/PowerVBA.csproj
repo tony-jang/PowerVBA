@@ -144,6 +144,10 @@
     <Compile Include="Interop\ExternDll.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Interop\UnsafeNativeMethods.cs" />
+    <Compile Include="MainWindow\MainConnect.cs" />
+    <Compile Include="MainWindow\MainEditor.cs" />
+    <Compile Include="MainWindow\MainFunctions.cs" />
+    <Compile Include="MainWindow\MainInitalize.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -494,6 +498,15 @@
     <Resource Include="Resources\Icon\FrontBtn.png" />
     <Resource Include="Resources\Icon\HomeBtn.png" />
     <Resource Include="Resources\Icon\UpperBtn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\ErrorIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\WarnIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\Ref1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

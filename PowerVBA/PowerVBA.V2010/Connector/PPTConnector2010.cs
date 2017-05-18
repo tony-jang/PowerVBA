@@ -313,7 +313,32 @@ namespace PowerVBA.V2010.Connector
 
         #region [  Class/Module 코드 관리  ]
 
+        public override List<VBComponentWrappingBase> GetModules()
+        {
+            return GetFiles()
+                      .Cast<VBComponentWrapping>()
+                      .Where(i => i.Type == VBA.vbext_ComponentType.vbext_ct_StdModule)
+                      .Cast<VBComponentWrappingBase>()
+                      .ToList();
+        }
 
+        public override List<VBComponentWrappingBase> GetClasses()
+        {
+            return GetFiles()
+                      .Cast<VBComponentWrapping>()
+                      .Where(i => i.Type == VBA.vbext_ComponentType.vbext_ct_ClassModule)
+                      .Cast<VBComponentWrappingBase>()
+                      .ToList();
+        }
+
+        public override List<VBComponentWrappingBase> GetForms()
+        {
+            return GetFiles()
+                      .Cast<VBComponentWrapping>()
+                      .Where(i => i.Type == VBA.vbext_ComponentType.vbext_ct_MSForm)
+                      .Cast<VBComponentWrappingBase>()
+                      .ToList();
+        }
 
         #endregion
 
@@ -458,7 +483,7 @@ namespace PowerVBA.V2010.Connector
             return null;
         }
 
-        public override VBComponentWrappingBase GetFrm(string name)
+        public override VBComponentWrappingBase GetForm(string name)
         {
             if (ContainsModule(name))
                 return new VBComponentWrapping(VBProject.VBComponents.Cast<VBA.VBComponent>()

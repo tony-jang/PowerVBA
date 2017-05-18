@@ -429,6 +429,98 @@ namespace PowerVBA.V2013.Connector
                 .Select(i => (VBComponentWrappingBase)(new VBComponentWrapping(i))).ToList();
         }
 
+
+
+        public override bool Save()
+        {
+            if (Presentation.ReadOnly == MsoTriState.msoTrue) return false;
+            try
+            {
+                Presentation.Save();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return false;
+            }
+
+        }
+
+        public override bool SaveAs(string path)
+        {
+            try
+            {
+                Presentation.SaveAs(path);
+                return true;
+            }
+            catch (Exception)
+            { return false; }
+        }
+
+        public override bool AddReference(string Path)
+        {
+            try
+            {
+                VBProject.References.AddFromFile(Path);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override DocumentWindowWrappingBase GetWindow()
+        {
+            try
+            {
+                var itm = Application.Windows.Cast<DocumentWindow>()
+                                         .Where(i => i.Caption == Name).First();
+                if (itm == null) return null;
+                return new DocumentWindowWrapping(itm);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public override void ActivateWindow()
+        {
+            var itm = (DocumentWindowWrapping)GetWindow();
+
+            itm.Activate();
+        }
+
+        public override List<VBComponentWrappingBase> GetModules()
+        {
+            return GetFiles()
+                      .Cast<VBComponentWrapping>()
+                      .Where(i => i.Type == VBA.vbext_ComponentType.vbext_ct_StdModule)
+                      .Cast<VBComponentWrappingBase>()
+                      .ToList();
+        }
+
+        public override List<VBComponentWrappingBase> GetClasses()
+        {
+            return GetFiles()
+                      .Cast<VBComponentWrapping>()
+                      .Where(i => i.Type == VBA.vbext_ComponentType.vbext_ct_ClassModule)
+                      .Cast<VBComponentWrappingBase>()
+                      .ToList();
+        }
+
+        public override List<VBComponentWrappingBase> GetForms()
+        {
+            return GetFiles()
+                      .Cast<VBComponentWrapping>()
+                      .Where(i => i.Type == VBA.vbext_ComponentType.vbext_ct_MSForm)
+                      .Cast<VBComponentWrappingBase>()
+                      .ToList();
+        }
+
+
         #region [  Module/Class/Form 존재 여부 확인  ]
         public override bool ContainsModule(string name)
         {
@@ -469,7 +561,7 @@ namespace PowerVBA.V2013.Connector
             return null;
         }
 
-        public override VBComponentWrappingBase GetFrm(string name)
+        public override VBComponentWrappingBase GetForm(string name)
         {
             if (ContainsModule(name))
                 return new VBComponentWrapping(VBProject.VBComponents.Cast<VBA.VBComponent>()
@@ -478,67 +570,6 @@ namespace PowerVBA.V2013.Connector
             return null;
         }
 
-        public override bool Save()
-        {
-            if (Presentation.ReadOnly == MsoTriState.msoTrue) return false;
-            try
-            {
-                Presentation.Save();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-                return false;
-            }
-            
-        }
-
-        public override bool SaveAs(string path)
-        {
-            try
-            {
-                Presentation.SaveAs(path);
-                return true;
-            }
-            catch (Exception)
-            { return false; }   
-        }
-
-        public override bool AddReference(string Path)
-        {
-            try
-            {
-                VBProject.References.AddFromFile(Path);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public override DocumentWindowWrappingBase GetWindow()
-        {
-            try
-            {
-                var itm = Application.Windows.Cast<DocumentWindow>()
-                                         .Where(i => i.Caption == Name).First();
-                if (itm == null) return null;
-                return new DocumentWindowWrapping(itm);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public override void ActivateWindow()
-        {
-            var itm = (DocumentWindowWrapping)GetWindow();
-            
-            itm.Activate();
-        }
         #endregion
 
 

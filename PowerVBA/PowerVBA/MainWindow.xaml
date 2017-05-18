@@ -169,7 +169,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnDelSlide"
+                                            x:Name="btnDelSlide"
                                             BackImage="Resources/Icon/DeleteSlideIcon.png"
                                             Content="슬라이드&#x0a;삭제"
                                             SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked">
@@ -186,7 +186,7 @@
                                 <GroupBox Header="도움말">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnHelp"
+                                            x:Name="btnHelp"
                                             BackImage="Resources/Icon/HelpIcon.png"
                                             Content="도움말 열기"
                                             SimpleButtonClicked="BtnHelp_SimpleButtonClicked">
@@ -224,7 +224,7 @@
                                 <GroupBox Header="파일 삽입">
                                     <WrapPanel>
                                         <c:ImageButton
-                                            x:Name="BtnAddClass"
+                                            x:Name="btnAddClass"
                                             BackImage="Resources/Icon/ClassIcon.png"
                                             Content="클래스 추가"
                                             SimpleButtonClicked="BtnAddClass_SimpleButtonClicked">
@@ -233,7 +233,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnAddModule"
+                                            x:Name="btnAddModule"
                                             BackImage="Resources/Icon/ModuleIcon.png"
                                             Content="모듈 추가"
                                             SimpleButtonClicked="BtnAddModule_SimpleButtonClicked">
@@ -242,7 +242,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnAddForm"
+                                            x:Name="btnAddForm"
                                             BackImage="Resources/Icon/FormIcon.png"
                                             Content="사용자 폼&#x0a;추가"
                                             SimpleButtonClicked="BtnAddForm_SimpleButtonClicked">
@@ -360,7 +360,7 @@
                                             SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked" />-->
 
                                         <c:ImageButton
-                                            x:Name="AddRefBtn"
+                                            x:Name="addRefBtn"
                                             BackImage="Resources/Icon/ReferenceIcon.png"
                                             Content="참조 추가" 
                                             SimpleButtonClicked="AddRefBtn_SimpleButtonClicked"/>
@@ -399,7 +399,7 @@
                                             </c:ImageButton.ToolTip>
                                         </c:ImageButton>
                                         <c:ImageButton
-                                            x:Name="BtnAllFileSync"
+                                            x:Name="btnAllFileSync"
                                             BackImage="Resources/Icon/AllSyncIcon.png"
                                             Content="모든 파일&#x0a;동기화"
                                             SimpleButtonClicked="BtnAllFileSync_SimpleButtonClicked">
@@ -519,7 +519,7 @@
 
                         </StackPanel>
                         <TextBlock
-                            x:Name="NoRecentInfoTB"
+                            x:Name="noRecentInfoTB"
                             Grid.Row="1"
                             Margin="30"
                             VerticalAlignment="Top"
@@ -626,7 +626,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Image IsHitTestVisible="False" Source="Resources/Icon/FolderOpenIcon.png" />
                                     <TextBlock
-                                        x:Name="TBOpenAnotherPpt"
+                                        x:Name="tbBOpenAnotherPpt"
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
                                         FontSize="15"
@@ -670,7 +670,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Image IsHitTestVisible="False" Source="Resources/Icon/ConnectIcon.png" />
                                     <TextBlock
-                                        x:Name="TBConnectPresentation"
+                                        x:Name="tbConnectPresentation"
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
                                         FontSize="15"
@@ -686,7 +686,7 @@
                 <Grid Grid.Column="1" Margin="0,40,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="23" />
@@ -700,7 +700,7 @@
                         Margin="20"
                         VerticalScrollBarVisibility="Auto">
                         <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
-                            <c:ProjectTemplateButton
+                            <c:LargeImageButton
                                 x:Name="BtnNewPPT"
                                 Padding="10"
                                 Click="BtnNewPPT_Click"
@@ -718,6 +718,24 @@
                             Margin="20,0,0,0"
                             Foreground="#FFDA6C51"
                             Text="도움말" />
+
+                        <Grid Grid.Row="1">
+                            <WrapPanel Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                <c:LargeImageButton
+                                    Padding="10"
+                                    Tag="FirstHelp"
+                                    Click="btnHelp_Click"
+                                    Content="기본적인 PowerVBA의 사용법"
+                                    Description="PowerVBA를 사용하는 기본적인 방법에 대해 설명합니다." Source="Resources/Icon/HelpIcon.png" />
+                                <c:LargeImageButton
+                                    Padding="10"
+                                    Tag="PPTDiffHelp"
+                                    Click="btnHelp_Click"
+                                    Content="PowerVBA와 PowerPoint의 차이점"
+                                    Description="PowerVBA와 PowerPoint의 차이점에 대해 설명합니다." Source="Resources/Icon/PPTIcon.png" />
+                            </WrapPanel>
+                        </Grid>
 
                     </Grid>
 
@@ -850,64 +868,146 @@
                                     Text="정보" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <WrapPanel Margin="0,20,0,0">
-                                        <c:ImageButton
-                                            Padding="5"
-                                            BackImage="Resources/Icon/ClassIcon.png"
-                                            BorderBrush="#FFABABAB"
-                                            BorderThickness="1"
-                                            Content="클래스 정보&#xd;모두 보기"
-                                            Foreground="Black" />
-                                        <Grid Margin="20,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                FontSize="20 "
-                                                Foreground="Black"
-                                                Text="클래스 정보 모두 보기" />
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Margin="0,5,0,0"
-                                                Foreground="Black"
-                                                Text="현재 프로젝트의 클래스 정보를 모두 볼 수 있습니다." />
-                                        </Grid>
+                                    <Grid Margin="0,20,0,0">
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="FontSize" Value="15"/>
+                                            </Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Width" Value="25"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <StackPanel>
+                                            <Image x:Name="btnSync" Source="Resources/Icon/SyncIcon.png" HorizontalAlignment="Right" MouseDown="btnSync_MouseDown">
+                                                <Image.ToolTip>
+                                                    <corec:CustomToolTip Title="새로고침" Text="현재 아이템들을 모두 새로고침합니다. 시간이 소요될 수 있습니다."/>
+                                                </Image.ToolTip>
+                                            </Image>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/MethodIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    함수 개수 : <Run x:Name="runFunc" Text="2"/>개
+                                                </TextBlock>
+                                            </Grid>
 
-                                    </WrapPanel>
-                                    <WrapPanel Grid.Row="1" Margin="0,20,0,0">
-                                        <c:ImageButton
-                                            Padding="5"
-                                            BackImage="Resources/Icon/ModuleIcon.png"
-                                            BorderBrush="#FFABABAB"
-                                            BorderThickness="1"
-                                            Content=" 모듈 정보 &#xd;모두 보기"
-                                            Foreground="Black" />
-                                        <Grid Margin="20,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                FontSize="20 "
-                                                Foreground="Black"
-                                                Text="모듈 정보 모두 보기" />
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Margin="0,5,0,0"
-                                                Foreground="Black"
-                                                Text="현재 프로젝트의 모듈 정보를 모두 볼 수 있습니다." />
-                                        </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/MethodSubIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    미반환 함수 개수 : <Run x:Name="runSub" Text="5"/>개
+                                                </TextBlock>
+                                            </Grid>
 
-                                    </WrapPanel>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/ErrorIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    열려있는 전체 오류 개수 : <Run x:Name="runError" Text="15"/>개
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/WarnIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    열려있는 전체 경고 개수 : <Run x:Name="runWarn" Text="15"/>개
+                                                </TextBlock>
+                                            </Grid>
 
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/CopyIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    파일 개수 : <Run x:Name="runFile" Text="5"/>개
+                                                </TextBlock>
+                                            </Grid>
+
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/ClassIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    클래스 개수 : <Run x:Name="runClass" Text="1"/>개
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/ModuleIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    모듈 개수 : <Run x:Name="runModule" Text="2"/>개
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/ClassIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    슬라이드 클래스 개수 : <Run x:Name="runSlideClass" Text="2"/>개
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/NewSlideIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    슬라이드 개수 : <Run x:Name="runSlide" Text="15"/>개
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/DeclaratorIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    전체 줄 개수 : <Run x:Name="runLines" Text="1500"/>줄
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="Resources/Icon/ReferenceIcon.png"/>
+                                                <TextBlock Margin="10,0,0,0" Grid.Column="1" >
+                                                    참조 라이브러리 개수 : <Run x:Name="runLib" Text="0"/>개
+                                                </TextBlock>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </StackPanel>
                         </Grid>
@@ -933,7 +1033,7 @@
                                         Margin="15"
                                         VerticalScrollBarVisibility="Auto">
                                         <WrapPanel>
-                                            <c:ProjectTemplateButton
+                                            <c:LargeImageButton
                                                 x:Name="BtnNewPPT2"
                                                 Padding="10"
                                                 Click="BtnNewPPT_Click"
@@ -1189,7 +1289,7 @@
                 </TabControl>
 
                 <corec:PathButton
-                    x:Name="BackBtn"
+                    x:Name="backBtn"
                     Width="35"
                     Height="35"
                     Margin="20"

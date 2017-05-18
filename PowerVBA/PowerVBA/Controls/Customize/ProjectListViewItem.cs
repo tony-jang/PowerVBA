@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Core.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,10 @@ using WPFExtension;
 
 namespace PowerVBA.Controls.Customize
 {
-    class ProjectTemplateButton : Button
+    class LargeImageButton : Button
     {
 
-        public ProjectTemplateButton()
+        public LargeImageButton()
         {
             this.Style = FindResource("ProjectListViewItemStyle") as Style;
         }
@@ -21,7 +22,7 @@ namespace PowerVBA.Controls.Customize
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.ToolTip = new ToolTip() { Content = Description, StaysOpen = true };
+            this.ToolTip = new CustomToolTip() { Title = this.Content.ToString() ,Text = Description, StaysOpen = true };
         }
 
         public static DependencyProperty SourceProperty = DependencyHelper.Register();
@@ -40,7 +41,7 @@ namespace PowerVBA.Controls.Customize
             set
             {
                 SetValue(DescriptionProperty, value);
-                this.ToolTip = new ToolTip() { Content = Description, StaysOpen = true };
+                this.ToolTip = new CustomToolTip() { Title = this.Content.ToString(), Text = Description, StaysOpen = true };
             }
         }
     }

@@ -84,7 +84,7 @@ namespace PowerVBA.Core.Connector
         bool DeleteComponent(VBComponentWrappingBase comp);
         VBComponentWrappingBase GetModule(string name);
         VBComponentWrappingBase GetClass(string name);
-        VBComponentWrappingBase GetFrm(string name);
+        VBComponentWrappingBase GetForm(string name);
 
 
     }

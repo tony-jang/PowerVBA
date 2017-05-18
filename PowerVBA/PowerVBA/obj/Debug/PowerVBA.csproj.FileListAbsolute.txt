@@ -212,7 +212,6 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ReferenceManager.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ShapeExplorer.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SolutionExplorer.g.cs
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddVarWindow.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddFileWindow.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddProcedureWindow.g.cs
@@ -237,7 +236,6 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ReferenceManager.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ShapeExplorer.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\SolutionExplorer.baml
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddVarWindow.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\AddFileWindow.baml
@@ -255,3 +253,5 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVB
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.Core.pdb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\ErrorWindow.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\ErrorWindow.baml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.g.cs
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.baml

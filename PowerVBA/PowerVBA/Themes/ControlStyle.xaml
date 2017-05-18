@@ -817,12 +817,12 @@
     <!--#endregion-->
 
     <!--#region [  ProjectTemplateButton Style  ]-->
-    <Style x:Key="ProjectListViewItemStyle" TargetType="{x:Type c:ProjectTemplateButton}">
+    <Style x:Key="ProjectListViewItemStyle" TargetType="{x:Type c:LargeImageButton}">
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type c:ProjectTemplateButton}">
+                <ControlTemplate TargetType="{x:Type c:LargeImageButton}">
                     <Grid Width="Auto" Height="180">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

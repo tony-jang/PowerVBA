@@ -24,8 +24,28 @@ namespace PowerVBA.Windows
         public HelperWindow()
         {
             InitializeComponent();
+
+            treeList.SelectedItemChanged += TreeList_SelectedItemChanged;
             
-            MoveHelpContext("BasicHelp");
+            // Add Help Tree
+
+            // 기초가 되는 첫 아이템
+            AddTree(treeList, "첫 도움말", "FirstHelp");
+            var basicHelps =  AddTree(treeList, "PowerVBA 도움말", "BasicHelp");
+            AddTree(basicHelps, "컴포넌트 (파일) 추가/제거", "PPTDiffHelp");
+            AddTree(basicHelps, "PowerPoint, PowerVBA 차이점", "PPTDiffHelp");
+            AddTree(basicHelps, "참조 추가하기", "ReferenceHelp");
+            AddTree(basicHelps, "함수 선언하기", "FunctionHelp");
+            AddTree(basicHelps, "코드 에디터 기능 목록", "CodeEditorHelp");
+            AddTree(basicHelps, "미리 정의된 함수 추가/제거", "PreDecFuncHelp");
+
+
+            MoveHelpContext("FirstHelp");
+        }
+
+        private void TreeList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            MoveHelpContext(((TreeViewItem)treeList.SelectedItem).Tag.ToString());
         }
 
         private void MoveHelpContext(object sender)
@@ -36,6 +56,23 @@ namespace PowerVBA.Windows
 
             MoveHelpContext(DocumentName);
         }
+
+        private TreeViewItem AddTree(ItemsControl control, string ViewName, string MoveLink)
+        {
+            var itm = new TreeViewItem()
+            {
+                Header = ViewName,
+                Tag = MoveLink
+            };
+            if (control == null)
+            {
+                return null;
+            }
+            control.Items.Add(itm);
+
+            return itm;
+        }
+
 
         private void I_Click(object sender, RoutedEventArgs e)
         {

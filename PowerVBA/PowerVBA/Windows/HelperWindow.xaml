@@ -20,7 +20,7 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="40"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.ColumnSpan="2">
@@ -30,36 +30,45 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid>
-                                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                                    <Ellipse x:Name="bgRect" Fill="{TemplateBinding Background}"/>
+                                    <ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}"/>
                                 </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bgRect" Property="Fill" Value="LightGray"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="bgRect" Property="Fill" Value="#FFE3E3E3"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>                
                 </Style>
             </Grid.Resources>
             <WrapPanel HorizontalAlignment="Left" Margin="5">
-                <Button Background="Transparent" BorderBrush="Transparent">
+                <Button x:Name="btnHome" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
                     <Button.Content>
                         <Image
                             RenderOptions.BitmapScalingMode="HighQuality"
                             Source="/PowerVBA;component/Resources/Icon/HomeBtn.png" />
                     </Button.Content>
                 </Button>
-                <Button Background="Transparent" BorderBrush="Transparent">
+                <Button x:Name="btnBack" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
                     <Button.Content>
                         <Image
                             RenderOptions.BitmapScalingMode="HighQuality"
                             Source="/PowerVBA;component/Resources/Icon/BackBtn.png" />
                     </Button.Content>
                 </Button>
-                <Button Background="Transparent" BorderBrush="Transparent">
+                <Button x:Name="btnFront" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
                     <Button.Content>
                         <Image
                             RenderOptions.BitmapScalingMode="HighQuality"
                             Source="/PowerVBA;component/Resources/Icon/FrontBtn.png" />
                     </Button.Content>
                 </Button>
-                <Button Background="Transparent" BorderBrush="Transparent">
+                <Button x:Name="btnUpper" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
                     <Button.Content>
                         <Image
                             RenderOptions.BitmapScalingMode="HighQuality"
@@ -68,7 +77,9 @@
                 </Button>
             </WrapPanel>
         </Grid>
-        <ListView Grid.Row="1" Margin="5" />
+        <TreeView x:Name="treeList" Grid.Row="1" Margin="5">
+            
+        </TreeView>
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="1"
@@ -77,7 +88,7 @@
             <Frame
                 x:Name="HelpFrame"
                 Grid.Column="1"
-                Content="{StaticResource ConditionalHelp}"
+                Content="{StaticResource PreDecFuncHelp}"
                 NavigationUIVisibility="Hidden" />
         </ScrollViewer>
 

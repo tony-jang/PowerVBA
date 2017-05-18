@@ -29,7 +29,7 @@ namespace PowerVBA.Resources.Functions
         public static Function GetFunction(string FileName)
         {
             string code = ResourceManager.GetTextResource($"Functions/{FileName}.txt");
-            string[] codeArr = code.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] codeArr = code.SplitByNewLine();
 
             string attrPattern = "^'(.+?):(.+)$";
 
