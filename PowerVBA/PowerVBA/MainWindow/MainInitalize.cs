@@ -15,8 +15,7 @@ namespace PowerVBA
 {
     // MainWindow Partial File :: Initalize Window Part
     // MainWindow 부분 파일 :: 초기화 윈도우 부분
-
-
+    
     partial class MainWindow
     {
         private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
@@ -96,8 +95,6 @@ namespace PowerVBA
             InitalizeConnector();
         }
 
-
-
         private void SelectionChangedDetect()
         {
             projAnalyzer.CurrentShapeName = connector.SelectionShapeName;
@@ -105,7 +102,9 @@ namespace PowerVBA
 
         private void ShapeChangedDetect()
         {
-            projAnalyzer.ShapeCount = connector.Shapes().Count();
+            var shapeCount = connector.ShapeCount;
+            connector.AutoShapeUpdate = !(shapeCount < 1000);
+            projAnalyzer.ShapeCount = shapeCount;
             projAnalyzer.CurrentShapeCount = connector.Shapes(connector.Slide).Count();
         }
 

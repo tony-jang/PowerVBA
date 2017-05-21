@@ -24,7 +24,7 @@ namespace PowerVBA
     public partial class MainWindow
     {
 
-        private string ProjName;
+        private string ProjName { get; set; }
 
 
         /// <summary>
@@ -84,6 +84,7 @@ namespace PowerVBA
                 tmpConn.SlideChanged += SlideChangedDetect;
                 tmpConn.ShapeChanged += ShapeChangedDetect;
                 tmpConn.SelectionChanged += SelectionChangedDetect;
+                tmpConn.PropertyChanged += TmpConn_PropertyChanged;
 
                 connector = tmpConn;
 
@@ -124,7 +125,10 @@ namespace PowerVBA
                         if (FileLocation == string.Empty)
                             tmpConn = new PPTConnector2010();
                         else
+                        {
+                            
                             tmpConn = new PPTConnector2010(FileLocation, CopyOpen);
+                        }
                         break;
                     case PPTVersion.PPT2016:
                     case PPTVersion.PPT2013:
@@ -140,6 +144,7 @@ namespace PowerVBA
                 tmpConn.SlideChanged += SlideChangedDetect;
                 tmpConn.ShapeChanged += ShapeChangedDetect;
                 tmpConn.SelectionChanged += SelectionChangedDetect;
+                tmpConn.PropertyChanged += TmpConn_PropertyChanged;
 
                 connector = tmpConn;
 
@@ -148,6 +153,18 @@ namespace PowerVBA
                 SetName();
             }), DispatcherPriority.Background);
         }
+
+        private void TmpConn_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "AutoShapeUpdate":
+                    projAnalyzer.AutoShapeUpdate = connector.AutoShapeUpdate;
+                    break;
+            }
+        }
+
+
 
         private void PPTCloseDetect()
         {

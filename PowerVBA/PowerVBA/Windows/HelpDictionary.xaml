@@ -256,6 +256,26 @@
     <Grid x:Key="TypeHelp">
         <StackPanel>
             <TextBlock Text="VBA 형식" FontSize="20"/>
+
+            <TextBlock Margin="0,10,0,0">
+                다음은 VBA의 형식에 대해서 설명합니다.<LineBreak/>
+                VBA에서는 다음과 같은 형식들을 사용합니다.<LineBreak/><LineBreak/>
+                - <Run Text="Integer" FontWeight="Bold"/> (정수형)<LineBreak/>
+                정수형은 1, 2와 같은 소숫점이 없는 숫자를 나타내는 형식입니다.<LineBreak/><LineBreak/>
+                - <Run Text="Double" FontWeight="Bold"/> (실수형)<LineBreak/>
+                실수형은 1.23, 3.14와 같은 소숫점이 있는 숫자를 나타내는 형식입니다.<LineBreak/><LineBreak/>
+                - <Run Text="String" FontWeight="Bold"/> (문자열)<LineBreak/>
+                문자열은 문자를 나열한 데이터를 사용 할 수 있습니다.<LineBreak/><LineBreak/>
+                - <Run Text="Boolean" FontWeight="Bold"/> (참/거짓|부울형)<LineBreak/>
+                부울형은 True 또는 False와 같이 참과 거짓을 나타내는 형식입니다.<LineBreak/><LineBreak/>
+                - <Run Text="Byte" FontWeight="Bold"/> (-128 ~ 127)<LineBreak/>
+                Byte형은 -128 부터 127까지의 범위를 나타내는 형식입니다.<LineBreak/><LineBreak/>
+                - <Run Text="Object" FontWeight="Bold"/> (모든 형)<LineBreak/>
+                Object형은 모든 형식을 모두 커버 할 수 있는 형식입니다.<LineBreak/><LineBreak/>
+                - <Run Text="Variant" FontWeight="Bold"/> (모든 형)<LineBreak/>
+                Variant형은 모든 형식을 모두 커버 할 수 있는 형식입니다.<LineBreak/><LineBreak/>
+                이 외에 사용자 지정 형식을 사용 할 수 있습니다.
+            </TextBlock>
         </StackPanel>
     </Grid>
     <!--#endregion-->
@@ -328,13 +348,14 @@
                 실시간으로 코드의 문법적 오류를 확인할 수 있습니다.<LineBreak/>
                 또한, PowerPoint와는 다른 자체 문법 분석 엔진을 도입하여 좀 더 자세히 오류에 대해 알려줍니다.
                 (약 160개 정도의 오류를 확인 가능)
+                
+                <LineBreak/><LineBreak/>
+                결론은 기본적인 프레젠테이션 작업을 할때는 PowerPoint가 훨씬 좋습니다.<LineBreak/>그러나 <Run Text="VBA 작업" FontWeight="Bold"/>을 할때에는 <Run Text="PowerVBA" FontWeight="Bold"/>를 사용하시면 더 편하게 VBA 코드를 짜실 수 있습니다.
             </TextBlock>
         </StackPanel>
     </Grid>
     
     <!--#endregion-->
-    
-    
     
     <!--#region [  미리 정의된 함수 도움말  ]-->
 
@@ -365,4 +386,73 @@
     <!--#endregion-->
     
     
+    <!--#region [  트리거 추가/제거  ]-->
+
+    <Grid x:Key="TriggerHelp">
+        <StackPanel>
+            <TextBlock Text="트리거 추가/제거" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                파워포인트에서는 두 개의 트리거를 사용 할 수 있습니다.<LineBreak/><LineBreak/>
+                <Run Text="마우스를 올렸을때 (PowerVBA에선 MouseOver로 칭함)" FontWeight="Bold"/><LineBreak/>
+                <Run Text="마우스를 클릭했을때 (PowerVBA에선 MouseClick로 칭함)" FontWeight="Bold"/><LineBreak/>
+                <LineBreak/>
+                각각의 트리거는 PowerVBA의 트리거 추가/제거 기능으로 쉽고 빠르게 연결할 수 있습니다.<LineBreak/>
+
+                <Image Source="/PowerVBA;component/Resources/HelpImages/trigger1.jpg" Width="600"/><LineBreak/>
+                [삽입] 탭의 [트리거 삽입] 그룹의 [MouseOver 트리거 추가] 버튼을 통해 추가할 수 있습니다.
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+    
+    <!--#endregion-->
+
+
+    <!--#region [  코드 분석  ]-->
+
+    <Grid x:Key="CodeAnalysisHelp">
+        <StackPanel>
+            <TextBlock Text="코드 분석" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                이 도움말은 코드 분석의 방법에 대해 소개합니다.<LineBreak/><LineBreak/>
+                코드 분석은 현재 프레젠테이션에 있는 <Run Text="모든 파일" FontWeight="Bold"/>의 오류를 검사합니다.<LineBreak/>
+                모든 파일의 검사를 수행하나, 다음의 조건이 존재합니다.<LineBreak/><LineBreak/>
+                
+                - 저장되지 않은 파일의 내용은 오류 검사하지 않습니다. <LineBreak/>
+                - 모든 파일을 대상으로 코드 파싱을 해 오류와 경고를 나타냅니다.<LineBreak/>
+                
+                <LineBreak/>
+                코드 분석 결과는 다음 화면에 표시됩니다.
+                
+                <Image Source="/PowerVBA;component/Resources/HelpImages/FileAnalysis1.jpg" Width="700"/><LineBreak/>
+                확인한 파일 개수는 모든 파일의 개수를 의미합니다.<LineBreak/>
+                오류 + 경고는 오류와 경고의 개수를 합친것을 의미합니다.<LineBreak/>
+                오류는 '오류 + 경고'중 오류의 개수를 의미합니다.<LineBreak/>
+                경고는 '오류 + 경고'중 경고의 개수를 의미합니다.<LineBreak/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+
+    <!--#endregion-->
+
+    <!--#region [  도형 탐색기  ]-->
+
+    <Grid x:Key="ShapeExplorerHelp">
+        <StackPanel>
+            <TextBlock Text="도형 탐색기" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                이 도움말은 도형 탐색기에 대해서 알려줍니다.<LineBreak/><LineBreak/>
+                도형 탐색기는 슬라이드 내의 도형의 정보를 가져옵니다.<LineBreak/>
+            </TextBlock>
+            <TextBlock Text="도형 탐색기 활용" Margin="0,20,0,0" FontSize="20"/>
+            <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">
+                도형 탐색기에서는 도형의 이름, 타입 등 여러가지 정보를 출력합니다.<LineBreak/>
+                VBA 작업에 도움이 될 수 있습니다.<LineBreak/><LineBreak/>
+                사용은 다음과 같습니다.<LineBreak/>
+                <Image Source="/PowerVBA;component/Resources/HelpImages/ShapeExplorer1.png" Width="250"/>
+                화면의 오른쪽에 있는 솔루션 탐색기에서 [도형 탐색기]를 클릭합니다.<LineBreak/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+    
+    <!--#endregion-->
 </ResourceDictionary>

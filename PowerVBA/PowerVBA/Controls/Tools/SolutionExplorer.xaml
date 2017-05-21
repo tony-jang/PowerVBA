@@ -129,8 +129,8 @@
         <Grid Grid.Row="2">
             <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
             <StackPanel Margin="0,10">
-                <TextBlock x:Name="BtnOpenProperty" Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand" MouseDown="OpenProperty_Click"/>
-                <TextBlock Grid.Row="2" Text="개체 브라우저" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand"/>
+                <TextBlock x:Name="btnOpenProperty" Grid.Row="2" Text="프로젝트 속성" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand" MouseDown="OpenProperty_Click"/>
+                <TextBlock x:Name="btnOpenShapeExplorer" Grid.Row="2" Text="도형 탐색기" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" Cursor="Hand" MouseDown="OpenShapeExplorer_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

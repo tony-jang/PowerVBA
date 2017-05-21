@@ -9,6 +9,7 @@ using PowerVBA.Core.Interface;
 using PowerVBA.Core.Wrap;
 using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Core.Connector;
+using System.Windows.Media;
 
 namespace PowerVBA.V2013.WrapClass
 {
@@ -52,6 +53,7 @@ namespace PowerVBA.V2013.WrapClass
         public Diagram Diagram => Shape.Diagram;
         public DiagramNode DiagramNode => Shape.DiagramNode;
         public FillFormat Fill => Shape.Fill;
+
         public core.GlowFormat Glow => Shape.Glow;
         public GroupShapes GroupItems => Shape.GroupItems;
         public core.MsoTriState HasChart => Shape.HasChart;
@@ -60,16 +62,16 @@ namespace PowerVBA.V2013.WrapClass
         public core.MsoTriState HasSmartArt => Shape.HasSmartArt;
         public core.MsoTriState HasTable => Shape.HasTable;
         public core.MsoTriState HasTextFrame => Shape.HasTextFrame;
-        public float Height { get { return Shape.Height; } set { Shape.Height = value; } }
+        public override float Height { get { return Shape.Height; } set { Shape.Height = value; } }
         public core.MsoTriState HorizontalFlip => Shape.HorizontalFlip;
         public int Id => Shape.Id;
-        public float Left { get { return Shape.Left; } set { Shape.Left = value; } }
+        public override float Left { get { return Shape.Left; } set { Shape.Left = value; } }
         public LineFormat Line => Shape.Line;
         public LinkFormat LinkFormat => Shape.LinkFormat;
         public core.MsoTriState LockAspectRatio { get { return Shape.LockAspectRatio; } set { Shape.LockAspectRatio = value; } }
         public MediaFormat MediaFormat => Shape.MediaFormat;
         public PpMediaType MediaType => Shape.MediaType;
-        public string Name { get { return Shape.Name; } set { Shape.Name = value; } }
+        public override string Name { get { return Shape.Name; } set { Shape.Name = value; } }
         public ShapeNodes Nodes => Shape.Nodes;
         public OLEFormat OLEFormat => Shape.OLEFormat;
         public dynamic Parent => Shape.Parent;
@@ -92,13 +94,53 @@ namespace PowerVBA.V2013.WrapClass
         public TextFrame2 TextFrame2 => Shape.TextFrame2;
         public ThreeDFormat ThreeD => Shape.ThreeD;
         public string Title { get { return Shape.Title; } set { Shape.Title = value; } }
-        public float Top { get { return Shape.Top; } set { Shape.Top = value; } }
+        public override float Top { get { return Shape.Top; } set { Shape.Top = value; } }
         public core.MsoShapeType Type => Shape.Type;
         public core.MsoTriState VerticalFlip => Shape.VerticalFlip;
         public dynamic Vertices => Shape.Vertices;
         public core.MsoTriState Visible { get { return Shape.Visible; } set { Shape.Visible = value; } }
-        public float Width { get { return Shape.Width; } set { Shape.Width = value; } }
+        public override float Width { get { return Shape.Width; } set { Shape.Width = value; } }
         public int ZOrderPosition => Shape.ZOrderPosition;
+
+        public override string ShapeType => Shape.Type.ToString();
+
+        public override Color RGB {
+            get
+            {
+                int colorInt = Shape.Fill.BackColor.RGB;
+                var b = (byte)((colorInt >> 16) & 0xff);
+                var g = (byte)((colorInt >> 8) & 0xff);
+                var r = (byte)(colorInt & 0xff);
+
+                return Color.FromRgb(r, g, b);
+            }
+        }
+
+        public override Color ForeRGB
+        {
+            get
+            {
+                int colorInt = Shape.Fill.ForeColor.RGB;
+                var b = (byte)((colorInt >> 16) & 0xff);
+                var g = (byte)((colorInt >> 8) & 0xff);
+                var r = (byte)(colorInt & 0xff);
+
+                return Color.FromRgb(r, g, b);
+            }
+        }
+        public override void Delete(out bool success)
+        {
+            try
+            {
+                Delete();
+                success = true;
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+        }
+
         #endregion
 
         #region [  Method Implements  ]

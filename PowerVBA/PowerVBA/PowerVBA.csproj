@@ -119,9 +119,6 @@
     <Compile Include="Controls\Tools\ErrorList.xaml.cs">
       <DependentUpon>ErrorList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Tools\ObjectExplorer.xaml.cs">
-      <DependentUpon>ObjectExplorer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Tools\PreDeclareFuncManager.xaml.cs">
       <DependentUpon>PreDeclareFuncManager.xaml</DependentUpon>
     </Compile>
@@ -202,10 +199,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Tools\ErrorList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Tools\ObjectExplorer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -507,6 +500,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\HelpImages\Ref1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\trigger1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\FileAnalysis1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\AddShapeIcon.png" />
+    <Resource Include="Resources\Icon\DelShapeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\ShapeExplorer1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

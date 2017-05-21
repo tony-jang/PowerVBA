@@ -67,7 +67,7 @@ namespace PowerVBA.Controls.Tools
             var itm = (ImageListViewItem)GetSelectedItem();
             VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
             
-            OpenRequest?.Invoke(this, comp);
+            Open?.Invoke(this, comp);
         }
 
         private void Itm2_Click(object sender, RoutedEventArgs e)
@@ -75,7 +75,7 @@ namespace PowerVBA.Controls.Tools
             var itm = (ImageListViewItem)GetSelectedItem();
             VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
 
-            CopyRequest?.Invoke(this, comp);
+            Copy?.Invoke(this, comp);
         }
         
         private void Itm3_Click(object sender, RoutedEventArgs e)
@@ -84,17 +84,19 @@ namespace PowerVBA.Controls.Tools
             VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
             if (MessageBox.Show($"'{itm.Content}'가 영구적으로 삭제됩니다.", "삭제 확인", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                DeleteRequest?.Invoke(this, comp);
+                Delete?.Invoke(this, comp);
             }
         }
 
         public delegate void ComponentDelegate(object sender, VBComponentWrappingBase data);
 
-        public event ComponentDelegate OpenRequest;
-        public event ComponentDelegate CopyRequest;
-        public event ComponentDelegate DeleteRequest;
+        public event ComponentDelegate Open;
+        public event ComponentDelegate Copy;
+        public event ComponentDelegate Delete;
 
-        public event BlankDelegate OpenPropertyRequest;
+        public event BlankDelegate OpenProperty;
+        public event BlankDelegate OpenObjectBrowser;
+        public event BlankDelegate OpenShapeExplorer;
 
         private void Item_DoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -105,7 +107,7 @@ namespace PowerVBA.Controls.Tools
             VBComponentWrappingBase comp = (VBComponentWrappingBase)itm.Tag;
 
 
-            OpenRequest?.Invoke(this, comp);
+            Open?.Invoke(this, comp);
         }
 
         bool Handled = false;
@@ -185,6 +187,10 @@ namespace PowerVBA.Controls.Tools
 
         }
 
+        public void UpdateSlide(IPPTConnector pptConn)
+        {
+            btnOpenShapeExplorer.Text = $"도형 탐색기 ({pptConn.Slide} 슬라이드)";
+        }
 
         public void Update(IPPTConnector pptConn)
         {
@@ -213,7 +219,6 @@ namespace PowerVBA.Controls.Tools
             }
 
 
-
             AddComp = PPTItm.Where((i) => !LocalItm.Contains(i)).Copy();
             RemoveComp = LocalItm.Where(i => !PPTItm.Contains(i)).Copy();
 
@@ -228,7 +233,17 @@ namespace PowerVBA.Controls.Tools
 
         private void OpenProperty_Click(object sender, MouseButtonEventArgs e)
         {
-            OpenPropertyRequest?.Invoke();
+            OpenProperty?.Invoke();
+        }
+
+        private void BtnOpenObjectBrowser_Click(object sender, MouseButtonEventArgs e)
+        {
+            OpenObjectBrowser?.Invoke();
+        }
+
+        private void OpenShapeExplorer_Click(object sender, MouseButtonEventArgs e)
+        {
+            OpenShapeExplorer?.Invoke();
         }
     }
 }

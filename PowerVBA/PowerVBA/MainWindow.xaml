@@ -342,6 +342,7 @@
                                     Width="1"
                                     Margin="0,4"
                                     Background="#E1E1E1" />
+                                
                             </WrapPanel>
                         </TabItem>
                         <TabItem Header="프로젝트">

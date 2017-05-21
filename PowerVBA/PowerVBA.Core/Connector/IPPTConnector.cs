@@ -15,6 +15,8 @@ namespace PowerVBA.Core.Connector
         PPTVersion Version { get; }
 
 
+        int Slide { get; }
+
 
         /// <summary>
         /// VBA 프로젝트의 파일이 변경되었습니다.

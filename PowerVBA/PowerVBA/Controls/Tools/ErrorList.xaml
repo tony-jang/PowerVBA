@@ -23,14 +23,14 @@
             <Button Margin="5" Background="White" Padding="30,5">
                 <Button.Content>
                     <TextBlock>
-                        <Run x:Name="RunErrorCount" Text="1"/>개의 오류
+                        <Run x:Name="RunErrorCount" Text="0"/>개의 오류
                     </TextBlock>
                 </Button.Content>
             </Button>
             <Button Margin="5"  Background="White" Padding="30,5" Grid.Column="1">
                 <Button.Content>
                     <TextBlock>
-                        <Run x:Name="RunWarnCount" Text="1"/>개의 경고
+                        <Run x:Name="RunWarnCount" Text="0"/>개의 경고
                     </TextBlock>
                 </Button.Content>
             </Button>

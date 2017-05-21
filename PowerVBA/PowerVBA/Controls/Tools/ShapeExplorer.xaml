@@ -1,17 +1,18 @@
-﻿<UserControl x:Class="PowerVBA.Controls.Tools.SlideExplorer"
+﻿<UserControl x:Class="PowerVBA.Controls.Tools.ShapeExplorer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1000" Foreground="Black">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <TextBlock Text="도형 탐색기" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
         <Grid Grid.Row="1">
@@ -21,26 +22,44 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListViewItem Content="abcd"/>
-                <ListViewItem Content="abcd"/>
-                <ListViewItem Content="abcd"/>
-                <ListViewItem Content="abcd"/>
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="10,0" VerticalAlignment="Center" Grid.Row="0">
+                    <Run x:Name="runSlide" Text="1"/> 슬라이드의 도형 목록
+                </TextBlock>
+                <ListView x:Name="lvShape" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListViewItem Content="Shape1"/>
+                    <ListViewItem Content="Shape2"/>
+                    <ListViewItem Content="Shape3"/>
+                    <ListViewItem Content="Shape4"/>
+                </ListView>
+            </Grid>
+
             <Grid Grid.Column="1">
                 <StackPanel Margin="10">
-                    <TextBlock Text="1 슬라이드" FontSize="20"/>
+                    <TextBlock x:Name="tbName" Text="Shape1" FontSize="20"/>
                     <Grid Margin="0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="슬라이드 정보"/>
+                        <TextBlock Text="도형 정보"/>
                         <Rectangle Fill="LightGray" Grid.Column="1" Margin="10,0" Height="1"/>
                     </Grid>
-                    
+
+                    <TextBlock>도형 형식 : <Run x:Name="runType" Text="Rectangle"/></TextBlock>
+                    <TextBlock Margin="0,5,0,0" >너비 (Width) : <Run x:Name="runWidth" Text="100"/></TextBlock>
+                    <TextBlock Margin="0,5,0,0" >높이 (Height) : <Run x:Name="runHeight" Text="150"/></TextBlock>
+                    <TextBlock Margin="0,5,0,0" >X축 위치 (Left) : <Run x:Name="runLeft" Text="0"/></TextBlock>
+                    <TextBlock Margin="0,5,0,0" >Y축 위치 (Top) : <Run x:Name="runTop" Text="0"/></TextBlock>
+                    <TextBlock Margin="0,5,0,0" >배경 색상 (Fill) : <Run x:Name="runFill" Text="R : 120 | G : 200 | B : 123"/></TextBlock>
+                    <TextBlock Margin="0,5,0,0" >텍스트 색상 (Fill) : <Run x:Name="runTxtFill" Text="R : 120 | G : 200 | B : 123"/></TextBlock>
+
                 </StackPanel>
             </Grid>
 
@@ -52,13 +71,34 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="슬라이드 추가" Padding="10,0" Grid.Column="0" Margin="10" />
-                    <Button Content="슬라이드 제거" Padding="10,0" Grid.Column="1" Margin="10" />
-                    <Button Content="DEBUG 1" Padding="10,0" Grid.Column="2" Margin="10" />
-                    <Button Content="DEBUG 2" Padding="10,0" Grid.Column="3" Margin="10" />
+                    <Grid.Resources>
+                        <Style x:Key="btnStyle" TargetType="{x:Type c:ImageButton}" BasedOn="{StaticResource ImageButtonStyle}">
+                            <Setter Property="ButtonMode" Value="LongWidth"/>
+                            <Setter Property="Margin" Value="10"/>
+                        </Style>
+                    </Grid.Resources>
+                    <!--<c:ImageButton x:Name="btnAddShape" Style="{StaticResource btnStyle}" Grid.Column="0" 
+                                   Content="도형 추가" BackImage="/PowerVBA;component/Resources/Icon/AddShapeIcon.png" />-->
+                    <c:ImageButton x:Name="btnDelShape" Style="{StaticResource btnStyle}" Grid.Column="1" 
+                                   Content="도형 제거 (Del)" BackImage="/PowerVBA;component/Resources/Icon/DelShapeIcon.png" SimpleButtonClicked="btnDelShape_SimpleButtonClicked"/>
+                    <c:ImageButton x:Name="btnRefresh" Style="{StaticResource btnStyle}" Grid.Column="2" 
+                                   Content="새로 고침 (F5)" BackImage="/PowerVBA;component/Resources/Icon/SyncIcon.png" SimpleButtonClicked="btnRefresh_SimpleButtonClicked"/>
                 </Grid>
-                
+
             </Grid>
         </Grid>
+
+        <Border x:Name="loadBorder" Grid.RowSpan="2" Background="#B2D3D3D3" Visibility="Hidden">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="tbMsg" Text="도형 정보를 불러오고 있습니다." TextAlignment="Center"/>
+                <ProgressBar x:Name="pbLoad" Value="150" Maximum="200" Margin="0,5" Grid.Row="1" Height="15" Width="500"/>
+                <TextBlock x:Name="tbLoad"  Grid.Row="2" Text="(150/200)" TextAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

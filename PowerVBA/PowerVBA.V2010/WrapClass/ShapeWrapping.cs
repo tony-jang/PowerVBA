@@ -7,6 +7,7 @@ using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Core.Connector;
 using System;
 using c=Microsoft.Office.Core;
+using System.Windows.Media;
 
 namespace PowerVBA.V2010.WrapClass
 
@@ -164,12 +165,12 @@ namespace PowerVBA.V2010.WrapClass
         public ConnectorFormat ConnectorFormat => Shape.ConnectorFormat;
         public FillFormat Fill => Shape.Fill;
         public GroupShapes GroupItems => Shape.GroupItems;
-        public float Height { set { Shape.Height = value; } get { return Shape.Height; } }
+        public override float Height { set { Shape.Height = value; } get { return Shape.Height; } }
         public c.MsoTriState HorizontalFlip => Shape.HorizontalFlip;
-        public float Left { set { Shape.Left = value; } get { return Shape.Left; } }
+        public override float Left { set { Shape.Left = value; } get { return Shape.Left; } }
         public LineFormat Line => Shape.Line;
         public c.MsoTriState LockAspectRatio { set { Shape.LockAspectRatio = value; } get { return Shape.LockAspectRatio; } }
-        public string Name { set { Shape.Name = value; } get { return Shape.Name; } }
+        public override string Name { set { Shape.Name = value; } get { return Shape.Name; } }
         public ShapeNodes Nodes => Shape.Nodes;
         public float Rotation { set { Shape.Rotation = value; } get { return Shape.Rotation; } }
         public PictureFormat PictureFormat => Shape.PictureFormat;
@@ -177,12 +178,12 @@ namespace PowerVBA.V2010.WrapClass
         public TextEffectFormat TextEffect => Shape.TextEffect;
         public TextFrame TextFrame => Shape.TextFrame;
         public ThreeDFormat ThreeD => Shape.ThreeD;
-        public float Top { set { Shape.Top = value; } get { return Shape.Top; } }
+        public override float Top { set { Shape.Top = value; } get { return Shape.Top; } }
         public c.MsoShapeType Type => Shape.Type;
         public c.MsoTriState VerticalFlip => Shape.VerticalFlip;
         public dynamic Vertices => Shape.Vertices;
         public c.MsoTriState Visible { set { Shape.Visible = value; } get { return Shape.Visible; } }
-        public float Width { set { Shape.Width = value; } get { return Shape.Width; } }
+        public override float Width { set { Shape.Width = value; } get { return Shape.Width; } }
         public int ZOrderPosition => Shape.ZOrderPosition;
         public OLEFormat OLEFormat => Shape.OLEFormat;
         public LinkFormat LinkFormat => Shape.LinkFormat;
@@ -220,6 +221,47 @@ namespace PowerVBA.V2010.WrapClass
         public string Title { set { Shape.Title = value; } get { return Shape.Title; } }
         public MediaFormat MediaFormat => Shape.MediaFormat;
 
-        
+        public override string ShapeType => Shape.Type.ToString();
+
+        public override Color RGB
+        {
+            get
+            {
+                int colorInt = Shape.Fill.BackColor.RGB;
+                var b = (byte)((colorInt >> 16) & 0xff);
+                var g = (byte)((colorInt >> 8) & 0xff);
+                var r = (byte)(colorInt & 0xff);
+
+                return Color.FromRgb(r, g, b);
+            }
+        }
+
+        public override Color ForeRGB
+        {
+            get
+            {
+                int colorInt = Shape.Fill.ForeColor.RGB;
+                var b = (byte)((colorInt >> 16) & 0xff);
+                var g = (byte)((colorInt >> 8) & 0xff);
+                var r = (byte)(colorInt & 0xff);
+
+                return Color.FromRgb(r, g, b);
+            }
+        }
+
+        public override void Delete(out bool success)
+        {
+            try
+            {
+                Delete();
+                success = true;
+            }
+            catch (Exception)
+            {
+                success = false;
+            }
+
+        }
+
     }
 }

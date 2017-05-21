@@ -65,11 +65,16 @@ namespace PowerVBA
             menuTabControl.SelectionChanged += MenuTabControl_SelectionChanged;
             codeTabControl.SelectionChanged += CodeTabControl_SelectionChanged;
 
-            errorList.LineMoveRequest += ErrorList_LineMoveRequest;
+            errorList.LineMove += ErrorList_LineMove;
 
-            solutionExplorer.OpenRequest += SolutionExplorer_OpenRequest;
-            solutionExplorer.OpenPropertyRequest += SolutionExplorer_OpenPropertyRequest;
-            solutionExplorer.DeleteRequest += SolutionExplorer_DeleteRequest;
+            solutionExplorer.Open += SolutionExplorer_Open;
+            solutionExplorer.Delete += SolutionExplorer_Delete;
+
+            solutionExplorer.OpenProperty += SolutionExplorer_OpenProperty;
+            solutionExplorer.OpenObjectBrowser += SolutionExplorer_OpenBrowser;
+            solutionExplorer.OpenShapeExplorer += SolutionExplorer_OpenShapeExplorer;
+
+            projAnalyzer.ShapeSyncRequest += ProjAnalyzer_ShapeSyncRequest;
 
             backBtn.Click += BackBtn_Click;
 
@@ -175,6 +180,34 @@ namespace PowerVBA
 
         }
 
+        private void ProjAnalyzer_ShapeSyncRequest()
+        {
+            ShapeChangedDetect();
+        }
+
+        private void SolutionExplorer_OpenShapeExplorer()
+        {
+            var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "도형 탐색기").ToList();
+            if (tabItems.Count >= 1)
+            {
+                codeTabControl.SelectedItem = tabItems.First();
+            }
+            else
+            {
+                CloseableTabItem itm = new CloseableTabItem()
+                {
+                    Header = "도형 탐색기",
+                    Content = new ShapeExplorer(connector.Slide, connector)
+            };
+                codeTabControl.Items.Add(itm);
+                codeTabControl.SelectedItem = itm;
+            }
+        }
+
+        private void SolutionExplorer_OpenBrowser()
+        {
+            
+        }
 
         private void MainWindow_Activated(object sender, EventArgs e)
         {
@@ -239,10 +272,10 @@ namespace PowerVBA
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Module);
 
-            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
+            SolutionExplorer_Open(this, filewindow.ShowDialog());
         }
 
-        private void SolutionExplorer_DeleteRequest(object sender, VBComponentWrappingBase Data)
+        private void SolutionExplorer_Delete(object sender, VBComponentWrappingBase Data)
         {
             string Name = Data.CompName;
             if (connector.DeleteComponent(Data))
@@ -252,7 +285,7 @@ namespace PowerVBA
             }
         }
         
-        private void ErrorList_LineMoveRequest(Codes.TypeSystem.Error err)
+        private void ErrorList_LineMove(Codes.TypeSystem.Error err)
         {
             try
             {
@@ -278,7 +311,7 @@ namespace PowerVBA
             
         }
 
-        private void SolutionExplorer_OpenPropertyRequest()
+        private void SolutionExplorer_OpenProperty()
         {
             var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "솔루션 탐색기").ToList();
             if (tabItems.Count >= 1)
@@ -298,7 +331,7 @@ namespace PowerVBA
         }
 
 
-        private void SolutionExplorer_OpenRequest(object sender, VBComponentWrappingBase data)
+        private void SolutionExplorer_Open(object sender, VBComponentWrappingBase data)
         {
             if (data != null)
             {
@@ -351,6 +384,8 @@ namespace PowerVBA
             }
         }
 
+
+        // 열기 요청되었을때
         private void Itm_OpenRequest(object sender)
         {
             RecentFileListViewItem itm = (RecentFileListViewItem)sender;
@@ -358,6 +393,7 @@ namespace PowerVBA
             InitalizeConnector(itm.FileLocation);
         }
         
+        // CodeEditor의 코드가 변경되었을때
         private void CodeEditor_TextChanged(object sender, EventArgs e)
         {
             ParseSw.Restart();
@@ -366,6 +402,7 @@ namespace PowerVBA
             btnRedo.IsEnabled = ((CodeEditor)sender).CanRedo;
         }
 
+        // 파일에서 뒤로 돌아가기 버튼 누를때
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             programTabControl.SelectedIndex = 0;
@@ -516,6 +553,11 @@ namespace PowerVBA
         private void btnSync_MouseDown(object sender, MouseButtonEventArgs e)
         {
             runClass.Text = connector.GetClasses().Count.ToString();
+        }
+
+        private void btnAddShape_SimpleButtonClicked(object sender)
+        {
+
         }
     }
 }

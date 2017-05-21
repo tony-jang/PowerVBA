@@ -28,6 +28,7 @@ namespace PowerVBA.Controls.Tools
         }
 
         public event BlankEventHandler OpenShapeExplorer;
+        public event BlankEventHandler ShapeSyncRequest;
 
         private int _SlideCount;
         public int SlideCount
@@ -75,7 +76,16 @@ namespace PowerVBA.Controls.Tools
         {
             OpenShapeExplorer?.Invoke();
         }
-        
+
+
+
+        public bool AutoShapeUpdate
+        {
+            get => runAutoUpdate.Text != "[자동 해제]";
+            set => runAutoUpdate.Text = (!value ? "[자동 해제]" : "");
+        }
+
+
         public void SlideSync(V2013.Connector.PPTConnector2013 Connector)
         {
             RunSelSlideShapeCount.Text = Connector.Presentation
@@ -90,6 +100,11 @@ namespace PowerVBA.Controls.Tools
             RunVBAClasses.Text = Components.ToString();
 
             RunCurrLine.Text = Currline.ToString();
+        }
+
+        private void btnSync_SimpleButtonClicked(object sender)
+        {
+            ShapeSyncRequest?.Invoke();
         }
     }
 }

@@ -110,21 +110,21 @@ namespace PowerVBA
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Class);
 
-            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
+            SolutionExplorer_Open(this, filewindow.ShowDialog());
         }
 
         private void BtnAddModule_SimpleButtonClicked(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Module);
 
-            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
+            SolutionExplorer_Open(this, filewindow.ShowDialog());
         }
 
         private void BtnAddForm_SimpleButtonClicked(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Form);
 
-            SolutionExplorer_OpenRequest(this, filewindow.ShowDialog());
+            SolutionExplorer_Open(this, filewindow.ShowDialog());
         }
 
 

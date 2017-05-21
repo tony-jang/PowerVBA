@@ -39,7 +39,7 @@ namespace PowerVBA.Controls.Tools
             {
                 ListViewItem listview = (ListViewItem)itm;
 
-                LineMoveRequest?.Invoke((Error)listview.Tag);
+                LineMove?.Invoke((Error)listview.Tag);
             }
         }
 
@@ -84,7 +84,7 @@ namespace PowerVBA.Controls.Tools
             }
         }
         public delegate void MoveRequestEventHandler(Error err);
-        public event MoveRequestEventHandler LineMoveRequest;
+        public event MoveRequestEventHandler LineMove;
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

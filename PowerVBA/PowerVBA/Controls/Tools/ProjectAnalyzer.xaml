@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
              xmlns:c="clr-namespace:PowerVBA.Core.Controls;assembly=PowerVBA.Core"
+             xmlns:custom="clr-namespace:PowerVBA.Controls.Customize"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="250">
     <Grid Background="White">
@@ -33,17 +34,21 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="프레젠테이션 전체 정보" FontSize="12" VerticalAlignment="Center" Foreground="#FFD34B2A"/>
-                            <Image Grid.Column="1" Source="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" Width="30"/>
+                            <custom:ImageButton x:Name="btnSync" Grid.Column="1" BackImage="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" ButtonMode="OnlyImage" Width="25" SimpleButtonClicked="btnSync_SimpleButtonClicked">
+                                <custom:ImageButton.ToolTip>
+                                    <c:CustomToolTip Title="수동 동기화" Text="도형 개수와 슬라이드 개수를 수동으로 동기화 시킵니다.&#x0a;[자동 해제] 상태시 이 방법으로만 동기화가 가능합니다."/>
+                                </custom:ImageButton.ToolTip>
+                            </custom:ImageButton>
                         </Grid>
                         <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
                         <TextBlock Grid.Row="3" Margin="15,5" FontSize="12"
                             HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                             총 도형 개수 (<Run x:Name="ShapeRun" Text="0"/>개) <Run x:Name="RunShapeDetail" Text="자세히 보기" TextDecorations="Underline"/>
+                             총 도형 개수 (<Run x:Name="ShapeRun" Text="0"/>개) <Run x:Name="runAutoUpdate" Text="" ToolTip="총 도형 개수가 1000개를 초과시 부하 방지를 위해 자동 업데이트 하지 않습니다."/>
                         </TextBlock>
 
                         <TextBlock Grid.Row="4" Margin="15,5" FontSize="12"
                             HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                             슬라이드 개수 (<Run x:Name="SlideRun" Text="0"/>개) <Run x:Name="RunSlideDetail" Text="자세히 보기" TextDecorations="Underline"/>
+                             슬라이드 개수 (<Run x:Name="SlideRun" Text="0"/>개)
                         </TextBlock>
                     </Grid>
 
@@ -58,10 +63,16 @@
                         <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
                         <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
                                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            <TextBlock.ToolTip>
+                                <c:CustomToolTip Title="현재 슬라이드의 도형 개수" Text="현재 선택한 슬라이드의 도형 갯수를 보여줍니다."/>
+                            </TextBlock.ToolTip>
                             현재 슬라이드의 도형 개수 (<Run x:Name="RunSelSlideShapeCount" Text="0"/>개)
                         </TextBlock>
                         <TextBlock Grid.Row="3" Margin="15,5" FontSize="12" 
                                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                            <TextBlock.ToolTip>
+                                <c:CustomToolTip Title="현재 선택된 도형 이름" Text="현재 선택한 도형의 이름을 보여줍니다."/>
+                            </TextBlock.ToolTip>
                             현재 선택된 도형 이름 : <Run x:Name="RunSelShape" Text="선택되지 않음"/>
                         </TextBlock>
                     </Grid>

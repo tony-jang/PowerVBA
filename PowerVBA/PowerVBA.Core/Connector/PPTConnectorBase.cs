@@ -2,6 +2,7 @@
 using PowerVBA.Core.Wrap.WrapBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using static PowerVBA.Global.Globals;
 
 namespace PowerVBA.Core.Connector
 {
-    public abstract class PPTConnectorBase : IPPTConnector
+    public abstract class PPTConnectorBase : IPPTConnector, INotifyPropertyChanged
     {
         public PresentationWrappingBase _Presentation { get; set; }
         public ApplicationWrappingBase _PPTApp { get; set; }
@@ -23,6 +24,10 @@ namespace PowerVBA.Core.Connector
         public abstract bool ReadOnly { get; }
         public abstract bool Saved { get; }
 
+        public abstract int ShapeCount { get; }
+
+
+        public abstract bool AutoShapeUpdate { get; set; }
 
         /// <summary>
         /// 현재 슬라이드 위치입니다.
@@ -34,8 +39,8 @@ namespace PowerVBA.Core.Connector
         public event BlankDelegate ShapeChanged;
         public event BlankDelegate SlideChanged;
         public event BlankDelegate SelectionChanged;
-        
-        
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnVBAComponentChange()
         {
             try { MainDispatcher.Invoke(new Action(() => { VBAComponentChange?.Invoke(); })); } catch (Exception) { }    
@@ -57,6 +62,10 @@ namespace PowerVBA.Core.Connector
         public void OnSelectionChanged()
         {
             try { MainDispatcher.Invoke(new Action(() => { SelectionChanged?.Invoke(); })); } catch (Exception) { }
+        }
+        public void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            try { MainDispatcher.Invoke(new Action(() => { PropertyChanged?.Invoke(sender, e); })); } catch (Exception) { }
         }
 
         public abstract List<ShapeWrappingBase> Shapes();

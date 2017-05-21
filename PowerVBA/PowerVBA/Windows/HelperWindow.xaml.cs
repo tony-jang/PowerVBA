@@ -31,14 +31,17 @@ namespace PowerVBA.Windows
 
             // 기초가 되는 첫 아이템
             AddTree(treeList, "첫 도움말", "FirstHelp");
-            var basicHelps =  AddTree(treeList, "PowerVBA 도움말", "BasicHelp");
-            AddTree(basicHelps, "컴포넌트 (파일) 추가/제거", "PPTDiffHelp");
-            AddTree(basicHelps, "PowerPoint, PowerVBA 차이점", "PPTDiffHelp");
-            AddTree(basicHelps, "참조 추가하기", "ReferenceHelp");
-            AddTree(basicHelps, "함수 선언하기", "FunctionHelp");
-            AddTree(basicHelps, "코드 에디터 기능 목록", "CodeEditorHelp");
-            AddTree(basicHelps, "미리 정의된 함수 추가/제거", "PreDecFuncHelp");
-
+            AddTree(treeList, "PowerVBA 도움말", "BasicHelp");
+            AddTree(treeList, "컴포넌트 (파일) 추가/제거", "ComponentHelp");
+            AddTree(treeList, "PowerPoint, PowerVBA 차이점", "PPTDiffHelp");
+            AddTree(treeList, "참조 추가하기", "ReferenceHelp");
+            AddTree(treeList, "함수 선언하기", "FunctionHelp");
+            AddTree(treeList, "코드 에디터 기능 목록", "CodeEditorHelp");
+            AddTree(treeList, "미리 정의된 함수 추가/제거", "PreDecFuncHelp");
+            AddTree(treeList, "트리거 추가/제거", "TriggerHelp");
+            AddTree(treeList, "VBA 형식", "TypeHelp");
+            AddTree(treeList, "코드 분석", "CodeAnalysisHelp");
+            AddTree(treeList, "명명 규칙", "NamingHelp");
 
             MoveHelpContext("FirstHelp");
         }

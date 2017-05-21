@@ -29,7 +29,7 @@ namespace PowerVBA.Controls.Customize
 
         public static DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(string), typeof(ImageButton));
         public static DependencyProperty BackImageProperty = DependencyProperty.Register(nameof(BackImage), typeof(ImageSource), typeof(ImageButton));
-        public static DependencyProperty ButtonModeProperty = DependencyProperty.Register(nameof(buttonMode), typeof(ButtonMode), typeof(ImageButton));
+        public static DependencyProperty ButtonModeProperty = DependencyProperty.Register(nameof(ButtonMode), typeof(ButtonModes), typeof(ImageButton));
 
         public ImageSource BackImage
         {
@@ -42,9 +42,9 @@ namespace PowerVBA.Controls.Customize
             set { SetValue(ContentProperty, value); }
         }
 
-        public ButtonMode buttonMode
+        public ButtonModes ButtonMode
         {
-            get { return (ButtonMode)GetValue(ButtonModeProperty); }
+            get { return (ButtonModes)GetValue(ButtonModeProperty); }
             set { SetValue(ButtonModeProperty, value); }
         }
 
@@ -97,7 +97,7 @@ namespace PowerVBA.Controls.Customize
 
 
 
-        public enum ButtonMode
+        public enum ButtonModes
         {
             /// <summary>
             /// 기본 버튼입니다.
@@ -108,9 +108,13 @@ namespace PowerVBA.Controls.Customize
             /// </summary>
             ButtonWithDetails,
             /// <summary>
-            /// 오직 자세히 보기 버튼만 있습니다.
+            /// 오직 이미지만 있습니다.
             /// </summary>
-            OnlyDetails
+            OnlyImage,
+            /// <summary>
+            /// 길이가 긴 버튼 형태입니다.
+            /// </summary>
+            LongWidth,
         }
     }
 }

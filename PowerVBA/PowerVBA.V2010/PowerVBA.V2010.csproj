@@ -45,6 +45,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\Users\uutak\Desktop\PowerVBA 2010 Dll\OFFICE.DLL</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

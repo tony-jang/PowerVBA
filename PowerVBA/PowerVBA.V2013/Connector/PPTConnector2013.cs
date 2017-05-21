@@ -30,6 +30,8 @@ namespace PowerVBA.V2013.Connector
         {
             Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
 
+            AutoShapeUpdate = true;
+
             EventConnectThread = new Thread(() =>
             {
                 int LastComponentCount = 0;
@@ -82,37 +84,34 @@ namespace PowerVBA.V2013.Connector
                             }
                             LastSelection = null;
                         }
-                        
-                        
+
+
                         DelayCounter++;
 
                         if (DelayCounter > 4)
                         {
                             // 슬라이드 변경 인식
-                            List<SlideWrapping> Slides = new List<SlideWrapping>();
-                            Presentation.Slides.Cast<Slide>().ToList().ForEach((i) => Slides.Add(new SlideWrapping(i)));
 
-                            if (Slides.Count != LastSlideCount)
+                            if (SlideCount != LastSlideCount)
                             {
-                                LastSlideCount = Slides.Count;
+                                LastSlideCount = SlideCount;
                                 OnSlideChanged();
                             }
 
                             // 도형 변경 인식
-                            int TempShapeCount = 0;
-
-                            Presentation.Slides.Cast<Slide>().Select((i) => new SlideWrapping(i)).ToList()
-                                                                                                 .ForEach((i) =>
+                            if (AutoShapeUpdate)
                             {
-                                TempShapeCount += i.Shapes.Count;
-                            });
-
-                            if (TempShapeCount != LastShapeCount)
-                            {
-                                LastShapeCount = TempShapeCount;
-                                OnShapeChanged();
+                                if (ShapeCount != LastShapeCount)
+                                {
+                                    LastShapeCount = ShapeCount;
+                                    if (LastShapeCount > 1000)
+                                    {
+                                        AutoShapeUpdate = false;
+                                        OnPropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(nameof(AutoShapeUpdate)));
+                                    }
+                                    OnShapeChanged();
+                                }
                             }
-
 
                             DelayCounter = 0;
                         }
@@ -123,7 +122,7 @@ namespace PowerVBA.V2013.Connector
                     catch (Exception e)
                     {
                         // 발생하는 예외 상황 : Modelless 창이 떴을 경우
-                        (int, string)[] Errors = 
+                        (int, string)[] Errors =
                         {
                             (-2147417846, "응용 프로그램이 사용 중입니다."),
                             // 발생하는 예외 상황 : 프레젠테이션 창이 하나는 있지만 현재 연결되어 있던 PowerPoint 창이 닫혔을때
@@ -153,9 +152,19 @@ namespace PowerVBA.V2013.Connector
         }
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
-            Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
-            VBProject = new VBProjectWrapping(Presentation.VBProject);
 
+            var ppt = Application.Presentations.Cast<PPT.Presentation>().Where(i => i.FullName == FileLocation && !(Bool2)i.ReadOnly).FirstOrDefault();
+
+            if (ppt == null)
+            {
+                Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+            }
+            else
+            {
+                Presentation = new PresentationWrapping(ppt);
+            }
+
+            VBProject = new VBProjectWrapping(Presentation.VBProject);
 
             EventConnectThread?.Start();
         }
@@ -170,6 +179,7 @@ namespace PowerVBA.V2013.Connector
         public PPTConnector2013(bool OpenWithWindow = true) : this()
         {
             Presentation = new PresentationWrapping(Application.Presentations.Add((Bool2)OpenWithWindow));
+            
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
             //compWrap.CodeModule.DeleteLines()
@@ -186,6 +196,8 @@ namespace PowerVBA.V2013.Connector
         public override string Name => Presentation.Name;
 
         public override int SlideCount { get => Presentation.Slides.Count; }
+
+        public override bool AutoShapeUpdate { get; set; }
 
         public override int AllLineCount
         {
@@ -208,19 +220,39 @@ namespace PowerVBA.V2013.Connector
         {
             get
             {
-                DocumentWindowWrapping wdw = (DocumentWindowWrapping)GetWindow();
-                var itm = wdw.Selection;
-                if (itm.Type == PpSelectionType.ppSelectionNone) return "선택되지 않음";
-                if (itm.ShapeRange.Count == 1) return itm.ShapeRange[1].Name;
-                else return "다중 선택";
-                
+                try
+                {
+                    DocumentWindowWrapping wdw = (DocumentWindowWrapping)GetWindow();
+                    var itm = wdw.Selection;
+                    var shapeRange = itm.ShapeRange;
+                    if (itm.Type == PpSelectionType.ppSelectionNone) return "선택되지 않음";
+                    if (shapeRange.Count == 1) return itm.ShapeRange[1].Name;
+                    else return "다중 선택";
+                }
+                catch (Exception)
+                {
+                    return "선택되지 않음";
+                }
             }
         }
 
         public override bool Saved => (Bool2)Presentation.Saved;
 
-        public override int Slide => ((DocumentWindowWrapping)GetWindow()).Selection.SlideRange.SlideIndex;
-
+        public override int Slide
+        {
+            get
+            {
+                try
+                {
+                    return ((DocumentWindowWrapping)GetWindow()).Selection.SlideRange.SlideIndex;
+                }
+                catch (Exception)
+                {
+                    return -1;
+                }
+                
+            }
+        }
         public bool IsContainsName(string name)
         {
             foreach (VBA.VBComponent comp in VBProject.VBComponents)
@@ -381,16 +413,29 @@ namespace PowerVBA.V2013.Connector
         #endregion
 
 
+        public override int ShapeCount
+        {
+            get
+            {
+                int counter = 0;
+
+                Presentation.Slides.Cast<Slide>()
+                    .ToList()
+                    .ForEach(i => counter += i.Shapes.Count);
+
+                return counter;
+            }
+        }
 
         public override List<ShapeWrappingBase> Shapes()
         {
             List<ShapeWrappingBase> shapes = new List<ShapeWrappingBase>();
             Presentation.Slides.Cast<Slide>()
-                               .ToList()
-                               .ForEach(i =>
-                                   shapes.AddRange(i.Shapes.Cast<Microsoft.Office.Interop.PowerPoint.Shape>()
-                                                           .ToList()
-                                                           .Select((s) => new ShapeWrapping(s))));
+                .ToList()
+                .ForEach(i =>
+                    shapes.AddRange(i.Shapes.Cast<PPT.Shape>()
+                        .ToList()
+                        .Select((s) => new ShapeWrapping(s))));
 
             return shapes;
         }
@@ -398,12 +443,20 @@ namespace PowerVBA.V2013.Connector
 
         public override List<ShapeWrappingBase> Shapes(int Slide)
         {
-            List<ShapeWrappingBase> shapes = Presentation.Slides[Slide].Shapes
-                                                                       .Cast<Microsoft.Office.Interop.PowerPoint.Shape>()
-                                                                       .Select(i => new ShapeWrapping(i))
-                                                                       .Cast<ShapeWrappingBase>().ToList();
+            try
+            {
+                List<ShapeWrappingBase> shapes = Presentation.Slides[Slide].Shapes
+                .Cast<PPT.Shape>()
+                .Select(i => new ShapeWrapping(i))
+                .Cast<ShapeWrappingBase>().ToList();
+
+                return shapes;
+            }
+            catch (Exception)
+            {
+                return new List<ShapeWrappingBase>();
+            }
             
-            return shapes;
         }
 
 
