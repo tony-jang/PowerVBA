@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static PowerVBA.Global.Globals;
+
 
 namespace PowerVBA
 {
@@ -27,40 +27,7 @@ namespace PowerVBA
     partial class MainWindow
     {
        
-
-
-        #region [  BackgroundWorker  ]
-
-        private void bg_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            this.Opacity = 1.0;
-            LoadComplete = true;
-
-            this.Activate();
-        }
-
-        private void bg_DoWork(object sender, DoWorkEventArgs e)
-        {
-            MainDispatcher = Dispatcher;
-
-            Dispatcher.Invoke(new Action(() =>
-            {
-                dbConnector = new SQLiteConnector();
-
-
-                dbConnector.RecentFile_Get().ForEach((fl) => {
-                    var itm = new RecentFileListViewItem(fl);
-                    itm.OpenRequest += Itm_OpenRequest;
-                    itm.CopyOpenRequest += Itm_CopyOpenRequest;
-                    itm.DeleteRequest += Itm_DeleteRequest;
-                    LVrecentFile.Items.Add(itm);
-                });
-
-                RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
-            }));
-        }
-
-        #endregion
+        
 
         #region [  Get or Find CodeTab(CodeEditor)  ]
 
@@ -126,34 +93,51 @@ namespace PowerVBA
             if (codeTab != null)
             {
                 codeTabControl.SelectedItem = codeTab;
-                return;
             }
-
-            var codeEditor = new CodeEditor(component) { Text = component.Code };
-
-            codeTab = new CloseableTabItem()
+            else
             {
-                Header = component.CompName,
-                Content = codeEditor
-            };
+                var codeEditor = new CodeEditor(component) { Text = component.Code };
 
-            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
-            codeEditor.TextChanged += CodeEditor_TextChanged;
-            codeEditor.SaveRequest += () =>
-            {
-                SetMessage("저장되었습니다.");
-                component.Code = codeEditor.Text;
-                CodeSync(codeEditor);
-            };
-
-            codeEditor.RaiseFolding();
-
-            codeTabControl.Items.Add(codeTab);
-            codeTabControl.SelectedItem = codeTab;
+                codeTab = new CloseableTabItem()
+                {
+                    Header = component.CompName,
+                    Content = codeEditor
+                };
 
 
+                codeTab.SaveCloseRequest += CodeTab_SaveCloseRequest;
+
+                codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
+                codeEditor.TextChanged += CodeEditor_TextChanged;
+                codeEditor.SaveRequest += () =>
+                {
+                    SetMessage("저장되었습니다.");
+                    component.Code = codeEditor.Text;
+                    CodeSync(codeEditor);
+                };
+
+                codeEditor.RaiseFolding();
+
+                codeTabControl.Items.Add(codeTab);
+                codeTabControl.SelectedItem = codeTab;
+
+                codeTabControl.Focus();
+            }
+            
             ParseSw.Restart();
         }
+
+        private void CodeTab_SaveCloseRequest(object sender, EventArgs e)
+        {
+            if (sender is CloseableTabItem cItm)
+            {
+                if (cItm.Content is CodeEditor cEditor)
+                {
+                    cEditor.Save();
+                }
+            }
+        }
+
         /// <summary>
         /// 코드 탭을 추가합니다.
         /// </summary>

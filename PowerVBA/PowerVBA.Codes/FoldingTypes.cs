@@ -11,5 +11,11 @@ namespace PowerVBA.Codes
         Sub,
         Function,
         Property,
+        Enum,
+        Remark,
+        If,
+        Do,
+        While,
+        Type,
     }
 }

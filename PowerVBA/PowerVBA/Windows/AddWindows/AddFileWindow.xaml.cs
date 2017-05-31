@@ -37,6 +37,7 @@ namespace PowerVBA.Windows.AddWindows
 
             this.CommandBindings.Add(cb1);
 
+            TBName.Focus();
         }
 
         private void Comm_Close(object sender, ExecutedRoutedEventArgs e)

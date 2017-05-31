@@ -1,9 +1,13 @@
 ﻿using Microsoft.Win32;
+using PowerVBA.Codes.Extension;
+using PowerVBA.Controls.Customize;
 using PowerVBA.Core.Connector;
+using PowerVBA.Core.Extension;
 using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,104 +17,63 @@ using System.Windows.Input;
 
 namespace PowerVBA
 {
-    // MainWindow Partial File :: Initalize Window Part
-    // MainWindow 부분 파일 :: 초기화 윈도우 부분
+    // MainWindow Partial File :: Initalize Part
+    // MainWindow 부분 파일 :: 초기화 부분
+    // 동일한 프로그램에서 연결을 끊고 새로운 연결을 시작할때 사용됩니다.
+    // 닫기나 다시 열기 등 모든 초기화 메소드들을 여기서 관리합니다.
     
     partial class MainWindow
     {
-        private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
+        /// <summary>
+        /// 모든 내용을 초기화합니다. 모든 정보가 초기화됩니다.
+        /// </summary>
+        public void InitalizeAll()
         {
-            TextBlock tb = null;
-            if (((Control)sender).Name.ToLower().Contains("openanotherppt")) tb = tbBOpenAnotherPpt;
-            else if (((Control)sender).Name.ToLower().Contains("connectpresentation")) tb = tbConnectPresentation;
+            // 커넥터 초기화
+            connector = null;
 
-            if (tb != null)
+            // 코드정보 클래스 초기화
+            codeInfo = new Codes.CodeInfo();
+            
+            // 라이브러리 파일 목록 초기화
+            libraryFiles = new List<FileInfo>();
+
+            // 코드 탭 초기화
+            codeTabControl.Items.Clear();
+
+            ParseSw.Reset();
+            
+            // 솔루션 탐색기 초기화
+            solutionExplorer.Reset();
+
+            // 프로젝트 분석기 초기화
+            projAnalyzer.Reset();
+
+            // 오류 목록 초기화
+            errorList.Reset();
+
+            bg.RunWorkerAsync();
+        }
+
+
+        public void RecentFileSet()
+        {
+            Dispatcher.Invoke(new Action(() =>
             {
-                tb.FontStyle = FontStyles.Normal;
-                while (tb.TextDecorations.Count != 0)
-                {
-                    tb.TextDecorations.RemoveAt(0);
-                }
-            }
-        }
+                dbConnector = new SQLiteConnector();
 
-        private void OpenButtons_MouseMove(object sender, MouseEventArgs e)
-        {
-            TextBlock tb = null;
-            if (((Control)sender).Name.ToLower().Contains("openanotherppt")) tb = tbBOpenAnotherPpt;
-            else if (((Control)sender).Name.ToLower().Contains("connectpresentation")) tb = tbConnectPresentation;
+                LVrecentFile.Items.Clear();
 
-            tb?.TextDecorations.Add(TextDecorations.Underline);
-        }
+                dbConnector.RecentFileGet().ForEach((fl) => {
+                    var itm = new RecentFileListViewItem(fl);
+                    itm.OpenRequest += Itm_OpenRequest;
+                    itm.CopyOpenRequest += Itm_CopyOpenRequest;
+                    itm.DeleteRequest += Itm_DeleteRequest;
+                    LVrecentFile.Items.Add(itm);
+                });
 
-        private void OpenButtons_Click(object sender, RoutedEventArgs e)
-        {
-            if (((Control)sender).Name.ToLower().Contains("openanotherppt"))
-            {
-                OpenFileDialog ofd = new OpenFileDialog()
-                {
-                    Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
-                };
-                if (ofd.ShowDialog().Value)
-                {
-                    tbProcessInfoTB.Text = "프레젠테이션을 열고 있습니다.";
-
-                    dbConnector.RecentFile_Add(ofd.FileName);
-
-                    InitalizeConnector(ofd.FileName);
-                }
-            }
-            else if (((Control)sender).Name.ToLower().Contains("connectpresentation"))
-            {
-                ConnectWindows connWindow = new ConnectWindows();
-
-                var Handled = connWindow.ShowDialog(out PresentationWrappingBase ppt);
-
-                if (Handled)
-                {
-                    try
-                    {
-                        InitalizeConnector(ppt);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                }
-            }
-        }
-
-        private void BtnNewPPT_Click(object sender, RoutedEventArgs e)
-        {
-
-            PPTVersion ver = VersionSelector.GetPPTVersion();
-
-            if (ver != PPTVersion.PPT2013 && ver != PPTVersion.PPT2010 && ver != PPTVersion.PPT2016)
-            {
-                MessageBox.Show($"죄송합니다. {ver.ToString()}는 지원하지 않는 버전입니다.");
-                return;
-            }
-            tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
-
-            InitalizeConnector();
-        }
-
-        private void SelectionChangedDetect()
-        {
-            projAnalyzer.CurrentShapeName = connector.SelectionShapeName;
-        }
-
-        private void ShapeChangedDetect()
-        {
-            var shapeCount = connector.ShapeCount;
-            connector.AutoShapeUpdate = !(shapeCount < 1000);
-            projAnalyzer.ShapeCount = shapeCount;
-            projAnalyzer.CurrentShapeCount = connector.Shapes(connector.Slide).Count();
-        }
-
-        private void SlideChangedDetect()
-        {
-            projAnalyzer.SlideCount = connector.SlideCount;
+                RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
+            }));
         }
     }
 }

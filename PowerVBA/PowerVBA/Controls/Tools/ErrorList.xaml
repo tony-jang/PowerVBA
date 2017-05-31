@@ -20,21 +20,14 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="5" Background="White" Padding="30,5">
-                <Button.Content>
-                    <TextBlock>
-                        <Run x:Name="RunErrorCount" Text="0"/>개의 오류
-                    </TextBlock>
-                </Button.Content>
-            </Button>
-            <Button Margin="5"  Background="White" Padding="30,5" Grid.Column="1">
-                <Button.Content>
-                    <TextBlock>
-                        <Run x:Name="RunWarnCount" Text="0"/>개의 경고
-                    </TextBlock>
-                </Button.Content>
-            </Button>
-            <TextBox x:Name="TBSearchError" Grid.Column="3" Margin="8" TextChanged="TextBox_TextChanged">
+
+            <TextBlock Padding="30,5" VerticalAlignment="Center">
+                <Run x:Name="runErrorCount" Text="0"/>개의 오류
+            </TextBlock>
+            <TextBlock Padding="30,5" VerticalAlignment="Center" Grid.Column="1">
+                <Run x:Name="runWarnCount" Text="0"/>개의 경고
+            </TextBlock>
+            <TextBox x:Name="tbSearchError" Grid.Column="3" Height="20" Margin="5" TextChanged="TextBox_TextChanged">
                 <TextBox.Style>
                     <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                         <Style.Resources>

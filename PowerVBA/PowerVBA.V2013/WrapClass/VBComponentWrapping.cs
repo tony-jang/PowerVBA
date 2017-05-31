@@ -49,7 +49,7 @@ namespace PowerVBA.V2013.WrapClass
         {
             get => (VBComponent.CodeModule.CountOfLines != 0 ? VBComponent.CodeModule.get_Lines(1, VBComponent.CodeModule.CountOfLines) : "");
             set
-            {
+            {   
                 CodeModule.DeleteLines(1, CodeModule.CountOfLines);
                 CodeModule.AddFromString(value);
             }

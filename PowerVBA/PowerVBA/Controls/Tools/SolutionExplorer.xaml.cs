@@ -26,13 +26,13 @@ namespace PowerVBA.Controls.Tools
         {
             InitializeComponent();
 
-            ListBoxes.Add(LBClass);
-            ListBoxes.Add(LBModule);
-            ListBoxes.Add(LBForms);
-            ListBoxes.Add(LBSlideDoc);
+            listBoxes.Add(lbClass);
+            listBoxes.Add(lbModule);
+            listBoxes.Add(lbBForms);
+            listBoxes.Add(lbSlideDoc);
 
 
-            foreach (ListBox lb in ListBoxes)
+            foreach (ListBox lb in listBoxes)
             {
                 lb.MouseDoubleClick += Item_DoubleClick;
             }
@@ -57,7 +57,23 @@ namespace PowerVBA.Controls.Tools
             itmMenu.Items.Add(itm3);
         }
 
-        public List<ListBox> ListBoxes = new List<ListBox>();
+        public void Reset()
+        {
+            lbClass.Items.Clear();
+            lbModule.Items.Clear();
+            lbBForms.Items.Clear();
+            lbSlideDoc.Items.Clear();
+
+
+            classRun.Text = "0";
+            moduleRun.Text = "0";
+            formRun.Text = "0";
+            slideDocRun.Text = "0";
+        }
+
+
+
+        public List<ListBox> listBoxes = new List<ListBox>();
 
         ContextMenu itmMenu = new ContextMenu();
 
@@ -110,31 +126,31 @@ namespace PowerVBA.Controls.Tools
             Open?.Invoke(this, comp);
         }
 
-        bool Handled = false;
+        bool handled = false;
 
         private void ListBoxes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Handled)
+            if (handled)
             {
-                Handled = false;
+                handled = false;
                 return;
             }
 
-            foreach (ListBox lb in ListBoxes)
+            foreach (ListBox lb in listBoxes)
             {
                 if (sender == lb) continue;
 
                 if (lb.SelectedIndex != -1)
                 {
-                    Handled = true;
+                    handled = true;
                     lb.SelectedIndex = -1;
                 }
             }
         }
 
-        public ListBoxItem GetSelectedItem()
+        private ListBoxItem GetSelectedItem()
         {
-            foreach (ListBox lb in ListBoxes)
+            foreach (ListBox lb in listBoxes)
             {
                 foreach(ListBoxItem lbItm in lb.Items)
                 {
@@ -144,7 +160,7 @@ namespace PowerVBA.Controls.Tools
             return null;
         }
 
-        public void AddItem(VBComponentWrappingBase comp)
+        private void AddItem(VBComponentWrappingBase comp)
         {
             
             var t = comp.ToVBComponent2013().Type;
@@ -152,10 +168,10 @@ namespace PowerVBA.Controls.Tools
             ListBox AddLB = null;
             ImageSource img = null;
             
-            if (t == VBA.vbext_ComponentType.vbext_ct_ClassModule) { AddLB = LBClass; img = ResourceImage.GetIconImage("ClassIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_StdModule) { AddLB = LBModule; img = ResourceImage.GetIconImage("ModuleIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = LBForms; img = ResourceImage.GetIconImage("FormIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = LBSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
+            if (t == VBA.vbext_ComponentType.vbext_ct_ClassModule) { AddLB = lbClass; img = ResourceImage.GetIconImage("ClassIcon"); }
+            else if (t == VBA.vbext_ComponentType.vbext_ct_StdModule) { AddLB = lbModule; img = ResourceImage.GetIconImage("ModuleIcon"); }
+            else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = lbBForms; img = ResourceImage.GetIconImage("FormIcon"); }
+            else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = lbSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
 
             var item = new ImageListViewItem() { Content = $"{comp.ToVBComponent2013().Name}{GetExtensions(t)}", Tag = comp, Source = img, ContextMenu = itmMenu };
             item.KeyDown += Item_KeyDown;
@@ -170,10 +186,10 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
-        public void RemoveItem(VBComponentWrappingBase comp)
+        private void RemoveItem(VBComponentWrappingBase comp)
         {
             
-            foreach(ListBox lb in ListBoxes)
+            foreach(ListBox lb in listBoxes)
             {
                 foreach(ImageListViewItem itm in lb.Items)
                 {
@@ -194,13 +210,13 @@ namespace PowerVBA.Controls.Tools
 
         public void Update(IPPTConnector pptConn)
         {
-            IEnumerable<VBComponentWrappingBase> AddComp = new List<VBComponentWrappingBase>();
-            IEnumerable<VBComponentWrappingBase> RemoveComp = new List<VBComponentWrappingBase>();
+            IEnumerable<VBComponentWrappingBase> addComp = new List<VBComponentWrappingBase>();
+            IEnumerable<VBComponentWrappingBase> removeComp = new List<VBComponentWrappingBase>();
             
-            var LocalItm = LBClass.Items.Cast<ImageListViewItem>()
-                .Concat(LBForms.Items.Cast<ImageListViewItem>())
-                .Concat(LBModule.Items.Cast<ImageListViewItem>())
-                .Concat(LBSlideDoc.Items.Cast<ImageListViewItem>())
+            var LocalItm = lbClass.Items.Cast<ImageListViewItem>()
+                .Concat(lbBForms.Items.Cast<ImageListViewItem>())
+                .Concat(lbModule.Items.Cast<ImageListViewItem>())
+                .Concat(lbSlideDoc.Items.Cast<ImageListViewItem>())
                 .Select(i => (VBComponentWrappingBase)i.Tag);
 
 
@@ -209,26 +225,26 @@ namespace PowerVBA.Controls.Tools
 
             if (pptConn.GetType() == typeof(V2013.Connector.PPTConnector2013))
             {
-                var Conn2013 = (V2013.Connector.PPTConnector2013)pptConn;
-                PPTItm = Conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2013.WrapClass.VBComponentWrapping(i));
+                var conn2013 = (V2013.Connector.PPTConnector2013)pptConn;
+                PPTItm = conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2013.WrapClass.VBComponentWrapping(i));
             }
             else if (pptConn.GetType() == typeof(V2010.Connector.PPTConnector2010))
             {
-                var Conn2013 = (V2010.Connector.PPTConnector2010)pptConn;
-                PPTItm = Conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2010.WrapClass.VBComponentWrapping(i));
+                var conn2013 = (V2010.Connector.PPTConnector2010)pptConn;
+                PPTItm = conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2010.WrapClass.VBComponentWrapping(i));
             }
 
 
-            AddComp = PPTItm.Where((i) => !LocalItm.Contains(i)).Copy();
-            RemoveComp = LocalItm.Where(i => !PPTItm.Contains(i)).Copy();
+            addComp = PPTItm.Where((i) => !LocalItm.Contains(i)).Copy();
+            removeComp = LocalItm.Where(i => !PPTItm.Contains(i)).Copy();
 
-            foreach(var itm in AddComp) AddItem(itm);
-            foreach (var itm in RemoveComp) RemoveItem(itm);
+            foreach(var itm in addComp) AddItem(itm);
+            foreach (var itm in removeComp) RemoveItem(itm);
             
-            ClassRun.Text = LBClass.Items.Count.ToString();
-            ModuleRun.Text = LBModule.Items.Count.ToString();
-            FormRun.Text = LBForms.Items.Count.ToString();
-            SlideDocRun.Text = LBSlideDoc.Items.Count.ToString();
+            classRun.Text = lbClass.Items.Count.ToString();
+            moduleRun.Text = lbModule.Items.Count.ToString();
+            formRun.Text = lbBForms.Items.Count.ToString();
+            slideDocRun.Text = lbSlideDoc.Items.Count.ToString();
         }
 
         private void OpenProperty_Click(object sender, MouseButtonEventArgs e)

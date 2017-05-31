@@ -23,7 +23,7 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ErrorList : UserControl
     {
-        public List<Error> CodeErrors = new List<Error>();
+        public List<Error> codeErrors = new List<Error>();
         public ErrorList()
         {
             InitializeComponent();
@@ -43,22 +43,28 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
+        public void Reset()
+        {
+            lvErrors.Items.Clear();
+            codeErrors = new List<Error>();
+        }
+
         public void SetError(List<Error> Errors)
         {
-            CodeErrors = Errors;
+            codeErrors = Errors;
             SetErrorCtrl();
         }
         public void SetErrorCtrl()
         {
             lvErrors.Items.Clear();
 
-            int errCount = CodeErrors.Where(i => i.ErrorType == ErrorType.Error).Count(),
-                warnCount = CodeErrors.Where(i => i.ErrorType == ErrorType.Warning).Count();
+            int errCount = codeErrors.Where(i => i.ErrorType == ErrorType.Error).Count(),
+                warnCount = codeErrors.Where(i => i.ErrorType == ErrorType.Warning).Count();
 
 
             int errVisCount = 0, warnVisCount = 0;
 
-            CodeErrors.Where((i) => (i.Message.ToLower().Contains(TBSearchError.Text.ToLower()) || TBSearchError.Text == string.Empty)).ToList().ForEach(err => {
+            codeErrors.Where((i) => (i.Message.ToLower().Contains(tbSearchError.Text.ToLower()) || tbSearchError.Text == string.Empty)).ToList().ForEach(err => {
                 lvErrors.Items.Add(
                     new ListViewItem()
                     {
@@ -72,15 +78,15 @@ namespace PowerVBA.Controls.Tools
 
             
 
-            if (lvErrors.Items.Count != CodeErrors.Count)
+            if (lvErrors.Items.Count != codeErrors.Count)
             {
-                RunWarnCount.Text = $"({warnVisCount}/{warnCount})";
-                RunErrorCount.Text = $"({errVisCount}/{errCount})";
+                runWarnCount.Text = $"({warnVisCount}/{warnCount})";
+                runErrorCount.Text = $"({errVisCount}/{errCount})";
             }
             else
             {
-                RunErrorCount.Text = errCount.ToString();
-                RunWarnCount.Text = warnCount.ToString();
+                runErrorCount.Text = errCount.ToString();
+                runWarnCount.Text = warnCount.ToString();
             }
         }
         public delegate void MoveRequestEventHandler(Error err);

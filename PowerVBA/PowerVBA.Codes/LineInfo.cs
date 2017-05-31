@@ -133,7 +133,7 @@ namespace PowerVBA.Codes
 
         public bool IsInEnum { get; set; }
         public bool IsGlobalVarDeclaring { get; set; }
-
+        public bool IsInType { get; internal set; }
 
         public LineInfo Clone()
         {
@@ -146,6 +146,7 @@ namespace PowerVBA.Codes
                 IsInDoUntil = IsInDoUntil,
                 IsInDoWhile = IsInDoWhile,
                 IsInWhile = IsInWhile,
+                IsInType = IsInType,
 
                 IsInIf = IsInIf,
                 IsInElse = IsInElse,

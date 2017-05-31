@@ -19,7 +19,7 @@ namespace PowerVBA
 
     // MainWindow Partial File :: Connect Part
     // MainWindow 부분 파일 :: 연결 부분
-
+    // PPT와 연결하는 부분
 
     public partial class MainWindow
     {
@@ -31,7 +31,7 @@ namespace PowerVBA
         /// 프로젝트 이름을 재설정합니다. customName이 비어있다면 현재의 프레젠테이션 연결기에서 이름을 가져옵니다.
         /// </summary>
         /// <param name="customName"></param>
-        public void SetName(string customName = "")
+        public void NameSet(string customName = "")
         {
             if (customName != string.Empty)
             {
@@ -90,7 +90,10 @@ namespace PowerVBA
 
                 CodeSync(null);
                 programTabControl.SelectedIndex = 0;
-                SetName();
+                NameSet();
+
+                IsConnected = true;
+
             }), DispatcherPriority.Background);
         }
 
@@ -150,7 +153,9 @@ namespace PowerVBA
 
                 CodeSync(null);
                 programTabControl.SelectedIndex = 0;
-                SetName();
+                NameSet();
+
+                IsConnected = true;
             }), DispatcherPriority.Background);
         }
 

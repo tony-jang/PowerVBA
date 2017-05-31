@@ -43,10 +43,10 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Margin="15,0" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    클래스 목록 (<Run x:Name="ClassRun" Text="0"/>개)
+                    클래스 목록 (<Run x:Name="classRun" Text="0"/>개)
                 </TextBlock>
 
-                <ListBox x:Name="LBClass" Grid.Row="1" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                <ListBox x:Name="lbClass" Grid.Row="1" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                          SelectionChanged="ListBoxes_SelectionChanged">
                     <ListBox.Template>
                         <ControlTemplate>
@@ -57,10 +57,10 @@
 
                 <TextBlock Grid.Row="2" Margin="15,0" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    모듈 목록 (<Run x:Name="ModuleRun" Text="0"/>개)
+                    모듈 목록 (<Run x:Name="moduleRun" Text="0"/>개)
                 </TextBlock>
 
-                <ListBox x:Name="LBModule" Grid.Row="3" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                <ListBox x:Name="lbModule" Grid.Row="3" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
                     <ListBox.Template>
                         <ControlTemplate>
@@ -71,10 +71,10 @@
 
                 <TextBlock Grid.Row="4" Margin="15,0" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    폼 목록 (<Run x:Name="FormRun" Text="0"/>개)
+                    폼 목록 (<Run x:Name="formRun" Text="0"/>개)
                 </TextBlock>
 
-                <ListBox x:Name="LBForms" Grid.Row="5" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                <ListBox x:Name="lbBForms" Grid.Row="5" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
                     <ListBox.Template>
                         <ControlTemplate>
@@ -85,10 +85,10 @@
 
                 <TextBlock Grid.Row="6" Margin="15,0" FontSize="12"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                    슬라이드 개체 목록 (<Run x:Name="SlideDocRun" Text="0"/>개)
+                    슬라이드 개체 목록 (<Run x:Name="slideDocRun" Text="0"/>개)
                 </TextBlock>
 
-                <ListBox x:Name="LBSlideDoc" Grid.Row="7" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                <ListBox x:Name="lbSlideDoc" Grid.Row="7" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
                     <ListBox.Template>
                         <ControlTemplate>

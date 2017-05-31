@@ -38,7 +38,7 @@ namespace PowerVBA.Controls.Tools
             {
                 _SlideCount = value;
 
-                SlideRun.Text = _SlideCount.ToString();
+                runSlide.Text = _SlideCount.ToString();
             }
         }
 
@@ -50,7 +50,7 @@ namespace PowerVBA.Controls.Tools
             {
                 _ShapeCount = value;
 
-                ShapeRun.Text = _ShapeCount.ToString();
+                runShape.Text = _ShapeCount.ToString();
             }
         }
 
@@ -61,15 +61,15 @@ namespace PowerVBA.Controls.Tools
             set
             {
                 _CurrentShapeCount = value;
-                RunSelSlideShapeCount.Text = _CurrentShapeCount.ToString();
+                runSelSlideShape.Text = _CurrentShapeCount.ToString();
             }
         }
 
         public string CurrentShapeName
         {
-            get { return RunSelShape.Text; }
+            get { return runSelShapeName.Text; }
             set
-            { RunSelShape.Text = value; }
+            { runSelShapeName.Text = value; }
         }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
@@ -88,23 +88,39 @@ namespace PowerVBA.Controls.Tools
 
         public void SlideSync(V2013.Connector.PPTConnector2013 Connector)
         {
-            RunSelSlideShapeCount.Text = Connector.Presentation
+            runSelSlideShape.Text = Connector.Presentation
                                     .Slides[Connector.Application.ActiveWindow.Selection.SlideRange.SlideIndex]
                                     .Shapes.Count.ToString();
-            RunSelShape.Text = Connector.Application.ActiveWindow.Selection.ShapeRange.Name;
+            runSelShapeName.Text = Connector.Application.ActiveWindow.Selection.ShapeRange.Name;
         }
 
         public void CodeSync(int lines, int Components, int Currline)
         {
-            RunAllLine.Text = lines.ToString();
-            RunVBAClasses.Text = Components.ToString();
+            runAllLine.Text = lines.ToString();
+            runVBAClasses.Text = Components.ToString();
 
-            RunCurrLine.Text = Currline.ToString();
+            runCurrLine.Text = Currline.ToString();
         }
 
         private void btnSync_SimpleButtonClicked(object sender)
         {
             ShapeSyncRequest?.Invoke();
+        }
+
+
+        public void Reset()
+        {
+            runShape.Text = "0";
+            runSlide.Text = "0";
+
+            runSelSlideShape.Text = "0";
+            runSelShapeName.Text = "선택되지 않음";
+
+            runAllLine.Text = "0";
+            runVBAClasses.Text = "0";
+
+            runCurrLine.Text = "0";
+
         }
     }
 }

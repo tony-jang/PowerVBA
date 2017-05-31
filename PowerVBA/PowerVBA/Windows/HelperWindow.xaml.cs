@@ -42,6 +42,8 @@ namespace PowerVBA.Windows
             AddTree(treeList, "VBA 형식", "TypeHelp");
             AddTree(treeList, "코드 분석", "CodeAnalysisHelp");
             AddTree(treeList, "명명 규칙", "NamingHelp");
+            AddTree(treeList, "도형 탐색기", "ShapeExplorerHelp");
+
 
             MoveHelpContext("FirstHelp");
         }
@@ -75,8 +77,7 @@ namespace PowerVBA.Windows
 
             return itm;
         }
-
-
+        
         private void I_Click(object sender, RoutedEventArgs e)
         {
             Hyperlink hl = (Hyperlink)sender;
@@ -84,12 +85,46 @@ namespace PowerVBA.Windows
             MoveHelpContext(hl.TargetName);
         }
 
-        public void MoveHelpContext(string DocumentName)
+
+        Stack<string> UndoStack = new Stack<string>();
+        Stack<string> RedoStack = new Stack<string>();
+        public void MoveNext()
         {
+            if (RedoStack.Count == 0) return;
+            MoveHelpContext(RedoStack.Pop(), MoveCallType.Redo);
+        }
+        public void MovePrev()
+        {
+            if (UndoStack.Count == 0) return;
+            string value = UndoStack.Pop();
+            //RedoStack.Push(value);
+            MoveHelpContext(value, MoveCallType.Undo);
+        }
+
+        private void MoveHelpContext(string DocumentName, MoveCallType OriginalCall)
+        {
+            if (OriginalCall == MoveCallType.General)
+            {
+                RedoStack.Clear();
+            }
+            if (HelpFrame.Tag != null)
+            {
+                var value = HelpFrame.Tag.ToString();
+                switch (OriginalCall)
+                {
+                    case MoveCallType.General:
+                    case MoveCallType.Redo:
+                        if (UndoStack.Count == 0 || UndoStack.Peek() != value) UndoStack.Push(value);
+                        break;
+                    case MoveCallType.Undo:
+                        if (RedoStack.Count == 0 || RedoStack.Peek() != value) RedoStack.Push(HelpFrame.Tag.ToString());
+                        break;
+                }
+            }
+
             try
             {
                 Grid newDoc = FindResource(DocumentName) as Grid;
-
                 if (!cache.Contains(newDoc))
                 {
                     cache.Add(newDoc);
@@ -106,6 +141,8 @@ namespace PowerVBA.Windows
                 }
 
                 HelpFrame.Content = newDoc;
+                HelpFrame.Tag = DocumentName;
+                runViewDoc.Text = DocumentName;
             }
             catch (ResourceReferenceKeyNotFoundException)
             {
@@ -115,6 +152,10 @@ namespace PowerVBA.Windows
             {
                 MessageBox.Show("알 수 없는 오류가 발생했습니다." + Environment.NewLine + Environment.NewLine + ex.ToString());
             }
+        }
+        public void MoveHelpContext(string DocumentName)
+        {
+            MoveHelpContext(DocumentName, MoveCallType.General);
         }
 
         public List<object> GetAllChildrens(Panel panel)
@@ -134,5 +175,28 @@ namespace PowerVBA.Windows
             }
             return Child;
         }
+
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            MoveHelpContext("FirstHelp");
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            MovePrev();
+        }
+
+        private void btnFront_Click(object sender, RoutedEventArgs e)
+        {
+            MoveNext();
+        }
+    }
+
+
+    public enum MoveCallType
+    {
+        General,
+        Undo,
+        Redo,
     }
 }

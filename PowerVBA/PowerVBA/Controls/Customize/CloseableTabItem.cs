@@ -1,4 +1,5 @@
 ﻿using PowerVBA.Commands;
+using PowerVBA.Core.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace PowerVBA.Controls.Customize
 {
     public class CloseableTabItem : TabItem
     {
+
+        public event EventHandler SaveCloseRequest;
+
         public CloseableTabItem()
         {
             CommandBindings.Add(new CommandBinding(TabItemCommand.DeleteCommand, OnDelete, OnDeleteExecute));
@@ -36,7 +40,7 @@ namespace PowerVBA.Controls.Customize
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        return;
+                        SaveCloseRequest?.Invoke(this, null);
                     }
                 }
                 TabControl tc = (TabControl)this.Parent;

@@ -11,6 +11,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
 using static PowerVBA.Global.Globals;
 using System.ComponentModel;
+using WPFExtension;
 
 namespace PowerVBA.Controls.Customize
 {
@@ -19,33 +20,34 @@ namespace PowerVBA.Controls.Customize
     [TemplatePart(Name = "Image")]
     [ContentProperty("Content")]
     [DefaultEvent("SimpleButtonClicked")]
-    public class ImageButton : System.Windows.Controls.Control
+    public class ImageButton : ListViewItem
     {
         public ImageButton()
         {
             this.Style = FindResource("ImageButtonStyle") as Style;
         }
-        
 
-        public static DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(string), typeof(ImageButton));
-        public static DependencyProperty BackImageProperty = DependencyProperty.Register(nameof(BackImage), typeof(ImageSource), typeof(ImageButton));
-        public static DependencyProperty ButtonModeProperty = DependencyProperty.Register(nameof(ButtonMode), typeof(ButtonModes), typeof(ImageButton));
+        
+        public static DependencyProperty BackImageProperty = DependencyHelper.Register();
+        public static DependencyProperty ButtonModeProperty = DependencyHelper.Register();
+        public static DependencyProperty TextAlignmentProperty = DependencyHelper.Register(new PropertyMetadata(TextAlignment.Center));
 
         public ImageSource BackImage
         {
-            get { return (ImageSource)GetValue(BackImageProperty); }
-            set { SetValue(BackImageProperty, value); }
+            get => (ImageSource)GetValue(BackImageProperty);
+            set => SetValue(BackImageProperty, value);
         }
-        public string Content
+
+        public TextAlignment TextAlignment
         {
-            get { return (string)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
+            get => (TextAlignment)GetValue(TextAlignmentProperty);
+            set => SetValue(TextAlignmentProperty, value);
         }
 
         public ButtonModes ButtonMode
         {
-            get { return (ButtonModes)GetValue(ButtonModeProperty); }
-            set { SetValue(ButtonModeProperty, value); }
+            get => (ButtonModes)GetValue(ButtonModeProperty);
+            set => SetValue(ButtonModeProperty, value);
         }
 
         private Border SimpleBtn;

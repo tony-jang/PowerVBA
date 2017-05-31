@@ -1,6 +1,7 @@
 ﻿using PowerVBA.Codes;
 using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Global.RegexExpressions;
+using PowerVBA.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,9 @@ namespace PowerVBA.Windows.AddWindows
             if (AddType == AddProcedureType.Function) btnFunction.IsChecked = true;
             else if (AddType == AddProcedureType.Property) btnProperty.IsChecked = true;
             else if (AddType == AddProcedureType.Sub) btnSub.IsChecked = true;
+
+
+            TBName.Focus();
         }
 
         private void Comm_Close(object sender, ExecutedRoutedEventArgs e)

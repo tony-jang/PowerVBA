@@ -158,13 +158,14 @@ namespace PowerVBA.Codes
                 if (LineInfo.IsInFunction) AddError(ErrorCode.VB0210);
                 else if (LineInfo.IsInSub) AddError(ErrorCode.VB0211);
                 else if (LineInfo.IsInProperty) AddError(ErrorCode.VB0212);
-                else if (LineInfo.IsInSelectCase) AddError(ErrorCode.VB0213);
-                else if (LineInfo.IsInIf) AddError(ErrorCode.VB0214);
-                else if (LineInfo.IsInDo) AddError(ErrorCode.VB0215);
-                else if (LineInfo.IsInDoWhile) AddError(ErrorCode.VB0216);
-                else if (LineInfo.IsInDoUntil) AddError(ErrorCode.VB0217);
-                else if (LineInfo.IsInEnum) AddError(ErrorCode.VB0218);
-                else if (LineInfo.IsInFor) AddError(ErrorCode.VB0219);
+                else if (LineInfo.IsInType) AddError(ErrorCode.VB0213);
+                else if (LineInfo.IsInSelectCase) AddError(ErrorCode.VB0214);
+                else if (LineInfo.IsInIf) AddError(ErrorCode.VB0215);
+                else if (LineInfo.IsInDo) AddError(ErrorCode.VB0216);
+                else if (LineInfo.IsInDoWhile) AddError(ErrorCode.VB0217);
+                else if (LineInfo.IsInDoUntil) AddError(ErrorCode.VB0218);
+                else if (LineInfo.IsInEnum) AddError(ErrorCode.VB0219);
+                else if (LineInfo.IsInFor) AddError(ErrorCode.VB0220);
                 else if (LineInfo.IsInForEach) AddError(ErrorCode.VB0210);
 
                 void AddError(ErrorCode Code, string[] parameters = null)

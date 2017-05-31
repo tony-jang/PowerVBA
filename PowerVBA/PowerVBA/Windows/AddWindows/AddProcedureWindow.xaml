@@ -44,8 +44,8 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <c:ImageRadioButton Margin="10,0" x:Name="btnPrivate" IsChecked="True" Content="Private" Source="/PowerVBA;component/Resources/Icon/LockIcon.png"/>
-                <c:ImageRadioButton Margin="10,0" x:Name="btnPublic" Grid.Column="1" Content="Public" Source="/PowerVBA;component/Resources/Icon/UnLockIcon.png" />
+                <c:ImageRadioButton Margin="10,0" x:Name="btnPrivate" IsChecked="True" Content="Private" Source="/PowerVBA;component/Resources/Icon/LockIcon.png" TabIndex="0"/>
+                <c:ImageRadioButton Margin="10,0" x:Name="btnPublic" Grid.Column="1" Content="Public" Source="/PowerVBA;component/Resources/Icon/UnLockIcon.png" TabIndex="1" />
             </Grid>                 
             <Grid Margin="0,15,0,0">
                 <Grid.ColumnDefinitions>
@@ -53,9 +53,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <c:ImageRadioButton Margin="10,0" x:Name="btnSub" IsChecked="True" Content="Sub" Source="/PowerVBA;component/Resources/Icon/MethodSubIcon.png"/>
-                <c:ImageRadioButton Margin="10,0" x:Name="btnFunction" Grid.Column="1" Content="Function" Source="/PowerVBA;component/Resources/Icon/MethodIcon.png" />
-                <c:ImageRadioButton Margin="10,0" x:Name="btnProperty" Grid.Column="2" Content="Property" Source="/PowerVBA;component/Resources/Icon/PropertyIcon.png" />
+                <c:ImageRadioButton Margin="10,0" x:Name="btnSub" IsChecked="True" Content="Sub" Source="/PowerVBA;component/Resources/Icon/MethodSubIcon.png" TabIndex="2"/>
+                <c:ImageRadioButton Margin="10,0" x:Name="btnFunction" Grid.Column="1" Content="Function" Source="/PowerVBA;component/Resources/Icon/MethodIcon.png" TabIndex="3" />
+                <c:ImageRadioButton Margin="10,0" x:Name="btnProperty" Grid.Column="2" Content="Property" Source="/PowerVBA;component/Resources/Icon/PropertyIcon.png" TabIndex="4" />
             </Grid>
             
             <Grid Margin="10,20,10,0">
@@ -64,7 +64,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="이름 : " FontSize="15"/>
-                <TextBox x:Name="TBName" Grid.Column="1" FontSize="15" KeyDown="TBName_KeyDown"/>
+                <TextBox x:Name="TBName" Grid.Column="1" FontSize="15" KeyDown="TBName_KeyDown" TabIndex="5"/>
             </Grid>
 
             <Grid Margin="0,15,0,0" HorizontalAlignment="Right">
@@ -74,8 +74,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="CloseBtn" Grid.Column="0" Content="취소" Padding="30,5" Click="CloseBtn_Click"/>
-                <Button x:Name="AddBtn" Grid.Column="2" Content="확인" Padding="30,5" Click="AddBtn_Click" />
+                <Button x:Name="CloseBtn" Grid.Column="0" Content="취소" Padding="30,5" Click="CloseBtn_Click" TabIndex="6"/>
+                <Button x:Name="AddBtn" Grid.Column="2" Content="확인" Padding="30,5" Click="AddBtn_Click" TabIndex="7" />
             </Grid>
         </StackPanel>
     </Grid>

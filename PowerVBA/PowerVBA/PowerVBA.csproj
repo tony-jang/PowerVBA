@@ -502,7 +502,7 @@
     <Resource Include="Resources\HelpImages\Ref1.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\HelpImages\trigger1.jpg" />
+    <Resource Include="Resources\HelpImages\Trigger1.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\HelpImages\FileAnalysis1.jpg" />
@@ -513,6 +513,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\HelpImages\ShapeExplorer1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\Trigger2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\PreDeclareFunc1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\PreDeclareFunc2.png" />
+    <Resource Include="Resources\HelpImages\PreDeclareFunc3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

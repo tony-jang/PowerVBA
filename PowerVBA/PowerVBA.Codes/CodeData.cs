@@ -199,6 +199,8 @@ namespace PowerVBA.Codes
         public bool AfterString { get; internal set; }
         public bool AfterWith { get; internal set; }
 
+        public bool AfterType_KW { get; internal set; }
+
         #region [  Option Private Module  ]
         public bool AfterOptionPrivateModule { get => AfterOption && AfterPrivate && AfterModule; }
 

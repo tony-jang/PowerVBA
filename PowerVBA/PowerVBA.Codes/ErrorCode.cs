@@ -426,6 +426,14 @@ namespace PowerVBA.Codes
         [KoError("전역 변수는 프로시져가 시작하기 전 위치까지만 사용 할 수 있습니다.")]
         VB0145,
 
+        /// <summary>End Property 단독 사용 불가능</summary>
+        [KoError("End Type는 Type 뒤에만 올 수 있습니다.")]
+        VB0146,
+
+        /// <summary>Sub Nest 사용 불가능</summary>
+        [KoError("Type은 메소드에 네스트해 사용할 수 없습니다.")]
+        VB0147,
+
         #endregion
 
         #region [  배열/As 오류  ]
@@ -567,29 +575,32 @@ namespace PowerVBA.Codes
         [KoError("Property 블록이 닫히지 않았습니다. End Property로 닫아주세요.")]
         VB0212,
 
-        [KoError("Select Case 블록이 닫히지 않았습니다. End Select로 닫아주세요.")]
+        [KoError("Type 블록이 닫히지 않았습니다. End Type로 닫아주세요.")]
         VB0213,
 
-        [KoError("If 블록이 닫히지 않았습니다. End If로 닫아주세요.")]
+        [KoError("Select Case 블록이 닫히지 않았습니다. End Select로 닫아주세요.")]
         VB0214,
 
-        [KoError("Do 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
+        [KoError("If 블록이 닫히지 않았습니다. End If로 닫아주세요.")]
         VB0215,
 
-        [KoError("Do While 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
+        [KoError("Do 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
         VB0216,
 
-        [KoError("Do Until 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
+        [KoError("Do While 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
         VB0217,
 
-        [KoError("Enum 블록이 닫히지 않았습니다. End Enum으로 닫아주세요.")]
+        [KoError("Do Until 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
         VB0218,
 
-        [KoError("For 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
+        [KoError("Enum 블록이 닫히지 않았습니다. End Enum으로 닫아주세요.")]
         VB0219,
 
-        [KoError("For Each 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
+        [KoError("For 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
         VB0220,
+
+        [KoError("For Each 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
+        VB0221,
 
         #endregion
 
@@ -660,6 +671,20 @@ namespace PowerVBA.Codes
 
         [KoError("Option Explicit 이후에는 문을 사용 할 수 없습니다.")]
         VB0262,
+
+        #endregion
+
+
+        #region [  Type 오류  ]
+
+        /// <summary>Type 멤버 선언 오류</summary>
+        [KoError("Type 내에서는 엑세서를 붙인 멤버를 선언할 수 없습니다.")]
+        VB0270,
+
+
+        /// <summary>Type 전역 변수 이후 선언 오류</summary>
+        [KoError("Type은 전역 변수 이후에 사용될 수 없습니다.")]
+        VB0271,
 
         #endregion
     }

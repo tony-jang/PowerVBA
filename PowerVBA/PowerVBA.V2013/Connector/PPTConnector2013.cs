@@ -28,7 +28,7 @@ namespace PowerVBA.V2013.Connector
 
         private PPTConnector2013()
         {
-            Application = new ApplicationWrapping(new Microsoft.Office.Interop.PowerPoint.Application());
+            Application = new ApplicationWrapping(new PPT.Application());
 
             AutoShapeUpdate = true;
 
@@ -129,7 +129,9 @@ namespace PowerVBA.V2013.Connector
                             (-2147188720, "오브젝트가 존재하지 않습니다."),
                             // 발생하는 예외 상황 : 연결된 PowerPoint 창이 닫히면서 프레제텐이션 창 자체가 닫혔을때
                             (-2146827864, "애플리케이션이 종료된 것 같습니다."),
-                            (-2147467262, "애플리케이션이 종료된 것 같습니다.")
+                            (-2147467262, "애플리케이션이 종료된 것 같습니다."),
+                            // 발생하는 예외 상황 : 강제로 PowerPoint가 종료되었을 경우
+                            (-2147023174, "RPC 서버를 사용 할 수 없습니다.")
                         };
 
                         //
@@ -182,7 +184,6 @@ namespace PowerVBA.V2013.Connector
             
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
-            //compWrap.CodeModule.DeleteLines()
 
             EventConnectThread?.Start();
         }
@@ -505,10 +506,15 @@ namespace PowerVBA.V2013.Connector
             try
             {
                 Presentation.SaveAs(path);
+
+                MessageBox.Show(Presentation.FullName);
                 return true;
             }
-            catch (Exception)
-            { return false; }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return false;
+            }
         }
 
         public override bool AddReference(string Path)
