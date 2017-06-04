@@ -20,7 +20,7 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="40" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.ColumnSpan="2">
@@ -30,43 +30,55 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Grid>
-                                    <Ellipse x:Name="bgRect" Fill="{TemplateBinding Background}"/>
-                                    <ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}"/>
+                                    <Ellipse x:Name="bgRect" Fill="{TemplateBinding Background}" />
+                                    <ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}" />
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="bgRect" Property="Fill" Value="LightGray"/>
+                                        <Setter TargetName="bgRect" Property="Fill" Value="LightGray" />
                                     </Trigger>
                                     <Trigger Property="IsPressed" Value="True">
-                                        <Setter TargetName="bgRect" Property="Fill" Value="#FFE3E3E3"/>
+                                        <Setter TargetName="bgRect" Property="Fill" Value="#FFE3E3E3" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
-                    </Setter>                
+                    </Setter>
                 </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <WrapPanel HorizontalAlignment="Left" Margin="5">
-                <Button x:Name="btnHome" Click="btnHome_Click" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
+            <WrapPanel Margin="5" HorizontalAlignment="Left">
+                <Button
+                    x:Name="btnHome"
+                    Margin="2.5"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="btnHome_Click">
                     <Button.Content>
-                        <Image RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/HomeBtn.png" />
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/PowerVBA;component/Resources/Icon/HomeBtn.png" />
                     </Button.Content>
                 </Button>
-                <Button x:Name="btnBack" Background="Transparent" BorderBrush="Transparent" Margin="2.5" Click="btnBack_Click">
+                <Button
+                    x:Name="btnBack"
+                    Margin="2.5"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="btnBack_Click">
                     <Button.Content>
-                        <Image RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/BackBtn.png" />
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/PowerVBA;component/Resources/Icon/BackBtn.png" />
                     </Button.Content>
                 </Button>
-                <Button x:Name="btnFront" Background="Transparent" BorderBrush="Transparent" Margin="2.5" Click="btnFront_Click">
+                <Button
+                    x:Name="btnFront"
+                    Margin="2.5"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="btnFront_Click">
                     <Button.Content>
-                        <Image RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/FrontBtn.png" />
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/PowerVBA;component/Resources/Icon/FrontBtn.png" />
                     </Button.Content>
                 </Button>
                 <!--<Button x:Name="btnUpper" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
@@ -77,12 +89,19 @@
                     </Button.Content>
                 </Button>-->
             </WrapPanel>
-            <TextBlock Grid.Column="1" Margin="10,0" VerticalAlignment="Center" TextAlignment="Right">
-                현재 보고 있는 문서 코드 : <Run x:Name="runViewDoc" Text="Document"/>
+            <TextBlock
+                Grid.Column="1"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                TextAlignment="Right">
+                현재 보고 있는 문서 코드 :<Run x:Name="runViewDoc" Text="Document" />
             </TextBlock>
         </Grid>
-        
-        <TreeView x:Name="treeList" Grid.Row="1" Margin="5"/>
+
+        <TreeView
+            x:Name="treeList"
+            Grid.Row="1"
+            Margin="5" />
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="1"

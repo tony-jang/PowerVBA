@@ -19,6 +19,10 @@ namespace PowerVBA.Codes
             ErrorList = new List<Error>();
             Childrens = new List<CodeItemBase>();
             Lines = new List<LineInfo>();
+
+            Properties = new List<string>();
+            Subs = new List<string>();
+            Functions = new List<string>();
         }
         
         /// <summary>
@@ -32,6 +36,20 @@ namespace PowerVBA.Codes
         public List<CodeItemBase> Childrens { get; set; }
         public List<LineInfo> Lines { get; set; }
 
+
+        /// <summary>
+        /// 함수 목록입니다.
+        /// </summary>
+        public List<string> Functions { get; set; }
+        /// <summary>
+        /// 서브루틴 목록입니다.
+        /// </summary>
+        public List<string> Subs { get; set; }
+        /// <summary>
+        /// 프로퍼티 목록입니다. get/let과 set이 중복되도 하나로 처리합니다.
+        /// </summary>
+        public List<string> Properties { get; set; }
+        
 
         public void Reset()
         {
@@ -50,6 +68,5 @@ namespace PowerVBA.Codes
 
             return string.Join("\r\n", returnD.ToArray());
         }
-
     }
 }

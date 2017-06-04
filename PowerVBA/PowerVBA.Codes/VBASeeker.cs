@@ -19,7 +19,7 @@ namespace PowerVBA.Codes
     {
         public VBASeeker(CodeInfo codeInfo)
         {
-            CodeInfo = codeInfo;
+            this.codeInfo = codeInfo;
         }
 
 
@@ -27,7 +27,7 @@ namespace PowerVBA.Codes
         public static string[] ExpressionReserveWords = Properties.Resources.예약어2.ToLower().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
         public static string[] ReserveWords = Properties.Resources.예약어.ToLower().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-        private CodeInfo CodeInfo;
+        private CodeInfo codeInfo;
 
         private LineInfo TempLineInfo;
         
@@ -1038,6 +1038,7 @@ namespace PowerVBA.Codes
                                         if (data.AfterPropAccessor)
                                         {
                                             // 정상 인식
+                                            codeInfo.Properties.CheckAdd(SavingText.ToString());
                                             data.AfterIdentifier = true;
                                         }
                                         // 아니라면 나가기
@@ -1090,7 +1091,7 @@ namespace PowerVBA.Codes
                                         data.AfterIdentifier = true;
                                     }
                                 }
-                                // 식별자 뒤라면
+                                // 식별자 뒤라면 (As 이후가 아니고 배열 이후도 아닌 경우)
                                 else if (data.AfterIdentifier && !data.AfterAs && !data.AfterArray)
                                 {
                                     // For이나 For Each이후의 식별자는 제외
@@ -2082,19 +2083,19 @@ namespace PowerVBA.Codes
             // 식 계산
             Expression ToExpression(string Expression)
             {
-                return new Expression(Expression, CodeInfo.ErrorList, i, fileName);
+                return new Expression(Expression, codeInfo.ErrorList, i, fileName);
             }
             
             void AddError(ErrorCode Code, string[] parameters = null, int Line = -1)
             {
-                if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, fileName, new DomRegion(lines.Item1.StartInt, 0)));
-                else CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, fileName, new DomRegion(Line, 0)));
+                if (Line == -1) codeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, fileName, new DomRegion(lines.Item1.StartInt, 0)));
+                else codeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, fileName, new DomRegion(Line, 0)));
             }
 
             void AddWarning(ErrorCode Code, string[] parameters = null, int Line = -1)
             {
-                if (Line == -1) CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, fileName, new DomRegion(lines.Item1.StartInt, 0)));
-                else CodeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, fileName, new DomRegion(Line, 0)));
+                if (Line == -1) codeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, fileName, new DomRegion(lines.Item1.StartInt, 0)));
+                else codeInfo.ErrorList.Add(new Error(ErrorType.Warning, Code, parameters, fileName, new DomRegion(Line, 0)));
             }
         }
         

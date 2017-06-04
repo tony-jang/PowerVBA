@@ -144,7 +144,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\Pro
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ErrorList.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ObjectExplorer.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ProjectAnalyzer.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ProjectProperty.g.cs
@@ -163,7 +162,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\Pro
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ErrorList.baml
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ObjectExplorer.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ProjectAnalyzer.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ProjectProperty.baml
@@ -253,3 +251,5 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\ErrorWindow.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\MainWindow.baml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\ErrorWindow.g.cs
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\ErrorWindow.baml

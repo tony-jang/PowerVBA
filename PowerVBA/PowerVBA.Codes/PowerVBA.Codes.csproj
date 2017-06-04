@@ -96,6 +96,7 @@
     <Compile Include="Expressions\MiniVarExp.cs" />
     <Compile Include="Extension\charEx.cs" />
     <Compile Include="Extension\EnumEx.cs" />
+    <Compile Include="Extension\ListEx.cs" />
     <Compile Include="Extension\stringEx.cs" />
     <Compile Include="CodeItems\PreprocessorDirectiveItem.cs" />
     <Compile Include="FoldingTypes.cs" />

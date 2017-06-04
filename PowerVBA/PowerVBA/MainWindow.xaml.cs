@@ -873,5 +873,10 @@ namespace PowerVBA
             }
 
         }
+
+        private void btnSync_ButtonClick(object sender)
+        {
+            runFunc.Text = codeInfo
+        }
     }
 }
