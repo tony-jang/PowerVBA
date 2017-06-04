@@ -19,7 +19,7 @@ namespace PowerVBA.Controls.Customize
     [TemplatePart(Name = "ExButton", Type = typeof(Border))]
     [TemplatePart(Name = "Image")]
     [ContentProperty("Content")]
-    [DefaultEvent("SimpleButtonClicked")]
+    [DefaultEvent("ButtonClick")]
     public class ImageButton : ListViewItem
     {
         public ImageButton()
@@ -52,7 +52,7 @@ namespace PowerVBA.Controls.Customize
 
         private Border SimpleBtn;
         private Border ExBtn;
-        public event SenderEventHandler SimpleButtonClicked;
+        public event SenderEventHandler ButtonClick;
         public event BlankEventHandler ExButtonClicked;
 
         public override void OnApplyTemplate()
@@ -92,7 +92,7 @@ namespace PowerVBA.Controls.Customize
         }
         private void SimpleBtn_LeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (SimpleDown && SimpleButtonClicked != null) SimpleButtonClicked(this);
+            if (SimpleDown && ButtonClick != null) ButtonClick(this);
             SimpleDown = false;
         }
         

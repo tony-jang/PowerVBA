@@ -24,7 +24,9 @@ using ICSharpCode.AvalonEdit.Folding;
 using Microsoft.Win32;
 using static PowerVBA.Global.Globals;
 using PowerVBA.Codes.Extension;
+using ppt = Microsoft.Office.Interop.PowerPoint;
 using PowerVBA.Core.Extension;
+using PowerVBA.Resources;
 
 namespace PowerVBA
 {
@@ -37,7 +39,7 @@ namespace PowerVBA
         StartupWindow suWindow = new StartupWindow();
         BackgroundWorker bg;
         Thread loadThread;
-        SQLiteConnector dbConnector;
+        SQLiteConnector dbConnector = new SQLiteConnector();
         CodeInfo codeInfo;
         List<FileInfo> libraryFiles = new List<FileInfo>();
         Stopwatch ParseSw = new Stopwatch();
@@ -69,7 +71,6 @@ namespace PowerVBA
             this.Loaded += MainWindow_Loaded;
             this.Activated += MainWindow_Activated;
 
-            menuTabControl.SelectionChanged += MenuTabControl_SelectionChanged;
             codeTabControl.SelectionChanged += CodeTabControl_SelectionChanged;
 
             errorList.LineMove += ErrorList_LineMove;
@@ -80,10 +81,11 @@ namespace PowerVBA
             solutionExplorer.OpenProperty += SolutionExplorer_OpenProperty;
             solutionExplorer.OpenObjectBrowser += SolutionExplorer_OpenBrowser;
             solutionExplorer.OpenShapeExplorer += SolutionExplorer_OpenShapeExplorer;
+            
 
             projAnalyzer.ShapeSyncRequest += ProjAnalyzer_ShapeSyncRequest;
 
-            backBtn.Click += BackBtn_Click;
+            backBtn.Click += backBtn_Click;
 
             #endregion
 
@@ -168,6 +170,40 @@ namespace PowerVBA
             #endregion
         }
 
+        private void BtnRefresh_ButtonClick(object sender)
+        {
+            RefreshPPTItem();
+        }
+
+        public void RefreshPPTItem()
+        {
+            lvOpenPPTs.Items.Clear();
+
+            var itm = new ppt.Application();
+
+            foreach (ppt.Presentation presentation in itm.Presentations)
+            {
+
+                var imgBtn = new ImageButton()
+                {
+                    TextAlignment = TextAlignment.Left,
+                    ButtonMode = ImageButton.ButtonModes.LongWidth,
+                    BackImage = ResourceImage.GetIconImage("PPTIcon"),
+                    Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
+                    Tag = presentation
+                };
+
+                imgBtn.ButtonClick += ImgBtn_ButtonClick;
+
+                lvOpenPPTs.Items.Add(imgBtn);
+            }            
+        }
+
+        private void ImgBtn_ButtonClick(object sender)
+        {
+            InitalizeConnector(new V2013.WrapClass.PresentationWrapping(((ppt.Presentation)((Control)sender).Tag)));
+        }
+
         public void AddCommandBinding(KeyGesture gesture, ExecutedRoutedEventHandler commandEvent)
         {
             RoutedCommand rCommand = new RoutedCommand();
@@ -220,6 +256,7 @@ namespace PowerVBA
             MainDispatcher = Dispatcher;
 
             RecentFileSet();
+            RecentFolderSet();
         }
 
         #endregion
@@ -262,6 +299,9 @@ namespace PowerVBA
                 try
                 {
                     var codeTabs = GetAllCodeTabs();
+
+
+                    
 
                     foreach (VBComponentWrappingBase item in connector.GetFiles())
                     {
@@ -313,7 +353,7 @@ namespace PowerVBA
         {
             if (IsConnected)
             {
-                BtnAllFileSync_SimpleButtonClicked(sender);
+                BtnAllFileSync_ButtonClick(sender);
             }
         }
 
@@ -322,7 +362,7 @@ namespace PowerVBA
         {
             if (IsConnected)
             {
-                BtnAddVar_SimpleButtonClicked(sender);
+                BtnAddVar_ButtonClick(sender);
             }
         }
 
@@ -331,7 +371,7 @@ namespace PowerVBA
         {
             if (IsConnected)
             {
-                BtnAddFunc_SimpleButtonClicked(sender);
+                BtnAddFunc_ButtonClick(sender);
             }
         }
 
@@ -419,7 +459,7 @@ namespace PowerVBA
             if (!dbConnector.RecentFileRemove(((RecentFileListViewItem)sender).FileLocation))
                 MessageBox.Show("알 수 없는 이유로 삭제에 실패했습니다.");
             else
-                LVrecentFile.Items.Remove(sender);
+                lvRecentFile.Items.Remove(sender);
         }
 
         // 아이템 복사를 요청합니다.
@@ -451,10 +491,9 @@ namespace PowerVBA
         }
 
         // 파일에서 뒤로 돌아가기 버튼 누를때
-        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        private void backBtn_Click(object sender, RoutedEventArgs e)
         {
-            programTabControl.SelectedIndex = 0;
-            this.NoTitle = false;
+            SetProgramTab(ProgramTabMenus.MainEdit);
         }
 
         private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -546,39 +585,34 @@ namespace PowerVBA
             Environment.Exit(0);
         }
 
-
-        private void MenuTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // 파일 탭이 선택되었을때
-            if (menuTabControl.SelectedIndex == 0)
-            {
-                programTabControl.SelectedIndex = 2; // 파일 아이템으로 변경
-                menuTabControl.SelectedIndex = 1; // 메뉴는 1(홈)로 변경
-
-                if (programTabControl.SelectedIndex == 2) this.NoTitle = true;
-            }
-        }
-
-
-        private void debugBtn_SimpleButtonClicked(object sender)
+        private void debugBtn_ButtonClick(object sender)
         {
             var itm = ((CodeTabEditor)((CloseableTabItem)codeTabControl.SelectedItem).Content).CodeEditor;
             itm.DeleteIndent();
         }
 
 
-        private void FileTabControl_Changed(object sender, SelectionChangedEventArgs e)
+        private void TiSaveItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            switch (((TabItem)fileTabControl.SelectedItem).Header.ToString())
+            BtnAllFileSync_ButtonClick(sender);
+
+            var itm = GetAllCodeEditors();
+            itm.ForEach(editor => editor.Save());
+            connector.Save();
+
+            SetProgramTab(ProgramTabMenus.MainEdit);
+
+            e.Handled = true;
+        }
+
+        private void fileTabClose_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (CloseRequest())
             {
-                case "닫기":
-                    if (CloseRequest()) AllClose();
-                    break;
-                case "저장":
-                    BtnAllFileSync_SimpleButtonClicked(sender);
-                    connector.Save();
-                    break;
+                AllClose();
             }
+            
+            e.Handled = true;
         }
 
 
@@ -590,13 +624,13 @@ namespace PowerVBA
         }
 
         
-        private void BtnToPPT_SimpleButtonClicked(object sender)
+        private void BtnToPPT_ButtonClick(object sender)
         {
             connector.ActivateWindow();
         }
 
 
-        private void AddRefBtn_SimpleButtonClicked(object sender)
+        private void AddRefBtn_ButtonClick(object sender)
         {
             var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "참조 관리자").ToList();
             if (tabItems.Count >= 1)
@@ -647,35 +681,47 @@ namespace PowerVBA
         {
             if (((Control)sender).Name.ToLower().Contains("openanotherppt"))
             {
-                OpenFileDialog ofd = new OpenFileDialog()
-                {
-                    Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
-                };
-                if (ofd.ShowDialog().Value)
-                {
-                    tbProcessInfoTB.Text = "프레젠테이션을 열고 있습니다.";
-
-                    dbConnector.RecentFileAdd(ofd.FileName);
-
-                    InitalizeConnector(ofd.FileName);
-                }
+                OpenAnotherPPT();
             }
             else if (((Control)sender).Name.ToLower().Contains("connectpresentation"))
             {
-                ConnectWindows connWindow = new ConnectWindows();
+                ConectPresentation();
+            }
+        }
 
-                var Handled = connWindow.ShowDialog(out PresentationWrappingBase ppt);
+        public void OpenAnotherPPT()
+        {
+            OpenFileDialog ofd = new OpenFileDialog()
+            {
+                Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
+            };
+            if (ofd.ShowDialog().Value)
+            {
+                tbProcessInfoTB.Text = "프레젠테이션을 열고 있습니다.";
 
-                if (Handled)
+                dbConnector.RecentFileAdd(ofd.FileName);
+
+                InitalizeAll();
+                InitalizeConnector(ofd.FileName);
+            }
+        }
+
+
+        public void ConectPresentation()
+        {
+            ConnectWindows connWindow = new ConnectWindows();
+
+            var Handled = connWindow.ShowDialog(out PresentationWrappingBase ppt);
+
+            if (Handled)
+            {
+                try
                 {
-                    try
-                    {
-                        InitalizeConnector(ppt);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    InitalizeConnector(ppt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
                 }
             }
         }
@@ -728,7 +774,7 @@ namespace PowerVBA
             runClass.Text = connector.GetClasses().Count.ToString();
         }
 
-        private void btnSaveAsSetFile_SimpleButtonClicked(object sender)
+        private void btnSaveAsSetFile_ButtonClick(object sender)
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "매크로 프레젠테이션 파일|*.pptm";
@@ -736,6 +782,9 @@ namespace PowerVBA
             if (sfd.ShowDialog().Value)
             {
                 dbConnector.RecentFolderAdd(sfd.FileName);
+
+                var itm = GetAllCodeEditors();
+                itm.ForEach(editor => editor.Save());
 
                 if (connector.SaveAs(sfd.FileName))
                 {
@@ -747,6 +796,21 @@ namespace PowerVBA
 
         void SetProgramTab(ProgramTabMenus programTabMenu)
         {
+
+            switch (programTabMenu)
+            {
+                case ProgramTabMenus.Startup:
+                case ProgramTabMenus.MainEdit:
+                    this.NoTitle = false;
+                    break;
+                case ProgramTabMenus.FileTab:
+                    this.NoTitle = true;
+                    break;
+                default:
+                    this.NoTitle = false;
+                    break;
+            }
+
             programTabControl.SelectedIndex = (int)programTabMenu;
         }
 
@@ -784,5 +848,30 @@ namespace PowerVBA
             Close = 5,
         }
 
+        private void btnFileTabOpen_ButtonClick(object sender)
+        {
+            OpenAnotherPPT();
+        }
+
+        private void FileTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SetProgramTab(ProgramTabMenus.FileTab);
+
+            e.Handled = true;
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var tc = (TabControl)sender;
+
+            if (tc.SelectedItem is TabItem ti)
+            {
+                if (ti.Tag?.ToString() == "connPresentation")
+                {
+                    RefreshPPTItem();
+                }
+            }
+
+        }
     }
 }

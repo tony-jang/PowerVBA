@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Vbe.Interop;
+using System.Runtime.InteropServices;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -23,6 +24,8 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ReferenceManager : UserControl
     {
+                
+
         PPTConnectorBase Connector;
 
         public ReferenceManager(PPTConnectorBase Connector)
@@ -37,13 +40,18 @@ namespace PowerVBA.Controls.Tools
 
             if (ofd.ShowDialog() == f.DialogResult.OK)
             {
-                Connector.AddReference(ofd.FileName);
+                //Connector.AddReference(ofd.FileName);
             }
         }
 
+        
         public void AddItem(Reference reference)
         {
-            
+
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -147,7 +147,6 @@ namespace PowerVBA.Core.Connector
                 while (SQLiteReader.Read())
                 {
                     string data = SQLiteReader.GetValue(0).ToString();
-                    string type = SQLiteReader.GetValue(1).ToString();
                     strList.Add(data);
                 }
             }
@@ -174,7 +173,6 @@ namespace PowerVBA.Core.Connector
                 while (SQLiteReader.Read())
                 {
                     string data = SQLiteReader.GetValue(0).ToString();
-                    string type = SQLiteReader.GetValue(1).ToString();
                     strList.Add(data);
                 }
             }
@@ -206,7 +204,7 @@ namespace PowerVBA.Core.Connector
         #region [  Recent Folder  ]
 
         /// <summary>
-        /// 최근 파일 목록에 추가합니다.
+        /// 최근 폴더 목록에 추가합니다.
         /// </summary>
         /// <param name="FolderLocation">추가할 파일 위치입니다.</param>
         /// <returns></returns>
@@ -231,7 +229,7 @@ namespace PowerVBA.Core.Connector
         }
 
         /// <summary>
-        /// 최근 파일 목록에서 제거합니다.
+        /// 최근 폴더 목록에서 제거합니다.
         /// </summary>
         /// <param name="FolderLocation">제거할 파일 위치입니다.</param>
         /// <returns></returns>
@@ -273,7 +271,7 @@ namespace PowerVBA.Core.Connector
         }
 
         /// <summary>
-        /// 최근 파일 목록을 가져옵니다.
+        /// 최근 폴더 목록을 가져옵니다.
         /// </summary>
         /// <returns></returns>
         public List<string> RecentFolderGet()

@@ -34,7 +34,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="프레젠테이션 전체 정보" FontSize="12" VerticalAlignment="Center" Foreground="#FFD34B2A"/>
-                            <custom:ImageButton x:Name="btnSync" Grid.Column="1" BackImage="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" ButtonMode="OnlyImage" Width="25" SimpleButtonClicked="btnSync_SimpleButtonClicked">
+                            <custom:ImageButton x:Name="btnSync" Grid.Column="1" BackImage="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" ButtonMode="OnlyImage" Width="25" ButtonClick="btnSync_ButtonClick">
                                 <custom:ImageButton.ToolTip>
                                     <c:CustomToolTip Title="수동 동기화" Text="도형 개수와 슬라이드 개수를 수동으로 동기화 시킵니다.&#x0a;[자동 해제] 상태시 이 방법으로만 동기화가 가능합니다."/>
                                 </custom:ImageButton.ToolTip>

@@ -80,9 +80,9 @@
                     <!--<c:ImageButton x:Name="btnAddShape" Style="{StaticResource btnStyle}" Grid.Column="0" 
                                    Content="도형 추가" BackImage="/PowerVBA;component/Resources/Icon/AddShapeIcon.png" />-->
                     <c:ImageButton x:Name="btnDelShape" Style="{StaticResource btnStyle}" Grid.Column="1" 
-                                   Content="도형 제거 (Del)" BackImage="/PowerVBA;component/Resources/Icon/DelShapeIcon.png" SimpleButtonClicked="btnDelShape_SimpleButtonClicked"/>
+                                   Content="도형 제거 (Del)" BackImage="/PowerVBA;component/Resources/Icon/DelShapeIcon.png" ButtonClick="btnDelShape_ButtonClick"/>
                     <c:ImageButton x:Name="btnRefresh" Style="{StaticResource btnStyle}" Grid.Column="2" 
-                                   Content="새로 고침 (F5)" BackImage="/PowerVBA;component/Resources/Icon/SyncIcon.png" SimpleButtonClicked="btnRefresh_SimpleButtonClicked"/>
+                                   Content="새로 고침 (F5)" BackImage="/PowerVBA;component/Resources/Icon/SyncIcon.png" ButtonClick="btnRefresh_ButtonClick"/>
                 </Grid>
 
             </Grid>

@@ -4,6 +4,7 @@ using PowerVBA.Controls.Customize;
 using PowerVBA.Core.Connector;
 using PowerVBA.Core.Extension;
 using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.Resources;
 using PowerVBA.Windows;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace PowerVBA
             
             // 라이브러리 파일 목록 초기화
             libraryFiles = new List<FileInfo>();
-
+            
             // 코드 탭 초기화
             codeTabControl.Items.Clear();
 
@@ -56,23 +57,57 @@ namespace PowerVBA
         }
 
 
+        // 최근 파일 목록을 다시 작성합니다. 처음 화면과 파일 탭의 아이템에도 똑같이 적용됩니다.
         public void RecentFileSet()
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                dbConnector = new SQLiteConnector();
-
-                LVrecentFile.Items.Clear();
+                lvRecentFile.Items.Clear();
+                lvRecentFile2.Items.Clear();
 
                 dbConnector.RecentFileGet().ForEach((fl) => {
                     var itm = new RecentFileListViewItem(fl);
                     itm.OpenRequest += Itm_OpenRequest;
                     itm.CopyOpenRequest += Itm_CopyOpenRequest;
                     itm.DeleteRequest += Itm_DeleteRequest;
-                    LVrecentFile.Items.Add(itm);
+                    lvRecentFile.Items.Add(itm);
+
+                    var itm2 = new ImageButton();
+
+                    itm2.TextAlignment = TextAlignment.Left;
+                    itm2.BackImage = ResourceImage.GetIconImage("PPTIcon");
+                    itm2.ButtonMode = ImageButton.ButtonModes.LongWidth;
+                    itm2.Content = new FileInfo(fl).Name;
+
+                    lvRecentFile2.Items.Add(itm2);
+
                 });
 
                 RunVersion.Text = VersionSelector.GetPPTVersion().GetDescription();
+            }));
+        }
+
+
+        public void RecentFolderSet()
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                fileOpenRecentFolder.Items.Clear();
+
+
+                dbConnector.RecentFolderGet().ForEach((fi) =>
+                {
+                    var itm = new ImageButton();
+
+                    itm.TextAlignment = TextAlignment.Left;
+                    itm.BackImage = ResourceImage.GetIconImage("PPtIcon");
+                    itm.ButtonMode = ImageButton.ButtonModes.LongWidth;
+                    itm.Content = fi.Replace("\\", " ≫ ");
+
+
+                    fileOpenRecentFolder.Items.Add(itm);
+                });
+
             }));
         }
     }

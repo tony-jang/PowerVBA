@@ -21,12 +21,12 @@ namespace PowerVBA
         #region [  홈 탭 이벤트  ]
 
         #region [  클립보드  ]
-        private void BtnCopy_SimpleButtonClicked(object sender)
+        private void BtnCopy_ButtonClick(object sender)
         {
             Clipboard.Clear();
             Clipboard.SetText(((CodeEditor)codeTabControl.SelectedContent).SelectedText);
         }
-        private void BtnPaste_SimpleButtonClicked(object sender)
+        private void BtnPaste_ButtonClick(object sender)
         {
             if (Clipboard.ContainsText())
             {
@@ -40,7 +40,7 @@ namespace PowerVBA
         #endregion
 
         #region [  작업  ]
-        private void BtnUndo_SimpleButtonClicked(object sender)
+        private void BtnUndo_ButtonClick(object sender)
         {
             CodeEditor editor = ((CodeEditor)codeTabControl.SelectedItem);
             if (editor == null) return;
@@ -50,7 +50,7 @@ namespace PowerVBA
             editor.Focus();
         }
 
-        private void BtnRedo_SimpleButtonClicked(object sender)
+        private void BtnRedo_ButtonClick(object sender)
         {
             CodeEditor editor = ((CodeEditor)codeTabControl.SelectedItem);
             if (editor == null) return;
@@ -63,7 +63,7 @@ namespace PowerVBA
         #endregion
 
         #region [  슬라이드 관리  ]
-        private void BtnNewSlide_SimpleButtonClicked(object sender)
+        private void BtnNewSlide_ButtonClick(object sender)
         {
             int slideNumber = connector.Slide;
 
@@ -73,7 +73,7 @@ namespace PowerVBA
 
         }
 
-        private void BtnDelSlide_SimpleButtonClicked(object sender)
+        private void BtnDelSlide_ButtonClick(object sender)
         {
             int SlideNumber = 0;
             if (connector.SlideCount == 0)
@@ -95,7 +95,7 @@ namespace PowerVBA
         #endregion
 
 
-        private void BtnHelp_SimpleButtonClicked(object sender)
+        private void BtnHelp_ButtonClick(object sender)
         {
             HelperWindow hWdw = new HelperWindow();
             hWdw.ShowDialog();
@@ -106,21 +106,21 @@ namespace PowerVBA
 
         #region [  삽입 탭 이벤트  ]
 
-        private void BtnAddClass_SimpleButtonClicked(object sender)
+        private void BtnAddClass_ButtonClick(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Class);
 
             SolutionExplorer_Open(this, filewindow.ShowDialog());
         }
 
-        private void BtnAddModule_SimpleButtonClicked(object sender)
+        private void BtnAddModule_ButtonClick(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Module);
 
             SolutionExplorer_Open(this, filewindow.ShowDialog());
         }
 
-        private void BtnAddForm_SimpleButtonClicked(object sender)
+        private void BtnAddForm_ButtonClick(object sender)
         {
             AddFileWindow filewindow = new AddFileWindow(connector, AddFileWindow.AddFileType.Form);
 
@@ -128,7 +128,7 @@ namespace PowerVBA
         }
 
 
-        private void BtnAddSub_SimpleButtonClicked(object sender)
+        private void BtnAddSub_ButtonClick(object sender)
         {
             var procWindow =
                 new AddProcedureWindow(GetCodeTab(),
@@ -138,24 +138,24 @@ namespace PowerVBA
             procWindow.ShowDialog();
         }
 
-        private void BtnAddFunc_SimpleButtonClicked(object sender)
+        private void BtnAddFunc_ButtonClick(object sender)
         {
             new AddProcedureWindow(GetCodeTab(), GetCodeTabName(),
                                    codeInfo, AddProcedureWindow.AddProcedureType.Function).ShowDialog();
         }
-        private void BtnAddProp_SimpleButtonClicked(object sender)
+        private void BtnAddProp_ButtonClick(object sender)
         {
             new AddProcedureWindow(GetCodeTab(), GetCodeTabName(),
                                    codeInfo, AddProcedureWindow.AddProcedureType.Property).ShowDialog();
 
         }
 
-        private void BtnAddMouseOverTrigger_SimpleButtonClicked(object sender)
+        private void BtnAddMouseOverTrigger_ButtonClick(object sender)
         {
             new AddTriggerWindow(true, GetCodeTab(), codeInfo, GetCodeTabName()).ShowDialog(connector);
         }
 
-        private void BtnAddMouseClickTrigger_SimpleButtonClicked(object sender)
+        private void BtnAddMouseClickTrigger_ButtonClick(object sender)
         {
             new AddTriggerWindow(false, GetCodeTab(), codeInfo, GetCodeTabName()).ShowDialog(connector);
         }
@@ -166,13 +166,13 @@ namespace PowerVBA
         }
 
 
-        private void BtnAddVar_SimpleButtonClicked(object sender)
+        private void BtnAddVar_ButtonClick(object sender)
         {
             new AddVarWindow(GetCodeTab(), ((TabItem)codeTabControl.SelectedItem).Header.ToString(),
                              codeInfo, true).ShowDialog();
         }
 
-        private void BtnAddConst_SimpleButtonClicked(object sender)
+        private void BtnAddConst_ButtonClick(object sender)
         {
             new AddVarWindow(GetCodeTab(), ((TabItem)codeTabControl.SelectedItem).Header.ToString(),
                              codeInfo, false).ShowDialog();
@@ -181,7 +181,7 @@ namespace PowerVBA
 
         #region [  프로젝트 탭  ]
 
-        private void PreDeclareFuncBtn_SimpleButtonClicked(object sender)
+        private void PreDeclareFuncBtn_ButtonClick(object sender)
         {
             var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "미리 정의된 함수").ToList();
             if (tabItems.Count >= 1)
@@ -200,7 +200,7 @@ namespace PowerVBA
             }
         }
 
-        private void CheckError_SimpleButtonClicked(object sender)
+        private void CheckError_ButtonClick(object sender)
         {
             var result = MessageBox.Show("코드 분석을 시작합니다.\r\n코드 분석은 현재 프로젝트에 있는 파일 모두를 분석해 오류를 확인합니다.\r\n" +
                             "저장되지 않은 내용은 검사되지 않으며 문법적 검사만 실행합니다.\r\n계속하시겠습니까?", "코드 분석 확인", MessageBoxButton.OKCancel);
@@ -222,17 +222,18 @@ namespace PowerVBA
             }
         }
 
-        private void BtnFileSync_SimpleButtonClicked(object sender)
+        private void BtnFileSync_ButtonClick(object sender)
         {
             var itm = GetCodeTab();
             if (itm != null) itm.Save();
             SetMessage("저장되었습니다.");
         }
 
-        private void BtnAllFileSync_SimpleButtonClicked(object sender)
+        private void BtnAllFileSync_ButtonClick(object sender)
         {
             var itm = GetAllCodeEditors();
             itm.ForEach(editor => editor.Save());
+            connector.Save();
             SetMessage("전체 저장되었습니다.");
         }
         #endregion

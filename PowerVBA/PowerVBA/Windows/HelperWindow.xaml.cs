@@ -135,7 +135,7 @@ namespace PowerVBA.Windows
                     List<Hyperlink> hyperlinks = obj.Where(i => i.GetType() == typeof(Hyperlink))
                                                                        .Cast<Hyperlink>().ToList();
 
-                    buttons.ForEach(i => i.SimpleButtonClicked += MoveHelpContext);
+                    buttons.ForEach(i => i.ButtonClick += MoveHelpContext);
                     hyperlinks.ForEach(i => i.Click += I_Click);
 
                 }

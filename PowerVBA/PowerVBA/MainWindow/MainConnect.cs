@@ -78,6 +78,11 @@ namespace PowerVBA
                         break;
                 }
 
+                if (tmpConn.IsLocalPresentation)
+                {
+                    tiSaveItem.IsEnabled = true;
+                }
+
 
                 tmpConn.PresentationClosed += PPTCloseDetect;
                 tmpConn.VBAComponentChange += ProjectFileChange;
@@ -126,20 +131,30 @@ namespace PowerVBA
                 {
                     case PPTVersion.PPT2010:
                         if (FileLocation == string.Empty)
+                        {
                             tmpConn = new PPTConnector2010();
+                        }
                         else
                         {
-                            
                             tmpConn = new PPTConnector2010(FileLocation, CopyOpen);
                         }
                         break;
                     case PPTVersion.PPT2016:
                     case PPTVersion.PPT2013:
                         if (FileLocation == string.Empty)
+                        {
                             tmpConn = new PPTConnector2013();
+                        }
                         else
+                        {
                             tmpConn = new PPTConnector2013(FileLocation, CopyOpen);
+                        }
                         break;
+                }
+
+                if (tmpConn.IsLocalPresentation)
+                {
+                    tiSaveItem.IsEnabled = true;
                 }
 
                 tmpConn.PresentationClosed += PPTCloseDetect;

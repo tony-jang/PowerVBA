@@ -95,12 +95,12 @@ namespace PowerVBA.Controls.Tools
             }
         }
 
-        private void btnRefresh_SimpleButtonClicked(object sender)
+        private void btnRefresh_ButtonClick(object sender)
         {
             Refresh();
         }
 
-        private void btnDelShape_SimpleButtonClicked(object sender)
+        private void btnDelShape_ButtonClick(object sender)
         {
             if (lvShape.SelectedIndex == -1) return;
 

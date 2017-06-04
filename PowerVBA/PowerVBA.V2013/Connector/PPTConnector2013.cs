@@ -428,6 +428,9 @@ namespace PowerVBA.V2013.Connector
             }
         }
 
+        public override string FullName => Presentation.FullName;
+        public override bool IsLocalPresentation => System.IO.File.Exists(FullName);
+
         public override List<ShapeWrappingBase> Shapes()
         {
             List<ShapeWrappingBase> shapes = new List<ShapeWrappingBase>();

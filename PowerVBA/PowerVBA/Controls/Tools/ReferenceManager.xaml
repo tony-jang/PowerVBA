@@ -19,7 +19,9 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="참조 관리자" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
-            <Button Grid.Column="1" Content="저장"  Padding="20,5" Margin="10,0" VerticalAlignment="Center" BorderBrush="Black" Background="White" Foreground="Black"/>
+            <Button x:Name="btnSave" Grid.Column="1" Content="저장" 
+                    Padding="20,5" Margin="10,0" VerticalAlignment="Center" 
+                    BorderBrush="Black" Background="White" Foreground="Black" Click="btnSave_Click"/>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -46,7 +48,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Center">
-                    이름 : <Run x:Name="RunName" Text="asdfjasklfj;lsdf"/>
+                    이름 : <Run x:Name="RunName" Text="Dll Name"/>
                 </TextBlock>
                 <TextBlock Grid.Row="2" VerticalAlignment="Center">
                     위치 : <Run x:Name="RunLoc" Text="C:\Users\uutak\Desktop\Test.dll"/>

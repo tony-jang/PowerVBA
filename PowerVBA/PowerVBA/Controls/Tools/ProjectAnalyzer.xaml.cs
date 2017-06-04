@@ -102,7 +102,7 @@ namespace PowerVBA.Controls.Tools
             runCurrLine.Text = Currline.ToString();
         }
 
-        private void btnSync_SimpleButtonClicked(object sender)
+        private void btnSync_ButtonClick(object sender)
         {
             ShapeSyncRequest?.Invoke();
         }

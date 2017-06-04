@@ -100,9 +100,10 @@
                             <Style BasedOn="{StaticResource TabItemStyle}" TargetType="{x:Type TabItem}" />
                         </TabControl.Resources>
                         <TabItem
-                            x:Name="FileTab"
+                            x:Name="fileTab"
                             Header="파일"
-                            Style="{StaticResource FileTabItemStyle}" />
+                            Style="{StaticResource FileTabItemStyle}" 
+                            PreviewMouseDown="FileTab_PreviewMouseDown"/>
                         <TabItem Header="홈">
                             <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
                                 <GroupBox Header="클립보드">
@@ -111,7 +112,7 @@
                                             x:Name="BtnCopy"
                                             BackImage="Resources/Icon/CopyIcon.png"
                                             Content="복사"
-                                            SimpleButtonClicked="BtnCopy_SimpleButtonClicked">
+                                            ButtonClick="BtnCopy_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="복사 (Ctrl+C)" Text="현재 코드 편집기의&#x0a;내용을 복사합니다." />
                                             </c:ImageButton.ToolTip>
@@ -120,7 +121,7 @@
                                             x:Name="BtnPaste"
                                             BackImage="Resources/Icon/ClipboardIcon.png"
                                             Content="붙여넣기"
-                                            SimpleButtonClicked="BtnPaste_SimpleButtonClicked">
+                                            ButtonClick="BtnPaste_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="붙여넣기 (Ctrl+V)" Text="클립보드의 내용을 문서를 붙여&#x0a;넣습니다." />
                                             </c:ImageButton.ToolTip>
@@ -137,7 +138,7 @@
                                             x:Name="btnUndo"
                                             BackImage="Resources/Icon/UndoIcon.png"
                                             Content="실행 취소"
-                                            SimpleButtonClicked="BtnUndo_SimpleButtonClicked">
+                                            ButtonClick="BtnUndo_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="실행 취소 (Ctrl+Z)" Text="가장 최근에 실행했던 작업을 취소합니다." />
                                             </c:ImageButton.ToolTip>
@@ -146,7 +147,7 @@
                                             x:Name="btnRedo"
                                             BackImage="Resources/Icon/RedoIcon.png"
                                             Content="다시 실행"
-                                            SimpleButtonClicked="BtnRedo_SimpleButtonClicked">
+                                            ButtonClick="BtnRedo_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="실행 취소 (Ctrl+Z)" Text="가장 최근에 취소했던 작업을 다시 실행합니다." />
                                             </c:ImageButton.ToolTip>
@@ -163,7 +164,7 @@
                                             x:Name="BtnNewSlide"
                                             BackImage="Resources/Icon/NewSlideIcon.png"
                                             Content="새 슬라이드"
-                                            SimpleButtonClicked="BtnNewSlide_SimpleButtonClicked">
+                                            ButtonClick="BtnNewSlide_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="새 슬라이드" Text="현재 프레젠테이션에 슬라이드를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -172,7 +173,7 @@
                                             x:Name="btnDelSlide"
                                             BackImage="Resources/Icon/DeleteSlideIcon.png"
                                             Content="슬라이드&#x0a;삭제"
-                                            SimpleButtonClicked="BtnDelSlide_SimpleButtonClicked">
+                                            ButtonClick="BtnDelSlide_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="슬라이드 삭제" Text="현재 프레젠테이션에 슬라이드를 삭제합니다." />
                                             </c:ImageButton.ToolTip>
@@ -189,7 +190,7 @@
                                             x:Name="btnHelp"
                                             BackImage="Resources/Icon/HelpIcon.png"
                                             Content="도움말 열기"
-                                            SimpleButtonClicked="BtnHelp_SimpleButtonClicked">
+                                            ButtonClick="BtnHelp_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="도움말 열기" Text="PowerVBA에 대한 도움말을 열어 확인합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -206,7 +207,7 @@
                                             x:Name="BtnToPPT"
                                             BackImage="Resources/Icon/pptIcon.png"
                                             Content="파워포인트로&#x0a;이동"
-                                            SimpleButtonClicked="BtnToPPT_SimpleButtonClicked">
+                                            ButtonClick="BtnToPPT_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="파워포인트로 이동" Text="파워포인트 창을 활성화 시킵니다."/>
                                             </c:ImageButton.ToolTip>
@@ -227,7 +228,7 @@
                                             x:Name="btnAddClass"
                                             BackImage="Resources/Icon/ClassIcon.png"
                                             Content="클래스 추가"
-                                            SimpleButtonClicked="BtnAddClass_SimpleButtonClicked">
+                                            ButtonClick="BtnAddClass_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="클래스 추가" Text="현재 VBA 프로젝트에 클래스를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -236,7 +237,7 @@
                                             x:Name="btnAddModule"
                                             BackImage="Resources/Icon/ModuleIcon.png"
                                             Content="모듈 추가"
-                                            SimpleButtonClicked="BtnAddModule_SimpleButtonClicked">
+                                            ButtonClick="BtnAddModule_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="모듈 추가 (Ctrl+Shift+A)" Text="현재 VBA 프로젝트에 모듈을 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -245,7 +246,7 @@
                                             x:Name="btnAddForm"
                                             BackImage="Resources/Icon/FormIcon.png"
                                             Content="사용자 폼&#x0a;추가"
-                                            SimpleButtonClicked="BtnAddForm_SimpleButtonClicked">
+                                            ButtonClick="BtnAddForm_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="사용자 폼 추가" Text="현재 VBA 프로젝트에 사용자 폼을 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -263,7 +264,7 @@
                                             BackImage="Resources/Icon/MethodSubIcon.png"
                                             Content="Sub&#x0a;함수 추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddSub_SimpleButtonClicked">
+                                            ButtonClick="BtnAddSub_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Sub 함수 추가 (Ctrl+Shift+D)" Text="현재 VBA 프로젝트에 Sub 함수를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -273,7 +274,7 @@
                                             BackImage="Resources/Icon/MethodIcon.png"
                                             Content="Function&#x0a;함수 추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddFunc_SimpleButtonClicked">
+                                            ButtonClick="BtnAddFunc_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Function 함수 추가" Text="현재 VBA 프로젝트에 Function 함수를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -283,7 +284,7 @@
                                             BackImage="Resources/Icon/PropertyIcon.png"
                                             Content="Property&#x0a;추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddProp_SimpleButtonClicked">
+                                            ButtonClick="BtnAddProp_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="Property 추가" Text="현재 VBA 프로젝트에 Property를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -301,7 +302,7 @@
                                             BackImage="Resources/Icon/VariableIcon.png"
                                             Content="변수 추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddVar_SimpleButtonClicked">
+                                            ButtonClick="BtnAddVar_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="변수 추가 (Ctrl+Shift+V)" Text="현재 VBA 프로젝트에 변수를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -311,7 +312,7 @@
                                             BackImage="Resources/Icon/ConstIcon.png"
                                             Content="상수 추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddConst_SimpleButtonClicked">
+                                            ButtonClick="BtnAddConst_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="상수 추가" Text="현재 VBA 프로젝트에 상수를 추가합니다." />
                                             </c:ImageButton.ToolTip>
@@ -329,7 +330,7 @@
                                             BackImage="Resources/Icon/MouseOverIcon.png"
                                             Content="MouseOver&#x0a;트리거 추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddMouseOverTrigger_SimpleButtonClicked">
+                                            ButtonClick="BtnAddMouseOverTrigger_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="MouseOver 트리거 추가" Text="마우스를 위로 올리면 발생하는 트리거를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -340,7 +341,7 @@
                                             BackImage="Resources/Icon/MouseClickIcon.png"
                                             Content="MouseClick&#x0a;트리거 추가"
                                             IsEnabled="False"
-                                            SimpleButtonClicked="BtnAddMouseClickTrigger_SimpleButtonClicked" >
+                                            ButtonClick="BtnAddMouseClickTrigger_ButtonClick" >
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="MouseClick 트리거 추가" Text="마우스를 클릭하면 발생하는 트리거를 추가합니다."/>
                                             </c:ImageButton.ToolTip>
@@ -363,7 +364,7 @@
                                             x:Name="PreDeclareFuncBtn"
                                             BackImage="Resources/Icon/AddFuncsIcon.png"
                                             Content="미리 정의된&#x0a;함수 추가"
-                                            SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked">
+                                            ButtonClick="PreDeclareFuncBtn_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="미리 정의된 함수 추가" Text="PowerVBA에서 미리 정의 해둔 함수들을 추가/제거 합니다." />
                                             </c:ImageButton.ToolTip>
@@ -372,13 +373,13 @@
                                             x:Name="PreDeclareAPIBtn"
                                             BackImage="Resources/Icon/AddFuncsIcon.png"
                                             Content="미리 정의된&#x0a;API 추가"
-                                            SimpleButtonClicked="PreDeclareFuncBtn_SimpleButtonClicked" />-->
+                                            ButtonClick="PreDeclareFuncBtn_ButtonClick" />-->
 
                                         <c:ImageButton
                                             x:Name="addRefBtn"
                                             BackImage="Resources/Icon/ReferenceIcon.png"
                                             Content="참조 추가" 
-                                            SimpleButtonClicked="AddRefBtn_SimpleButtonClicked">
+                                            ButtonClick="AddRefBtn_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="참조 추가" Text="현재 파워포인트의 참조를 추가/제거합니다." />
                                             </c:ImageButton.ToolTip>
@@ -395,7 +396,7 @@
                                             x:Name="CheckError"
                                             BackImage="Resources/Icon/AddFuncsIcon.png"
                                             Content="코드 분석"
-                                            SimpleButtonClicked="CheckError_SimpleButtonClicked">
+                                            ButtonClick="CheckError_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="코드 분석" Text="현재 PowerVBA 프로젝트의 모든 파일의 오류를 확인합니다." />
                                             </c:ImageButton.ToolTip>
@@ -410,9 +411,10 @@
                                     <WrapPanel>
                                         <c:ImageButton
                                             x:Name="btnFileSync"
+                                            IsEnabled="False"
                                             BackImage="Resources/Icon/SyncIcon.png"
                                             Content="현재 파일&#x0a;동기화"
-                                            SimpleButtonClicked="BtnFileSync_SimpleButtonClicked">
+                                            ButtonClick="BtnFileSync_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="현재 파일 동기화 (Ctrl+S)" Text="현재 선택된 파일을 VBA 프로젝트와 동기화시킵니다." />
                                             </c:ImageButton.ToolTip>
@@ -421,7 +423,7 @@
                                             x:Name="btnAllFileSync"
                                             BackImage="Resources/Icon/AllSyncIcon.png"
                                             Content="모든 파일&#x0a;동기화"
-                                            SimpleButtonClicked="BtnAllFileSync_SimpleButtonClicked">
+                                            ButtonClick="BtnAllFileSync_ButtonClick">
                                             <c:ImageButton.ToolTip>
                                                 <corec:CustomToolTip Title="모든 파일 동기화 (Ctrl+Shift+S)" Text="모든 변경된 파일들을 VBA 프로젝트와 동기화 시킨 뒤 저장합니다." />
                                             </c:ImageButton.ToolTip>
@@ -540,7 +542,7 @@
                             TextWrapping="Wrap"
                             Visibility="Hidden" />
                         <ListView
-                            x:Name="LVrecentFile"
+                            x:Name="lvRecentFile"
                             Grid.Row="1"
                             Margin="15,20,15,0"
                             Background="{x:Null}"
@@ -604,7 +606,7 @@
                                 VerticalAlignment="Top"
                                 Fill="#FFE48F7B" />
                             <Button
-                                x:Name="GridOpenAnotherPpt"
+                                x:Name="gridOpenAnotherPpt"
                                 Margin="25,15,0,75"
                                 Padding="5"
                                 HorizontalAlignment="Left"
@@ -712,9 +714,9 @@
                         VerticalScrollBarVisibility="Auto">
                         <WrapPanel VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <c:LargeImageButton
-                                x:Name="BtnNewPPT"
+                                x:Name="btnNewPPT"
                                 Padding="10"
-                                Click="BtnNewPPT_Click"
+                                Click="btnNewPPT_Click"
                                 Content="새 프레젠테이션"
                                 Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다." />
                         </WrapPanel>
@@ -731,7 +733,7 @@
                             Text="도움말" />
 
                         <Grid Grid.Row="1">
-                            <WrapPanel Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            <WrapPanel Margin="10,9,10,11" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                    ScrollViewer.VerticalScrollBarVisibility="Visible">
                                 <c:LargeImageButton
                                     Padding="10"
@@ -795,6 +797,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Text="{Binding ElementName=ThisWindow, Path=Title}" />
+                <!--SelectionChanged="FileTabControl_Changed"-->
                 <TabControl
                     x:Name="fileTabControl"
                     Grid.ColumnSpan="2"
@@ -802,7 +805,7 @@
                     Padding="0"
                     Background="#00000000"
                     BorderBrush="Transparent"
-                    SelectionChanged="FileTabControl_Changed"
+                    
                     TabStripPlacement="Left">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type TabControl}">
@@ -1047,7 +1050,7 @@
                                             <c:LargeImageButton
                                                 x:Name="btnNewPPT2"
                                                 Padding="10"
-                                                Click="BtnNewPPT_Click"
+                                                Click="btnNewPPT_Click"
                                                 Content="새 프레젠테이션"
                                                 Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다." />
                                         </WrapPanel>
@@ -1056,7 +1059,7 @@
                             </StackPanel>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="열기">
+                    <TabItem x:Name="fileTabOpen" Header="열기">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -1082,6 +1085,7 @@
                                 <Grid>
                                     <Grid>
                                         <TabControl
+                                            SelectionChanged="TabControl_SelectionChanged"
                                             Padding="0"
                                             BorderBrush="{x:Null}"
                                             TabStripPlacement="Left">
@@ -1168,7 +1172,7 @@
                                                     <StackPanel Margin="30,0">
                                                         <TextBlock Grid.Column="1" Text="최근에 사용한 프레젠테이션" FontSize="20" VerticalAlignment="Center" Foreground="#FFD45031"/>
 
-                                                        <ListView Margin="0,10" BorderBrush="Transparent" Width="400" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch">
+                                                        <ListView x:Name="lvRecentFile2" Margin="0,10" BorderBrush="Transparent" Width="400" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch">
                                                             <ListView.ItemContainerStyle>
                                                                 <Style TargetType="{x:Type ListViewItem}">
                                                                     <Style.Resources>
@@ -1212,7 +1216,8 @@
                                                                     </Setter>
                                                                 </Style>
                                                             </ListView.ItemContainerStyle>
-                                                            
+                                                            <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
+                                                                Content="Presentation1" BackImage="Resources/Icon/pptIcon.png" ButtonMode="LongWidth"/>
                                                         </ListView>
                                                     </StackPanel>
                                                 </Grid>
@@ -1230,41 +1235,59 @@
                                                         </Grid>
                                                         <TextBlock Text="최근 폴더" Margin="0,10,0,0"/>
 
-                                                        <ListView BorderBrush="Transparent" Width="400" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch">
+                                                        <ListView x:Name="fileOpenRecentFolder" 
+                                                                  BorderBrush="Transparent" 
+                                                                  Width="400" 
+                                                                  HorizontalAlignment="Left" 
+                                                                  HorizontalContentAlignment="Stretch">
                                                             <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
-                                                                           Content="asdffasdfasdfasdf" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
+                                                                           Content="Folder1" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
                                                             <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
-                                                                           Content="asdffasdfasdfasdf" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
+                                                                           Content="Folder2" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
                                                         </ListView>
 
-                                                        <c:ImageButton HorizontalAlignment="Left"
+                                                        <c:ImageButton x:Name="btnFileTabOpen"
+                                                                       HorizontalAlignment="Left"
                                                                        BackImage="Resources/Icon/FindFolderIcon.png" 
                                                                        Content="찾아보기" 
                                                                        FontSize="12"
                                                                        Padding="20, 15" 
                                                                        Margin="0,30"
-                                                                       BorderBrush="#FFABABAB"/>
+                                                                       BorderBrush="#FFABABAB" ButtonClick="btnFileTabOpen_ButtonClick"/>
                                                     </StackPanel>
                                                 </Grid>
                                             </c:ImageTabItem>
-                                            <c:ImageTabItem Header="기존 프레젠테이션과 연결" Source="Resources/Icon/connectBlackIcon.png">
+                                            <c:ImageTabItem Header="기존 프레젠테이션과 연결" Source="Resources/Icon/connectBlackIcon.png" Tag="connPresentation">
                                                 <Grid>
                                                     <StackPanel Margin="30,0">
                                                         <Grid HorizontalAlignment="Left">
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition/>
-                                                                <ColumnDefinition/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
                                                             <Image Source="Resources/Icon/connectBlackIcon.png" Width="30"/>
-                                                            <TextBlock Grid.Column="1" Text="기존 프레젠테이션과 연결" FontSize="20" Margin="10,0" VerticalAlignment="Center" Foreground="#FFD45031"/>
+                                                            <TextBlock Grid.Column="1" Text="기존 프레젠테이션과 연결" 
+                                                                       FontSize="20" Margin="10,0" 
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center" Foreground="#FFD45031"/>
+                                                            <c:ImageButton x:Name="btnRefresh" Grid.Column="2" 
+                                                                           BackImage="/PowerVBA;component/Resources/Icon/SyncIcon.png" 
+                                                                           ButtonMode="OnlyImage" Width="25" ButtonClick="BtnRefresh_ButtonClick" 
+                                                                           VerticalAlignment="Center">
+                                                                <c:ImageButton.ToolTip>
+                                                                    <corec:CustomToolTip Title="프레젠테이션 새로 고침" Text="프레젠테이션 목록을 다시 확인합니다."/>
+                                                                </c:ImageButton.ToolTip>
+                                                            </c:ImageButton>
                                                         </Grid>
                                                         <TextBlock Text="열려있는 프레젠테이션" Margin="0,10,0,0"/>
 
-                                                        <ListView BorderBrush="Transparent" Width="400" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch">
+                                                        <ListView x:Name="lvOpenPPTs" BorderBrush="Transparent" Width="400" 
+                                                                  HorizontalAlignment="Left" HorizontalContentAlignment="Stretch">
                                                             <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
-                                                                           Content="asdffasdfasdfasdf" BackImage="Resources/Icon/PPTIcon.png" ButtonMode="LongWidth"/>
+                                                                           Content="Presentation1" BackImage="Resources/Icon/PPTIcon.png" ButtonMode="LongWidth"/>
                                                             <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
-                                                                           Content="asdffasdfasdfasdf" BackImage="Resources/Icon/PPTIcon.png" ButtonMode="LongWidth"/>
+                                                                           Content="Presentation2" BackImage="Resources/Icon/PPTIcon.png" ButtonMode="LongWidth"/>
                                                         </ListView>
                                                     </StackPanel>
                                                 </Grid>
@@ -1276,7 +1299,7 @@
                             </Grid>
                         </Grid>
                     </TabItem>
-                    <TabItem x:Name="saveItem" Header="저장" IsEnabled="False" />
+                    <TabItem x:Name="tiSaveItem" Header="저장" IsEnabled="False" PreviewMouseDown="TiSaveItem_MouseDown"/>
                     <TabItem x:Name="saveAsTabItem" Header="다른 이름으로&#xd;저장">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -1388,9 +1411,9 @@
 
                                                         <ListView BorderBrush="Transparent" Width="400" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch">
                                                             <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
-                                                                           Content="asdffasdfasdfasdf" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
+                                                                           Content="Folder1" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
                                                             <c:ImageButton TextAlignment="Left" Padding="5,0,0,0"
-                                                                           Content="asdffasdfasdfasdf" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
+                                                                           Content="Folder2" BackImage="Resources/Icon/FindFolderIcon.png" ButtonMode="LongWidth"/>
                                                         </ListView>
 
                                                         <c:ImageButton x:Name="btnSaveAsSetFile"
@@ -1400,7 +1423,7 @@
                                                             FontSize="12"
                                                             Padding="20,15" 
                                                             Margin="0,30"
-                                                            BorderBrush="#FFABABAB" SimpleButtonClicked="btnSaveAsSetFile_SimpleButtonClicked"/>
+                                                            BorderBrush="#FFABABAB" ButtonClick="btnSaveAsSetFile_ButtonClick"/>
                                                     </StackPanel>
                                                 </Grid>
                                             </c:ImageTabItem>
@@ -1412,8 +1435,7 @@
                         </Grid>
 
                     </TabItem>
-                    <TabItem Header="닫기" />
-
+                    <TabItem x:Name="fileTabClose" Header="닫기" PreviewMouseDown="fileTabClose_MouseDown"/>
                 </TabControl>
 
                 <corec:PathButton

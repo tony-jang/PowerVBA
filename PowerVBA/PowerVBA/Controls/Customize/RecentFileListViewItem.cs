@@ -152,5 +152,7 @@ namespace PowerVBA.Controls.Customize
             get { return (string)GetValue(FileLocationProperty); }
             set { SetValue(FileLocationProperty, value); }
         }
+
+        public string FileName => TBFileName?.Text;
     }
 }

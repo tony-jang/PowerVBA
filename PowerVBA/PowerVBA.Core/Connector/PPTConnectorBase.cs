@@ -17,7 +17,12 @@ namespace PowerVBA.Core.Connector
         public VBProjectWrappingBase _VBProject { get; set; }
         
         public abstract PPTVersion Version { get; }
+
         public abstract string Name { get; }
+        public abstract string FullName { get; }
+
+        public abstract bool IsLocalPresentation { get; }
+
         public abstract int SlideCount { get; }
         public abstract int ComponentCount { get; }
         public abstract int AllLineCount { get; }
