@@ -233,9 +233,23 @@ namespace PowerVBA
         {
             var itm = GetAllCodeEditors();
             itm.ForEach(editor => editor.Save());
+
+            if (!(connector.Name.EndsWith(".ppsm") || connector.Name.EndsWith(".pptm")) && connector.ComponentCount != 0)
+            {
+                MessageBox.Show(".ppsm이거나 .pptm 형식이 아닌 파일은 매크로를 포함해 저장할 수 없습니다.\n" +
+                    "다른 이름으로 저장하거나 매크로를 제거하세요.");
+                return;
+            }
+
             connector.Save();
             SetMessage("전체 저장되었습니다.");
         }
+
+        /// <summary>
+        /// 코드가 저장되었는지에 대한 여부를 가져옵니다. 저장되었을시 true를 하나라도 저장되지 않았을시 false를 반환합니다.
+        /// </summary>
+        /// <remarks>모든 코드 탭을 가져와서 Saved 속성을 통해 저장되지 않은 코드 탭의 갯수를 가져와 0개면 저장되었음을 반환</remarks>
+        public bool CodeSaved => GetAllCodeTabs().Count(i => !i.Saved) == 0;
         #endregion
     }
 }

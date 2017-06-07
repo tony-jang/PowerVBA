@@ -188,36 +188,40 @@ namespace PowerVBA
 
         private void PPTCloseDetect()
         {
-            var result = MessageBox.Show("프레젠테이션이 PowerVBA의 코드가 저장되지 않은 상태에서 닫혔습니다.\r\n" +
+            if (!CodeSaved)
+            {
+                var result = MessageBox.Show("프레젠테이션이 PowerVBA의 코드가 저장되지 않은 상태에서 닫혔습니다.\r\n" +
                 "코드 파일만 따로 저장하시겠습니까?\r\n" +
                 "[예]를 누르시면 현재 열린 코드 파일만 추출되어 바탕화면에 저장됩니다.\r\n" +
                 "[아니오]를 누르시면 코드 파일은 소멸되며 종료됩니다.", "PowerVBA", MessageBoxButton.YesNo);
 
-            if (result == MessageBoxResult.Yes)
-            {
-                try
+                if (result == MessageBoxResult.Yes)
                 {
-                    foreach (CloseableTabItem itm in codeTabControl.Items
-                                                         .Cast<CloseableTabItem>()
-                                                         .Where(i => i.Content.GetType() == typeof(CodeEditor)))
+                    try
                     {
-                        var editor = (CodeEditor)itm.Content;
+                        foreach (CloseableTabItem itm in codeTabControl.Items
+                                                             .Cast<CloseableTabItem>()
+                                                             .Where(i => i.Content.GetType() == typeof(CodeEditor)))
+                        {
+                            var editor = (CodeEditor)itm.Content;
 
-                        string dirPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\\{ProjName}\\";
-                        string path = $"{dirPath}{itm.Header.ToString()}";
+                            string dirPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\\{ProjName}\\";
+                            string path = $"{dirPath}{itm.Header.ToString()}";
 
-                        if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
+                            if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
-                        File.Create(path).Dispose();
+                            File.Create(path).Dispose();
 
-                        StreamWriter sw = new StreamWriter(path);
+                            StreamWriter sw = new StreamWriter(path);
 
-                        sw.Write(editor.Text);
+                            sw.Write(editor.Text);
+                        }
                     }
+                    catch (Exception)
+                    { }
                 }
-                catch (Exception)
-                { }
-            }
+            }   
+            
             Environment.Exit(0);
         }
 

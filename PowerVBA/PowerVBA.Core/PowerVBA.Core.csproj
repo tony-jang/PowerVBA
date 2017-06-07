@@ -98,7 +98,7 @@
     <Compile Include="AvalonEdit\Replace\FindReplaceDialog.xaml.cs">
       <DependentUpon>FindReplaceDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Connector\SQLiteConnector.cs" />
+    <Compile Include="DataBase\SQLiteConnector.cs" />
     <Compile Include="Controls\CodeBlock.xaml.cs">
       <DependentUpon>CodeBlock.xaml</DependentUpon>
     </Compile>
@@ -130,6 +130,7 @@
     <Compile Include="Connector\PPTConnectorBase.cs" />
     <Compile Include="Connector\VersionSelector.cs" />
     <Compile Include="Convert\StringConverter.cs" />
+    <Compile Include="DataBase\SQLiteTable.cs" />
     <Compile Include="Error\CodeError.cs" />
     <Compile Include="Error\ErrorType.cs" />
     <Compile Include="Extension\ArrayEx.cs" />

@@ -22,11 +22,14 @@ using System.IO;
 using PowerVBA.Core.AvalonEdit.Replace;
 using ICSharpCode.AvalonEdit.Folding;
 using Microsoft.Win32;
-using static PowerVBA.Global.Globals;
 using PowerVBA.Codes.Extension;
-using ppt = Microsoft.Office.Interop.PowerPoint;
 using PowerVBA.Core.Extension;
 using PowerVBA.Resources;
+using PowerVBA.Core.DataBase;
+
+using static PowerVBA.Global.Globals;
+
+using ppt = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerVBA
 {
@@ -85,7 +88,7 @@ namespace PowerVBA
 
             projAnalyzer.ShapeSyncRequest += ProjAnalyzer_ShapeSyncRequest;
 
-            backBtn.Click += backBtn_Click;
+            backBtn.Click += BackBtn_Click;
 
             #endregion
 
@@ -456,7 +459,7 @@ namespace PowerVBA
         // 아이템 삭제를 요청합니다.
         private void Itm_DeleteRequest(object sender)
         {
-            if (!dbConnector.RecentFileRemove(((RecentFileListViewItem)sender).FileLocation))
+            if (!dbConnector.FileTable.Remove(((RecentFileListViewItem)sender).FileLocation))
                 MessageBox.Show("알 수 없는 이유로 삭제에 실패했습니다.");
             else
                 lvRecentFile.Items.Remove(sender);
@@ -491,7 +494,7 @@ namespace PowerVBA
         }
 
         // 파일에서 뒤로 돌아가기 버튼 누를때
-        private void backBtn_Click(object sender, RoutedEventArgs e)
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             SetProgramTab(ProgramTabMenus.MainEdit);
         }
@@ -553,7 +556,7 @@ namespace PowerVBA
                                       .Select(i => (CodeEditor)i.Content)
                                       .Where(i => i.Saved);
 
-                if (!connector.Saved || nonSavedFile.Count() != 0)
+                if (!connector.Saved || !CodeSaved)
                 {
                     var result = MessageBox.Show(connector.Name + "에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?", "저장되지 않은 내용", MessageBoxButton.YesNoCancel);
 
@@ -585,7 +588,7 @@ namespace PowerVBA
             Environment.Exit(0);
         }
 
-        private void debugBtn_ButtonClick(object sender)
+        private void DebugBtn_ButtonClick(object sender)
         {
             var itm = ((CodeTabEditor)((CloseableTabItem)codeTabControl.SelectedItem).Content).CodeEditor;
             itm.DeleteIndent();
@@ -605,7 +608,7 @@ namespace PowerVBA
             e.Handled = true;
         }
 
-        private void fileTabClose_MouseDown(object sender, MouseButtonEventArgs e)
+        private void FileTabClose_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (CloseRequest())
             {
@@ -699,7 +702,7 @@ namespace PowerVBA
             {
                 tbProcessInfoTB.Text = "프레젠테이션을 열고 있습니다.";
 
-                dbConnector.RecentFileAdd(ofd.FileName);
+                dbConnector.FileTable.Add(ofd.FileName);
 
                 InitalizeAll();
                 InitalizeConnector(ofd.FileName);
@@ -769,7 +772,7 @@ namespace PowerVBA
         }
 
         // 동기화 버튼
-        private void btnSync_MouseDown(object sender, MouseButtonEventArgs e)
+        private void BtnInfoSync_MouseDown(object sender, MouseButtonEventArgs e)
         {
             runClass.Text = connector.GetClasses().Count.ToString();
         }
@@ -781,7 +784,7 @@ namespace PowerVBA
 
             if (sfd.ShowDialog().Value)
             {
-                dbConnector.RecentFolderAdd(sfd.FileName);
+                dbConnector.FolderTable.Add(sfd.FileName);
 
                 var itm = GetAllCodeEditors();
                 itm.ForEach(editor => editor.Save());
@@ -874,9 +877,10 @@ namespace PowerVBA
 
         }
 
-        private void btnSync_ButtonClick(object sender)
+        private void BtnInfoSync_ButtonClick(object sender)
         {
-            runFunc.Text = codeInfo
+            runFunc.Text = codeInfo.Functions.Count.ToString();
+
         }
     }
 }

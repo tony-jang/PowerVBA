@@ -341,7 +341,7 @@
                             <Setter Property="Foreground" Value="White" />
                             <Setter TargetName="EndBtn" Property="Visibility" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="Changed" Value="False">
+                        <Trigger Property="Saved" Value="False">
                             <Setter TargetName="TBChanged" Property="Text" Value="" />
                         </Trigger>
                     </ControlTemplate.Triggers>

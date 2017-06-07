@@ -65,7 +65,7 @@ namespace PowerVBA
                 lvRecentFile.Items.Clear();
                 lvRecentFile2.Items.Clear();
 
-                dbConnector.RecentFileGet().ForEach((fl) => {
+                dbConnector.FileTable.Get().ForEach((fl) => {
                     var itm = new RecentFileListViewItem(fl);
                     itm.OpenRequest += Itm_OpenRequest;
                     itm.CopyOpenRequest += Itm_CopyOpenRequest;
@@ -95,7 +95,7 @@ namespace PowerVBA
                 fileOpenRecentFolder.Items.Clear();
 
 
-                dbConnector.RecentFolderGet().ForEach((fi) =>
+                dbConnector.FolderTable.Get().ForEach((fi) =>
                 {
                     var itm = new ImageButton();
 

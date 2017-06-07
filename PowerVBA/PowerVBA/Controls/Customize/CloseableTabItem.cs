@@ -22,19 +22,23 @@ namespace PowerVBA.Controls.Customize
             CommandBindings.Add(new CommandBinding(TabItemCommand.DeleteCommand, OnDelete, OnDeleteExecute));
         }
 
-        public static DependencyProperty ChangedProperty = DependencyHelper.Register(new PropertyMetadata(false));
+        public static DependencyProperty SavedProperty = DependencyHelper.Register(new PropertyMetadata(false));
 
-        public bool Changed
+        /// <summary>
+        /// 저장되었는지에 대한 여부를 가져옵니다. 
+        /// true는 저장됨 false는 저장 되지 않음을 나타냅니다.
+        /// </summary>
+        public bool Saved
         {
-            get { return (bool)GetValue(ChangedProperty); }
-            set { SetValue(ChangedProperty, value); }
+            get { return (bool)GetValue(SavedProperty); }
+            set { SetValue(SavedProperty, value); }
         }
 
         private void OnDelete(object sender, ExecutedRoutedEventArgs e)
         {
             if (this.Parent.GetType() == typeof(TabControl))
             {
-                if (Changed)
+                if (Saved)
                 {
                     var result = MessageBox.Show("저장되지 않은 내용이 있습니다. 저장하고 닫으시겠습니까?", "저장되지 않은 파일", MessageBoxButton.YesNo);
 

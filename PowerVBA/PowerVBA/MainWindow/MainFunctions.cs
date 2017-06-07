@@ -107,7 +107,7 @@ namespace PowerVBA
 
                 codeTab.SaveCloseRequest += CodeTab_SaveCloseRequest;
 
-                codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
+                codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = !(((UndoStack)sender).IsOriginalFile); };
                 codeEditor.TextChanged += CodeEditor_TextChanged;
                 codeEditor.SaveRequest += () =>
                 {
@@ -152,7 +152,7 @@ namespace PowerVBA
                 Content = codeEditor
             };
 
-            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Changed = !(((UndoStack)sender).IsOriginalFile); };
+            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = !(((UndoStack)sender).IsOriginalFile); };
             codeEditor.SaveRequest += () => { SetMessage("저장되었습니다."); };
             codeTabControl.Items.Add(codeTab);
         }
