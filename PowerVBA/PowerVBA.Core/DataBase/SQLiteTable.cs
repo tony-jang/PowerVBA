@@ -79,11 +79,15 @@ namespace PowerVBA.Core.DataBase
         /// 아이템을 추가합니다.
         /// </summary>
         /// <param name="data">추가할 아이템입니다.</param>
+        /// <param name="checkItem">추가할 아이템이 존재하는지 체크합니다. 존재시 True를 반환합니다.</param>
         /// <returns></returns>
-        public bool Add(string data)
+        public bool Add(string data, bool checkItem = true)
         {
             if (!connector.IsEnabled)
                 return false;
+
+            if (Contains(data))
+                return true;
 
             query = $"INSERT INTO {TableName} (Data) VALUES (?)";
 
@@ -99,6 +103,27 @@ namespace PowerVBA.Core.DataBase
 
             return (InsertRow == 1);
         }
+
+        public bool Contains(string data)
+        {
+            if (!connector.IsEnabled)
+                return false;
+
+            query = $"SELECT * FROM {TableName} WHERE Data = \"{data}\";";
+            dbCommand.CommandText = query;
+
+            using (SQLiteDataReader SQLiteReader = dbCommand.ExecuteReader())
+            {
+                while (SQLiteReader.Read())
+                {
+                    string str = SQLiteReader.GetValue(0).ToString();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// 아이템을 삭제합니다.

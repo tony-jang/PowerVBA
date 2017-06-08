@@ -22,7 +22,6 @@ using System.IO;
 using PowerVBA.Core.AvalonEdit.Replace;
 using ICSharpCode.AvalonEdit.Folding;
 using Microsoft.Win32;
-using PowerVBA.Codes.Extension;
 using PowerVBA.Core.Extension;
 using PowerVBA.Resources;
 using PowerVBA.Core.DataBase;
@@ -325,9 +324,7 @@ namespace PowerVBA
                                                  "\r\n현재 내 파일의 코드로 변경하려면 [아니오]를 누르세요.", "코드 충돌", MessageBoxButton.YesNo);
 
                                     if (msg == MessageBoxResult.Yes)
-                                    {
                                         editor.Text = item.Code;
-                                    }
                                 }
                                 editor.Save();
                             }

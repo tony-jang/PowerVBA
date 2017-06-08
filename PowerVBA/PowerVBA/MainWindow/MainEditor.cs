@@ -234,6 +234,14 @@ namespace PowerVBA
             var itm = GetAllCodeEditors();
             itm.ForEach(editor => editor.Save());
 
+            // 저장되지 않았을 경우
+            if (!connector.IsLocalPresentation)
+            {
+                SetProgramTab(ProgramTabMenus.FileTab);
+                SetFileTabMenu(FileTabMenus.SaveAs);
+                return;
+            }
+
             if (!(connector.Name.EndsWith(".ppsm") || connector.Name.EndsWith(".pptm")) && connector.ComponentCount != 0)
             {
                 MessageBox.Show(".ppsm이거나 .pptm 형식이 아닌 파일은 매크로를 포함해 저장할 수 없습니다.\n" +

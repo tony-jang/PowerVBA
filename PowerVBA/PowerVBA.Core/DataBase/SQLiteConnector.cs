@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using System.Diagnostics;
-using System.Windows;
-using System.IO;
 
 namespace PowerVBA.Core.DataBase
 {

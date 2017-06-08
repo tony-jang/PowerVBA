@@ -6,11 +6,8 @@ using PowerVBA.V2010.Connector;
 using PowerVBA.V2013.Connector;
 using PowerVBA.Wrap;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -131,24 +128,16 @@ namespace PowerVBA
                 {
                     case PPTVersion.PPT2010:
                         if (FileLocation == string.Empty)
-                        {
                             tmpConn = new PPTConnector2010();
-                        }
                         else
-                        {
                             tmpConn = new PPTConnector2010(FileLocation, CopyOpen);
-                        }
                         break;
                     case PPTVersion.PPT2016:
                     case PPTVersion.PPT2013:
                         if (FileLocation == string.Empty)
-                        {
                             tmpConn = new PPTConnector2013();
-                        }
                         else
-                        {
                             tmpConn = new PPTConnector2013(FileLocation, CopyOpen);
-                        }
                         break;
                 }
 
@@ -183,9 +172,7 @@ namespace PowerVBA
                     break;
             }
         }
-
-
-
+        
         private void PPTCloseDetect()
         {
             if (!CodeSaved)
@@ -208,7 +195,8 @@ namespace PowerVBA
                             string dirPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\\{ProjName}\\";
                             string path = $"{dirPath}{itm.Header.ToString()}";
 
-                            if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
+                            if (!Directory.Exists(dirPath))
+                                Directory.CreateDirectory(dirPath);
 
                             File.Create(path).Dispose();
 
@@ -229,7 +217,5 @@ namespace PowerVBA
         {
             solutionExplorer.Update(connector);
         }
-
-
     }
 }
