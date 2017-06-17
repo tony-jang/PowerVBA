@@ -17,6 +17,7 @@
     Icon="Resources/ProgramIcon/PowerVBA SmallLogo.ico"
     IsEnableMove="True"
     IsSubWindow="false"
+    HelpVisible="True"
     NoTitle="True"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
@@ -86,7 +87,6 @@
                     <RowDefinition />
                     <RowDefinition Height="23" />
                 </Grid.RowDefinitions>
-
                 <Grid>
 
                     <TabControl
@@ -606,15 +606,15 @@
                                 VerticalAlignment="Top"
                                 Fill="#FFE48F7B" />
                             <Button
-                                x:Name="gridOpenAnotherPpt"
+                                x:Name="gridOpenAnotherPPT"
                                 Margin="25,15,0,75"
                                 Padding="5"
                                 HorizontalAlignment="Left"
                                 Background="#00000000"
                                 BorderBrush="{x:Null}"
-                                Click="OpenButtons_Click"
+                                Click="GridOpenAnotherPPT_Click"
                                 Cursor="Hand"
-                                MouseLeave="GridOpenAnotherPpt_MouseLeave"
+                                MouseLeave="Buttons_MouseLeave"
                                 MouseMove="OpenButtons_MouseMove">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
@@ -650,15 +650,15 @@
                             </Button>
 
                             <Button
-                                x:Name="GridConnectPresentation"
+                                x:Name="gridConnectPresentation"
                                 Margin="25,60,0,35"
                                 Padding="5"
                                 HorizontalAlignment="Left"
                                 Background="#00000000"
                                 BorderBrush="{x:Null}"
-                                Click="OpenButtons_Click"
+                                Click="GridConnectPresentation_Click"
                                 Cursor="Hand"
-                                MouseLeave="GridOpenAnotherPpt_MouseLeave"
+                                MouseLeave="Buttons_MouseLeave"
                                 MouseMove="OpenButtons_MouseMove">
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
@@ -716,7 +716,7 @@
                             <c:LargeImageButton
                                 x:Name="btnNewPPT"
                                 Padding="10"
-                                Click="btnNewPPT_Click"
+                                Click="BtnNewPPT_Click"
                                 Content="새 프레젠테이션"
                                 Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다." />
                         </WrapPanel>
@@ -739,14 +739,14 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Visible">
                                 <c:LargeImageButton
                                     Padding="10"
-                                    Click="btnHelp_Click"
+                                    Click="BtnHelp_Click"
                                     Content="기본적인 PowerVBA의 사용법"
                                     Description="PowerVBA를 사용하는 기본적인 방법에 대해 설명합니다."
                                     Source="Resources/Icon/HelpIcon.png"
                                     Tag="FirstHelp" />
                                 <c:LargeImageButton
                                     Padding="10"
-                                    Click="btnHelp_Click"
+                                    Click="BtnHelp_Click"
                                     Content="PowerVBA와 PowerPoint의 차이점"
                                     Description="PowerVBA와 PowerPoint의 차이점에 대해 설명합니다."
                                     Source="Resources/Icon/PPTIcon.png"
@@ -1060,7 +1060,7 @@
                                             <c:LargeImageButton
                                                 x:Name="btnNewPPT2"
                                                 Padding="10"
-                                                Click="btnNewPPT_Click"
+                                                Click="BtnNewPPT_Click"
                                                 Content="새 프레젠테이션"
                                                 Description="보조 파일을 사용하지 않고 원본 VBA 문법만 사용하는 새 프레젠테이션을 만듭니다." />
                                         </WrapPanel>
@@ -1095,6 +1095,7 @@
                                 <Grid>
                                     <Grid>
                                         <TabControl
+                                            x:Name="lvOpen"
                                             Padding="0"
                                             BorderBrush="{x:Null}"
                                             SelectionChanged="TabControl_SelectionChanged"
@@ -1177,7 +1178,10 @@
                                                     </Setter>
                                                 </Style>
                                             </TabControl.Resources>
-                                            <c:ImageTabItem Header="최근에 사용한 프레젠테이션" Source="Resources/Icon/RecentIcon.png">
+                                            <c:ImageTabItem x:Name="lvItmRecent"
+                                                Header="최근에 사용한 프레젠테이션" 
+                                                Source="Resources/Icon/RecentIcon.png"
+                                                Tag="openAtRecent">
                                                 <Grid>
                                                     <StackPanel Margin="30,0">
                                                         <TextBlock
@@ -1247,7 +1251,10 @@
                                                     </StackPanel>
                                                 </Grid>
                                             </c:ImageTabItem>
-                                            <c:ImageTabItem Header="컴퓨터" Source="Resources/Icon/MyComIcon.png">
+                                            <c:ImageTabItem Header="컴퓨터" 
+                                                x:Name="lvItmOpenComputer"
+                                                Source="Resources/Icon/MyComIcon.png"
+                                                Tag="openAtComputer">
                                                 <Grid>
                                                     <StackPanel Margin="30,0">
                                                         <Grid HorizontalAlignment="Left">
@@ -1267,11 +1274,12 @@
                                                         <TextBlock Margin="0,10,0,0" Text="최근 폴더" />
 
                                                         <ListView
-                                                            x:Name="fileOpenRecentFolder"
+                                                            x:Name="lvOpenFolders"
                                                             Width="400"
                                                             HorizontalAlignment="Left"
                                                             HorizontalContentAlignment="Stretch"
-                                                            BorderBrush="Transparent">
+                                                            BorderBrush="Transparent"
+                                                            Tag="openAtComputer">
                                                             <c:ImageButton
                                                                 Padding="5,0,0,0"
                                                                 BackImage="Resources/Icon/FindFolderIcon.png"
@@ -1283,7 +1291,7 @@
                                                                 BackImage="Resources/Icon/FindFolderIcon.png"
                                                                 ButtonMode="LongWidth"
                                                                 Content="Folder2"
-                                                                TextAlignment="Left" />
+                                                                TextAlignment="Left"/>
                                                         </ListView>
 
                                                         <c:ImageButton
@@ -1293,16 +1301,17 @@
                                                             HorizontalAlignment="Left"
                                                             BackImage="Resources/Icon/FindFolderIcon.png"
                                                             BorderBrush="#FFABABAB"
-                                                            ButtonClick="btnFileTabOpen_ButtonClick"
+                                                            ButtonClick="BtnFileTabOpen_ButtonClick"
                                                             Content="찾아보기"
                                                             FontSize="12" />
                                                     </StackPanel>
                                                 </Grid>
                                             </c:ImageTabItem>
                                             <c:ImageTabItem
+                                                x:Name="lvItmConnect"
                                                 Header="기존 프레젠테이션과 연결"
                                                 Source="Resources/Icon/connectBlackIcon.png"
-                                                Tag="connPresentation">
+                                                Tag="openAtPresentation">
                                                 <Grid>
                                                     <StackPanel Margin="30,0">
                                                         <Grid HorizontalAlignment="Left">
@@ -1485,6 +1494,7 @@
                                                         <TextBlock Margin="0,10,0,0" Text="최근 폴더" />
 
                                                         <ListView
+                                                            x:Name="lvSaveAsFolder"
                                                             Width="400"
                                                             HorizontalAlignment="Left"
                                                             HorizontalContentAlignment="Stretch"
@@ -1510,7 +1520,7 @@
                                                             HorizontalAlignment="Left"
                                                             BackImage="Resources/Icon/FindFolderIcon.png"
                                                             BorderBrush="#FFABABAB"
-                                                            ButtonClick="btnSaveAsSetFile_ButtonClick"
+                                                            ButtonClick="BtnSaveAsSetFile_ButtonClick"
                                                             Content="찾아보기"
                                                             FontSize="12" />
                                                     </StackPanel>
@@ -1532,16 +1542,16 @@
 
                 <corec:PathButton
                     x:Name="backBtn"
-                    Width="35"
-                    Height="35"
+                    ContentWidth="35"
+                    ContentHeight="35"
                     Margin="20"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Background="White"
+                    Background="Transparent"
+                    Fill="White"
                     Data="m 17.063876 33.589905 c -0.157138 -0.0036 -0.268059 -0.0094 -0.246491 -0.01303 0.02235 -0.0037 -0.01138 -0.0073 -0.07843 -0.0084 -0.275553 -0.0043 -0.896765 -0.04955 -1.326842 -0.0967 C 12.551266 33.158181 9.8179773 32.158914 7.4507403 30.561215 5.6290459 29.331714 4.049767 27.758261 2.8386624 25.966149 1.437936 23.893449 0.53511795 21.564854 0.18564234 19.123344 0.10671306 18.571928 0.0365974 17.80325 0.03228675 17.442109 0.03144478 17.37157 0.02804557 17.34316 0.02297 17.36424 0.01231634 17.40849 0.00444051 16.874948 0.01023155 16.501283 c 0.0025462 -0.164294 0.008252 -0.28378 0.01267954 -0.265525 0.0051485 0.02123 0.0085278 -0.0068 0.0093757 -0.07787 C 0.0365974 15.796748 0.10671306 15.02807 0.18564234 14.476654 0.61765709 11.458509 1.8978513 8.6136349 3.8922113 6.2398416 5.6452348 4.1532998 7.8798965 2.5053734 10.41423 1.4302516 c 1.725624 -0.7320487 3.589487 -1.19215814 5.456407 -1.34695767 0.278509 -0.02309311 0.726864 -0.04968754 0.868319 -0.05150478 0.0777 -9.9826e-4 0.104331 -0.0041156 0.07843 -0.0091823 -0.05309 -0.01038601 0.509651 -0.01817856 0.893529 -0.01237301 0.171003 0.0025861 0.293268 0.008154 0.2717 0.01237301 -0.0259 0.0050667 7.28e-4 0.008184 0.07843 0.0091823 0.268277 0.0034465 0.893152 0.04883938 1.326842 0.09638607 2.971398 0.32576214 5.798924 1.38924928 8.230273 3.09556478 1.32157 0.9274754 2.518916 2.0497182 3.53075 3.3092856 1.767328 2.2000347 2.944034 4.8087104 3.403508 7.5453404 0.11348 0.67589 0.209627 1.604564 0.215296 2.079523 8.4e-4 0.07054 0.0042 0.09895 0.0093 0.07787 0.01065 -0.04425 0.01853 0.489292 0.01274 0.862957 -0.0025 0.164294 -0.0083 0.28378 -0.01268 0.265525 -0.0051 -0.02123 -0.0085 0.0068 -0.0094 0.07787 -0.0043 0.361141 -0.07443 1.129819 -0.153355 1.681235 -0.579207 4.046458 -2.67574 7.74446 -5.9094 10.423386 -1.525208 1.263558 -3.280372 2.268706 -5.159497 2.954743 -1.472429 0.537559 -3.05625 0.885894 -4.616098 1.015231 -0.278509 0.02309 -0.726864 0.04969 -0.868319 0.05151 -0.08168 0.0011 -0.105655 0.004 -0.07843 0.0097 0.02178 0.0045 -0.07338 0.0088 -0.213989 0.0096 -0.139261 7.97e-4 -0.290517 0.0031 -0.336123 0.0052 -0.04561 0.0021 -0.211488 8.07e-4 -0.368626 -0.0028 z m 1.322086 -2.494529 c 0.840923 -0.05941 1.549744 -0.157679 2.287492 -0.317141 3.996551 -0.863838 7.463829 -3.294301 9.555162 -6.697894 0.74603 -1.214144 1.293688 -2.507786 1.6412 -3.876729 0.211744 -0.834121 0.334227 -1.618517 0.400177 -2.562783 0.01986 -0.284314 0.01986 -1.397346 0 -1.68166 -0.06659 -0.953433 -0.188232 -1.728413 -0.405509 -2.583481 C 31.148714 10.558866 29.533012 7.9948945 27.253635 6.05869 25.732163 4.7662843 23.942024 3.7808548 22.021699 3.1786319 20.814607 2.800082 19.662522 2.5905425 18.279523 2.4980103 c -0.287522 -0.019237 -1.471525 -0.019237 -1.759047 0 -1.671435 0.1118305 -3.0471 0.4007035 -4.52472 0.9501362 C 11.397047 3.6707681 10.602651 4.0335921 10.0613 4.3316693 8.0925615 5.4156919 6.4390836 6.8686268 5.1572473 8.6409312 4.2843454 9.8478309 3.579514 11.249227 3.1430837 12.645636 2.8548354 13.56792 2.6665179 14.494461 2.571928 15.455778 c -0.047973 0.487549 -0.055633 0.669501 -0.056122 1.333157 -4.762e-4 0.645918 0.00351 0.754844 0.045129 1.233586 0.2400072 2.760703 1.3161054 5.396981 3.0979855 7.589595 1.6096175 1.980644 3.6978693 3.501056 6.1261271 4.460306 0.84656 0.334422 1.852634 0.622342 2.75605 0.788731 0.780112 0.143681 1.350473 0.207653 2.265083 0.254056 0.20443 0.01037 1.357063 -0.0041 1.579781 -0.01983 z M 12.171933 20.206864 C 10.551996 18.53007 9.2265934 17.151609 9.2265934 17.143617 c 0 -0.008 1.3254226 -1.386745 2.9453836 -3.063895 l 2.945385 -3.049364 1.658804 0 1.658805 0 -0.02901 0.03043 c -0.01595 0.01673 -1.053132 1.090831 -2.30484 2.386882 -1.313561 1.360095 -2.274459 2.363508 -2.272581 2.373131 0.0029 0.01483 0.710797 0.01698 6.397849 0.01945 l 6.394599 0.0028 0 1.299948 0 1.299948 -6.394599 0.0028 c -5.738972 0.0025 -6.394937 0.0045 -6.397911 0.01976 -0.002 0.01004 0.925221 0.978322 2.267092 2.367599 1.248722 1.292839 2.285974 2.366795 2.305003 2.386571 l 0.0346 0.03596 -1.658952 0 -1.658951 0 -2.945338 -3.048716 z"
-                    MouseOverColor="#FFEDBAAE"
-                    UseMouseOverColor="True" />
-
+                    MouseOverFill="#FFEDBAAE"
+                    UseMouseOverFill="True"/>
             </Grid>
         </TabItem>
     </TabControl>

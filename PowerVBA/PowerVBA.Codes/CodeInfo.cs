@@ -1,5 +1,4 @@
-﻿using PowerVBA.Codes.CodeItems;
-using PowerVBA.Codes.TypeSystem;
+﻿using PowerVBA.Codes.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +16,12 @@ namespace PowerVBA.Codes
         public CodeInfo()
         {
             ErrorList = new List<Error>();
-            Childrens = new List<CodeItemBase>();
             Lines = new List<LineInfo>();
 
             Properties = new List<string>();
             Subs = new List<string>();
             Functions = new List<string>();
+            Variables = new List<Variable>();
         }
         
         /// <summary>
@@ -30,13 +29,8 @@ namespace PowerVBA.Codes
         /// </summary>
         public List<Error> ErrorList { get; set; }
         
-        /// <summary>
-        /// CodeInfo의 Node들 정보입니다.
-        /// </summary>
-        public List<CodeItemBase> Childrens { get; set; }
         public List<LineInfo> Lines { get; set; }
-
-
+        
         /// <summary>
         /// 함수 목록입니다.
         /// </summary>
@@ -46,26 +40,23 @@ namespace PowerVBA.Codes
         /// </summary>
         public List<string> Subs { get; set; }
         /// <summary>
-        /// 프로퍼티 목록입니다. get/let과 set이 중복되도 하나로 처리합니다.
+        /// 프로퍼티 목록입니다.
         /// </summary>
         public List<string> Properties { get; set; }
-        
+        /// <summary>
+        /// 변수 목록입니다.
+        /// </summary>
+        public List<Variable> Variables { get; internal set; }
 
         public void Reset()
         {
             ErrorList = new List<Error>();
-            Childrens = new List<CodeItemBase>();
         }
 
         public override string ToString()
         {
             List<string> returnD = new List<string>();
-
-            foreach (var itm in Childrens)
-            {
-                returnD.Add(itm.ToString());
-            }
-
+            
             return string.Join("\r\n", returnD.ToArray());
         }
     }

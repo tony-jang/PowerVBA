@@ -1,12 +1,11 @@
-﻿using ICSharpCode.AvalonEdit.Folding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using PowerVBA.Codes.Parsing;
 
 namespace PowerVBA.Codes
 {
+    /// <summary>
+    /// 라인을 넘어가며 네스트 되어 있는 걸 확인합니다.
+    /// </summary>
     public class LineInfo
     {
 
@@ -20,8 +19,26 @@ namespace PowerVBA.Codes
 
         public List<RangeInt> Foldings { get; set; }
 
+        public CodeBlock CodeBlocks { get; internal set; }
 
-        public Stack<(int, FoldingTypes)> TempLine = new Stack<(int, FoldingTypes)>();
+        private CodeBlock workCB;
+        public CodeBlock CurrentBlock => workCB;
+
+        public Stack<CodeBlock> BlockStack { get; set; }
+
+        public void InputBlock(CodeBlock codeBlock)
+        {
+            workCB.Childrens.Add(codeBlock);
+        }
+
+        public void OutputBlock()
+        {
+            
+        }
+        
+
+
+        public Stack<(int, FoldingTypes)> TempLine { get; set; } = new Stack<(int, FoldingTypes)>();
 
         /// <summary>
         /// 마지막으로 글로벌 변수가 선언된 위치를 확인합니다. 0을 반환하면 처음 부분에 새 줄을 만든 뒤 선언합니다.
@@ -172,6 +189,8 @@ namespace PowerVBA.Codes
 
                 Foldings = Foldings,
                 TempLine = TempLine,
+
+                CodeBlocks = CodeBlocks,
             };
         }
     }

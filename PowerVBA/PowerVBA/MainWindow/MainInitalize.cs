@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using PowerVBA.Codes.Extension;
 using PowerVBA.Controls.Customize;
+using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Core.Connector;
 using PowerVBA.Core.Extension;
 using PowerVBA.Core.Wrap.WrapBase;
@@ -73,11 +74,13 @@ namespace PowerVBA
                     lvRecentFile.Items.Add(itm);
 
                     var itm2 = new ImageButton();
-
                     itm2.TextAlignment = TextAlignment.Left;
                     itm2.BackImage = ResourceImage.GetIconImage("PPTIcon");
                     itm2.ButtonMode = ImageButton.ButtonModes.LongWidth;
                     itm2.Content = new FileInfo(fl).Name;
+                    itm2.Tag = fl;
+
+                    itm2.ButtonClick += Itm2_ButtonClick;
 
                     lvRecentFile2.Items.Add(itm2);
 
@@ -87,28 +90,22 @@ namespace PowerVBA
             }));
         }
 
-
-        public void RecentFolderSet()
+        private void Itm2_ButtonClick(object sender)
         {
-            Dispatcher.Invoke(new Action(() =>
+            if (!CodeSaved)
             {
-                fileOpenRecentFolder.Items.Clear();
+                var sb = new StringBuilder();
 
+                sb.AppendLine("코드 중에 저장되지 않은 내용이 있습니다.");
+                sb.AppendLine();
 
-                dbConnector.FolderTable.Get().ForEach((fi) =>
+                foreach (CodeEditor editor in GetNotSavedEditor())
                 {
-                    var itm = new ImageButton();
-
-                    itm.TextAlignment = TextAlignment.Left;
-                    itm.BackImage = ResourceImage.GetIconImage("PPtIcon");
-                    itm.ButtonMode = ImageButton.ButtonModes.LongWidth;
-                    itm.Content = fi.Replace("\\", " ≫ ");
-
-
-                    fileOpenRecentFolder.Items.Add(itm);
-                });
-
-            }));
+                    
+                }
+            }
+            InitalizeAll();
+            InitalizeConnector(((ImageButton)sender).Tag.ToString());
         }
     }
 }

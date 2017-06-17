@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.Codes.TypeSystem
+namespace PowerVBA.Enums
 {
-    class FormFile : IFile
+    enum ProgramTabMenu
     {
-        public string FileName { get; set; }
+        Startup = 1,
+        MainEdit = 0,
+        FileTab = 2,
     }
 }

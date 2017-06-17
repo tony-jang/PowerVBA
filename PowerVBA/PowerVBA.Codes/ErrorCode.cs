@@ -245,14 +245,15 @@ namespace PowerVBA.Codes
         [KoError("조건문 뒤에는 바로 연산자가 올 수 없습니다.")]
         VB0078,
 
-        [KoError("End If로 닫을 If문을 찾을 수 없습니다.")]
+        [CanReplace(2)]
+        [KoError("%1로 닫을 %2문을 찾을 수 없습니다.")]
         VB0079,
 
 
         #endregion
 
         #region [  Do / While 오류  ]
-        
+
         [KoError("Do문은 맨 처음에만 오거나 Exit Do의 형태로만 사용 할 수 있습니다.")]
         VB0080 = 80,
         [KoError("Until문은 Do Until로만 사용 할 수 있습니다.")]
@@ -434,6 +435,7 @@ namespace PowerVBA.Codes
         [KoError("Type은 메소드에 네스트해 사용할 수 없습니다.")]
         VB0147,
 
+  
         #endregion
 
         #region [  배열/As 오류  ]
@@ -603,16 +605,14 @@ namespace PowerVBA.Codes
         VB0221,
 
         #endregion
-
-
+        
         #region [  With 오류  ]
 
         [KoError("End With는 With문 다음에만 올 수 있습니다.")]
         VB0230 = 230,
 
         #endregion
-
-
+        
         #region [  Option 오류  ]
 
 
@@ -640,7 +640,7 @@ namespace PowerVBA.Codes
 
         // Option Explicit
         [KoError("Explicit은 Option 뒤에만 올 수 있습니다.")]
-        VB0253,
+        VB0253 = 253,
 
         [KoError("Compare은 Option 뒤에만 올 수 있습니다.")]
         VB0254,
@@ -673,7 +673,6 @@ namespace PowerVBA.Codes
         VB0262,
 
         #endregion
-
 
         #region [  Type 오류  ]
 

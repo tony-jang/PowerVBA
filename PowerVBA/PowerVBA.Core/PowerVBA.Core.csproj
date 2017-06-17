@@ -99,12 +99,6 @@
       <DependentUpon>FindReplaceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataBase\SQLiteConnector.cs" />
-    <Compile Include="Controls\CodeBlock.xaml.cs">
-      <DependentUpon>CodeBlock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CodeTabEditor.xaml.cs">
-      <DependentUpon>CodeTabEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CustomToolTip.cs" />
     <Compile Include="Controls\PathButton.cs" />
     <Compile Include="AvalonEdit\Folding\FoldingLineType.cs" />
@@ -183,14 +177,6 @@
     <Page Include="AvalonEdit\Replace\FindReplaceDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\CodeBlock.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CodeTabEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CustomToolTip.xaml">
       <SubType>Designer</SubType>

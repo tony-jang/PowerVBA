@@ -7,9 +7,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:PathButton}">
-                    <Border x:Name="border" Background="#00000000">
+                    <Border x:Name="border" Background="{TemplateBinding Background}">
                         <Path x:Name="pth" Data="{TemplateBinding Data}"
-                                  Fill="{TemplateBinding Background}"
+                                  Fill="{TemplateBinding Fill}"
                                   Width="{TemplateBinding ContentWidth}"
                                   Height="{TemplateBinding ContentHeight}"
                                   VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"

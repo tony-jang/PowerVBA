@@ -83,50 +83,10 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Foreground="Black" Text="프로젝트 이름 : "  TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <TextBox Grid.Column="1" Margin="0,5" Text="Presentation1" FontSize="14"/>
+                                    <TextBox x:Name="tbProjName" Grid.Column="1" Margin="0,5" FontSize="14" TextChanged="tbProjName_TextChanged"/>
 
                                     <TextBlock Foreground="Black" Grid.Row="1" Text="프로젝트 설명 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
-
-                                    <TextBlock Foreground="Black" Grid.Row="2" Text="도움말 파일 이름 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <Grid Grid.Row="2" Grid.Column="1" Margin="0,5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Text="(null)" FontSize="14" Grid.Column="0"/>
-                                        <Button Content="..." FontSize="14" Grid.Column="1" Margin="5,0,0,0" Padding="5,0"/>
-                                    </Grid>
-                                    
-                                    
-                                    <TextBlock Foreground="Black" Grid.Row="3" Text="조건부 컴파일 인수 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="보호">
-                        <Grid>
-                            <StackPanel Margin="30,20,30,0">
-                                <Grid Margin="0,12,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="150"/>
-                                        <ColumnDefinition Width="3*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <TextBlock Foreground="Black" Text="읽기 전용 잠금"  TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <CheckBox Grid.Column="1" Margin="0,5" Content="활성화" FontSize="14"/>
-
-                                    <TextBlock Foreground="Black" Grid.Row="1" Text="암호 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
-
-                                    <TextBlock Foreground="Black" Grid.Row="2" Text="암호 확인 : " TextAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
-                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0,5" Text="(null)" FontSize="14"/>
+                                    <TextBox x:Name="tbProjDesc" Grid.Row="1" Grid.Column="1" Margin="0,5" FontSize="14" TextChanged="tbProjDesc_TextChanged"/>
                                 </Grid>
                             </StackPanel>
                         </Grid>

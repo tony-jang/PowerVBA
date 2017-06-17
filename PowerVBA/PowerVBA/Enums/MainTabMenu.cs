@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerVBA.Codes.Expressions
+namespace PowerVBA.Enums
 {
-    public interface IMiniExp
+    enum MainTabMenu
     {
-
+        Home = 1,
+        Insert = 2,
+        Project = 3,
     }
 }

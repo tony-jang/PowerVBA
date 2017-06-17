@@ -26,9 +26,6 @@ namespace PowerVBA
 
     partial class MainWindow
     {
-       
-        
-
         #region [  Get or Find CodeTab(CodeEditor)  ]
 
         /// <summary>
@@ -59,8 +56,18 @@ namespace PowerVBA
         /// <returns></returns>
         public List<CodeEditor> GetAllCodeEditors()
         {
-            return GetAllCodeTabs().Select(i => i.Content as CodeEditor).ToList();
+            return GetAllCodeTabs()
+                .Select(i => i.Content as CodeEditor)
+                .ToList();
         }
+
+        public List<CodeEditor> GetNotSavedEditor()
+        {
+            return GetNotSavedTabs()
+                .Select(i => i.Content as CodeEditor)
+                .ToList();
+        }
+
         /// <summary>
         /// 모든 코드 탭들을 가져옵니다.
         /// </summary>
@@ -74,6 +81,13 @@ namespace PowerVBA
                     editorList.Add(tItm);
 
             return editorList;
+        }
+
+        public List<CloseableTabItem> GetNotSavedTabs()
+        {
+            return GetAllCodeTabs()
+                .Where(i => !i.Saved)
+                .ToList();
         }
 
         #endregion
@@ -107,7 +121,7 @@ namespace PowerVBA
 
                 codeTab.SaveCloseRequest += CodeTab_SaveCloseRequest;
 
-                codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = !(((UndoStack)sender).IsOriginalFile); };
+                codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = (((UndoStack)sender).IsOriginalFile); };
                 codeEditor.TextChanged += CodeEditor_TextChanged;
                 codeEditor.SaveRequest += () =>
                 {
@@ -152,7 +166,7 @@ namespace PowerVBA
                 Content = codeEditor
             };
 
-            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = !(((UndoStack)sender).IsOriginalFile); };
+            codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = (((UndoStack)sender).IsOriginalFile); };
             codeEditor.SaveRequest += () => { SetMessage("저장되었습니다."); };
             codeTabControl.Items.Add(codeTab);
         }
@@ -168,6 +182,9 @@ namespace PowerVBA
         {
             int currLine = 0;
             if (sender is CodeEditor editor) currLine = editor.Text.SplitByNewLine().Count();
+            
+
+            
 
             projAnalyzer.CodeSync(connector.AllLineCount, connector.ComponentCount, currLine);
         }

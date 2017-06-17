@@ -2,7 +2,7 @@
 using Microsoft.Vbe.Interop;
 using PowerVBA.Codes.Attributes;
 using PowerVBA.Codes.Extension;
-using PowerVBA.Codes.TypeSystem;
+using PowerVBA.Codes.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -71,7 +71,8 @@ namespace PowerVBA.Codes
 
             CodeInfo.ErrorList.Clear();
             CodeInfo.Lines.Clear();
-            
+            CodeInfo.Variables.Clear();
+
             foreach ((string, string) code in codes)
             {
                 LineInfo = new LineInfo();
@@ -93,7 +94,7 @@ namespace PowerVBA.Codes
                 VBASeeker seeker = new VBASeeker(CodeInfo);
 
                 
-                for (int i=0;i< cArr.Length; i++)
+                for (int i = 0; i < cArr.Length; i++)
                 {
                     bool ReadLine = (cArr[i] == '\r' && cArr[i + 1] == '\n');
                     if (Length - 1 == i) {
@@ -133,13 +134,13 @@ namespace PowerVBA.Codes
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i), ref LineInfo);
+                                nHandledLine = seeker.GetLine(code.Item2, spCode, CodeLine, ref LineInfo);
                             }
                             // 처리 - 일반 적인 처리
                             else
                             {
                                 CodeLine.StartInt = LineCount;
-                                nHandledLine = seeker.GetLine(code.Item2, spCode, (CodeLine, i), ref LineInfo);
+                                nHandledLine = seeker.GetLine(code.Item2, spCode, CodeLine, ref LineInfo);
                             }
 
                             while (nHandledLine != NotHandledLine.Empty)
@@ -170,7 +171,7 @@ namespace PowerVBA.Codes
 
                 void AddError(ErrorCode Code, string[] parameters = null)
                 {
-                    CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, code.Item2, new DomRegion(LineCount, 0)));
+                    CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, code.Item2, LineCount));
                 }
                 CodeInfo.Lines.Add(LineInfo);
             }

@@ -15,7 +15,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-
         <TextBlock Text="파일 오류 확인" Grid.Row="0" Margin="5" FontSize="15"/>
         <Grid Grid.Row="1" VerticalAlignment="Center">
             <Grid.RowDefinitions>

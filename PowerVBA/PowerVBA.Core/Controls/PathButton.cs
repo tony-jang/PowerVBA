@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
 using WPFExtension;
 
 namespace PowerVBA.Core.Controls
@@ -18,53 +19,77 @@ namespace PowerVBA.Core.Controls
         public static DependencyProperty ContentHorizontalAlignmentProperty = DependencyHelper.Register();
         public static DependencyProperty ContentVerticalAlignmentProperty = DependencyHelper.Register();
         public static DependencyProperty ContentMarginProperty = DependencyHelper.Register();
-        public static DependencyProperty UseMouseOverColorProperty = DependencyHelper.Register();
-        public static DependencyProperty MouseOverColorProperty = DependencyHelper.Register();
+
+        public static DependencyProperty FillProperty = DependencyHelper.Register();
+
+        public static DependencyProperty UseMouseOverFillProperty = DependencyHelper.Register(new PropertyMetadata(false));
+        public static DependencyProperty MouseOverFillProperty = DependencyHelper.Register();
+
+        public static DependencyProperty UseMouseOverBackgroundProperty = DependencyHelper.Register(new PropertyMetadata(false));
+        public static DependencyProperty MouseOverBackgroundProperty = DependencyHelper.Register();
 
         public Geometry Data
         {
-            get { return (Geometry)GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
+            get => (Geometry)GetValue(DataProperty);
+            set => SetValue(DataProperty, value);
+        }
+
+        public Brush Fill
+        {
+            get => (Brush)GetValue(FillProperty);
+            set => SetValue(FillProperty, value);
         }
 
         public double ContentWidth
         {
-            get { return (double)GetValue(ContentWidthProperty); }
-            set { SetValue(ContentWidthProperty, value); }
+            get => (double)GetValue(ContentWidthProperty);
+            set => SetValue(ContentWidthProperty, value);
         }
         public double ContentHeight
         {
-            get { return (double)GetValue(ContentHeightProperty); }
-            set { SetValue(ContentHeightProperty, value); }
+            get => (double)GetValue(ContentHeightProperty);
+            set => SetValue(ContentHeightProperty, value);
         }
         public HorizontalAlignment ContentHorizontalAlignment
         {
-            get { return (HorizontalAlignment)GetValue(ContentHorizontalAlignmentProperty); }
-            set { SetValue(ContentHorizontalAlignmentProperty, value); }
+            get => (HorizontalAlignment)GetValue(ContentHorizontalAlignmentProperty);
+            set => SetValue(ContentHorizontalAlignmentProperty, value);
         }
 
         public VerticalAlignment ContentVerticalAlignment
         {
-            get { return (VerticalAlignment)GetValue(ContentVerticalAlignmentProperty); }
-            set { SetValue(ContentVerticalAlignmentProperty, value); }
+            get => (VerticalAlignment)GetValue(ContentVerticalAlignmentProperty);
+            set => SetValue(ContentVerticalAlignmentProperty, value);
         }
 
         public Thickness ContentMargin
         {
-            get { return (Thickness)GetValue(ContentMarginProperty); }
-            set { SetValue(ContentMarginProperty, value); }
+            get => (Thickness)GetValue(ContentMarginProperty);
+            set => SetValue(ContentMarginProperty, value);
         }
 
-        public bool UseMouseOverColor
+        public bool UseMouseOverFill
         {
-            get { return (bool)GetValue(UseMouseOverColorProperty); }
-            set { SetValue(UseMouseOverColorProperty, value); }
+            get => (bool)GetValue(UseMouseOverFillProperty);
+            set => SetValue(UseMouseOverFillProperty, value);
         }
 
-        public Brush MouseOverColor
+        public Brush MouseOverFill
         {
-            get { return (Brush)GetValue(MouseOverColorProperty); }
-            set { SetValue(MouseOverColorProperty, value); }
+            get => (Brush)GetValue(MouseOverFillProperty);
+            set => SetValue(MouseOverFillProperty, value);
+        }
+
+        public bool UseMouseOverBackground
+        {
+            get => (bool)GetValue(UseMouseOverBackgroundProperty);
+            set => SetValue(UseMouseOverBackgroundProperty, value);
+        }
+
+        public Brush MouseOverBackground
+        {
+            get => (Brush)GetValue(MouseOverBackgroundProperty);
+            set => SetValue(MouseOverBackgroundProperty, value);
         }
     }
 }

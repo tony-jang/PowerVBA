@@ -36,8 +36,7 @@ namespace PowerVBA.Controls.Tools
                 var FileLvItm = FileListView.Items.Cast<ListViewItem>()
                                                   .Where((itm) => itm.Name == func.Name.Folder).First();
 
-
-
+                
                 // 파일이 새로 만들어졌을 경우
                 if (FileLvItm.Tag == null)
                 {

@@ -48,7 +48,7 @@ namespace PowerVBA.Resources.Functions
                     string attrName = m.Groups[1].Value;
                     string value = m.Groups[2].Value;
 
-                    var attr = Enum.GetValues(typeof(FuncAttributes))
+                    var attr = System.Enum.GetValues(typeof(FuncAttributes))
                         .Cast<FuncAttributes>()
                         .Where(i => i.GetDescription() == attrName);
                     if (attr.Count() == 0)

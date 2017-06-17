@@ -1,4 +1,5 @@
 ﻿using PowerVBA.Core.Connector;
+using PowerVBA.Wrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +28,42 @@ namespace PowerVBA.Controls.Tools
         {
             InitializeComponent();
 
-            Connector = conn;
+            connector = conn;
+
+            tbProjDesc.Text = connector.ProjectDescription;
+            tbProjName.Text = connector.ProjectName;
         }
 
-        PPTConnectorBase Connector;
+        PPTConnectorBase connector;
 
         private void FileTabControl_Changed(object sender, SelectionChangedEventArgs e)
         {
+            
+            //connector.ToConnector2010().Presentation.Password
+        }
 
+        private void tbProjDesc_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                connector.ProjectDescription = tbProjDesc.Text;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("프로젝트 설명문을 변경 하던 중 오류가 발생했습니다.");
+            }
+        }
+
+        private void tbProjName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                connector.ProjectName = tbProjName.Text;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("프로젝트 이름을 변경 하던 중 오류가 발생했습니다.");
+            }
         }
     }
 }

@@ -17,11 +17,11 @@ namespace PowerVBA.Windows
 {
     public class ChromeWindow : Window
     {
-        
-
         public static DependencyProperty NoTitleProperty = DependencyHelper.Register();
 
         public static DependencyProperty IsSubWindowProperty = DependencyHelper.Register(new PropertyMetadata(true));
+
+        public static DependencyProperty HelpVisibleProperty = DependencyHelper.Register(new PropertyMetadata(false));
 
         public bool IsSubWindow
         {
@@ -42,6 +42,12 @@ namespace PowerVBA.Windows
             set { _IsEnableMove = value; }
         }
 
+        public bool HelpVisible
+        {
+            get => (bool)GetValue(HelpVisibleProperty);
+            set => SetValue(HelpVisibleProperty, value);
+        }
+
 
         public IntPtr Handle { get; private set; }
 
@@ -52,6 +58,19 @@ namespace PowerVBA.Windows
             CommandBindings.Add(new CommandBinding(WindowSystemCommand.CloseCommand, OnClose, OnCloseExecute));
             CommandBindings.Add(new CommandBinding(WindowSystemCommand.RestoreCommand, OnStateChange, OnStateChangeExecute));
             CommandBindings.Add(new CommandBinding(WindowSystemCommand.MinimizeCommand, OnMiniMize, OnMiniMizeExecute));
+            CommandBindings.Add(new CommandBinding(WindowSystemCommand.HelpCommand, OnHelpClick, OnHelpClickExecute));
+        }
+
+        private void OnHelpClickExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OnHelpClick(object sender, ExecutedRoutedEventArgs e)
+        {
+            HelperWindow hw = new HelperWindow();
+
+            hw.ShowDialog();
         }
 
         private void OnMiniMizeExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -126,10 +145,8 @@ namespace PowerVBA.Windows
                         int command = wParam.ToInt32() & 0xfff0;
                         if (command == SC_MOVE) handled = true;
                     }
-
                     break;
             }
-
             return IntPtr.Zero;
         }
 

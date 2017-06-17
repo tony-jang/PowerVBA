@@ -20,10 +20,8 @@ namespace PowerVBA
 
     public partial class MainWindow
     {
-
         private string ProjName { get; set; }
-
-
+        
         /// <summary>
         /// 프로젝트 이름을 재설정합니다. customName이 비어있다면 현재의 프레젠테이션 연결기에서 이름을 가져옵니다.
         /// </summary>
@@ -79,8 +77,7 @@ namespace PowerVBA
                 {
                     tiSaveItem.IsEnabled = true;
                 }
-
-
+                
                 tmpConn.PresentationClosed += PPTCloseDetect;
                 tmpConn.VBAComponentChange += ProjectFileChange;
                 tmpConn.SlideChanged += SlideChangedDetect;
@@ -98,9 +95,7 @@ namespace PowerVBA
 
             }), DispatcherPriority.Background);
         }
-
-
-
+        
         /// <summary>
         /// 프레젠테이션 연결기를 초기화 합니다. 파일 경로로 연결합니다.
         /// </summary>
@@ -109,7 +104,7 @@ namespace PowerVBA
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                this.NoTitle = false;
+                
 
                 if (FileLocation != "" && !File.Exists(FileLocation))
                 {
@@ -141,10 +136,17 @@ namespace PowerVBA
                         break;
                 }
 
+                if (tmpConn._Presentation == null)
+                {
+                    return;
+                }
+
                 if (tmpConn.IsLocalPresentation)
                 {
                     tiSaveItem.IsEnabled = true;
                 }
+
+                this.NoTitle = false;
 
                 tmpConn.PresentationClosed += PPTCloseDetect;
                 tmpConn.VBAComponentChange += ProjectFileChange;

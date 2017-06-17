@@ -20,7 +20,38 @@ namespace PowerVBA.Core.DataBase
             this.size = size;
             this.TableName = tableName;
 
+            Rules = new Dictionary<string, Func<string, bool>>();
+
             Create();
+        }
+
+        public Dictionary<string, Func<string, bool>> Rules { get; internal set; }
+
+        /// <summary>
+        /// 추가할 룰을 추가합니다. 들어오는 string에 룰을 지정합니다. ruleName이 빈칸이면 False를 반환합니다.
+        /// </summary>
+        /// <param name="expression"></param>
+        public bool AddRule(Func<string,bool> expression, string ruleName)
+        {
+            if (ruleName == "")
+                return false;
+
+            if (Rules.ContainsKey(ruleName))
+                return false;
+
+            Rules[ruleName] = expression;
+
+            return true;
+        }
+
+        public bool RemoveRule(string ruleName)
+        {
+            if (Rules.ContainsKey(ruleName))
+                Rules.Remove(ruleName);
+            else
+                return false;
+
+            return true;
         }
 
         private SQLiteConnector connector;
@@ -88,6 +119,12 @@ namespace PowerVBA.Core.DataBase
 
             if (Contains(data))
                 return true;
+
+            foreach(var exp in Rules)
+            {
+                if (!exp.Value.Invoke(data))
+                    return false;
+            }
 
             query = $"INSERT INTO {TableName} (Data) VALUES (?)";
 

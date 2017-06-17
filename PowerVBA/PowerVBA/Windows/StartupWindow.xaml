@@ -14,8 +14,22 @@
                 <ColumnDefinition Width="15"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <corec:PathButton x:Name="BtnMiniMize" Height="12" Width="12" Data="{StaticResource MiniMizePath}" ContentHeight="2.5" ContentVerticalAlignment="Bottom" Click="BtnMiniMize_Click"/>
-            <corec:PathButton x:Name="BtnClose" Height="12" Width="12" Data="{StaticResource EndPath}" Grid.Column="2" Click="BtnClose_Click"/>
+            <corec:PathButton x:Name="BtnMiniMize"
+                              ContentHeight="2.5" 
+                              ContentWidth="12" 
+                              Fill="White"
+                              Background="Transparent"
+                              Data="{StaticResource MiniMizePath}" 
+                              ContentVerticalAlignment="Bottom"
+                              Click="BtnMiniMize_Click"/>
+            <corec:PathButton x:Name="BtnClose" 
+                              ContentHeight="12" 
+                              ContentWidth="12" 
+                              Fill="White"
+                              Background="Transparent"
+                              Data="{StaticResource EndPath}" 
+                              Grid.Column="2" 
+                              Click="BtnClose_Click"/>
         </Grid>
 
         <TextBlock Text="PowerVBA" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="60" Margin="0,0,0,10" Foreground="White" IsHitTestVisible="False"/>

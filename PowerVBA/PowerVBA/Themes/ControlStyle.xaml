@@ -9,11 +9,11 @@
     xmlns:w="clr-namespace:PowerVBA.Windows">
 
 
-    <StreamGeometry x:Key="EndPath">M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z</StreamGeometry>
-    <StreamGeometry x:Key="RestorePath">M22.648111,106.91675 L22.648111,220.45862 181.18489,220.45862 181.18489,106.91675 z M64.648109,45.416747 L64.648109,61.499999 181.18489,61.499999 C193.75459,61.499999 203.83299,71.718764 203.83299,84.208373 L203.83299,158.95862 223.18488,158.95862 223.18488,45.416747 z M64.648109,0 L223.18488,0 C235.75458,1.3930173E-07 245.83299,10.218769 245.83299,22.708375 L245.83299,158.95862 C245.83299,171.44823 235.64134,181.66699 223.18488,181.66699 L203.83299,181.66699 203.83299,220.45862 C203.83299,232.94823 193.64136,243.16701 181.18489,243.16701 L22.648111,243.16701 C10.078409,243.16701 0,232.94823 0,220.45862 L0,84.208373 C0,71.718764 10.078409,61.499999 22.648111,61.499999 L42.000001,61.499999 42.000001,22.708375 C41.999999,10.218769 52.078409,1.3930173E-07 64.648109,0 z</StreamGeometry>
-    <StreamGeometry x:Key="MaximizePath">M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.89-2-2-2zm0 14H5V8h14v10z</StreamGeometry>
-    <StreamGeometry x:Key="MiniMizePath">M0.5,0.5 L47.5,0.5 L47.5,12.5 L0.5,12.5 z</StreamGeometry>
-
+    <StreamGeometry x:Key="EndPath">M2.1884144,33.948415C0.17737393,31.937374 0.11539951,31.753666 0.91285887,30.167338 1.3738599,29.250302 3.9220578,26.346334 6.575521,23.714076 9.2289843,21.081818 11.4,18.510484 11.4,18 11.4,17.489516 9.2289843,14.918182 6.575521,12.285924 3.9220578,9.6536658 1.3918621,6.7857846 0.95286405,5.9128546 0.24157448,4.498484 0.29322573,4.1671555 1.4273428,2.8692044 4.4345855,-0.57246332 4.2114413,-0.64568514 11.079512,6.0364362L17.399999,12.1858 23.720487,6.0364362C30.588558,-0.64568514 30.365414,-0.57246332 33.372656,2.8692044 34.506773,4.1671555 34.558425,4.498484 33.847135,5.9128546 33.408137,6.7857846 30.877941,9.6536658 28.224478,12.285924 25.571015,14.918182 23.399999,17.489516 23.399999,18 23.399999,18.510484 25.571015,21.081818 28.224478,23.714076 30.877941,26.346334 33.408137,29.214215 33.847135,30.087145 34.558425,31.501516 34.506773,31.832845 33.372656,33.130796 30.364772,36.573197 30.590558,36.647632 23.697503,29.941202L17.354032,23.769477 11.827016,29.172463C4.0647851,36.760504,4.6904735,36.450473,2.1884144,33.948415z</StreamGeometry>
+    <StreamGeometry x:Key="HelpPath">m 7.2 32.099999 0 -2.7 4.8 0 4.8 0 0 2.7 0 2.7 -4.8 0 -4.8 0 0 -2.7 z m 0 -10.8 c 0 -2.685714 0.011112 -2.7 2.1 -2.7 2.05 0 2.1 -0.05714 2.1 -2.399999 0 -2.16 0.15 -2.4 1.5 -2.4 1.418182 0 1.5 -0.18 1.5 -3.3 l 0 -3.3000002 -3.9 0 -3.9 0 0 1.7999999 C 6.6 10.781818 6.566664 10.8 3.3 10.8 L 0 10.8 0 7.1999998 C 0 3.7599999 0.06666667 3.5999999 1.5 3.5999999 c 1.2666667 0 1.5 -0.28 1.5 -1.8 L 3 0 l 8.7 0 8.7 0 0 1.7999999 c 0 1.52 0.233333 1.8 1.5 1.8 1.494737 0 1.5 0.02 1.5 5.6999998 C 23.4 14.599999 23.315789 15 22.2 15 21.266666 15 21 15.4 21 16.8 c 0 1.657142 -0.166667 1.799999 -2.1 1.799999 -2.088889 0 -2.1 0.01429 -2.1 2.7 l 0 2.7 -4.8 0 -4.8 0 0 -2.7 z</StreamGeometry>
+    <StreamGeometry x:Key="RestorePath">M 0 22.500001 0 10.8 l 3.3000001 0 3.3000001 0 0 -5.3999998 0 -5.4000002 13.8000008 0 13.8 0 0 12 0 12.000001 -3.6 0 -3.6 0 0 5.1 0 5.1 -13.500001 0 -13.5 0 0 -11.7 z m 24.600001 1.5 0 -7.200001 -10.800001 0 -10.7999999 0 0 7.200001 0 7.2 10.7999999 0 10.800001 0 0 -7.2 z m 6.6 -10.500001 0 -7.4999998 -10.8 0 -10.8000007 0 0 2.4 0 2.3999998 8.7000007 0 8.7 0 0 5.1 0 5.100001 2.1 0 2.1 0 0 -7.500001 z</StreamGeometry>
+    <StreamGeometry x:Key="MaximizePath">M 0 18.899999 0 0 l 18 0 18 0 0 18.899999 0 18.9 -18 0 -18 0 0 -18.9 z m 32.4 2.7 0 -11.9999993 -14.1 0 -14.1 0 0 11.9999993 0 12 14.1 0 14.1 0 0 -12 z</StreamGeometry>
+    <StreamGeometry x:Key="MiniMizePath">m 0.06767899 3.0676788 0 -2.99999996 15.60000101 0 15.6 0 0 2.99999996 0 3 -15.6 0 -15.60000101 0 0 -3 z</StreamGeometry>
 
 
     <!--#region [  ChromeWindow Style  ]-->
@@ -56,14 +56,14 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition x:Name="commandWidth" Width="120" />
                             </Grid.ColumnDefinitions>
 
                             <Image
                                 x:Name="LogoImg"
                                 Margin="3"
                                 IsHitTestVisible="False"
-                                Source="{TemplateBinding Icon}" />
+                                Source="{TemplateBinding Icon}"/>
                             <TextBlock
                                 x:Name="TitleTB"
                                 Grid.Column="1"
@@ -75,56 +75,105 @@
 
                             <Grid Grid.Column="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition x:Name="maximizeWidth"/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-
                                 <corec:PathButton
-                                    x:Name="MiniButt_t"
+                                    x:Name="HelpButt"
                                     Grid.Column="0"
+                                    
+                                    ContentWidth="6"
+                                    ContentHeight="9"
+                                    
+                                    ContentVerticalAlignment="Center"
+                                    ContentHorizontalAlignment="Center"
+                                    
+                                    Background="Transparent"
+                                    Fill="DimGray"
+                                    
+                                    UseMouseOverFill="True"
+                                    MouseOverFill="#FFEF5A35"
+                                    
+                                    UseMouseOverBackground="True"
+                                    MouseOverBackground="#FFFCE4DC"
                                     shell:WindowChrome.IsHitTestVisibleInChrome="true"
-                                    Background="#00000000"
-                                    Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}" />
+                                    
+                                    Command="{x:Static cm:WindowSystemCommand.HelpCommand}"
+                                    Data="{StaticResource HelpPath}"
+                                    />
                                 <corec:PathButton
                                     x:Name="MiniButt"
-                                    Grid.Column="0"
-                                    Margin="8,17,8,8"
+                                    Grid.Column="1"
+                                    
+                                    ContentWidth="9"
+                                    ContentHeight="2"
+                                    
+                                    ContentVerticalAlignment="Center"
+                                    ContentHorizontalAlignment="Center"
+                                    
+                                    ContentMargin="0,5,0,0"
+                                    
+                                    Background="Transparent"
+                                    Fill="DimGray"
+                                    
+                                    UseMouseOverFill="True"
+                                    MouseOverFill="#FFEF5A35"
+                                    
+                                    UseMouseOverBackground="True"
+                                    MouseOverBackground="#FFFCE4DC"
+                                    
                                     shell:WindowChrome.IsHitTestVisibleInChrome="true"
-                                    Background="#FF919191"
+                                    
                                     Command="{x:Static cm:WindowSystemCommand.MinimizeCommand}"
                                     Data="{StaticResource MiniMizePath}" />
-
-                                <corec:PathButton
-                                    x:Name="RestoreButt_t"
-                                    Grid.Column="1"
-                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
-                                    Background="#00000000"
-                                    Command="{x:Static cm:WindowSystemCommand.RestoreCommand}" />
                                 <corec:PathButton
                                     x:Name="RestoreButt"
-                                    Grid.Column="1"
-                                    Margin="8"
-                                    shell:WindowChrome.IsHitTestVisibleInChrome="true"
-                                    Background="#FF919191"
-                                    Command="{x:Static cm:WindowSystemCommand.RestoreCommand}"
-                                    Data="{StaticResource MaximizePath}" />
-
-                                <corec:PathButton
-                                    x:Name="EndButt_t"
                                     Grid.Column="2"
+                                    
+                                    ContentWidth="10"
+                                    ContentHeight="10"
+                                    
+                                    ContentVerticalAlignment="Center"
+                                    ContentHorizontalAlignment="Center"
+                                    
+                                    Background="Transparent"
+                                    Fill="DimGray"
+                                    
+                                    UseMouseOverFill="True"
+                                    MouseOverFill="#FFEF5A35"
+                                    
+                                    UseMouseOverBackground="True"
+                                    MouseOverBackground="#FFFCE4DC"
+                                    
                                     shell:WindowChrome.IsHitTestVisibleInChrome="true"
-                                    Background="#00000000"
-                                    Command="{x:Static cm:WindowSystemCommand.CloseCommand}" />
+                                    
+                                    Command="{x:Static cm:WindowSystemCommand.RestoreCommand}"
+                                    Data="{StaticResource MaximizePath}"/>
                                 <corec:PathButton
                                     x:Name="EndButt"
-                                    Grid.Column="2"
-                                    Margin="8"
+                                    Grid.Column="3"
+                                    
+                                    ContentWidth="10"
+                                    ContentHeight="10"
+                                    
+                                    ContentVerticalAlignment="Center"
+                                    ContentHorizontalAlignment="Center"
+                                    
+                                    Background="Transparent"
+                                    Fill="DimGray"
+                                    
+                                    UseMouseOverFill="True"
+                                    MouseOverFill="#FFEF5A35"
+                                    
+                                    UseMouseOverBackground="True"
+                                    MouseOverBackground="#FFFCE4DC"
+                                    
                                     shell:WindowChrome.IsHitTestVisibleInChrome="true"
-                                    Background="#FF919191"
+                                    
                                     Command="{x:Static cm:WindowSystemCommand.CloseCommand}"
                                     Data="{StaticResource EndPath}" />
-
                             </Grid>
                         </Grid>
                         <Border
@@ -142,10 +191,12 @@
 
                         <Trigger Property="ResizeMode" Value="NoResize">
                             <Setter TargetName="RestoreButt" Property="Visibility" Value="Hidden" />
-                            <Setter TargetName="RestoreButt_t" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="commandWidth" Property="Width" Value="90"/>
+                            <Setter TargetName="maximizeWidth" Property="Width" Value="0"/>
+                        </Trigger>
 
-                            <Setter TargetName="MiniButt" Property="Grid.Column" Value="1" />
-                            <Setter TargetName="MiniButt_t" Property="Grid.Column" Value="1" />
+                        <Trigger Property="HelpVisible" Value="False">
+                            <Setter TargetName="HelpButt" Property="Visibility" Value="Hidden"/>
                         </Trigger>
 
                         <Trigger Property="NoTitle" Value="True">
@@ -163,50 +214,40 @@
     <!--#endregion-->
 
     <!--#region [  PathButton Style  ]-->
-    <Style TargetType="{x:Type corec:PathButton}">
-        <Setter Property="ContentHorizontalAlignment" Value="Stretch" />
-        <Setter Property="ContentVerticalAlignment" Value="Stretch" />
-        <Setter Property="ContentWidth" Value="NaN" />
-        <Setter Property="ContentHeight" Value="NaN" />
-
+    <Style x:Name="PathButtonStyle" TargetType="{x:Type corec:PathButton}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type corec:PathButton}">
-                    <Border x:Name="border" Background="#00000000">
-                        <Grid>
-                            <Path
-                                x:Name="pth"
-                                Width="{TemplateBinding ContentWidth}"
-                                Height="{TemplateBinding ContentHeight}"
-                                Margin="{TemplateBinding ContentMargin}"
-                                HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
-                                VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
-                                Data="{TemplateBinding Data}"
-                                Fill="{TemplateBinding Background}"
-                                Stretch="Fill" />
-                            <Path
-                                x:Name="mouseOverpth"
-                                Width="{TemplateBinding ContentWidth}"
-                                Height="{TemplateBinding ContentHeight}"
-                                Margin="{TemplateBinding ContentMargin}"
-                                HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
-                                VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
-                                Data="{TemplateBinding Data}"
-                                Fill="{TemplateBinding MouseOverColor}"
-                                Stretch="Fill"
-                                Visibility="Hidden" />
-                        </Grid>
-
-                    </Border>
+                    <Grid Background="Transparent">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" IsHitTestVisible="False">
+                            <Path x:Name="pth" Data="{TemplateBinding Data}"
+                                  Fill="{TemplateBinding Fill}"
+                                  Width="{TemplateBinding ContentWidth}"
+                                  Height="{TemplateBinding ContentHeight}"
+                                  VerticalAlignment="{TemplateBinding ContentVerticalAlignment}"
+                                  HorizontalAlignment="{TemplateBinding ContentHorizontalAlignment}"
+                                  Margin="{TemplateBinding ContentMargin}"
+                                  Stretch="Fill"
+                                  IsHitTestVisible="False">
+                            </Path>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
-
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="mouseOverpth" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="UseMouseOverColor" Value="false">
-                            <Setter TargetName="mouseOverpth" Property="Visibility" Value="Hidden" />
-                        </Trigger>
-
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=UseMouseOverFill, RelativeSource={RelativeSource Self}}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Fill" TargetName="pth" Value="{Binding Path=MouseOverFill, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Path=UseMouseOverBackground, RelativeSource={RelativeSource Self}}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Background" TargetName="border" Value="{Binding Path=MouseOverBackground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <!--<Setter Property="Background" TargetName="border" Value="Red"/>-->
+                        </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -272,7 +313,7 @@
     </Style>
     <!--#endregion-->
 
-    <!--#region [  CanCloseTabItem Style  ]-->
+    <!--#region [  CloseableTabItem Style  ]-->
 
     <Style x:Key="CodeTabItemStyle" TargetType="{x:Type c:CloseableTabItem}">
 
@@ -317,10 +358,13 @@
                         <corec:PathButton
                             x:Name="EndBtn"
                             Grid.Column="2"
-                            Width="10"
-                            Height="10"
+                            ContentWidth="10"
+                            ContentHeight="10"
+                            ContentVerticalAlignment="Center"
+                            ContentHorizontalAlignment="Center"
                             Margin="0,0,5,0"
-                            Background="White"
+                            Background="Transparent"
+                            Fill="White"
                             Command="{x:Static cm:TabItemCommand.DeleteCommand}"
                             Data="{StaticResource EndPath}"
                             Visibility="Hidden" />
@@ -341,7 +385,7 @@
                             <Setter Property="Foreground" Value="White" />
                             <Setter TargetName="EndBtn" Property="Visibility" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="Saved" Value="False">
+                        <Trigger Property="Saved" Value="True">
                             <Setter TargetName="TBChanged" Property="Text" Value="" />
                         </Trigger>
                     </ControlTemplate.Triggers>

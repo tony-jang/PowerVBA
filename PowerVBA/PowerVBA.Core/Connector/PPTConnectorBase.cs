@@ -34,6 +34,11 @@ namespace PowerVBA.Core.Connector
 
         public abstract bool AutoShapeUpdate { get; set; }
 
+
+        public abstract string ProjectName { get; set; }
+        public abstract string ProjectDescription { get; set; }
+        
+
         /// <summary>
         /// 현재 슬라이드 위치입니다.
         /// </summary>

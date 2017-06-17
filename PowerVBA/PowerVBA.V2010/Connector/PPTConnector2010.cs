@@ -158,7 +158,15 @@ namespace PowerVBA.V2010.Connector
 
             if (ppt == null)
             {
-                Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                try
+                {
+                    Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("프레젠테이션을 열다가 오류가 발생했습니다.");
+                    return;
+                }
             }
             else
             {
@@ -431,6 +439,9 @@ namespace PowerVBA.V2010.Connector
         public override string FullName => Presentation.FullName;
 
         public override bool IsLocalPresentation => System.IO.File.Exists(FullName);
+
+        public override string ProjectName { get => VBProject.Name; set => VBProject.Name = value; }
+        public override string ProjectDescription { get => VBProject.Description; set => VBProject.Description = value; }
 
         public override List<ShapeWrappingBase> Shapes()
         {

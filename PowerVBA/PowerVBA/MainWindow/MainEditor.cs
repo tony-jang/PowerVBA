@@ -2,6 +2,7 @@
 using PowerVBA.Controls.Tools;
 using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Core.Connector;
+using PowerVBA.Enums;
 using PowerVBA.V2010.Connector;
 using PowerVBA.V2013.Connector;
 using PowerVBA.Windows;
@@ -237,8 +238,8 @@ namespace PowerVBA
             // 저장되지 않았을 경우
             if (!connector.IsLocalPresentation)
             {
-                SetProgramTab(ProgramTabMenus.FileTab);
-                SetFileTabMenu(FileTabMenus.SaveAs);
+                SetProgramTab(ProgramTabMenu.FileTab);
+                SetFileTabMenu(FileTabMenu.SaveAs);
                 return;
             }
 

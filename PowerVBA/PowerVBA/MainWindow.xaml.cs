@@ -1,34 +1,33 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PowerVBA.Windows;
-using PowerVBA.Core.Connector;
 using System.Windows.Threading;
+
 using PowerVBA.Core.AvalonEdit;
-using PowerVBA.Windows.AddWindows;
 using PowerVBA.Core.Wrap.WrapBase;
-using PowerVBA.Wrap;
+using PowerVBA.Core.AvalonEdit.Replace;
+using PowerVBA.Core.DataBase;
+using PowerVBA.Core.Connector;
 using PowerVBA.Controls.Customize;
-using PowerVBA.Core.Controls;
-using System.Threading;
-using System.ComponentModel;
-using System.Collections.Generic;
 using PowerVBA.Controls.Tools;
 using PowerVBA.Codes;
-using System.Diagnostics;
-using System.IO;
-using PowerVBA.Core.AvalonEdit.Replace;
+using PowerVBA.Codes.Parsing;
+using PowerVBA.Enums;
+using PowerVBA.Windows.AddWindows;
+using PowerVBA.Wrap;
+using PowerVBA.Windows;
+
 using ICSharpCode.AvalonEdit.Folding;
-using Microsoft.Win32;
-using PowerVBA.Core.Extension;
-using PowerVBA.Resources;
-using PowerVBA.Core.DataBase;
 
 using static PowerVBA.Global.Globals;
 
-using ppt = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerVBA
 {
@@ -54,8 +53,17 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
+            
+            //LinePoint l1 = new LinePoint(1, 1, 2);
+            //LinePoint l2 = new LinePoint(1, 2, 4);
+
+            //MessageBox.Show(l2.IsOverlapped(l1).ToString());
+
+
+            //return;
 
             codeInfo = new CodeInfo();
+
             new VBAParser(codeInfo);
 
             #region [  BackgroundWorker  ]
@@ -79,12 +87,10 @@ namespace PowerVBA
 
             solutionExplorer.Open += SolutionExplorer_Open;
             solutionExplorer.Delete += SolutionExplorer_Delete;
-
             solutionExplorer.OpenProperty += SolutionExplorer_OpenProperty;
             solutionExplorer.OpenObjectBrowser += SolutionExplorer_OpenBrowser;
             solutionExplorer.OpenShapeExplorer += SolutionExplorer_OpenShapeExplorer;
             
-
             projAnalyzer.ShapeSyncRequest += ProjAnalyzer_ShapeSyncRequest;
 
             backBtn.Click += BackBtn_Click;
@@ -117,6 +123,7 @@ namespace PowerVBA
                         {
                             SetMessage("코드 파싱에 소요된 시간 : " + debugSw.ElapsedMilliseconds.ToString() + "ms"); // DEBUG:
                             errorList.SetError(codeInfo.ErrorList);
+                            //MessageBox.Show(string.Join(", ", codeInfo.Variables.Select(i => i.Name)));
                         }));
 
                         Dispatcher.Invoke(new Action(() => {
@@ -167,43 +174,30 @@ namespace PowerVBA
             AddCommandBinding(new KeyGesture(Key.D, ModifierKeys.Control | ModifierKeys.Shift), Comm_MethodAdd);
             AddCommandBinding(new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift), Comm_VarAdd);
             AddCommandBinding(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift), Comm_SaveAll);
+            AddCommandBinding(new KeyGesture(Key.F1), Comm_Help);
             AddCommandBinding(new KeyGesture(Key.O, ModifierKeys.Control), Comm_Open);
+            AddCommandBinding(new KeyGesture(Key.D, ModifierKeys.Control), Comm_Debug);
 
             #endregion
         }
 
-        private void BtnRefresh_ButtonClick(object sender)
+        private void Comm_Debug(object sender, ExecutedRoutedEventArgs e)
         {
-            RefreshPPTItem();
+            MessageBox.Show("Debug Action Activate");
+
+            //connector.ToConnector2013().Presentation.VBProject.
+
+            return;
+
+            connector.ToConnector2013().VBProject.Name = "Test";
+            connector.ToConnector2013().VBProject.Description = "This Project Is Test Project";
         }
 
-        public void RefreshPPTItem()
+        private void Comm_Help(object sender, ExecutedRoutedEventArgs e)
         {
-            lvOpenPPTs.Items.Clear();
+            HelperWindow hw = new HelperWindow();
 
-            var itm = new ppt.Application();
-
-            foreach (ppt.Presentation presentation in itm.Presentations)
-            {
-
-                var imgBtn = new ImageButton()
-                {
-                    TextAlignment = TextAlignment.Left,
-                    ButtonMode = ImageButton.ButtonModes.LongWidth,
-                    BackImage = ResourceImage.GetIconImage("PPTIcon"),
-                    Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
-                    Tag = presentation
-                };
-
-                imgBtn.ButtonClick += ImgBtn_ButtonClick;
-
-                lvOpenPPTs.Items.Add(imgBtn);
-            }            
-        }
-
-        private void ImgBtn_ButtonClick(object sender)
-        {
-            InitalizeConnector(new V2013.WrapClass.PresentationWrapping(((ppt.Presentation)((Control)sender).Tag)));
+            hw.ShowDialog();
         }
 
         public void AddCommandBinding(KeyGesture gesture, ExecutedRoutedEventHandler commandEvent)
@@ -214,8 +208,6 @@ namespace PowerVBA
 
             this.CommandBindings.Add(new CommandBinding(rCommand, commandEvent));
         }
-
-
 
         bool LoadComplete = false;
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -258,7 +250,7 @@ namespace PowerVBA
             MainDispatcher = Dispatcher;
 
             RecentFileSet();
-            RecentFolderSet();
+            Dispatcher.Invoke(() => { RefreshOpenFolder(); });
         }
 
         #endregion
@@ -268,25 +260,6 @@ namespace PowerVBA
             if (IsConnected) ShapeChangedDetect();
         }
 
-        private void SolutionExplorer_OpenShapeExplorer()
-        {
-            var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "도형 탐색기").ToList();
-            if (tabItems.Count >= 1)
-            {
-                codeTabControl.SelectedItem = tabItems.First();
-            }
-            else
-            {
-                CloseableTabItem itm = new CloseableTabItem()
-                {
-                    Header = "도형 탐색기",
-                    Content = new ShapeExplorer(connector.Slide, connector)
-                };
-                codeTabControl.Items.Add(itm);
-                codeTabControl.SelectedItem = itm;
-            }
-        }
-
         private void SolutionExplorer_OpenBrowser()
         {
             
@@ -294,16 +267,14 @@ namespace PowerVBA
 
         private void MainWindow_Activated(object sender, EventArgs e)
         {
-            if (connector == null) return;
+            if (connector == null)
+                return;
             
             Dispatcher.Invoke(() =>
             {
                 try
                 {
                     var codeTabs = GetAllCodeTabs();
-
-
-                    
 
                     foreach (VBComponentWrappingBase item in connector.GetFiles())
                     {
@@ -319,9 +290,10 @@ namespace PowerVBA
                                 }
                                 else
                                 {
-                                    var msg = MessageBox.Show("파워포인트의 코드와 내 파일의 저장되지 않은 내용이 존재합니다. 변경하시겠습니까?" +
-                                                 "\r\n파워포인트의 코드로 변환하려면 [예]를 누르세요." +
-                                                 "\r\n현재 내 파일의 코드로 변경하려면 [아니오]를 누르세요.", "코드 충돌", MessageBoxButton.YesNo);
+                                    var msg = MessageBox.Show($"[{item.CompName}] 파일을 읽던 중에\r\n" +
+                                        "파워포인트의 코드와 내 파일의 저장되지 않은 내용을 발견했습니다. 변경하시겠습니까?" +
+                                        "\r\n파워포인트의 코드로 변환하려면 [예]를 누르세요." +
+                                        "\r\n현재 내 파일의 코드로 변경하려면 [아니오]를 누르세요.", "코드 충돌", MessageBoxButton.YesNo);
 
                                     if (msg == MessageBoxResult.Yes)
                                         editor.Text = item.Code;
@@ -337,42 +309,37 @@ namespace PowerVBA
             });   
         }
 
+        #region [  Commands  ]
+
         // 커멘드 - 열기
         private void Comm_Open(object sender, ExecutedRoutedEventArgs e)
         {
             if (IsConnected)
             {
-                SetProgramTab(ProgramTabMenus.FileTab);
-                SetFileTabMenu(FileTabMenus.Open);
+                SetProgramTab(ProgramTabMenu.FileTab);
+                SetFileTabMenu(FileTabMenu.Open);
             }
         }
-
-
+        
         // 커멘드 - 전체 저장
         private void Comm_SaveAll(object sender, ExecutedRoutedEventArgs e)
         {
             if (IsConnected)
-            {
                 BtnAllFileSync_ButtonClick(sender);
-            }
         }
 
         // 커멘드 - 변수 추가
         private void Comm_VarAdd(object sender, ExecutedRoutedEventArgs e)
         {
             if (IsConnected)
-            {
                 BtnAddVar_ButtonClick(sender);
-            }
         }
 
         // 커멘드 - 메소드 추가
         private void Comm_MethodAdd(object sender, ExecutedRoutedEventArgs e)
         {
             if (IsConnected)
-            {
                 BtnAddFunc_ButtonClick(sender);
-            }
         }
 
         // 커멘드 - 아이템 추가
@@ -386,6 +353,8 @@ namespace PowerVBA
             }
         }
 
+        #endregion
+        
         private void SolutionExplorer_Delete(object sender, VBComponentWrappingBase Data)
         {
             string Name = Data.CompName;
@@ -396,20 +365,20 @@ namespace PowerVBA
             }
         }
         
-        private void ErrorList_LineMove(Codes.TypeSystem.Error err)
+        private void ErrorList_LineMove(Error err)
         {
             try
             {
                 CloseableTabItem tabItm = codeTabControl.Items.Cast<CloseableTabItem>()
-                                                            .Where(i => i.Header.ToString() == err.FileName).FirstOrDefault();
+                    .Where(i => i.Header.ToString() == err.FileName).FirstOrDefault();
 
                 CodeEditor codeEditor = (CodeEditor)tabItm.Content;
 
                 if (codeEditor == null || tabItm == null) return;
 
-                codeEditor.ScrollToLine(err.Region.Begin.Line);
+                codeEditor.ScrollToLine(err.Line);
                 codeEditor.SelectionLength = 0;
-                codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Region.Begin);
+                codeEditor.CaretOffset = codeEditor.Document.GetOffset(err.Line, 0);
                 codeEditor.SelectionLength = codeEditor.Document.GetLineByOffset(codeEditor.SelectionStart).Length;
 
                 codeTabControl.SelectedItem = tabItm;
@@ -421,10 +390,24 @@ namespace PowerVBA
             }   
         }
 
+        private void SolutionExplorer_OpenShapeExplorer()
+        {
+            AddTabItem(new ShapeExplorer(connector.Slide, connector), "도형 탐색기");
+        }
 
         private void SolutionExplorer_OpenProperty()
         {
-            var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "솔루션 탐색기").ToList();
+            AddTabItem(new ProjectProperty(connector), "프로젝트 속성");
+        }
+
+        private void AddRefBtn_ButtonClick(object sender)
+        {
+            AddTabItem(new ReferenceManager(connector), "참조 관리자");
+        }
+
+        public void AddTabItem(object Item, string str)
+        {
+            var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == str).ToList();
             if (tabItems.Count >= 1)
             {
                 var itm = tabItems.First();
@@ -434,15 +417,14 @@ namespace PowerVBA
             {
                 CloseableTabItem itm = new CloseableTabItem()
                 {
-                    Header = "솔루션 탐색기",
-                    Content = new ProjectProperty(connector)
+                    Header = str,
+                    Content = Item
                 };
                 codeTabControl.Items.Add(itm);
                 codeTabControl.SelectedItem = itm;
             }
         }
-
-
+        
         private void SolutionExplorer_Open(object sender, VBComponentWrappingBase data)
         {
             if (data != null)
@@ -452,6 +434,7 @@ namespace PowerVBA
             }
         }
 
+        #region [  Presentation Item  ]
 
         // 아이템 삭제를 요청합니다.
         private void Itm_DeleteRequest(object sender)
@@ -480,7 +463,9 @@ namespace PowerVBA
             SetMessage($"'{new FileInfo(itm.FileLocation).Name}' 프레젠테이션을 열고 있습니다.");
             InitalizeConnector(itm.FileLocation);
         }
-        
+
+        #endregion
+
         // CodeEditor의 코드가 변경되었을때
         private void CodeEditor_TextChanged(object sender, EventArgs e)
         {
@@ -488,12 +473,6 @@ namespace PowerVBA
             CodeSync(sender);
             btnUndo.IsEnabled = ((CodeEditor)sender).CanUndo;
             btnRedo.IsEnabled = ((CodeEditor)sender).CanRedo;
-        }
-
-        // 파일에서 뒤로 돌아가기 버튼 누를때
-        private void BackBtn_Click(object sender, RoutedEventArgs e)
-        {
-            SetProgramTab(ProgramTabMenus.MainEdit);
         }
 
         private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -534,7 +513,6 @@ namespace PowerVBA
             btnAddMouseClickTrigger.IsEnabled = triggerFlag;
         }
         
-
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             if (CloseRequest()) AllClose();
@@ -547,35 +525,33 @@ namespace PowerVBA
         /// <returns></returns>
         public bool CloseRequest()
         {
-            if (connector != null)
+            if (connector == null) return true;
+
+            var nonSavedFile = GetAllCodeTabs()
+                .Select(i => (CodeEditor)i.Content)
+                .Where(i => i.Saved);
+
+            if (!connector.Saved || !CodeSaved)
             {
-                var nonSavedFile = GetAllCodeTabs()
-                                      .Select(i => (CodeEditor)i.Content)
-                                      .Where(i => i.Saved);
+                var result = MessageBox.Show(connector.Name + "에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?", "저장되지 않은 내용", MessageBoxButton.YesNoCancel);
 
-                if (!connector.Saved || !CodeSaved)
+                switch (result)
                 {
-                    var result = MessageBox.Show(connector.Name + "에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?", "저장되지 않은 내용", MessageBoxButton.YesNoCancel);
+                    case MessageBoxResult.Yes: // 저장후 닫기 요청
 
-                    switch (result)
-                    {
-                        case MessageBoxResult.Yes: // 저장후 닫기 요청
+                        nonSavedFile.ToList().ForEach(i => i.Save());
 
-                            nonSavedFile.ToList().ForEach(i => i.Save());
-
-                            if (!connector.Save()) // 저장
-                            {
-                                MessageBox.Show("저장에 실패했습니다. [읽기 전용]이거나 폰트가 없을 수 있습니다. 다른 이름으로 저장하기를 해주세요.", "저장 실패");
-                                goto case MessageBoxResult.Cancel;
-                            }
-                            break;
-                        case MessageBoxResult.Cancel: // 닫기 취소
-                            return false;
-                    }
+                        if (!connector.Save()) // 저장
+                        {
+                            MessageBox.Show("저장에 실패했습니다. [읽기 전용]이거나 폰트가 없을 수 있습니다. 다른 이름으로 저장하기를 해주세요.", "저장 실패");
+                            goto case MessageBoxResult.Cancel;
+                        }
+                        break;
+                    case MessageBoxResult.Cancel: // 닫기 취소
+                        return false;
                 }
             }
             return true;
-            
         }
 
         // 모든 커넥터와의 연결을 끊고 프로그램을 종료합니다.
@@ -584,14 +560,7 @@ namespace PowerVBA
             connector?.Dispose();
             Environment.Exit(0);
         }
-
-        private void DebugBtn_ButtonClick(object sender)
-        {
-            var itm = ((CodeTabEditor)((CloseableTabItem)codeTabControl.SelectedItem).Content).CodeEditor;
-            itm.DeleteIndent();
-        }
-
-
+        
         private void TiSaveItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
             BtnAllFileSync_ButtonClick(sender);
@@ -600,57 +569,17 @@ namespace PowerVBA
             itm.ForEach(editor => editor.Save());
             connector.Save();
 
-            SetProgramTab(ProgramTabMenus.MainEdit);
+            SetProgramTab(ProgramTabMenu.MainEdit);
 
             e.Handled = true;
         }
-
-        private void FileTabClose_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (CloseRequest())
-            {
-                AllClose();
-            }
-            
-            e.Handled = true;
-        }
-
-
-        // PowerPoint 열고 닫기
-        private void OpenPPTRun_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Process.Start(VersionSelector.GetPowerPointPath());
-            this.Close();
-        }
-
         
         private void BtnToPPT_ButtonClick(object sender)
         {
             connector.ActivateWindow();
         }
-
-
-        private void AddRefBtn_ButtonClick(object sender)
-        {
-            var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == "참조 관리자").ToList();
-            if (tabItems.Count >= 1)
-            {
-                codeTabControl.SelectedItem = tabItems.First();
-            }
-            else
-            {
-                CloseableTabItem itm = new CloseableTabItem()
-                {
-                    Header = "참조 관리자",
-                    Content = new ReferenceManager(connector)
-                };
-                codeTabControl.Items.Add(itm);
-                codeTabControl.SelectedItem = itm;
-            }
-        }
-
-
-        private void GridOpenAnotherPpt_MouseLeave(object sender, MouseEventArgs e)
+        
+        private void Buttons_MouseLeave(object sender, MouseEventArgs e)
         {
             TextBlock tb = null;
             if (((Control)sender).Name.ToLower().Contains("openanotherppt")) tb = tbBOpenAnotherPpt;
@@ -666,7 +595,6 @@ namespace PowerVBA
             }
         }
 
-
         private void OpenButtons_MouseMove(object sender, MouseEventArgs e)
         {
             TextBlock tb = null;
@@ -675,75 +603,7 @@ namespace PowerVBA
 
             tb?.TextDecorations.Add(TextDecorations.Underline);
         }
-
-
-        private void OpenButtons_Click(object sender, RoutedEventArgs e)
-        {
-            if (((Control)sender).Name.ToLower().Contains("openanotherppt"))
-            {
-                OpenAnotherPPT();
-            }
-            else if (((Control)sender).Name.ToLower().Contains("connectpresentation"))
-            {
-                ConectPresentation();
-            }
-        }
-
-        public void OpenAnotherPPT()
-        {
-            OpenFileDialog ofd = new OpenFileDialog()
-            {
-                Filter = "프레젠테이션|*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm"
-            };
-            if (ofd.ShowDialog().Value)
-            {
-                tbProcessInfoTB.Text = "프레젠테이션을 열고 있습니다.";
-
-                dbConnector.FileTable.Add(ofd.FileName);
-
-                InitalizeAll();
-                InitalizeConnector(ofd.FileName);
-            }
-        }
-
-
-        public void ConectPresentation()
-        {
-            ConnectWindows connWindow = new ConnectWindows();
-
-            var Handled = connWindow.ShowDialog(out PresentationWrappingBase ppt);
-
-            if (Handled)
-            {
-                try
-                {
-                    InitalizeConnector(ppt);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-            }
-        }
-
-        private void btnNewPPT_Click(object sender, RoutedEventArgs e)
-        {
-            // 연결되어있는데 저장 여부에서 취소를 눌렀을시 처리 중지
-            if (IsConnected && !CloseRequest()) return;
-
-            InitalizeAll();
-            PPTVersion ver = VersionSelector.GetPPTVersion();
-
-            if (ver != PPTVersion.PPT2013 && ver != PPTVersion.PPT2010 && ver != PPTVersion.PPT2016)
-            {
-                MessageBox.Show($"죄송합니다. {ver.ToString()}는 지원하지 않는 버전입니다.");
-                return;
-            }
-            tbProcessInfoTB.Text = "선택한 템플릿을 적용한 프레젠테이션 프로젝트를 만들고 있습니다.";
-
-            InitalizeConnector();
-        }
-
+        
         private void SelectionChangedDetect()
         {
             projAnalyzer.CurrentShapeName = connector.SelectionShapeName;
@@ -761,49 +621,23 @@ namespace PowerVBA
         {
             projAnalyzer.SlideCount = connector.SlideCount;
         }
-        private void btnHelp_Click(object sender, RoutedEventArgs e)
-        {
-            var helperWindow = new HelperWindow();
-            helperWindow.MoveHelpContext(((Button)sender).Tag.ToString());
-            helperWindow.ShowDialog();
-        }
 
         // 동기화 버튼
         private void BtnInfoSync_MouseDown(object sender, MouseButtonEventArgs e)
         {
             runClass.Text = connector.GetClasses().Count.ToString();
         }
-
-        private void btnSaveAsSetFile_ButtonClick(object sender)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "매크로 프레젠테이션 파일|*.pptm";
-
-            if (sfd.ShowDialog().Value)
-            {
-                dbConnector.FolderTable.Add(sfd.FileName);
-
-                var itm = GetAllCodeEditors();
-                itm.ForEach(editor => editor.Save());
-
-                if (connector.SaveAs(sfd.FileName))
-                {
-                    NameSet();
-                }
-            }
-        }
-
-
-        void SetProgramTab(ProgramTabMenus programTabMenu)
+                
+        void SetProgramTab(ProgramTabMenu programTabMenu)
         {
 
             switch (programTabMenu)
             {
-                case ProgramTabMenus.Startup:
-                case ProgramTabMenus.MainEdit:
+                case ProgramTabMenu.Startup:
+                case ProgramTabMenu.MainEdit:
                     this.NoTitle = false;
                     break;
-                case ProgramTabMenus.FileTab:
+                case ProgramTabMenu.FileTab:
                     this.NoTitle = true;
                     break;
                 default:
@@ -814,70 +648,28 @@ namespace PowerVBA
             programTabControl.SelectedIndex = (int)programTabMenu;
         }
 
-        enum ProgramTabMenus
-        {
-            Startup = 1,
-            MainEdit = 0,
-            FileTab = 2,
-        }
-
-        void SetMainMenuTab(MainTabMenus mainTabMenu)
+        void SetMainMenuTab(MainTabMenu mainTabMenu)
         {
             menuTabControl.SelectedIndex = (int)mainTabMenu;
         }
 
-        enum MainTabMenus
-        {
-            Home = 1,
-            Insert = 2,
-            Project = 3,
-        }
-
-        void SetFileTabMenu(FileTabMenus fileTabMenu)
+        void SetFileTabMenu(FileTabMenu fileTabMenu)
         {
             fileTabControl.SelectedIndex = (int)fileTabMenu;
         }
-        
-        enum FileTabMenus
-        {
-            Information = 0,
-            NewPresentation = 1,
-            Open = 2,
-            Save = 3,
-            SaveAs = 4,
-            Close = 5,
-        }
 
-        private void btnFileTabOpen_ButtonClick(object sender)
+        // 찾아보기 버튼 클릭해서 '열기'
+        private void BtnFileTabOpen_ButtonClick(object sender)
         {
             OpenAnotherPPT();
         }
 
         private void FileTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            SetProgramTab(ProgramTabMenus.FileTab);
+            SetProgramTab(ProgramTabMenu.FileTab);
 
             e.Handled = true;
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var tc = (TabControl)sender;
-
-            if (tc.SelectedItem is TabItem ti)
-            {
-                if (ti.Tag?.ToString() == "connPresentation")
-                {
-                    RefreshPPTItem();
-                }
-            }
-
-        }
-
-        private void BtnInfoSync_ButtonClick(object sender)
-        {
-            runFunc.Text = codeInfo.Functions.Count.ToString();
-
-        }
     }
 }

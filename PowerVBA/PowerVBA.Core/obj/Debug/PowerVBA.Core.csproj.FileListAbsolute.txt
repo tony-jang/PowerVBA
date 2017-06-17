@@ -76,8 +76,6 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Po
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.csprojResolveAssemblyReference.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Replace\FindReplaceDialog.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Replace\FindReplaceDialog.g.cs
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeBlock.g.cs
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeTabEditor.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\GeneratedInternalTypeHelper.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core_MarkupCompile.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core_MarkupCompile.lref
@@ -100,8 +98,6 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\En
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\ICSharpCode.AvalonEdit.xml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\System.Data.SQLite.xml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\System.Data.SQLite.dll.config
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeBlock.baml
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeTabEditor.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CustomToolTip.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\PathButton.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.g.resources

@@ -22,7 +22,7 @@ namespace PowerVBA.Controls.Customize
             CommandBindings.Add(new CommandBinding(TabItemCommand.DeleteCommand, OnDelete, OnDeleteExecute));
         }
 
-        public static DependencyProperty SavedProperty = DependencyHelper.Register(new PropertyMetadata(false));
+        public static DependencyProperty SavedProperty = DependencyHelper.Register(new PropertyMetadata(true));
 
         /// <summary>
         /// 저장되었는지에 대한 여부를 가져옵니다. 
@@ -38,13 +38,17 @@ namespace PowerVBA.Controls.Customize
         {
             if (this.Parent.GetType() == typeof(TabControl))
             {
-                if (Saved)
+                if (!Saved)
                 {
-                    var result = MessageBox.Show("저장되지 않은 내용이 있습니다. 저장하고 닫으시겠습니까?", "저장되지 않은 파일", MessageBoxButton.YesNo);
+                    var result = MessageBox.Show("저장되지 않은 내용이 있습니다. 저장하고 닫으시겠습니까?", "저장되지 않은 파일", MessageBoxButton.YesNoCancel);
 
                     if (result == MessageBoxResult.Yes)
                     {
                         SaveCloseRequest?.Invoke(this, null);
+                    }
+                    else if (result == MessageBoxResult.Cancel)
+                    {
+                        return;
                     }
                 }
                 TabControl tc = (TabControl)this.Parent;
