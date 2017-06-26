@@ -15,7 +15,7 @@ namespace PowerVBA.V2010.WrapClass
     public class VBComponentWrapping : VBComponentWrappingBase
     {
         public VBComponent VBComponent { get; }
-        public VBComponentWrapping(VBComponent VBComponent)
+        public VBComponentWrapping(VBComponent VBComponent) : base($"{VBComponent.Name}{GetExtensions(VBComponent.Type)}")
         {
             this.VBComponent = VBComponent;
         }
@@ -38,7 +38,7 @@ namespace PowerVBA.V2010.WrapClass
         }
 
         public bool Saved => VBComponent.Saved;
-        public string Name { set { VBComponent.Name = value; } get { return VBComponent.Name; } }
+        public string Name { set { VBComponent.Name = value; OnNameChanged(); } get { return VBComponent.Name; } }
         public dynamic Designer => VBComponent.Designer;
         public CodeModule CodeModule => VBComponent.CodeModule;
         public vbext_ComponentType Type => VBComponent.Type;
@@ -56,7 +56,7 @@ namespace PowerVBA.V2010.WrapClass
                   CodeModule.AddFromString(value); }
         }
 
-        public string GetExtensions(vbext_ComponentType Type)
+        public static string GetExtensions(vbext_ComponentType Type)
         {
             switch (Type)
             {

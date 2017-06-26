@@ -43,13 +43,15 @@ namespace PowerVBA
             // 코드 탭 초기화
             codeTabControl.Items.Clear();
 
-            ParseSw.Reset();
+            parseSw.Reset();
             
             // 솔루션 탐색기 초기화
             solutionExplorer.Reset();
 
             // 프로젝트 분석기 초기화
             projAnalyzer.Reset();
+
+            outline.ClearAll();
 
             // 오류 목록 초기화
             errorList.Reset();

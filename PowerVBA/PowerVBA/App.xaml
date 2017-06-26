@@ -12,6 +12,5 @@
                 <ResourceDictionary Source="pack://application:,,,/PowerVBA.Core;component/Controls/CustomToolTip.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
     </Application.Resources>
 </Application>

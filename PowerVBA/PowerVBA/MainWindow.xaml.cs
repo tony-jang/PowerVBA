@@ -27,7 +27,7 @@ using PowerVBA.Windows;
 using ICSharpCode.AvalonEdit.Folding;
 
 using static PowerVBA.Global.Globals;
-
+using System.Text;
 
 namespace PowerVBA
 {
@@ -43,7 +43,10 @@ namespace PowerVBA
         SQLiteConnector dbConnector = new SQLiteConnector();
         CodeInfo codeInfo;
         List<FileInfo> libraryFiles = new List<FileInfo>();
-        Stopwatch ParseSw = new Stopwatch();
+        List<string> parseFiles = new List<string>();
+        Stopwatch parseSw = new Stopwatch();
+
+        List<VBComponentWrappingBase> ComponentFiles;
 
         /// <summary>
         /// 연결되어 있는지에 대한 여부를 확인합니다.
@@ -53,14 +56,7 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
-            
-            //LinePoint l1 = new LinePoint(1, 1, 2);
-            //LinePoint l2 = new LinePoint(1, 2, 4);
 
-            //MessageBox.Show(l2.IsOverlapped(l1).ToString());
-
-
-            //return;
 
             codeInfo = new CodeInfo();
 
@@ -93,6 +89,8 @@ namespace PowerVBA
             
             projAnalyzer.ShapeSyncRequest += ProjAnalyzer_ShapeSyncRequest;
 
+            outline.LinePointMove += Outline_LinePointMove;
+
             backBtn.Click += BackBtn_Click;
 
             #endregion
@@ -101,7 +99,7 @@ namespace PowerVBA
             {
                 while (true)
                 {
-                    if (ParseSw.ElapsedMilliseconds > 500)
+                    if (parseSw.ElapsedMilliseconds > 500)
                     {
                         Stopwatch debugSw = new Stopwatch();
                         debugSw.Start();
@@ -110,18 +108,22 @@ namespace PowerVBA
 
                         List<(string, string)> CodeLists = new List<(string, string)>();
 
-                        Dispatcher.Invoke(new Action(() => {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
                             CodeLists = codeTabControl.Items
-                                                      .Cast<TabItem>()
-                                                      .Where(t => t.Content.GetType() == typeof(CodeEditor))
-                                                      .Select(t => (((CodeEditor)t.Content).Text, t.Header.ToString())).ToList();
+                                .Cast<TabItem>()
+                                .Where(t => parseFiles.Contains(t.Header.ToString()) && t.Content.GetType() == typeof(CodeEditor))
+                                .Select(t => (t.Header.ToString(), ((CodeEditor)t.Content).Text)).ToList();
                         }));
+
 
                         new VBAParser(codeInfo).Parse(CodeLists);
 
                         errorList.Dispatcher.Invoke(new Action(() =>
                         {
+#if DEBUG
                             SetMessage("코드 파싱에 소요된 시간 : " + debugSw.ElapsedMilliseconds.ToString() + "ms"); // DEBUG:
+#endif
                             errorList.SetError(codeInfo.ErrorList);
                             //MessageBox.Show(string.Join(", ", codeInfo.Variables.Select(i => i.Name)));
                         }));
@@ -129,6 +131,27 @@ namespace PowerVBA
                         Dispatcher.Invoke(new Action(() => {
                             try
                             {
+                                outline.ClearFile(codeInfo.CodeFiles.Select(i => i.FileName).ToArray());
+                                foreach(var itm in codeInfo.CodeFiles)
+                                {
+                                    foreach(var var in itm.Variables)
+                                    {
+                                        outline.AddVariable(var, itm.FileName);
+                                    }
+                                    foreach(var func in itm.Functions)
+                                    {
+                                        outline.AddFunction(func, itm.FileName);
+                                    }
+                                    foreach(var sub in itm.Subs)
+                                    {
+                                        outline.AddSub(sub, itm.FileName);
+                                    }
+                                    foreach (var enumitm in itm.Enums)
+                                    {
+                                        outline.AddEnum(enumitm, itm.FileName);
+                                    }
+                                }
+
                                 foreach (CloseableTabItem itm in codeTabControl.Items)
                                 {
                                     if (itm.Content.GetType() == typeof(CodeEditor))
@@ -158,7 +181,7 @@ namespace PowerVBA
                             }
                         }));
 
-                        ParseSw.Reset();
+                        parseSw.Reset();
                         #endregion
                     }
                     Thread.Sleep(10);
@@ -181,11 +204,45 @@ namespace PowerVBA
             #endregion
         }
 
+        private void Outline_LinePointMove(object sender, LinePointEventArgs e)
+        {
+            try
+            {
+                var tabItm = GetAllCodeTabs()
+                    .Where(i => i.Header.ToString() == e.FileName).FirstOrDefault();
+
+                CodeEditor codeEditor = (CodeEditor)tabItm.Content;
+
+                
+
+                if (codeEditor == null) return;
+
+                codeEditor.ScrollToLine(e.LinePoint.Line);
+                codeEditor.SelectionLength = 0;
+                codeEditor.CaretOffset = codeEditor.Document.GetOffset(e.LinePoint.Line, e.LinePoint.Offset);
+                codeEditor.SelectionLength = e.LinePoint.Length;
+
+                codeTabControl.SelectedItem = tabItm;
+                codeEditor.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         private void Comm_Debug(object sender, ExecutedRoutedEventArgs e)
         {
             MessageBox.Show("Debug Action Activate");
 
             //connector.ToConnector2013().Presentation.VBProject.
+
+            var itm = connector.GetFiles().Select(i => i.File);
+
+            foreach(var codeFile in itm)
+            {
+                MessageBox.Show(codeFile.FileName);
+            }
 
             return;
 
@@ -361,7 +418,8 @@ namespace PowerVBA
             if (connector.DeleteComponent(Data))
             {
                 var itm = GetAllCodeTabs().Where(i => i.Header.ToString() == Name);
-                codeTabControl.Items.Remove(itm.First());
+                if (itm.Count() != 0)
+                    codeTabControl.Items.Remove(itm.First());
             }
         }
         
@@ -392,12 +450,22 @@ namespace PowerVBA
 
         private void SolutionExplorer_OpenShapeExplorer()
         {
-            AddTabItem(new ShapeExplorer(connector.Slide, connector), "도형 탐색기");
+            AddTabItem(new ShapeExplorer(connector), "도형 탐색기");
         }
 
         private void SolutionExplorer_OpenProperty()
         {
-            AddTabItem(new ProjectProperty(connector), "프로젝트 속성");
+            bool err = false;
+            var prop = new ProjectProperty(connector, ref err);
+
+            if (!err)
+            {
+                AddTabItem(prop, "프로젝트 속성").SaveCloseRequest += prop.SavecloseRequest;
+            }
+            else
+            {
+                MessageBox.Show("프로젝트 속성을 열던 중 오류가 발생했습니다.");
+            }
         }
 
         private void AddRefBtn_ButtonClick(object sender)
@@ -405,13 +473,15 @@ namespace PowerVBA
             AddTabItem(new ReferenceManager(connector), "참조 관리자");
         }
 
-        public void AddTabItem(object Item, string str)
+        public CloseableTabItem AddTabItem(object Item, string str)
         {
             var tabItems = codeTabControl.Items.Cast<CloseableTabItem>().Where((i) => i.Header.ToString() == str).ToList();
             if (tabItems.Count >= 1)
             {
                 var itm = tabItems.First();
                 codeTabControl.SelectedItem = itm;
+
+                return itm;
             }
             else
             {
@@ -422,6 +492,8 @@ namespace PowerVBA
                 };
                 codeTabControl.Items.Add(itm);
                 codeTabControl.SelectedItem = itm;
+
+                return itm;
             }
         }
         
@@ -429,6 +501,8 @@ namespace PowerVBA
         {
             if (data != null)
             {
+                codeInfo.AddFile(data.File);
+
                 var itm = data.ToVBComponent2013();
                 AddCodeTab(data);
             }
@@ -469,10 +543,11 @@ namespace PowerVBA
         // CodeEditor의 코드가 변경되었을때
         private void CodeEditor_TextChanged(object sender, EventArgs e)
         {
-            ParseSw.Restart();
-            CodeSync(sender);
-            btnUndo.IsEnabled = ((CodeEditor)sender).CanUndo;
-            btnRedo.IsEnabled = ((CodeEditor)sender).CanRedo;
+            CodeEditor editor = (CodeEditor)sender;
+            parseFiles.Add(editor.ConnectedFile.CompName);
+            parseSw.Restart();
+            btnUndo.IsEnabled = editor.CanUndo;
+            btnRedo.IsEnabled = editor.CanRedo;
         }
 
         private void CodeTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -489,6 +564,8 @@ namespace PowerVBA
 
                 btnUndo.IsEnabled = false;
                 btnRedo.IsEnabled = false;
+
+                gridCaretInfo.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -500,6 +577,8 @@ namespace PowerVBA
                 flag = true;
 
                 triggerFlag = tabItm.Header.ToString().EndsWith(".bas"); // 모듈의 경우에만 추가 버튼 활성화
+                
+                gridCaretInfo.Visibility = Visibility.Visible;
             }
 
             btnAddSub.IsEnabled = flag;

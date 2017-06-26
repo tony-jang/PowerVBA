@@ -12,21 +12,19 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ShapeExplorer : UserControl
     {
-        int slide;
         PPTConnectorBase connector;
 
-        public ShapeExplorer(int slide, PPTConnectorBase connector)
+        public ShapeExplorer(PPTConnectorBase connector)
         {
             InitializeComponent();
 
             SetToUnknown();
             lvShape.SelectionChanged += LvShape_SelectionChanged;
-
-            Refresh();
-
-            this.slide = slide;
             this.connector = connector;
+
+            RefreshSlide();
         }
+
         public void SetToUnknown()
         {
             tbName.Text = "선택되지 않음";
@@ -39,7 +37,21 @@ namespace PowerVBA.Controls.Tools
             runFill.Text = "알 수 없음";
             runTxtFill.Text = "알 수 없음";
         }
-        private void Refresh()
+        private void RefreshSlide()
+        {
+            lvShape.Items.Clear();
+            SetToUnknown();
+            cbSlideList.Items.Clear();
+
+            
+            runSlide.Text = "0";
+            
+            for(int i = 0; i< connector.SlideCount; i++)
+            {
+                cbSlideList.Items.Add(new ComboBoxItem() { Content = (i + 1) + " 슬라이드" });
+            }
+        }
+        private void RefreshShape(int slide)
         {
             lvShape.Items.Clear();
 
@@ -76,10 +88,12 @@ namespace PowerVBA.Controls.Tools
 
         private void LvShape_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lvShape.SelectedIndex == -1) return;
+            if (lvShape.SelectedIndex == -1)
+                return;
             var tag = ((Control)lvShape.SelectedItem).Tag;
 
-            if (tag == null) return;
+            if (tag == null)
+                return;
 
             if (tag is ShapeWrappingBase shape)
             {
@@ -91,22 +105,23 @@ namespace PowerVBA.Controls.Tools
                 runTop.Text = shape.Top.ToString();
                 runFill.Text = $"R : {shape.RGB.R} | G : {shape.RGB.G} | B : {shape.RGB.B}";
                 runTxtFill.Text = $"R : {shape.ForeRGB.R} | G : {shape.ForeRGB.G} | B : {shape.ForeRGB.B}";
-
             }
         }
 
-        private void btnRefresh_ButtonClick(object sender)
+        private void BtnRefresh_ButtonClick(object sender)
         {
-            Refresh();
+            RefreshSlide();
         }
 
-        private void btnDelShape_ButtonClick(object sender)
+        private void BtnDelShape_ButtonClick(object sender)
         {
-            if (lvShape.SelectedIndex == -1) return;
+            if (lvShape.SelectedIndex == -1)
+                return;
 
             var tag = ((Control)lvShape.SelectedItem).Tag;
 
-            if (tag == null) return;
+            if (tag == null)
+                return;
 
             if (tag is ShapeWrappingBase shape)
             {
@@ -120,6 +135,19 @@ namespace PowerVBA.Controls.Tools
                     }
                     lvShape.Items.RemoveAt(lvShape.SelectedIndex);
                 }
+            }
+        }
+
+        private void CbSlideList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbSlideList.SelectedItem == null)
+                return;
+
+            if (cbSlideList.SelectedItem is ComboBoxItem cbItem)
+            {
+                int slide = int.Parse(cbItem.Content.ToString().Split(' ')[0]);
+
+                RefreshShape(slide);
             }
         }
     }

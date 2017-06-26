@@ -26,13 +26,22 @@
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="10,0" VerticalAlignment="Center" Grid.Row="0">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="슬라이드 목록" Grid.Row="0"/>
+                    <ComboBox x:Name="cbSlideList" Margin="5" Grid.Row="1" SelectionChanged="CbSlideList_SelectionChanged"/>
+                </Grid>
+                <TextBlock Margin="10,0" VerticalAlignment="Center" Grid.Row="1">
                     <Run x:Name="runSlide" Text="1"/> 슬라이드의 도형 목록
                 </TextBlock>
-                <ListView x:Name="lvShape" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView x:Name="lvShape" Grid.Row="2" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListViewItem Content="Shape1"/>
                     <ListViewItem Content="Shape2"/>
                     <ListViewItem Content="Shape3"/>
@@ -80,9 +89,9 @@
                     <!--<c:ImageButton x:Name="btnAddShape" Style="{StaticResource btnStyle}" Grid.Column="0" 
                                    Content="도형 추가" BackImage="/PowerVBA;component/Resources/Icon/AddShapeIcon.png" />-->
                     <c:ImageButton x:Name="btnDelShape" Style="{StaticResource btnStyle}" Grid.Column="1" 
-                                   Content="도형 제거 (Del)" BackImage="/PowerVBA;component/Resources/Icon/DelShapeIcon.png" ButtonClick="btnDelShape_ButtonClick"/>
+                                   Content="도형 제거 (Del)" BackImage="/PowerVBA;component/Resources/Icon/DelShapeIcon.png" ButtonClick="BtnDelShape_ButtonClick"/>
                     <c:ImageButton x:Name="btnRefresh" Style="{StaticResource btnStyle}" Grid.Column="2" 
-                                   Content="새로 고침 (F5)" BackImage="/PowerVBA;component/Resources/Icon/SyncIcon.png" ButtonClick="btnRefresh_ButtonClick"/>
+                                   Content="새로 고침 (F5)" BackImage="/PowerVBA;component/Resources/Icon/SyncIcon.png" ButtonClick="BtnRefresh_ButtonClick"/>
                 </Grid>
 
             </Grid>

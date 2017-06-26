@@ -61,61 +61,17 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="선택된 슬라이드 정보" FontSize="12" Margin="15,5" Foreground="#FFD34B2A"/>
                         <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
-                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
-                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A">
                             <TextBlock.ToolTip>
                                 <c:CustomToolTip Title="현재 슬라이드의 도형 개수" Text="현재 선택한 슬라이드의 도형 갯수를 보여줍니다."/>
                             </TextBlock.ToolTip>
                             현재 슬라이드의 도형 개수 (<Run x:Name="runSelSlideShape" Text="0"/>개)
                         </TextBlock>
-                        <TextBlock Grid.Row="3" Margin="15,5" FontSize="12" 
-                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                        <TextBlock Grid.Row="3" Margin="15,5" FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A">
                             <TextBlock.ToolTip>
                                 <c:CustomToolTip Title="현재 선택된 도형 이름" Text="현재 선택한 도형의 이름을 보여줍니다."/>
                             </TextBlock.ToolTip>
                             현재 선택된 도형 이름 : <Run x:Name="runSelShapeName" Text="선택되지 않음"/>
-                        </TextBlock>
-                    </Grid>
-                    <Grid Margin="0,10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="VBA 프로젝트 전체 정보" FontSize="12" Margin="15,5" Foreground="#FFD34B2A"/>
-                        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
-                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
-                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                            <TextBlock.ToolTip>
-                                <c:CustomToolTip Title="VBA 프로젝트 코드 전체 줄" Text="VBA 프로젝트 내에 존재하는 코드 파일들의 라인 수를 계산해 보여줍니다."/>
-                            </TextBlock.ToolTip>
-                            VBA 프로젝트 코드 전체 줄 : <Run x:Name="runAllLine" Text="0"/> 라인
-                        </TextBlock>
-                        <TextBlock Grid.Row="3" Margin="15,5" FontSize="12" 
-                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                            <TextBlock.ToolTip>
-                                <c:CustomToolTip Title="VBA 프로젝트 구성요소 개수" Text="VBA 프로젝트 내에 존재하는 파일들 (클래스, 모듈, 유저 폼)들의 전체 개수를 보여줍니다."/>
-                            </TextBlock.ToolTip>
-                            VBA 프로젝트 구성요소 개수 : <Run x:Name="runVBAClasses" Text="0"/>개
-                        </TextBlock>
-                    </Grid>
-                    <Grid Margin="0,10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="선택된 코드 파일 정보" FontSize="12" Margin="15,5" Foreground="#FFD34B2A"/>
-                        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
-                        <TextBlock Grid.Row="2" Margin="15,5" FontSize="12" 
-                                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
-                            <TextBlock.ToolTip>
-                                <c:CustomToolTip Title="현재 코드 파일 전체 줄" Text="현재 편집중인 코드 파일의 전체 줄 수를 보여줍니다."/>
-                            </TextBlock.ToolTip>
-                            현재 코드 파일 전체 줄 : <Run x:Name="runCurrLine" Text="0"/> 라인
                         </TextBlock>
                     </Grid>
                 </StackPanel>

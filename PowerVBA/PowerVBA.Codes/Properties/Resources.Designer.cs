@@ -188,18 +188,6 @@ namespace PowerVBA.Codes.Properties {
         ///like
         ///new
         ///null
-        ///cbool
-        ///cbyte
-        ///cchar
-        ///cdate
-        ///cdbl
-        ///cdec
-        ///cint
-        ///clng
-        ///cshort
-        ///csng
-        ///cstr
-        ///ctype
         ///iif
         ///alias
         ///as
@@ -238,7 +226,17 @@ namespace PowerVBA.Codes.Properties {
         ///let
         ///lib
         ///loop
-        ///modul[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///module
+        ///namespace
+        ///narrowing
+        ///new
+        ///next
+        ///of
+        ///on
+        ///operator
+        ///option
+        ///optional
+        ///paramar[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string 예약어2 {
             get {

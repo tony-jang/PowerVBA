@@ -2,6 +2,7 @@
 using PowerVBA.Core.Connector;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace PowerVBA.Controls.Customize
     public class CloseableTabItem : TabItem
     {
 
-        public event EventHandler SaveCloseRequest;
+        public event HandledEventHandler SaveCloseRequest;
 
         public CloseableTabItem()
         {
@@ -44,7 +45,12 @@ namespace PowerVBA.Controls.Customize
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        SaveCloseRequest?.Invoke(this, null);
+                        HandledEventArgs ev = new HandledEventArgs();
+                        
+                        SaveCloseRequest?.Invoke(this, ev);
+                        
+                        if (ev.Handled)
+                            return;
                     }
                     else if (result == MessageBoxResult.Cancel)
                     {

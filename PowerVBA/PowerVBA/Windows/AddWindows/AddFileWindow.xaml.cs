@@ -99,5 +99,15 @@ namespace PowerVBA.Windows.AddWindows
                 AddBtn_Click(this, null);
             }
         }
+
+        private void BtnForm_Checked(object sender, RoutedEventArgs e)
+        {
+            tbFrmMsg.Visibility = Visibility.Visible;
+        }
+
+        private void BtnForm_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tbFrmMsg.Visibility = Visibility.Hidden;
+        }
     }
 }

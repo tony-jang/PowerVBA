@@ -43,3 +43,13 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\obj\Debug\P
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\obj\Debug\PowerVBA.V2010.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\obj\Debug\PowerVBA.V2010.pdb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Core.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Codes.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\PowerVBA.Codes.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Core.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Platform.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Xaml.dll
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Core.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Core.xml
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Platform.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Xaml.pdb
+H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2010\bin\Debug\Xamarin.Forms.Xaml.xml

@@ -9,26 +9,36 @@ namespace PowerVBA.Codes.Parsing
 {
     public struct LinePoint
     {
-        public LinePoint(int line, int offset, int length)
+        public LinePoint(int line, int length, int offset)
         {
             this.Line = line;
-            this.Offset = offset;
             this.Length = length;
+            this.Offset = offset;
         }
-        
+        public LinePoint((int,int,int) data)
+        {
+            this.Line = data.Item1;
+            this.Length = data.Item2;
+            this.Offset = data.Item3;
+        }
+
+        public static implicit operator LinePoint((int,int,int) data)
+        {
+            return new LinePoint(data);
+        }
 
         /// <summary>
         /// 현재 위치한 줄입니다.
         /// </summary>
-        int Line { get; set; }
+        public int Line { get; set; }
         /// <summary>
         /// 오프셋입니다. 오프셋은 Line 기준입니다.
         /// </summary>
-        int Offset { get; set; }
+        public int Offset { get; set; }
         /// <summary>
         /// 오프셋으로 부터의 길이입니다.
         /// </summary>
-        int Length { get; set; }
+        public int Length { get; set; }
 
         #region [  IsOverlapped Method  ]
 

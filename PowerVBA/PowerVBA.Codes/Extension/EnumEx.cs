@@ -63,7 +63,7 @@ namespace PowerVBA.Codes.Extension
             
         }
 
-        public static bool ContainAttribute(this Enum Enum, Type type)
+        public static bool ContainsAttribute(this Enum Enum, Type type)
         {
             return Enum.GetType()
                        .GetField(Enum.ToString())

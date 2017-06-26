@@ -5,25 +5,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PowerVBA.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
     Title="PowerVBA 도움말"
-    Width="1000"
-    Height="650"
+    Width="400"
+    Height="2000"
     AllowsTransparency="True"
-    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
+    NoTitle="True"
     mc:Ignorable="d">
-    <!--  1200  650  -->
+    <!--Height:580-->
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.ColumnSpan="2">
+        <Grid Margin="0,20,0,0">
+            <TextBlock Margin="20,10" Foreground="#FFD24726" Text="PowerVBA 도움말" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="20,0">
             <Grid.Resources>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -47,70 +48,32 @@
                 </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <WrapPanel Margin="5" HorizontalAlignment="Left">
-                <Button
-                    x:Name="btnHome"
-                    Margin="2.5"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    Click="btnHome_Click">
-                    <Button.Content>
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/PowerVBA;component/Resources/Icon/HomeBtn.png" />
-                    </Button.Content>
-                </Button>
-                <Button
-                    x:Name="btnBack"
-                    Margin="2.5"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    Click="btnBack_Click">
-                    <Button.Content>
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/PowerVBA;component/Resources/Icon/BackBtn.png" />
-                    </Button.Content>
-                </Button>
-                <Button
-                    x:Name="btnFront"
-                    Margin="2.5"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    Click="btnFront_Click">
-                    <Button.Content>
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="/PowerVBA;component/Resources/Icon/FrontBtn.png" />
-                    </Button.Content>
-                </Button>
-                <!--<Button x:Name="btnUpper" Background="Transparent" BorderBrush="Transparent" Margin="2.5">
-                    <Button.Content>
-                        <Image
-                            RenderOptions.BitmapScalingMode="HighQuality"
-                            Source="/PowerVBA;component/Resources/Icon/UpperBtn.png" />
-                    </Button.Content>
-                </Button>-->
-            </WrapPanel>
-            <TextBlock
-                Grid.Column="1"
-                Margin="10,0"
-                VerticalAlignment="Center"
-                TextAlignment="Right">
-                현재 보고 있는 문서 코드 :<Run x:Name="runViewDoc" Text="Document" />
-            </TextBlock>
-        </Grid>
+                <c:ImageButton Width="20" 
+                               ButtonMode="OnlyImage" 
+                               BackImage="/PowerVBA;component/Resources/Icon/BackIcon.png"
+                               ButtonClick="btnHome_Click"/>
+                <c:ImageButton Width="20"
+                               ButtonMode="OnlyImage" 
+                               BackImage="/PowerVBA;component/Resources/Icon/FrontIcon.png"
+                               ButtonClick="btnBack_Click"/>
+                <c:ImageButton Width="20" 
+                               ButtonMode="OnlyImage" 
+                               BackImage="/PowerVBA;component/Resources/Icon/HomeIcon.png"
+                               ButtonClick="btnFront_Click"/>
 
-        <TreeView
-            x:Name="treeList"
-            Grid.Row="1"
-            Margin="5" />
+            </WrapPanel>
+        </Grid>
         <ScrollViewer
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="10,25"
+            Grid.Row="2"
             VerticalScrollBarVisibility="Auto">
             <Frame
                 x:Name="HelpFrame"
+                Margin="15"
                 Grid.Column="1"
-                Content="{StaticResource Open_FileHelp}"
+                Content="{StaticResource h_BasicWork}"
                 NavigationUIVisibility="Hidden" />
         </ScrollViewer>
 

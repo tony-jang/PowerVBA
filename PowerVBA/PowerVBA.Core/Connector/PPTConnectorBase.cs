@@ -179,7 +179,7 @@ namespace PowerVBA.Core.Connector
         /// 선택된 도형의 이름을 가져옵니다.
         /// </summary>
         public abstract string SelectionShapeName { get; }
-
+        public abstract List<ReferenceWrappingBase> References { get; }
 
         public abstract bool DeleteComponent(VBComponentWrappingBase comp);
 

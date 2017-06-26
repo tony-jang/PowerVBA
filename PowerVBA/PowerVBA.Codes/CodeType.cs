@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Codes.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,6 @@ namespace PowerVBA.Codes
         /// 알 수 없는 코드입니다.
         /// </summary>
         Unknown,
-
 
         #region [  엑세서  ]
 
@@ -29,43 +29,76 @@ namespace PowerVBA.Codes
 
         #region [  블록  ]
         /// <summary>Type 선언 블록 전체입니다.</summary>
+        [Coverable]
         TypeBlock,
 
         /// <summary>Sub 선언 블록 전체입니다.</summary>
+        [Coverable]
         SubBlock,
-        
+
         /// <summary>Function 선언 블록 전체입니다.</summary>
+        [Coverable]
         FunctionBlock,
 
         /// <summary>If 선언 블록 전체입니다.</summary>
+        [Coverable]
         IfBlock,
 
         /// <summary>Select Case 선언 블록 전체입니다.</summary>
+        [Coverable]
         SelectCaseBlock,
+        
+        /// <summary>Case 선언 블록 전체입니다.</summary>
+        [Coverable]
+        CaseBlock,
+
+        /// <summary>Case Else 선언 블록 전체입니다.</summary>
+        [Coverable]
+        CaseElseBlock,
 
         /// <summary>Enum 선언 블록 전체입니다.</summary>
+        [Coverable]
         EnumBlock,
 
         /// <summary>Property 선언 블록 전체입니다.</summary>
+        [Coverable]
         PropertyBlock,
 
         /// <summary>For 선언 블록 전체입니다.</summary>
+        [Coverable]
         ForBlock,
 
         /// <summary>For Each 선언 블록 전체입니다.</summary>
+        [Coverable]
         ForEachBlock,
 
         /// <summary>Do 선언 블록 전체입니다.</summary>
+        [Coverable]
         DoBlock,
 
         /// <summary>Do While 선언 블록 전체입니다.</summary>
+        [Coverable]
         DoWhileBlock,
 
         /// <summary>Do Until 선언 블록 전체입니다.</summary>
+        [Coverable]
         DoUntilBlock,
-        
+
         /// <summary>While 선언 블록 전체입니다.</summary>
+        [Coverable]
         WhileBlock,
+
+        /// <summary>With 선언 블록 전체입니다.</summary>
+        [Coverable]
+        WithBlock,
+
+        /// <summary>ElseIf 선언 블록 전체입니다.</summary>
+        [Coverable]
+        ElseIfBlock,
+
+        /// <summary>Else 선언 블록 전체입니다.</summary>
+        [Coverable]
+        ElseBlock,
 
         #endregion
 

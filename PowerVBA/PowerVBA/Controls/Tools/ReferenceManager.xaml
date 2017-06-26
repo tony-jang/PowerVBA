@@ -36,7 +36,7 @@
                 <TextBlock Text="현재 프로젝트에 추가되어 있는 참조 라이브러리 목록입니다."/>
             </Grid>
 
-            <ListView Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="20">
+            <ListView x:Name="lvReferences" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="20">
                 <CheckBox Content="abc"/>
                 <CheckBox Content="abc"/>
                 <CheckBox Content="abc"/>

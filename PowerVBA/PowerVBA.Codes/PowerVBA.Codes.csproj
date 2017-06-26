@@ -55,11 +55,15 @@
   <ItemGroup>
     <Compile Include="Attributes\BaseErrorAttribute.cs" />
     <Compile Include="Attributes\CanReplaceAttribute.cs" />
+    <Compile Include="Attributes\CoverableAttribute.cs" />
     <Compile Include="Attributes\KoErrorAttribute.cs" />
     <Compile Include="Attributes\NotSupportedAttribute.cs" />
     <Compile Include="Attributes\PriorityAttribute.cs" />
     <Compile Include="Attributes\ValueAttribute.cs" />
     <Compile Include="CodeData.cs" />
+    <Compile Include="CodeFile.cs" />
+    <Compile Include="Extension\StackEx.cs" />
+    <Compile Include="Locator.cs" />
     <Compile Include="Parsing\BlockType.cs" />
     <Compile Include="Parsing\CodeBlock.cs" />
     <Compile Include="Parsing\CodeFileInfo.cs" />
@@ -68,7 +72,7 @@
     <Compile Include="Enums\Accessor.cs" />
     <Compile Include="Enums\DeclaratorType.cs" />
     <Compile Include="Enums\CanExitItems.cs" />
-    <Compile Include="ErrorCode.cs" />
+    <Compile Include="Enums\ErrorCode.cs" />
     <Compile Include="Extension\charEx.cs" />
     <Compile Include="Extension\EnumEx.cs" />
     <Compile Include="Extension\ListEx.cs" />
@@ -77,8 +81,13 @@
     <Compile Include="LineInfo.cs" />
     <Compile Include="NotHandledLine.cs" />
     <Compile Include="Parsing\Error.cs" />
+    <Compile Include="TypeSystem\EnumItem.cs" />
+    <Compile Include="TypeSystem\Function.cs" />
+    <Compile Include="TypeSystem\IMember.cs" />
     <Compile Include="Parsing\LinePoint.cs" />
-    <Compile Include="Parsing\Variable.cs" />
+    <Compile Include="TypeSystem\Property.cs" />
+    <Compile Include="TypeSystem\Sub.cs" />
+    <Compile Include="TypeSystem\Variable.cs" />
     <Compile Include="Parsing\VariableManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

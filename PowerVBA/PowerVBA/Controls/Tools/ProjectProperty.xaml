@@ -93,9 +93,20 @@
                     </TabItem>
 
                 </TabControl>
-
+                <Grid>
+                    <Button x:Name="SaveBtn" 
+                            Content="저장"  
+                            Padding="5" 
+                            Margin="10" 
+                            VerticalAlignment="Bottom" 
+                            BorderBrush="Black" 
+                            Background="#FF873B29" 
+                            Foreground="White" 
+                            Click="SaveBtn_Click"/>
+                </Grid>
             </Grid>
         </ScrollViewer>
+        
         <!--<TabControl TabStripPlacement="Left">
             <TabItem Header="일반" Padding="40,5" FontSize="15">
                 <StackPanel Margin="20">

@@ -24,22 +24,10 @@ namespace PowerVBA.Windows
 
                 VBAParser p = new VBAParser(info);
 
-                List<(string, string)> CodeLists = null;
 
-                if (Components.First() is V2010.WrapClass.VBComponentWrapping)
-                {
-                    CodeLists = Components.Cast<V2010.WrapClass.VBComponentWrapping>()
-                                    .Select(t => ((t.CodeModule.CountOfLines != 0 ? t.CodeModule.get_Lines(1, t.CodeModule.CountOfLines) : ""), t.CompName))
-                                    .ToList();
-                }
-                else if (Components.First() is V2013.WrapClass.VBComponentWrapping comp2013)
-                {
-                    CodeLists = Components.Cast<V2013.WrapClass.VBComponentWrapping>()
-                                    .Select(t => ((t.CodeModule.CountOfLines != 0 ? t.CodeModule.get_Lines(1, t.CodeModule.CountOfLines) : ""), t.CompName))
-                                    .ToList();
-                }
+                Components.ForEach(i => info.AddFile(i.CompName));
 
-                p.Parse(CodeLists);
+                p.Parse(Components.Select(i => (i.CompName, i.Code)).ToList());
                 lvUsers.ItemsSource = info.ErrorList;
 
                 RunFileCount.Text = Components.Count.ToString();

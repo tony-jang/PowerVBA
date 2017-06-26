@@ -1064,57 +1064,64 @@
 
     <!--#region [  ImageTreeViewItem Style  ]-->
     <Style x:Key="ImageTreeViewItemStyle" TargetType="{x:Type c:ImageTreeViewItem}">
+        <Setter Property="ImageHeight" Value="20"/>
+        <Setter Property="Background" Value="White"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:ImageTreeViewItem}">
+                    <ControlTemplate.Resources>
+                        <c:LeftMarginMultiplierConverter Length="19" x:Key="lengthConverter"/>
+                    </ControlTemplate.Resources>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" MinWidth="19" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <ToggleButton
-                            x:Name="Expander"
-                            ClickMode="Press"
-                            IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                            Style="{StaticResource ExpandCollapseToggleStyle}" />
-                        <Border
-                            x:Name="Bd"
-                            Grid.Column="1"
-                            Padding="{TemplateBinding Padding}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="true">
-                            <Grid>
+                        <Grid Background="{TemplateBinding Background}">
+                            
+                            <Grid Margin="{Binding Converter={StaticResource lengthConverter}, RelativeSource={RelativeSource TemplatedParent}}" >
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" MinWidth="19" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{TemplateBinding Source}" />
-                                <ContentPresenter
+                                <ToggleButton
+                                    x:Name="Expander"
+                                    ClickMode="Press"
+                                    IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Style="{StaticResource ExpandCollapseToggleStyle}" />
+                                <Border
+                                    x:Name="Bd"
+                                    Grid.Column="1"
+                                    Padding="{TemplateBinding Padding}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    SnapsToDevicePixels="true">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{TemplateBinding Source}" Height="{TemplateBinding ImageHeight}"/>
+                                        <ContentPresenter
                                     x:Name="PART_Header"
                                     Grid.Column="3"
+                                    
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="Center"
                                     ContentSource="Header"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </Grid>
+                                </Border>
                             </Grid>
-
-                        </Border>
+                        </Grid>
                         <ItemsPresenter
                             x:Name="ItemsHost"
                             Grid.Row="1"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2" />
+                            Grid.ColumnSpan="2"
+                            VerticalAlignment="Stretch"/>
                     </Grid>
                     <ControlTemplate.Triggers>
-
                         <Trigger Property="IsExpanded" Value="false">
                             <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
                         </Trigger>
@@ -1122,16 +1129,15 @@
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="#FFD24726" />
+                            <Setter Property="Background" Value="#FFD24726"/>
                             <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="true" />
-                                <Condition Property="IsSelectionActive" Value="false" />
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="IsSelectionActive" Value="false"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" />
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}" />
+                            <Setter Property="Background" Value="Gray"/>
                         </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
@@ -1172,5 +1178,39 @@
     </Style>
 
     <!--#endregion-->
+    
+    <!--#region [  Button Style  ]-->
+
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="h:MouseDownHelper.IsEnabled" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Width="{TemplateBinding Width}" 
+                          Height="{TemplateBinding Height}"
+                          Background="{TemplateBinding Background}">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFFCE4DC"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#FFF5BA9D"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+    
 
 </ResourceDictionary>

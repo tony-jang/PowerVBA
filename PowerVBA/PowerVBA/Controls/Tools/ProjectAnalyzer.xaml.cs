@@ -77,8 +77,6 @@ namespace PowerVBA.Controls.Tools
             OpenShapeExplorer?.Invoke();
         }
 
-
-
         public bool AutoShapeUpdate
         {
             get => runAutoUpdate.Text != "[자동 해제]";
@@ -93,15 +91,6 @@ namespace PowerVBA.Controls.Tools
                                     .Shapes.Count.ToString();
             runSelShapeName.Text = Connector.Application.ActiveWindow.Selection.ShapeRange.Name;
         }
-
-        public void CodeSync(int lines, int Components, int Currline)
-        {
-            runAllLine.Text = lines.ToString();
-            runVBAClasses.Text = Components.ToString();
-
-            runCurrLine.Text = Currline.ToString();
-        }
-
         private void btnSync_ButtonClick(object sender)
         {
             ShapeSyncRequest?.Invoke();
@@ -115,11 +104,6 @@ namespace PowerVBA.Controls.Tools
 
             runSelSlideShape.Text = "0";
             runSelShapeName.Text = "선택되지 않음";
-
-            runAllLine.Text = "0";
-            runVBAClasses.Text = "0";
-
-            runCurrLine.Text = "0";
 
         }
     }

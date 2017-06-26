@@ -29,6 +29,7 @@ using static PowerVBA.Core.Extension.HighlightingRuleEx;
 using PowerVBA.Core.Controls;
 using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Core.AvalonEdit.Replace;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace PowerVBA.Core.AvalonEdit
 {
@@ -55,19 +56,22 @@ namespace PowerVBA.Core.AvalonEdit
         /// <summary>
         /// VBComponent와 연결되어 있는 여부를 가져옵니다.
         /// </summary>
-        protected bool IsConnectedFile = false;
-        protected VBComponentWrappingBase ConnectedFile = null;
+        public bool IsConnectedFile { get; internal set; } = false;
+        public VBComponentWrappingBase ConnectedFile { get; internal set; } = null;
 
         public static List<string> Classes;
         public static bool LibraryRead = false;
 
         public event BlankEventHandler SaveRequest;
+        public delegate void CaretEventHandler(CodeEditor sender, Caret c);
+        public event CaretEventHandler CaretPositionChanged;
 
         #endregion
 
 
         static CodeEditor()
         {
+
             Classes = new List<string>();
 
             if (!LibraryRead)
@@ -197,7 +201,11 @@ namespace PowerVBA.Core.AvalonEdit
 
             ErrCheckthr.Start();
 
-            this.TextArea.Caret.PositionChanged += (sender, e) => this.TextArea.TextView.InvalidateLayer(KnownLayer.Background);
+            this.TextArea.Caret.PositionChanged += (sender, e) =>
+            {
+                this.TextArea.TextView.InvalidateLayer(KnownLayer.Background);
+                CaretPositionChanged?.Invoke(this, (Caret)sender);
+            };
 
             this.MouseMove += CodeMouseMove;
             this.MouseLeave += CodeMouseLeave;

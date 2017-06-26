@@ -25,32 +25,33 @@ namespace PowerVBA.Windows
         {
             InitializeComponent();
 
-            treeList.SelectedItemChanged += TreeList_SelectedItemChanged;
-            
+            //treeList.SelectedItemChanged += TreeList_SelectedItemChanged;
+
             // Add Help Tree
 
             // 기초가 되는 첫 아이템
-            AddTree(treeList, "첫 도움말", "FirstHelp");
-            AddTree(treeList, "PowerVBA 도움말", "BasicHelp");
-            AddTree(treeList, "컴포넌트 (파일) 추가/제거", "ComponentHelp");
-            AddTree(treeList, "PowerPoint, PowerVBA 차이점", "PPTDiffHelp");
-            AddTree(treeList, "참조 추가하기", "ReferenceHelp");
-            AddTree(treeList, "함수 선언하기", "FunctionHelp");
-            AddTree(treeList, "코드 에디터 기능 목록", "CodeEditorHelp");
-            AddTree(treeList, "미리 정의된 함수 추가/제거", "PreDecFuncHelp");
-            AddTree(treeList, "트리거 추가/제거", "TriggerHelp");
-            AddTree(treeList, "VBA 형식", "TypeHelp");
-            AddTree(treeList, "코드 분석", "CodeAnalysisHelp");
-            AddTree(treeList, "명명 규칙", "NamingHelp");
-            AddTree(treeList, "도형 탐색기", "ShapeExplorerHelp");
+            //AddTree(treeList, "첫 도움말", "FirstHelp");
+            //AddTree(treeList, "PowerVBA 도움말", "BasicHelp");
+            //AddTree(treeList, "컴포넌트 (파일) 추가/제거", "ComponentHelp");
+            //AddTree(treeList, "PowerPoint, PowerVBA 차이점", "PPTDiffHelp");
+            //AddTree(treeList, "참조 추가하기", "ReferenceHelp");
+            //AddTree(treeList, "함수 선언하기", "FunctionHelp");
+            //AddTree(treeList, "코드 에디터 기능 목록", "CodeEditorHelp");
+            //AddTree(treeList, "미리 정의된 함수 추가/제거", "PreDecFuncHelp");
+            //AddTree(treeList, "트리거 추가/제거", "TriggerHelp");
+            //AddTree(treeList, "VBA 형식", "TypeHelp");
+            //AddTree(treeList, "코드 분석", "CodeAnalysisHelp");
+            //AddTree(treeList, "명명 규칙", "NamingHelp");
+            //AddTree(treeList, "도형 탐색기", "ShapeExplorerHelp");
 
+            this.Height = 580;
 
-            MoveHelpContext("FirstHelp");
+            MoveHelpContext("h_TopCategories");
         }
 
         private void TreeList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            MoveHelpContext(((TreeViewItem)treeList.SelectedItem).Tag.ToString());
+            //MoveHelpContext(((TreeViewItem)treeList.SelectedItem).Tag.ToString());
         }
 
         private void MoveHelpContext(object sender)
@@ -142,7 +143,6 @@ namespace PowerVBA.Windows
 
                 HelpFrame.Content = newDoc;
                 HelpFrame.Tag = DocumentName;
-                runViewDoc.Text = DocumentName;
             }
             catch (ResourceReferenceKeyNotFoundException)
             {
@@ -176,17 +176,17 @@ namespace PowerVBA.Windows
             return Child;
         }
 
-        private void btnHome_Click(object sender, RoutedEventArgs e)
+        private void btnHome_Click(object sender)
         {
-            MoveHelpContext("FirstHelp");
+            MoveHelpContext("h_TopCategories");
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
+        private void btnBack_Click(object sender)
         {
             MovePrev();
         }
 
-        private void btnFront_Click(object sender, RoutedEventArgs e)
+        private void btnFront_Click(object sender)
         {
             MoveNext();
         }

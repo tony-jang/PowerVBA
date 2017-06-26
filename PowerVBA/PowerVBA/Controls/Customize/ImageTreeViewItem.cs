@@ -10,7 +10,7 @@ using WPFExtension;
 
 namespace PowerVBA.Controls.Customize
 {
-    class ImageTreeViewItem : TreeViewItem
+    public class ImageTreeViewItem : TreeViewItem
     {
         public ImageTreeViewItem()
         {
@@ -18,11 +18,18 @@ namespace PowerVBA.Controls.Customize
         }
 
         public static DependencyProperty SourceProperty = DependencyHelper.Register();
+        public static DependencyProperty ImageHeightProperty = DependencyHelper.Register();
+
 
         public ImageSource Source
         {
-            get { return (ImageSource)GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
+            get => (ImageSource)GetValue(SourceProperty);
+            set => SetValue(SourceProperty, value);
+        }
+        public double ImageHeight
+        {
+            get => (double)GetValue(ImageHeightProperty);
+            set => SetValue(SourceProperty, value);
         }
     }
 }

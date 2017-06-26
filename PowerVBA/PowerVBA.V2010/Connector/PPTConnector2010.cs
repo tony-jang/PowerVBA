@@ -16,6 +16,7 @@ using PowerVBA.Core.Extension;
 using PowerVBA.Global.RegexExpressions;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Vbe.Interop;
 
 namespace PowerVBA.V2010.Connector
 {
@@ -205,6 +206,14 @@ namespace PowerVBA.V2010.Connector
         public override string Name => Presentation.Name;
 
         public override int SlideCount { get => Presentation.Slides.Count; }
+
+
+        public override List<ReferenceWrappingBase> References => VBProject.References
+            .Cast<Reference>()
+            .Select(i => new ReferenceWrapping(i) as ReferenceWrappingBase)
+            .ToList();
+
+
 
         public override bool AutoShapeUpdate { get; set; }
 

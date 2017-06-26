@@ -51,45 +51,52 @@ namespace PowerVBA.Codes
             this.CodeInfo = codeInfo;
             
             CodeInfo.Reset();
-            
         }
-        public void Parse((string, string) code)
+        public void Parse((string, string) fileName)
         {
-            Parse(new List<(string, string)> { code });
+            Parse(new List<(string,string)>() { fileName });
         }
 
-        public CodeFileInfo GetFileInfo(string FileName)
-        {
-            // TODO : 구현
-            return null;
-        }
-
-        public void Parse(List<(string, string)> codes)
+        public void Parse(List<(string, string)> codeFiles)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            CodeInfo.ErrorList.Clear();
-            CodeInfo.Lines.Clear();
-            CodeInfo.Variables.Clear();
+            var fileNames = codeFiles.Select(j => j.Item1);
 
-            foreach ((string, string) code in codes)
+            CodeInfo.ErrorList.Where(i => fileNames.Contains(i.FileName))
+                .ToList()
+                .ForEach(j => CodeInfo.ErrorList.Remove(j));
+
+            CodeInfo.Lines.Where(i => fileNames.Contains(i.FileName))
+                .ToList()
+                .ForEach(j => CodeInfo.Lines.Remove(j));
+
+            CodeInfo.CodeFiles.Where(i => fileNames.Contains(i.FileName))
+                .ToList()
+                .ForEach(j => 
+                {
+                    j.Variables.Clear();
+                    j.Functions.Clear();
+                    j.Subs.Clear();
+                    j.Enums.Clear();
+                });
+
+            foreach ((string,string) codeFile in codeFiles)
             {
                 LineInfo = new LineInfo();
-                LineInfo.FileName = code.Item2;
-
+                LineInfo.FileName = codeFile.Item1;
+                
                 RangeInt CodeLine = 0;
                 
                 int LineCount = 0;
                 bool IsMultiLine = false;
                 string data = string.Empty;
 
-                
-
-                char[] cArr = code.Item1.ToCharArray();
+                char[] cArr = codeFile.Item2.ToCharArray();
                 int Length = cArr.Length;
                 
-                string spCode = "";
+                string spCode = string.Empty;
 
                 VBASeeker seeker = new VBASeeker(CodeInfo);
 
@@ -134,13 +141,13 @@ namespace PowerVBA.Codes
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                nHandledLine = seeker.GetLine(code.Item2, spCode, CodeLine, ref LineInfo);
+                                nHandledLine = seeker.GetLine(codeFile.Item1, spCode, CodeLine, ref LineInfo);
                             }
                             // 처리 - 일반 적인 처리
                             else
                             {
                                 CodeLine.StartInt = LineCount;
-                                nHandledLine = seeker.GetLine(code.Item2, spCode, CodeLine, ref LineInfo);
+                                nHandledLine = seeker.GetLine(codeFile.Item1, spCode, CodeLine, ref LineInfo);
                             }
 
                             while (nHandledLine != NotHandledLine.Empty)
@@ -156,34 +163,39 @@ namespace PowerVBA.Codes
                     spCode += cArr[i];
                 }
 
-                if (LineInfo.IsInFunction) AddError(ErrorCode.VB0210);
-                else if (LineInfo.IsInSub) AddError(ErrorCode.VB0211);
-                else if (LineInfo.IsInProperty) AddError(ErrorCode.VB0212);
-                else if (LineInfo.IsInType) AddError(ErrorCode.VB0213);
-                else if (LineInfo.IsInSelectCase) AddError(ErrorCode.VB0214);
-                else if (LineInfo.IsInIf) AddError(ErrorCode.VB0215);
-                else if (LineInfo.IsInDo) AddError(ErrorCode.VB0216);
-                else if (LineInfo.IsInDoWhile) AddError(ErrorCode.VB0217);
-                else if (LineInfo.IsInDoUntil) AddError(ErrorCode.VB0218);
-                else if (LineInfo.IsInEnum) AddError(ErrorCode.VB0219);
-                else if (LineInfo.IsInFor) AddError(ErrorCode.VB0220);
-                else if (LineInfo.IsInForEach) AddError(ErrorCode.VB0210);
+                if (LineInfo.IsInFunction)
+                    AddError(ErrorCode.VB0210, new string[] { "Function", "End Function" });
+                else if (LineInfo.IsInSub)
+                    AddError(ErrorCode.VB0210, new string[] { "Sub", "End Sub" });
+                else if (LineInfo.IsInProperty)
+                    AddError(ErrorCode.VB0210, new string[] { "Property", "End Property" });
+                else if (LineInfo.IsInType)
+                    AddError(ErrorCode.VB0210, new string[] { "Type", "End Type" });
+                else if (LineInfo.IsInSelectCase)
+                    AddError(ErrorCode.VB0210, new string[] { "Select Case", "End Select" });
+                else if (LineInfo.IsInIf)
+                    AddError(ErrorCode.VB0210, new string[] { "If", "End If" });
+                else if (LineInfo.IsInDo)
+                    AddError(ErrorCode.VB0210, new string[] { "Do", "Loop" });
+                else if (LineInfo.IsInDoWhile)
+                    AddError(ErrorCode.VB0210, new string[] { "Do While", "Loop" });
+                else if (LineInfo.IsInDoUntil)
+                    AddError(ErrorCode.VB0210, new string[] { "Do Until", "Loop" });
+                else if (LineInfo.IsInEnum)
+                    AddError(ErrorCode.VB0210, new string[] { "Enum", "End Enum" });
+                else if (LineInfo.IsInFor)
+                    AddError(ErrorCode.VB0210, new string[] { "For", "Next" });
+                else if (LineInfo.IsInForEach)
+                    AddError(ErrorCode.VB0210, new string[] { "For Each", "Next" });
 
                 void AddError(ErrorCode Code, string[] parameters = null)
                 {
-                    CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, code.Item2, LineCount));
+                    CodeInfo.ErrorList.Add(new Error(ErrorType.Error, Code, parameters, codeFile.Item1, LineCount));
                 }
                 CodeInfo.Lines.Add(LineInfo);
             }
 
             GC.Collect();
-
-            //Errors.Where((i) => i.ErrorCode.ContainAttribute(typeof(NotSupportedAttribute))).ToList().ForEach((i) => Errors.Remove(i));
-            
         }
-
-
     }
-    
-
 }

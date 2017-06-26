@@ -17,9 +17,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        
-
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -30,99 +27,74 @@
         <TextBlock Text="솔루션 탐색기" Margin="15,10" FontSize="20"
                    HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
         <Grid Grid.Row="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Margin="15,0" FontSize="12"
+                        HorizontalAlignment="Left" Foreground="#FFD34B2A">
                     클래스 목록 (<Run x:Name="classRun" Text="0"/>개)
-                </TextBlock>
+                    </TextBlock>
 
-                <ListBox x:Name="lbClass" Grid.Row="1" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                    <ListBox x:Name="lbClass" Grid.Row="1" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                          SelectionChanged="ListBoxes_SelectionChanged">
-                    <ListBox.Template>
-                        <ControlTemplate>
-                            <ItemsPresenter />
-                        </ControlTemplate>
-                    </ListBox.Template>
-                </ListBox>
+                        <ListBox.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter />
+                            </ControlTemplate>
+                        </ListBox.Template>
+                    </ListBox>
 
-                <TextBlock Grid.Row="2" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    <TextBlock Grid.Row="2" Margin="15,0" FontSize="12"
+                        HorizontalAlignment="Left" Foreground="#FFD34B2A">
                     모듈 목록 (<Run x:Name="moduleRun" Text="0"/>개)
-                </TextBlock>
+                    </TextBlock>
 
-                <ListBox x:Name="lbModule" Grid.Row="3" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                    <ListBox x:Name="lbModule" Grid.Row="3" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
-                    <ListBox.Template>
-                        <ControlTemplate>
-                            <ItemsPresenter />
-                        </ControlTemplate>
-                    </ListBox.Template>
-                </ListBox>
+                        <ListBox.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter />
+                            </ControlTemplate>
+                        </ListBox.Template>
+                    </ListBox>
 
-                <TextBlock Grid.Row="4" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    <TextBlock Grid.Row="4" Margin="15,0" FontSize="12"
+                        HorizontalAlignment="Left" Foreground="#FFD34B2A">
                     폼 목록 (<Run x:Name="formRun" Text="0"/>개)
-                </TextBlock>
+                    </TextBlock>
 
-                <ListBox x:Name="lbBForms" Grid.Row="5" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                    <ListBox x:Name="lbBForms" Grid.Row="5" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
-                    <ListBox.Template>
-                        <ControlTemplate>
-                            <ItemsPresenter />
-                        </ControlTemplate>
-                    </ListBox.Template>
-                </ListBox>
+                        <ListBox.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter />
+                            </ControlTemplate>
+                        </ListBox.Template>
+                    </ListBox>
 
-                <TextBlock Grid.Row="6" Margin="15,0" FontSize="12"
-                   HorizontalAlignment="Left" Foreground="#FFD34B2A">
+                    <TextBlock Grid.Row="6" Margin="15,0" FontSize="12"
+                        HorizontalAlignment="Left" Foreground="#FFD34B2A">
                     슬라이드 개체 목록 (<Run x:Name="slideDocRun" Text="0"/>개)
-                </TextBlock>
-
-                <ListBox x:Name="lbSlideDoc" Grid.Row="7" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
+                    </TextBlock>
+                    <ListBox x:Name="lbSlideDoc" Grid.Row="7" Margin="5" Background="Transparent" BorderBrush="{x:Null}"
                           SelectionChanged="ListBoxes_SelectionChanged">
-                    <ListBox.Template>
-                        <ControlTemplate>
-                            <ItemsPresenter />
-                        </ControlTemplate>
-                    </ListBox.Template>
-                </ListBox>
-
-
-            </Grid>
-
-            <Grid Visibility="Hidden">
-                <TreeView VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" BorderBrush="{x:Null}">
-                    <TreeView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </TreeView.ItemsPanel>
-                    <ItemsControl.Template>
-                        <ControlTemplate>
-                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" Padding="{TemplateBinding Control.Padding}" BorderBrush="{TemplateBinding Border.BorderBrush}"
-                                Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True">
-                                <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
-                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
-                                </ScrollViewer>
-                            </Border>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                    <c:ImageTreeViewItem Header="프레젠테이션 1" Source="/PowerVBA;component/Resources/Icon/CodeBlockIcon.png">
-                        <c:ImageTreeViewItem Header="프레젠테이션 2" Source="/PowerVBA;component/Resources/Icon/CodeBlockIcon.png" />
-                    </c:ImageTreeViewItem>
-                </TreeView>
-
-            </Grid>
+                        <ListBox.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter/>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                    </ListBox>
+                </Grid>
+            </ScrollViewer>
         </Grid>
 
 

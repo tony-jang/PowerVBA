@@ -3,6 +3,84 @@
                     xmlns:local="clr-namespace:PowerVBA.Windows"
                     xmlns:av="clr-namespace:PowerVBA.Core.AvalonEdit;assembly=PowerVBA.Core"
                     xmlns:c="clr-namespace:PowerVBA.Controls.Customize">
+
+    <Grid x:Key="h_TopCategories">
+        <StackPanel>
+            <TextBlock Text="상위 범주" FontSize="25"/>
+            <Rectangle Margin="0,20,0,0" Width="Auto" Height="1" Fill="LightGray"/>
+            <TextBlock Text="시작" Margin="20" FontSize="16" FontWeight="Bold"/>
+            <TextBlock Margin="20,0,0,0">
+                <Hyperlink>PowerVBA 프로젝트를 만들기 위한 기본 작업</Hyperlink>
+                <LineBreak/><LineBreak/>
+                <Hyperlink>PowerVBA가 지원하는 기능</Hyperlink>
+                <LineBreak/><LineBreak/>
+                <Hyperlink>단축키를 사용해 PowerVBA 조작하기</Hyperlink>
+                <LineBreak/><LineBreak/>
+            </TextBlock>
+            <TextBlock Text="컴포넌트 만들기" Margin="20" FontSize="16" FontWeight="Bold"/>
+            <TextBlock Margin="20,0,0,0">
+                <Hyperlink>컴포넌트 추가/제거</Hyperlink>
+                <LineBreak/><LineBreak/>
+                <Hyperlink>코드 오류 찾아내기</Hyperlink>
+                <LineBreak/><LineBreak/>
+                <Hyperlink>PowerPoint와 코드 상호작용하기</Hyperlink>
+                <LineBreak/><LineBreak/>
+            </TextBlock>
+            <TextBlock Text="도형 관리" Margin="20" FontSize="16" FontWeight="Bold"/>
+            <TextBlock Margin="20,0,0,0">
+                <Hyperlink>도형 탐색기 기능</Hyperlink>
+                <LineBreak/><LineBreak/>
+                <Hyperlink>도형 탐색기 인식 도움말</Hyperlink>
+                <LineBreak/><LineBreak/>
+                <Hyperlink>도형 탐색기 코드에 적용하기</Hyperlink>
+                <LineBreak/><LineBreak/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+    
+    
+    <!-- 카테고리 :: 시작-->
+
+    <Grid x:Key="h_BasicWork">
+        <StackPanel>
+            <TextBlock Text="PowerVBA 프로젝트를 만들기 위한 기본 작업" 
+                   FontSize="25" TextWrapping="Wrap"/>
+
+            <TextBlock Margin="0,50,0,0" TextWrapping="Wrap">
+                PowerVBA 프로젝트는 기본적으로 PowerPoint의 VBA 프로젝트를 계승합니다.
+                따라서 PowerPoint의 형식이 .pptm과 같은 매크로 허용 형식으로 되어 있다면 저장하지 못합니다.
+                해당 프로젝트는 기존 PowerPoint의 VBA 편집 기능 중 불편한 점들을 개선하기 위해 만들어진 툴입니다.
+            </TextBlock>
+
+            <TextBlock Text="템플릿 선택" Margin="0,30,0,0" 
+                   FontSize="20" TextWrapping="Wrap"/>
+
+            <TextBlock Margin="0,20,0,0" TextWrapping="Wrap">
+                PowerVBA를 열면 PowerPoint와는 다르게 여러가지의 기본 코드 템플릿을 제공합니다.
+                이 템플릿은 코드 프로젝트가 오픈되어 있으며 여러분 마음대로 코드를 사용하거나 변형할 수 있습니다.
+                <LineBreak/><LineBreak/>
+                단순히 템플릿을 선택하는 것 만으로 새로운 프로젝트와 함께 프로젝트를 시작 할 수 있습니다.
+            </TextBlock>
+
+
+
+            <TextBlock Text="새 파일 삽입" Margin="0,30,0,0" 
+                   FontSize="20" TextWrapping="Wrap"/>
+
+            <TextBlock Margin="0,20,0,0" TextWrapping="Wrap">
+                PowerVBA는 템플릿을 제외한 새 프로젝트에는 기본 파일이 포함되지 않습니다.
+                따라서 여러분이 직접 모듈이나, 클래스, 폼등을 추가해야 합니다.
+                <LineBreak/><LineBreak/>
+                1. 삽입 탭에서 <Run Text="클래스 추가/모듈 추가/사용자 폼 추가" FontWeight="Bold"></Run> 중에 하나를 누릅니다.
+                <LineBreak/><LineBreak/>
+                2. 원하는 이름을 입력한 뒤에 확인을 누릅니다.<LineBreak/><LineBreak/>
+                <Image Source="/PowerVBA;component/Resources/HelpImages/Class1.jpg"/>
+            </TextBlock>
+
+        </StackPanel>
+    </Grid>
+    
+    <!--시작 카테고리 끝-->
     
     <!--#region [  첫 도움말  ]-->
     <Grid x:Key="FirstHelp" Tag="PowerVBA 첫 도움말">
@@ -69,8 +147,6 @@
     </Grid>
     
     <!--#endregion-->
-
-    
     
     <!--#region [  환경 도움말  ]-->
 

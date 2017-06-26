@@ -120,7 +120,6 @@
     <Compile Include="AvalonEdit\Substitution\VariableSubstitution.cs" />
     <Compile Include="Connector\IPPTConnector.cs" />
     <Compile Include="Connector\PPTVersion.cs" />
-    <Compile Include="Connector\PPTConnector.cs" />
     <Compile Include="Connector\PPTConnectorBase.cs" />
     <Compile Include="Connector\VersionSelector.cs" />
     <Compile Include="Convert\StringConverter.cs" />

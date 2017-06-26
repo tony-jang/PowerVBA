@@ -18,12 +18,41 @@ namespace PowerVBA.Codes
             ErrorList = new List<Error>();
             Lines = new List<LineInfo>();
 
-            Properties = new List<string>();
-            Subs = new List<string>();
-            Functions = new List<string>();
-            Variables = new List<Variable>();
+            CodeFiles = new List<CodeFile>();
         }
-        
+
+        #region [  Find Members  ]
+
+        public Variable FindVariable(string file, string name)
+        {
+            var codeFile = CodeFiles.Where(i => i.FileName == file).FirstOrDefault();
+
+            if (codeFile != null)
+            {
+                var variable = codeFile.Variables.Where(i => i.Name == name).FirstOrDefault();
+
+                return variable;
+            }
+
+            return null;
+        }
+
+        public Function FindFunction(string file, string name)
+        {
+            var codeFile = CodeFiles.Where(i => i.FileName == file).FirstOrDefault();
+
+            if (codeFile != null)
+            {
+                var function = codeFile.Functions.Where(i => i.Name == name).FirstOrDefault();
+
+                return function;
+            }
+
+            return null;
+        }
+
+        #endregion
+
         /// <summary>
         /// 현재 프로젝트 코드의 오류를 나타냅니다.
         /// </summary>
@@ -31,22 +60,81 @@ namespace PowerVBA.Codes
         
         public List<LineInfo> Lines { get; set; }
         
+        public List<CodeFile> CodeFiles { get; set; }
+
         /// <summary>
-        /// 함수 목록입니다.
+        /// 파일을 추가합니다. 이미 있는 경우는 덮어씁니다.
+        /// 덮어쓰기를 허용하고 싶지 않다면 overrides를 false로 선택해주세요.
         /// </summary>
-        public List<string> Functions { get; set; }
-        /// <summary>
-        /// 서브루틴 목록입니다.
-        /// </summary>
-        public List<string> Subs { get; set; }
-        /// <summary>
-        /// 프로퍼티 목록입니다.
-        /// </summary>
-        public List<string> Properties { get; set; }
-        /// <summary>
-        /// 변수 목록입니다.
-        /// </summary>
-        public List<Variable> Variables { get; internal set; }
+        /// <param name="fileName"></param>
+        public void AddFile(string fileName, bool overrides = true)
+        {
+            var itm = CodeFiles.Where(i => i.FileName == fileName);
+            if (itm.Count() != 0 && overrides)
+            {
+                itm.ToList()
+                   .ForEach(i => CodeFiles.Remove(i));
+            }
+            CodeFiles.Add(new CodeFile(fileName));
+        }
+
+        public void AddFile(CodeFile codeFile)
+        {
+            if (codeFile == null) return;
+            CodeFiles.Add(codeFile);
+        }
+
+        public CodeFile GetFile(string fileName)
+        {
+            return CodeFiles.Where(i => i.FileName == fileName).FirstOrDefault();
+        }
+
+        public void RemoveFile(string fileName)
+        {
+            var itm = CodeFiles.Where(i => i.FileName == fileName);
+
+            if (itm.FirstOrDefault() != null)
+            {
+                CodeFiles.Remove(itm.FirstOrDefault());
+            }
+        }
+
+        public int FunctionCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var codeFile in CodeFiles)
+                {
+                    count += codeFile.Functions.Count;
+                }
+                return count;
+            }
+        }
+        public int SubCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var codeFile in CodeFiles)
+                {
+                    count += codeFile.Subs.Count;
+                }
+                return count;
+            }
+        }
+        public int PropertyCount
+        {
+            get
+            {
+                int count = 0;
+                foreach (var codeFile in CodeFiles)
+                {
+                    count += codeFile.Properties.Count;
+                }
+                return count;
+            }
+        }
 
         public void Reset()
         {

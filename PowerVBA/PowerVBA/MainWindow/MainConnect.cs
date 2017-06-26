@@ -86,8 +86,6 @@ namespace PowerVBA
                 tmpConn.PropertyChanged += TmpConn_PropertyChanged;
 
                 connector = tmpConn;
-
-                CodeSync(null);
                 programTabControl.SelectedIndex = 0;
                 NameSet();
 
@@ -156,8 +154,6 @@ namespace PowerVBA
                 tmpConn.PropertyChanged += TmpConn_PropertyChanged;
 
                 connector = tmpConn;
-
-                CodeSync(null);
                 programTabControl.SelectedIndex = 0;
                 NameSet();
 

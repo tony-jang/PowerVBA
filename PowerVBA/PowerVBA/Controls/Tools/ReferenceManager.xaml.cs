@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Vbe.Interop;
 using System.Runtime.InteropServices;
+using PowerVBA.Core.Wrap.WrapBase;
 
 namespace PowerVBA.Controls.Tools
 {
@@ -24,14 +25,18 @@ namespace PowerVBA.Controls.Tools
     /// </summary>
     public partial class ReferenceManager : UserControl
     {
-                
-
         PPTConnectorBase Connector;
 
         public ReferenceManager(PPTConnectorBase Connector)
         {
-            this.Connector = Connector;
             InitializeComponent();
+            lvReferences.Items.Clear();
+
+            this.Connector = Connector;
+            foreach(var itm in Connector.References)
+            {
+                AddItem(itm);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -40,15 +45,31 @@ namespace PowerVBA.Controls.Tools
 
             if (ofd.ShowDialog() == f.DialogResult.OK)
             {
-                //Connector.AddReference(ofd.FileName);
+                if (Connector.AddReference(ofd.FileName))
+                {
+                    // TODO : AddReference 함수 변경 + 추가 구현
+                }
             }
         }
 
         
-        public void AddItem(Reference reference)
+        public void AddItem(ReferenceWrappingBase reference)
         {
+            var cb = new CheckBox()
+            {
+                Content = reference.FullPath
+            };
 
+            cb.Checked += Cb_Checked;
+            cb.Unchecked += Cb_Checked;
+            lvReferences.Items.Add(cb);
         }
+
+        private void Cb_Checked(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
 

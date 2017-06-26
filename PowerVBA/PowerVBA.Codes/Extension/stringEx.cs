@@ -20,7 +20,7 @@ namespace PowerVBA.Codes.Extension
             return Regex.IsMatch(str, "^[0-9]+$");
         }
 
-        public static bool ContainsWords(this string str, string[] Words)
+        public static bool ContainsWords(this string str, params string[] Words)
         {
             return Words.Contains(str);
         }

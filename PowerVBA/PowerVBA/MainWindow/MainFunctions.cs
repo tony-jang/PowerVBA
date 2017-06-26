@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using PowerVBA.Codes;
 using PowerVBA.Controls.Customize;
@@ -123,11 +124,11 @@ namespace PowerVBA
 
                 codeEditor.Document.UndoStack.PropertyChanged += (sender, e) => { codeTab.Saved = (((UndoStack)sender).IsOriginalFile); };
                 codeEditor.TextChanged += CodeEditor_TextChanged;
+                codeEditor.CaretPositionChanged += Caret_PositionChanged;
                 codeEditor.SaveRequest += () =>
                 {
                     SetMessage("저장되었습니다.");
                     component.Code = codeEditor.Text;
-                    CodeSync(codeEditor);
                 };
 
                 codeEditor.RaiseFolding();
@@ -137,11 +138,18 @@ namespace PowerVBA
 
                 codeTabControl.Focus();
             }
-            
-            ParseSw.Restart();
+
+            parseFiles.Add(component.CompName);
+            parseSw.Restart();
         }
 
-        private void CodeTab_SaveCloseRequest(object sender, EventArgs e)
+        private void Caret_PositionChanged(CodeEditor editor, Caret c)
+        {   
+            runLine.Text = c.Line.ToString();
+            runRow.Text = c.Column.ToString();
+        }
+
+        private void CodeTab_SaveCloseRequest(object sender, HandledEventArgs e)
         {
             if (sender is CloseableTabItem cItm)
             {
@@ -172,23 +180,6 @@ namespace PowerVBA
         }
 
         #endregion
-
-
-        /// <summary>
-        /// 코드를 동기화합니다.
-        /// </summary>
-        /// <param name="sender">CodeEdtor의 형태여야 합니다.</param>
-        public void CodeSync(object sender)
-        {
-            int currLine = 0;
-            if (sender is CodeEditor editor) currLine = editor.Text.SplitByNewLine().Count();
-            
-
-            
-
-            projAnalyzer.CodeSync(connector.AllLineCount, connector.ComponentCount, currLine);
-        }
-
 
         Thread thr;
         /// <summary>

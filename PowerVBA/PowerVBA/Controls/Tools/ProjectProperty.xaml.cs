@@ -1,7 +1,9 @@
-﻿using PowerVBA.Core.Connector;
+﻿using PowerVBA.Controls.Customize;
+using PowerVBA.Core.Connector;
 using PowerVBA.Wrap;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,14 +26,36 @@ namespace PowerVBA.Controls.Tools
     {
         public bool IsChanged = false;
 
-        public ProjectProperty(PPTConnectorBase conn)
+        public ProjectProperty(PPTConnectorBase conn, ref bool Error)
         {
             InitializeComponent();
 
             connector = conn;
+            try
+            {
+                tbProjDesc.Text = connector.ProjectDescription;
+                tbProjName.Text = connector.ProjectName;
+            }
+            catch (Exception)
+            {
+                Error = true;
+                return;
+            }
+            
+        }
 
-            tbProjDesc.Text = connector.ProjectDescription;
-            tbProjName.Text = connector.ProjectName;
+        public void SavecloseRequest(object sender, HandledEventArgs e)
+        {
+            try
+            {
+                connector.ProjectName = tbProjName.Text;
+                connector.ProjectDescription = tbProjDesc.Text;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("저장하던 중 오류가 발생했습니다. PowerPoint에서 사용하고 있는 것 같습니다.");
+                e.Handled = true;
+            }
         }
 
         PPTConnectorBase connector;
@@ -39,30 +63,34 @@ namespace PowerVBA.Controls.Tools
         private void FileTabControl_Changed(object sender, SelectionChangedEventArgs e)
         {
             
-            //connector.ToConnector2010().Presentation.Password
         }
 
         private void tbProjDesc_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
+            if (this.Parent is CloseableTabItem closeItm)
             {
-                connector.ProjectDescription = tbProjDesc.Text;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("프로젝트 설명문을 변경 하던 중 오류가 발생했습니다.");
+                closeItm.Saved = false;
             }
         }
 
         private void tbProjName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (this.Parent is CloseableTabItem closeItm)
+            {
+                closeItm.Saved = false;
+            }
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
             try
             {
                 connector.ProjectName = tbProjName.Text;
+                connector.ProjectDescription = tbProjDesc.Text;
             }
             catch (Exception)
             {
-                MessageBox.Show("프로젝트 이름을 변경 하던 중 오류가 발생했습니다.");
+                MessageBox.Show("프로젝트 정보을 변경 하던 중 오류가 발생했습니다.");
             }
         }
     }

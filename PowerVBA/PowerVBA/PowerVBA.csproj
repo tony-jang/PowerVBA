@@ -98,17 +98,26 @@
     <Compile Include="Controls\Customize\ImageRadioButton.cs" />
     <Compile Include="Controls\Customize\ImageTabItem.cs" />
     <Compile Include="Controls\Customize\ImageTreeViewItem.cs" />
+    <Compile Include="Controls\Customize\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Controls\Customize\ProjectListViewItem.cs" />
     <Compile Include="Controls\Customize\RecentFileListViewItem.cs" />
     <Compile Include="Controls\Customize\ScrollBarEx.cs" />
+    <Compile Include="Controls\Customize\TreeVIewItemExtensions.cs" />
     <Compile Include="Controls\Customize\wpfPropertyGrid.cs" />
     <Compile Include="Controls\Helper\MouseDownHelper.cs" />
+    <Compile Include="Controls\ControlTest.xaml.cs">
+      <DependentUpon>ControlTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Tools\APIManager.xaml.cs">
       <DependentUpon>APIManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\APIs.cs" />
     <Compile Include="Controls\Tools\ErrorList.xaml.cs">
       <DependentUpon>ErrorList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\LinePointEventArgs.cs" />
+    <Compile Include="Controls\Tools\Outline.xaml.cs">
+      <DependentUpon>Outline.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tools\PreDeclareFuncManager.xaml.cs">
       <DependentUpon>PreDeclareFuncManager.xaml</DependentUpon>
@@ -178,11 +187,19 @@
       <DependentUpon>StartupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wrap\WrappedClassManager.cs" />
+    <Page Include="Controls\ControlTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Tools\APIManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Tools\ErrorList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tools\Outline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -507,6 +524,13 @@
   <ItemGroup>
     <Resource Include="Resources\HelpImages\PreDeclareFunc2.png" />
     <Resource Include="Resources\HelpImages\PreDeclareFunc3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\BackIcon.png" />
+    <Resource Include="Resources\Icon\FrontIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\HomeIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

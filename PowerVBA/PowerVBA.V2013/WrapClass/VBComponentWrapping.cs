@@ -11,9 +11,9 @@ namespace PowerVBA.V2013.WrapClass
     public class VBComponentWrapping : VBComponentWrappingBase
     {
         public VBComponent VBComponent { get; }
-        public VBComponentWrapping(VBComponent vbcomponent)
+        public VBComponentWrapping(VBComponent VBComponent) : base($"{VBComponent.Name}{GetExtensions(VBComponent.Type)}")
         {
-            this.VBComponent = vbcomponent;
+            this.VBComponent = VBComponent;
         }
 
         public void Activate()
@@ -37,7 +37,7 @@ namespace PowerVBA.V2013.WrapClass
         public dynamic Designer => VBComponent.Designer;
         public string DesignerID => VBComponent.DesignerID;
         public bool HasOpenDesigner => VBComponent.HasOpenDesigner;
-        public string Name { set { VBComponent.Name = value; } get { return VBComponent.Name; } }
+        public string Name { set { VBComponent.Name = value; OnNameChanged(); } get { return VBComponent.Name; } }
         public Microsoft.Vbe.Interop.Properties Properties => VBComponent.Properties;
         public bool Saved => VBComponent.Saved;
         public vbext_ComponentType Type => VBComponent.Type;
@@ -56,7 +56,7 @@ namespace PowerVBA.V2013.WrapClass
         }
 
 
-        public string GetExtensions(vbext_ComponentType Type)
+        public static string GetExtensions(vbext_ComponentType Type)
         {
             switch (Type)
             {

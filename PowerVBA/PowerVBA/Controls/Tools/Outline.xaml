@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="PowerVBA.Controls.Tools.Outline"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerVBA.Controls.Tools"
+             xmlns:c="clr-namespace:PowerVBA.Controls.Customize"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="250">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="개요" Margin="15,10" FontSize="20"
+                   HorizontalAlignment="Left" Foreground="#FFD34B2A"/>
+        <Grid Grid.Row="1">
+            <Grid Visibility="Visible">
+                <TreeView x:Name="outlineItems" VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" BorderBrush="{x:Null}">
+                    <TreeView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </TreeView.ItemsPanel>
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}" Padding="{TemplateBinding Control.Padding}" BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True">
+                                <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <c:ImageTreeViewItem Source="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" 
+                    Header="Variable 1">
+                        <c:ImageTreeViewItem Source="/PowerVBA;component/Resources/Icon/SlideSyncIcon.png" 
+                    Header="Variable 2">
+                        </c:ImageTreeViewItem>
+                    </c:ImageTreeViewItem>
+                </TreeView>
+
+            </Grid>
+        </Grid>
+
+
+        <!--<Grid Grid.Row="2">
+            <Rectangle Height="1" VerticalAlignment="Top" Margin="10,5" Fill="#FFC6C6C6"/>
+            <StackPanel Margin="0,10">
+                <TextBlock x:Name="btnChangeFilter" Grid.Row="2" Margin="15,5" 
+                           FontSize="12" HorizontalAlignment="Left" Foreground="#FFD34B2A" 
+                           Cursor="Hand" MouseDown="BtnChangeFilter_Click">
+                    필터 변경
+                </TextBlock>
+            </StackPanel>
+        </Grid>-->
+    </Grid>
+</UserControl>

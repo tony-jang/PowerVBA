@@ -568,41 +568,14 @@ namespace PowerVBA.Codes
 
         #region [  Nest 오류  ]
 
-        [KoError("Function 블록이 닫히지 않았습니다. End Function로 닫아주세요.")]
+
+        [CanReplace(2)]
+        [KoError("%1 블록이 닫히지 않았습니다. %2로 닫아주세요.")]
         VB0210 = 210,
 
-        [KoError("Sub 블록이 닫히지 않았습니다. End Sub로 닫아주세요.")]
-        VB0211,
-
-        [KoError("Property 블록이 닫히지 않았습니다. End Property로 닫아주세요.")]
-        VB0212,
-
-        [KoError("Type 블록이 닫히지 않았습니다. End Type로 닫아주세요.")]
-        VB0213,
-
-        [KoError("Select Case 블록이 닫히지 않았습니다. End Select로 닫아주세요.")]
-        VB0214,
-
-        [KoError("If 블록이 닫히지 않았습니다. End If로 닫아주세요.")]
-        VB0215,
-
-        [KoError("Do 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
-        VB0216,
-
-        [KoError("Do While 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
-        VB0217,
-
-        [KoError("Do Until 블록이 닫히지 않았습니다. Loop으로 닫아주세요.")]
-        VB0218,
-
-        [KoError("Enum 블록이 닫히지 않았습니다. End Enum으로 닫아주세요.")]
-        VB0219,
-
-        [KoError("For 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
-        VB0220,
-
-        [KoError("For Each 블록이 닫히지 않았습니다. Next로 닫아주세요.")]
-        VB0221,
+        [CanReplace(1)]
+        [KoError("다른 블록이 닫히지 않은 상태에서 %1 블록을 닫을 수 없습니다.")]
+        VB0222,
 
         #endregion
         
@@ -678,12 +651,21 @@ namespace PowerVBA.Codes
 
         /// <summary>Type 멤버 선언 오류</summary>
         [KoError("Type 내에서는 엑세서를 붙인 멤버를 선언할 수 없습니다.")]
-        VB0270,
+        VB0270 = 270,
 
 
         /// <summary>Type 전역 변수 이후 선언 오류</summary>
         [KoError("Type은 전역 변수 이후에 사용될 수 없습니다.")]
         VB0271,
+
+        #endregion
+
+        #region [  선언 오류  ]
+
+        /// <summary>변수 중복 선언 오류</summary>
+        [CanReplace(1)]
+        [KoError("변수 '%1'는 이미 선언되었습니다.")]
+        VB0280 = 280,
 
         #endregion
     }

@@ -17,6 +17,7 @@ using System.Windows;
 using PowerVBA.Global.RegexExpressions;
 using System.Diagnostics;
 using PowerVBA.Core.Extension;
+using Microsoft.Vbe.Interop;
 
 namespace PowerVBA.V2013.Connector
 {
@@ -441,6 +442,11 @@ namespace PowerVBA.V2013.Connector
 
         public override string ProjectName { get => VBProject.Name; set => VBProject.Name = value; }
         public override string ProjectDescription { get => VBProject.Description; set => VBProject.Description = value; }
+
+        public override List<ReferenceWrappingBase> References => VBProject.References
+            .Cast<Reference>()
+            .Select(i => new ReferenceWrapping(i) as ReferenceWrappingBase)
+            .ToList();
 
         public override List<ShapeWrappingBase> Shapes()
         {

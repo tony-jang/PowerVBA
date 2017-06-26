@@ -447,7 +447,7 @@
                         <ColumnDefinition Width="250" />
                     </Grid.ColumnDefinitions>
                     <Grid>
-                        <t:ProjectAnalyzer x:Name="projAnalyzer" />
+                        <t:Outline x:Name="outline"/>
                     </Grid>
 
                     <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
@@ -484,19 +484,50 @@
                     <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
                     <Grid Grid.Column="4">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
+                            <RowDefinition/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <t:SolutionExplorer x:Name="solutionExplorer" />
+
+                        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
+
+                        <t:ProjectAnalyzer x:Name="projAnalyzer" Grid.Row="2" />
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="3">
                     <Rectangle Fill="#FFD24726" />
-                    <TextBlock
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
                         x:Name="tbMessage"
                         Margin="5,0"
                         VerticalAlignment="Center"
                         Foreground="White"
                         Text="준비" />
+
+                        <Grid x:Name="gridCaretInfo" Grid.Column="1" TextBlock.Foreground="White"
+                              Visibility="Hidden">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Grid.Column="0" Margin="0,0,50,0">
+                                줄 : <Run x:Name="runLine" Text="0"/>
+                            </TextBlock>
+                            <TextBlock VerticalAlignment="Center" Grid.Column="1" Margin="0,0,50,0">
+                                열 : <Run x:Name="runRow" Text="0"/>
+                            </TextBlock>
+                            <!--<TextBlock VerticalAlignment="Center" Grid.Column="2" Margin="0,0,50,0">
+                                문자 : <Run x:Name="runChar" Text="0"/>
+                            </TextBlock>-->
+                        </Grid>
+                    </Grid>
+                    
                 </Grid>
             </Grid>
         </TabItem>

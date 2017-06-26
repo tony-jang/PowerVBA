@@ -130,8 +130,8 @@ namespace PowerVBA
 
         private void BtnInfoSync_ButtonClick(object sender)
         {
-            runFunc.Text = codeInfo.Functions.Count.ToString();
-            runSub.Text = codeInfo.Subs.Count.ToString();
+            runFunc.Text = codeInfo.FunctionCount.ToString();
+            runSub.Text = codeInfo.SubCount.ToString();
             runError.Text = codeInfo.ErrorList.Count.ToString();
         }
 
