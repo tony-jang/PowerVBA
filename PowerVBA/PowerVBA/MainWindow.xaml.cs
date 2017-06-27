@@ -46,8 +46,6 @@ namespace PowerVBA
         List<string> parseFiles = new List<string>();
         Stopwatch parseSw = new Stopwatch();
 
-        List<VBComponentWrappingBase> ComponentFiles;
-
         /// <summary>
         /// 연결되어 있는지에 대한 여부를 확인합니다.
         /// </summary>

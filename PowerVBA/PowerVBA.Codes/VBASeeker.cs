@@ -1735,7 +1735,7 @@ namespace PowerVBA.Codes
                         bool AfterParamArray = false, AfterOptional = false;
                         bool AfterByVal = false, AfterByRef = false;
                         // TODO: NeedNewLine 사용
-                        bool NeedRest = false, NeedExpression = false, NeedNewLine = false;
+                        bool NeedRest = false, NeedExpression = false;
 
                         bool AfterString = false, AfterInt = false;
                         bool IsInString = false;
@@ -1819,7 +1819,6 @@ namespace PowerVBA.Codes
                                 case '_':
                                     if (IsInString) continue;
 
-                                    NeedNewLine = true;
                                     break;
                                 case '\r':
                                 case '\n':

@@ -54,15 +54,15 @@
                 <c:ImageButton Width="20" 
                                ButtonMode="OnlyImage" 
                                BackImage="/PowerVBA;component/Resources/Icon/BackIcon.png"
-                               ButtonClick="btnHome_Click"/>
+                               ButtonClick="btnBack_Click"/>
                 <c:ImageButton Width="20"
                                ButtonMode="OnlyImage" 
                                BackImage="/PowerVBA;component/Resources/Icon/FrontIcon.png"
-                               ButtonClick="btnBack_Click"/>
+                               ButtonClick="btnFront_Click"/>
                 <c:ImageButton Width="20" 
                                ButtonMode="OnlyImage" 
                                BackImage="/PowerVBA;component/Resources/Icon/HomeIcon.png"
-                               ButtonClick="btnFront_Click"/>
+                               ButtonClick="btnHome_Click"/>
 
             </WrapPanel>
         </Grid>
@@ -73,7 +73,7 @@
                 x:Name="HelpFrame"
                 Margin="15"
                 Grid.Column="1"
-                Content="{StaticResource h_BasicWork}"
+                Content="{StaticResource h_SupportFunctions}"
                 NavigationUIVisibility="Hidden" />
         </ScrollViewer>
 

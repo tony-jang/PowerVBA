@@ -33,11 +33,12 @@ namespace PowerVBA.Codes
 
         /// <summary>
         /// 로케이터가 가리키고 있는 맨 위의 아이템을 가져옵니다.
-        /// 만약 Key와 로케이터의 맨 위의 아이템의 Key와 다를 경우 False를 반환합니다.
+        /// 만약 Key와 로케이터의 맨 위의 아이템의 Key와 다를 경우 같을때까지 뺀 다음에도 없으면 false를 반환합니다.
         /// </summary>
         /// <param name="Key">삭제할 CodeType입니다. 타입이 동일한지 확인합니다.</param>
         public bool Delete(CodeType type)
         {
+            // TODO : 방식 변경 (주석대로)
             try
             {
                 if (LocationList.Peek().Item1 == type)

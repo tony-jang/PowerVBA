@@ -79,7 +79,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFExtension.1.0.1\lib\net45\WPFExtension.dll</HintPath>
     </Reference>
@@ -531,6 +530,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon\HomeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpImages\editor1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
