@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
-using VBA = Microsoft.Vbe.Interop;
 using PowerVBA.Controls.Customize;
 using PowerVBA.Resources;
 using PowerVBA.Global;
@@ -162,18 +161,29 @@ namespace PowerVBA.Controls.Tools
 
         private void AddItem(VBComponentWrappingBase comp)
         {
-            
-            var t = comp.ToVBComponent2013().Type;
+
+            var t = comp.GetComponentType();
 
             ListBox AddLB = null;
             ImageSource img = null;
             
-            if (t == VBA.vbext_ComponentType.vbext_ct_ClassModule) { AddLB = lbClass; img = ResourceImage.GetIconImage("ClassIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_StdModule) { AddLB = lbModule; img = ResourceImage.GetIconImage("ModuleIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_MSForm) { AddLB = lbBForms; img = ResourceImage.GetIconImage("FormIcon"); }
-            else if (t == VBA.vbext_ComponentType.vbext_ct_Document) { AddLB = lbSlideDoc; img = ResourceImage.GetIconImage("ClassIcon"); }
+            switch (t)
+            {
+                case 1:
+                    AddLB = lbClass; img = ResourceImage.GetIconImage("ClassIcon");
+                    break;
+                case 2:
+                    AddLB = lbModule; img = ResourceImage.GetIconImage("ModuleIcon");
+                    break;
+                case 3:
+                    AddLB = lbBForms; img = ResourceImage.GetIconImage("FormIcon");
+                    break;
+                case 4:
+                    AddLB = lbSlideDoc; img = ResourceImage.GetIconImage("ClassIcon");
+                    break;
+            }
 
-            var item = new ImageListViewItem() { Content = $"{comp.ToVBComponent2013().Name}{GetExtensions(t)}", Tag = comp, Source = img, ContextMenu = itmMenu };
+            var item = new ImageListViewItem() { Content = $"{comp.ToVBComponent2013().Name}{comp.GetExtension}", Tag = comp, Source = img, ContextMenu = itmMenu };
             item.KeyDown += Item_KeyDown;
             AddLB?.Items.Add(item);
         }
@@ -203,12 +213,12 @@ namespace PowerVBA.Controls.Tools
 
         }
 
-        public void UpdateSlide(IPPTConnector pptConn)
+        public void UpdateSlide(PPTConnectorBase pptConn)
         {
             btnOpenShapeExplorer.Text = $"도형 탐색기 ({pptConn.Slide} 슬라이드)";
         }
 
-        public void Update(IPPTConnector pptConn)
+        public void Update(PPTConnectorBase pptConn)
         {
             IEnumerable<VBComponentWrappingBase> addComp = new List<VBComponentWrappingBase>();
             IEnumerable<VBComponentWrappingBase> removeComp = new List<VBComponentWrappingBase>();
@@ -222,6 +232,8 @@ namespace PowerVBA.Controls.Tools
 
             // 버전별 분류
             IEnumerable<VBComponentWrappingBase> PPTItm = null;
+
+            pptConn.
 
             if (pptConn.GetType() == typeof(V2013.Connector.PPTConnector2013))
             {

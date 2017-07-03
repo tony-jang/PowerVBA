@@ -13,6 +13,17 @@ namespace PowerVBA.Core.Wrap.WrapBase
 
         public event BlankDelegate NameChanged;
 
+        /// <summary>
+        /// 0 : 알 수 없음 |
+        /// 1 : 클래스 |
+        /// 2 : 모듈 |
+        /// 3 : 폼 |
+        /// 4 : 슬라이드 클래스
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetComponentType();
+        public abstract string GetExtension { get; }
+
         public VBComponentWrappingBase(string Name)
         {
             this.NameChanged += VBComponentWrappingBase_NameChanged;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Vbe.Interop;
 using PowerVBA.Core.Connector;
-using PowerVBA.Core.Interface;
 using PowerVBA.Core.Wrap;
 using PowerVBA.Core.Wrap.WrapBase;
 
@@ -54,7 +53,25 @@ namespace PowerVBA.V2013.WrapClass
                 CodeModule.AddFromString(value);
             }
         }
+        
+        public override int GetComponentType()
+        {
+            switch (Type)
+            {
+                case vbext_ComponentType.vbext_ct_Document:
+                    return 1;
+                case vbext_ComponentType.vbext_ct_StdModule:
+                    return 2;
+                case vbext_ComponentType.vbext_ct_MSForm:
+                    return 3;
+                case vbext_ComponentType.vbext_ct_ClassModule:
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
 
+        public override string GetExtension => GetExtensions(Type);
 
         public static string GetExtensions(vbext_ComponentType Type)
         {
@@ -72,6 +89,5 @@ namespace PowerVBA.V2013.WrapClass
                     return "";
             }
         }
-
     }
 }

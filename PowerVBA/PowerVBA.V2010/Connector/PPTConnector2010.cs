@@ -1,22 +1,23 @@
-﻿using PowerVBA.Core.Connector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PowerVBA.Core.Interface;
-using VBA=Microsoft.Vbe.Interop;
-using PowerVBA.Core.Wrap.WrapBase;
-using PPT=Microsoft.Office.Interop.PowerPoint;
-using PowerVBA.V2010.WrapClass;
 using System.Windows;
-using Microsoft.Office.Core;
 using System.Threading;
+using System.Text.RegularExpressions;
+using System.IO;
+
+using PowerVBA.Core.Wrap.WrapBase;
+using PowerVBA.V2010.WrapClass;
+using PowerVBA.Core.Connector;
 using PowerVBA.Core.Extension;
 using PowerVBA.Global.RegexExpressions;
-using System.Text.RegularExpressions;
+
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Vbe.Interop;
+
+using PPT=Microsoft.Office.Interop.PowerPoint;
+using VBA = Microsoft.Vbe.Interop;
 
 namespace PowerVBA.V2010.Connector
 {
@@ -25,6 +26,7 @@ namespace PowerVBA.V2010.Connector
 
         internal Thread EventConnectThread;
 
+        public bool IsCompatibility => this.FullName.EndsWith(".ppt");
 
         private PPTConnector2010()
         {
@@ -47,7 +49,11 @@ namespace PowerVBA.V2010.Connector
                     // PPT 종료 확인
                     try
                     {
-                        bool Contain = Application.Presentations.Cast<Presentation>().Where((i) => (i.Application.Build == Presentation.Application.Build)).Where((i) => i.Name == Presentation.Name).Count() >= 1;
+                        bool Contain = Application.Presentations
+                        .Cast<Presentation>()
+                        .Where((i) => (i.Application.Build == Presentation.Application.Build))
+                        .Where((i) => i.Name == Presentation.Name)
+                        .Count() >= 1;
 
 
                         if (Contain) Console.WriteLine("Application에 포함되어 있습니다.");
@@ -161,7 +167,16 @@ namespace PowerVBA.V2010.Connector
             {
                 try
                 {
-                    Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                    FileInfo fi = new FileInfo(FileLocation);
+                    if (fi.Extension == ".ppt")
+                    {
+                        Presentation = new PresentationWrapping(Application.Presentations.Open2007(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                    }
+                    else
+                    {
+                        Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                    }
+                    
                 }
                 catch (Exception)
                 {
@@ -554,8 +569,9 @@ namespace PowerVBA.V2010.Connector
             try
             {
                 var itm = Application.Windows.Cast<DocumentWindow>()
-                                         .Where(i => i.Caption == Name).First();
-                if (itm == null) return null;
+                                         .Where(i => i.Caption == (Name + (IsCompatibility ? " [호환 모드]" : ""))).First();
+                if (itm == null)
+                    return null;
                 return new DocumentWindowWrapping(itm);
             }
             catch (Exception)

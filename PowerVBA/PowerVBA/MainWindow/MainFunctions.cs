@@ -1,23 +1,15 @@
-﻿using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Editing;
-using ICSharpCode.AvalonEdit.Folding;
-using PowerVBA.Codes;
-using PowerVBA.Controls.Customize;
-using PowerVBA.Core.AvalonEdit;
-using PowerVBA.Core.Connector;
-using PowerVBA.Core.Extension;
-using PowerVBA.Core.Wrap.WrapBase;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 
+using PowerVBA.Controls.Customize;
+using PowerVBA.Core.AvalonEdit;
+using PowerVBA.Core.Wrap.WrapBase;
+
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace PowerVBA
 {
@@ -193,8 +185,14 @@ namespace PowerVBA
             thr = new Thread(() =>
             {
                 Dispatcher.Invoke(() => { tbMessage.Text = Message; });
-
-                Thread.Sleep(Delay);
+                try
+                {
+                    Thread.Sleep(Delay);
+                }
+                catch (Exception)
+                {
+                }
+                
 
                 Dispatcher.Invoke(() => { tbMessage.Text = "준비"; });
             });

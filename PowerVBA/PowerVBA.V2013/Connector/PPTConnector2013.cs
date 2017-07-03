@@ -1,23 +1,23 @@
-﻿using PowerVBA.Core.Connector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PowerVBA.Core.Interface;
-using PowerVBA.V2013.WrapClass;
-using Microsoft.Office.Core;
-using VBA = Microsoft.Vbe.Interop;
-using PowerVBA.Core.Wrap.WrapBase;
-using Microsoft.Office.Interop.PowerPoint;
-using PPT=Microsoft.Office.Interop.PowerPoint;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using System.IO;
+
+using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Global.RegexExpressions;
-using System.Diagnostics;
 using PowerVBA.Core.Extension;
+using PowerVBA.V2013.WrapClass;
+using PowerVBA.Core.Connector;
+
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Vbe.Interop;
+using Microsoft.Office.Core;
+
+using VBA = Microsoft.Vbe.Interop;
+using PPT = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerVBA.V2013.Connector
 {
@@ -26,7 +26,13 @@ namespace PowerVBA.V2013.Connector
 
         internal Thread EventConnectThread;
 
+        public bool IsCompatibility => FullName.EndsWith(".ppt");
 
+        public void StopThread()
+        {
+            runningThread = false;
+        }
+        bool runningThread = true;
         private PPTConnector2013()
         {
             Application = new ApplicationWrapping(new PPT.Application());
@@ -43,7 +49,7 @@ namespace PowerVBA.V2013.Connector
 
                 PPT.ShapeRange LastSelection = null;
 
-                while (true)
+                while (runningThread)
                 {
                     // PPT 종료 확인
                     try
@@ -155,14 +161,21 @@ namespace PowerVBA.V2013.Connector
         }
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
-
-            var ppt = Application.Presentations.Cast<PPT.Presentation>().Where(i => i.FullName == FileLocation && !(Bool2)i.ReadOnly).FirstOrDefault();
+            var ppt = Application.Presentations.Cast<Presentation>().Where(i => i.FullName == FileLocation && !(Bool2)i.ReadOnly).FirstOrDefault();
 
             if (ppt == null)
             {
                 try
                 {
-                    Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                    FileInfo fi = new FileInfo(FileLocation);
+                    if (fi.Extension == ".ppt")
+                    {
+                        Presentation = new PresentationWrapping(Application.Presentations.Open2007(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                    }
+                    else
+                    {
+                        Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                    }
                 }
                 catch (Exception)
                 {
@@ -204,6 +217,14 @@ namespace PowerVBA.V2013.Connector
         public override PPTVersion Version => PPTVersion.PPT2013;
 
         public override string Name => Presentation.Name;
+
+        public string RealName
+        {
+            get
+            {
+                return Presentation.Name;
+            }
+        }
 
         public override int SlideCount { get => Presentation.Slides.Count; }
 
@@ -487,7 +508,8 @@ namespace PowerVBA.V2013.Connector
             try
             {
                 Presentation.Close();
-                if (Application.Presentations.Count == 0) Application.Quit();
+                if (Application.Presentations.Count == 0)
+                    Application.Quit();
             }
             catch (Exception ex)
             {
@@ -553,7 +575,7 @@ namespace PowerVBA.V2013.Connector
             try
             {
                 var itm = Application.Windows.Cast<DocumentWindow>()
-                                         .Where(i => i.Caption == Name).First();
+                                        .Where(i => i.Caption == (Name + (IsCompatibility ? " [호환 모드]" : ""))).First();
                 if (itm == null) return null;
                 return new DocumentWindowWrapping(itm);
             }

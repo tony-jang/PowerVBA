@@ -6,6 +6,7 @@ using PowerVBA.Core.Connector;
 using PowerVBA.Core.Extension;
 using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Resources;
+using PowerVBA.V2013.Connector;
 using PowerVBA.Windows;
 using System;
 using System.Collections.Generic;
@@ -103,9 +104,11 @@ namespace PowerVBA
 
                 foreach (CodeEditor editor in GetNotSavedEditor())
                 {
-                    
+                    // TODO : 완성
                 }
             }
+
+            ((PPTConnector2013)connector).StopThread();
             InitalizeAll();
             InitalizeConnector(((ImageButton)sender).Tag.ToString());
         }

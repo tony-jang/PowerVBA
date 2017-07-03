@@ -56,6 +56,25 @@ namespace PowerVBA.V2010.WrapClass
                   CodeModule.AddFromString(value); }
         }
 
+        public override int GetComponentType()
+        {
+            switch (Type)
+            {
+                case vbext_ComponentType.vbext_ct_Document:
+                    return 1;
+                case vbext_ComponentType.vbext_ct_StdModule:
+                    return 2;
+                case vbext_ComponentType.vbext_ct_MSForm:
+                    return 3;
+                case vbext_ComponentType.vbext_ct_ClassModule:
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
+
+        public override string GetExtension => GetExtensions(Type);
+
         public static string GetExtensions(vbext_ComponentType Type)
         {
             switch (Type)
@@ -67,7 +86,6 @@ namespace PowerVBA.V2010.WrapClass
                     return ".cls";
                 case vbext_ComponentType.vbext_ct_MSForm:
                     return ".frm";
-                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
                 default:
                     return "";
             }

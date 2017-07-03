@@ -37,9 +37,8 @@ namespace PowerVBA.Windows.AddWindows
                 return;
             }
 
-            Editor = editor;
-
-
+            this.Editor = editor;
+            
             RoutedCommand AddItem = new RoutedCommand();
             AddItem.InputGestures.Add(new KeyGesture(Key.Escape));
 
@@ -47,11 +46,13 @@ namespace PowerVBA.Windows.AddWindows
 
             this.CommandBindings.Add(cb1);
 
-            if (AddType == AddProcedureType.Function) btnFunction.IsChecked = true;
-            else if (AddType == AddProcedureType.Property) btnProperty.IsChecked = true;
-            else if (AddType == AddProcedureType.Sub) btnSub.IsChecked = true;
-
-
+            if (AddType == AddProcedureType.Function)
+                btnFunction.IsChecked = true;
+            else if (AddType == AddProcedureType.Property)
+                btnProperty.IsChecked = true;
+            else if (AddType == AddProcedureType.Sub)
+                btnSub.IsChecked = true;
+            
             TBName.Focus();
         }
 
@@ -74,7 +75,7 @@ End Property
 
 Public Property Let %name(ByVal vNewValue As Variant)
     
-End Property",    
+End Property",
         };
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -82,7 +83,17 @@ End Property",
             {
                 AddProcedureType t = (btnFunction.IsChecked.Value ? AddProcedureType.Function : (btnProperty.IsChecked.Value ? AddProcedureType.Property : AddProcedureType.Sub));
 
-                Editor.Document.Insert(Editor.Document.GetOffset(LineInfo.LastGlobalVarInt + 1, 0), Procedures[(int)t].Replace("%name", TBName.Text) + "\r\n");
+                string code = Procedures[(int)t].Replace("%name", TBName.Text) + "\r\n";
+
+                if (LineInfo.IsGlobalVarDeclaring)
+                {
+                    Editor.Document.Insert(Editor.Text.Length, "\r\n" + code);
+                }
+                else
+                {
+                    Editor.Document.Insert(Editor.Document.GetOffset(LineInfo.LastGlobalVarInt + 1, 0), code);
+                }
+                
                 Editor.ScrollToLine(LineInfo.LastGlobalVarInt + 1);
                 Handled = true;
                 this.Close();
@@ -91,8 +102,6 @@ End Property",
             {
                 MessageBox.Show("명명 규칙에 어긋납니다.");
             }
-
-            
         }
 
         public new bool ShowDialog()

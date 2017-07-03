@@ -404,6 +404,11 @@ namespace PowerVBA.Codes
                                 if (wordRecognition != 0)
                                     AddError(ErrorCode.VB0240);
 
+                                if (wordRecognition == 0)
+                                {
+                                    lineInfo.IsGlobalVarDeclaring = true;
+                                }
+
                                 data.AfterOption = true;
                                 break;
                             case "explicit":
@@ -584,7 +589,7 @@ namespace PowerVBA.Codes
                                     {
                                         if (lineInfo.IsGlobalVarDeclaring)
                                         {
-                                            lineInfo.IsGlobalVarDeclaring = false;
+                                            data.IsVarDeclaring = true;
                                             lineInfo.LastGlobalVarInt = lines.StartInt - 1;
                                         }
 

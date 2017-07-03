@@ -102,8 +102,6 @@ namespace PowerVBA
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                
-
                 if (FileLocation != "" && !File.Exists(FileLocation))
                 {
                     MessageBox.Show("파일 위치가 올바르지 않습니다.");
@@ -158,6 +156,8 @@ namespace PowerVBA
                 NameSet();
 
                 IsConnected = true;
+
+                //GC.Collect();
             }), DispatcherPriority.Background);
         }
 
