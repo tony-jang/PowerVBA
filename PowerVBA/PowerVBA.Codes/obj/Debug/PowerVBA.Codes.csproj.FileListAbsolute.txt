@@ -16,8 +16,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\ICSharpCode.A
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\System.ValueTuple.dll
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\bin\Debug\ICSharpCode.AvalonEdit.xml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csprojResolveAssemblyReference.cache
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\Interop.VBA.dll
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csproj.ResolveComReference.cache
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.Properties.Resources.resources
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.csproj.GenerateResource.Cache
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Codes\obj\Debug\PowerVBA.Codes.dll

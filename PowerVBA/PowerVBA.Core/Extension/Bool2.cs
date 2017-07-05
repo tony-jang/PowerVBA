@@ -1,11 +1,4 @@
-﻿using Microsoft.Office.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PowerVBA.Core.Extension
+﻿namespace PowerVBA.Core.Extension
 {
     public struct Bool2
     {
@@ -19,14 +12,14 @@ namespace PowerVBA.Core.Extension
             this.Value = value;
         }
 
-        public static implicit operator MsoTriState(Bool2 value)
+        public static implicit operator int(Bool2 value)
         {
-            return value ? MsoTriState.msoTrue : MsoTriState.msoFalse;
+            return value ? -1 : 0;
         }
 
-        public static implicit operator Bool2(MsoTriState state)
+        public static implicit operator Bool2(int state)
         {
-            return state == MsoTriState.msoTrue;
+            return state == -1;
         }
 
         public static implicit operator Bool2(bool value)

@@ -233,20 +233,8 @@ namespace PowerVBA.Controls.Tools
             // 버전별 분류
             IEnumerable<VBComponentWrappingBase> PPTItm = null;
 
-            pptConn.
-
-            if (pptConn.GetType() == typeof(V2013.Connector.PPTConnector2013))
-            {
-                var conn2013 = (V2013.Connector.PPTConnector2013)pptConn;
-                PPTItm = conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2013.WrapClass.VBComponentWrapping(i));
-            }
-            else if (pptConn.GetType() == typeof(V2010.Connector.PPTConnector2010))
-            {
-                var conn2013 = (V2010.Connector.PPTConnector2010)pptConn;
-                PPTItm = conn2013.VBProject.VBComponents.Cast<VBA.VBComponent>().Select((i) => new V2010.WrapClass.VBComponentWrapping(i));
-            }
-
-
+            PPTItm = pptConn.GetFiles();
+            
             addComp = PPTItm.Where((i) => !LocalItm.Contains(i)).Copy();
             removeComp = LocalItm.Where(i => !PPTItm.Contains(i)).Copy();
 

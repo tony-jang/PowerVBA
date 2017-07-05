@@ -90,5 +90,15 @@ namespace PowerVBA.V2010.WrapClass
                     return "";
             }
         }
+
+        public override void SetCode(string code)
+        {
+            CodeModule.AddFromString(code);
+        }
+
+        public override void CodeClear()
+        {
+            CodeModule.DeleteLines(1, CodeModule.CountOfLines);
+        }
     }
 }

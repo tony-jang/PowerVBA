@@ -51,3 +51,5 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2013\obj\Debug\P
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2013\bin\Debug\PowerVBA.Core.pdb
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2013\bin\Debug\PowerVBA.Codes.dll
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA.V2013\bin\Debug\PowerVBA.Codes.pdb
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.V2013\bin\Debug\PowerVBA.Codes.dll
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.V2013\bin\Debug\PowerVBA.Codes.pdb

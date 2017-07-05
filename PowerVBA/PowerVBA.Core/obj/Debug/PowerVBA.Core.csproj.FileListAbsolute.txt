@@ -39,8 +39,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.csprojResolveAssemblyReference.cache
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Replace\FindReplaceDialog.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\AvalonEdit\Replace\FindReplaceDialog.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeBlock.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeTabEditor.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core_MarkupCompile.cache
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core_MarkupCompile.lref
@@ -64,8 +62,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\ICSharpCode.Av
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\Microsoft.Windows.Shell.pdb
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\System.Data.SQLite.xml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\bin\Debug\System.Data.SQLite.dll.config
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeBlock.baml
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CodeTabEditor.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\CustomToolTip.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\Controls\PathButton.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA.Core\obj\Debug\PowerVBA.Core.g.resources

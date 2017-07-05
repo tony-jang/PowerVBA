@@ -1,4 +1,5 @@
-﻿using Microsoft.Vbe.Interop;
+﻿using System;
+using Microsoft.Vbe.Interop;
 using PowerVBA.Core.Connector;
 using PowerVBA.Core.Wrap;
 using PowerVBA.Core.Wrap.WrapBase;
@@ -88,6 +89,16 @@ namespace PowerVBA.V2013.WrapClass
                 default:
                     return "";
             }
+        }
+
+        public override void SetCode(string code)
+        {
+            CodeModule.AddFromString(code);
+        }
+
+        public override void CodeClear()
+        {
+            CodeModule.DeleteLines(1, CodeModule.CountOfLines);
         }
     }
 }

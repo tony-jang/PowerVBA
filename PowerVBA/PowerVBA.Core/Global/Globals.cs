@@ -2,19 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using System.Globalization;
-using System.Windows.Controls;
 using ICSharpCode.AvalonEdit;
 using System.Windows.Media.Imaging;
-using System.IO;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
-using Microsoft.Vbe.Interop;
 
 namespace PowerVBA.Global
 {
@@ -101,23 +96,5 @@ namespace PowerVBA.Global
 
             return returnlist;
         }
-
-        public static string GetExtensions(vbext_ComponentType Type)
-        {
-            switch (Type)
-            {
-                case vbext_ComponentType.vbext_ct_StdModule:
-                    return ".bas";
-                case vbext_ComponentType.vbext_ct_ClassModule:
-                case vbext_ComponentType.vbext_ct_Document:
-                    return ".cls";
-                case vbext_ComponentType.vbext_ct_MSForm:
-                    return ".frm";
-                case vbext_ComponentType.vbext_ct_ActiveXDesigner:
-                default:
-                    return "";
-            }
-        }
-
     }
 }

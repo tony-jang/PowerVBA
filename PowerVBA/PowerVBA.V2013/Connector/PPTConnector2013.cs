@@ -161,7 +161,7 @@ namespace PowerVBA.V2013.Connector
         }
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
-            var ppt = Application.Presentations.Cast<Presentation>().Where(i => i.FullName == FileLocation && !(Bool2)i.ReadOnly).FirstOrDefault();
+            var ppt = Application.Presentations.Cast<Presentation>().Where(i => i.FullName == FileLocation && !(Bool2)(int)i.ReadOnly).FirstOrDefault();
 
             if (ppt == null)
             {
@@ -170,11 +170,11 @@ namespace PowerVBA.V2013.Connector
                     FileInfo fi = new FileInfo(FileLocation);
                     if (fi.Extension == ".ppt")
                     {
-                        Presentation = new PresentationWrapping(Application.Presentations.Open2007(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                        Presentation = new PresentationWrapping(Application.Presentations.Open2007(FileLocation, MsoTriState.msoFalse, (MsoTriState)(int)(Bool2)NewFile, (MsoTriState)(int)(Bool2)OpenWithWindow));
                     }
                     else
                     {
-                        Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (Bool2)NewFile, (Bool2)OpenWithWindow));
+                        Presentation = new PresentationWrapping(Application.Presentations.Open(FileLocation, MsoTriState.msoFalse, (MsoTriState)(int)(Bool2)NewFile, (MsoTriState)(int)(Bool2)OpenWithWindow));
                     }
                 }
                 catch (Exception)
@@ -202,7 +202,7 @@ namespace PowerVBA.V2013.Connector
         }
         public PPTConnector2013(bool OpenWithWindow = true) : this()
         {
-            Presentation = new PresentationWrapping(Application.Presentations.Add((Bool2)OpenWithWindow));
+            Presentation = new PresentationWrapping(Application.Presentations.Add((MsoTriState)(int)(Bool2)OpenWithWindow));
             
             VBProject = new VBProjectWrapping(Presentation.VBProject);
             Presentation.Slides.AddSlide(1, Presentation.SlideMaster.CustomLayouts[1]);
@@ -245,7 +245,7 @@ namespace PowerVBA.V2013.Connector
 
         public override int ComponentCount => VBProject.VBComponents.Count;
 
-        public override bool ReadOnly => (Bool2)Presentation.ReadOnly;
+        public override bool ReadOnly => (Bool2)(int)Presentation.ReadOnly;
 
         public override string SelectionShapeName
         {
@@ -267,7 +267,7 @@ namespace PowerVBA.V2013.Connector
             }
         }
 
-        public override bool Saved => (Bool2)Presentation.Saved;
+        public override bool Saved => (Bool2)(int)Presentation.Saved;
 
         public override int Slide
         {

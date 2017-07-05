@@ -193,8 +193,8 @@ namespace PowerVBA.Controls.Tools
 
             sb.AppendLine();
 
-            module.ToVBComponent2013().CodeModule.DeleteLines(1, module.ToVBComponent2013().CodeModule.CountOfLines);
-            module.ToVBComponent2013().CodeModule.AddFromString(infoSb.ToString() + Environment.NewLine + sb.ToString());
+            module.CodeClear();
+            module.SetCode(infoSb.ToString() + Environment.NewLine + sb.ToString());
         }
 
         public void SyncItem()

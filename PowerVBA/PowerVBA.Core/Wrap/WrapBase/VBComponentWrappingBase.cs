@@ -24,6 +24,10 @@ namespace PowerVBA.Core.Wrap.WrapBase
         public abstract int GetComponentType();
         public abstract string GetExtension { get; }
 
+        public abstract void SetCode(string code);
+
+        public abstract void CodeClear();
+
         public VBComponentWrappingBase(string Name)
         {
             this.NameChanged += VBComponentWrappingBase_NameChanged;

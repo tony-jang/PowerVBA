@@ -1,16 +1,10 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
-using Microsoft.Vbe.Interop;
-using PowerVBA.Codes.Attributes;
-using PowerVBA.Codes.Extension;
 using PowerVBA.Codes.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace PowerVBA.Codes
 {

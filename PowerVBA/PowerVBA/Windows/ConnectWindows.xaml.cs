@@ -1,18 +1,8 @@
 ﻿using PowerVBA.Core.Wrap.WrapBase;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using ppt = Microsoft.Office.Interop.PowerPoint;
-using System.Windows.Shapes;
 using PowerVBA.Core.Connector;
 using PowerVBA.Core.Extension;
 
@@ -46,14 +36,15 @@ namespace PowerVBA.Windows
         public void RefreshList()
         {
             PptList.Items.Clear();
+            
+            // TODO : Change to Multi-Version Presentation Get
+            //var itm = new ppt.Application();
 
-            var itm = new ppt.Application();
-
-            foreach (ppt.Presentation presentation in itm.Presentations)
-            {
-                PptList.Items.Add(new ListViewItem() { Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
-                                                       Tag = presentation });
-            }
+            //foreach (ppt.Presentation presentation in itm.Presentations)
+            //{
+            //    PptList.Items.Add(new ListViewItem() { Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
+            //                                           Tag = presentation });
+            //}
         }
 
         PresentationWrappingBase returnPpt = null;
@@ -82,24 +73,9 @@ namespace PowerVBA.Windows
             {
                 try
                 {
-                    ppt.Presentation ppt = ((ppt.Presentation)((ListViewItem)PptList.SelectedItem).Tag);
-                    if (ppt.Name != "")
+                    if (((ListViewItem)PptList.SelectedItem).Tag is PresentationWrappingBase pptWrapBase)
                     {
-                        PPTVersion ver = VersionSelector.GetPPTVersion();
-
-                        switch (ver)
-                        {
-                            case PPTVersion.PPT2010:
-                                returnPpt = new V2010.WrapClass.PresentationWrapping(ppt);
-                                break;
-                            case PPTVersion.PPT2013:
-                                returnPpt = new V2013.WrapClass.PresentationWrapping(ppt);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception();
+                        returnPpt = pptWrapBase;
                     }
                 }
                 catch (Exception)

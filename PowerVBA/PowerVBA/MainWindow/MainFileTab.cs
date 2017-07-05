@@ -4,15 +4,10 @@ using PowerVBA.Core.Extension;
 using PowerVBA.Core.Resources;
 using PowerVBA.Enums;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ppt = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerVBA
 {
@@ -94,8 +89,8 @@ namespace PowerVBA
         // 프레젠테이션 연결
         private void ImgBtn_ButtonClick(object sender)
         {
-            InitalizeAll();
-            InitalizeConnector(new V2013.WrapClass.PresentationWrapping(((ppt.Presentation)((Control)sender).Tag)));
+            //InitalizeAll();
+            //InitalizeConnector(new V2013.WrapClass.PresentationWrapping(((ppt.Presentation)((Control)sender).Tag)));
         }
 
 
@@ -106,26 +101,26 @@ namespace PowerVBA
 
         public void RefreshPPTItem()
         {
-            lvOpenPPTs.Items.Clear();
+            //lvOpenPPTs.Items.Clear();
 
-            var itm = new ppt.Application();
+            //var itm = new ppt.Application();
 
-            foreach (ppt.Presentation presentation in itm.Presentations)
-            {
+            //foreach (ppt.Presentation presentation in itm.Presentations)
+            //{
 
-                var imgBtn = new ImageButton()
-                {
-                    TextAlignment = TextAlignment.Left,
-                    ButtonMode = ImageButton.ButtonModes.LongWidth,
-                    BackImage = ResourceImage.GetIconImage("PPTIcon"),
-                    Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
-                    Tag = presentation
-                };
+            //    var imgBtn = new ImageButton()
+            //    {
+            //        TextAlignment = TextAlignment.Left,
+            //        ButtonMode = ImageButton.ButtonModes.LongWidth,
+            //        BackImage = ResourceImage.GetIconImage("PPTIcon"),
+            //        Content = presentation.Name + (((Bool2)presentation.ReadOnly) ? " [읽기 전용]" : string.Empty),
+            //        Tag = presentation
+            //    };
 
-                imgBtn.ButtonClick += ImgBtn_ButtonClick;
+            //    imgBtn.ButtonClick += ImgBtn_ButtonClick;
 
-                lvOpenPPTs.Items.Add(imgBtn);
-            }
+            //    lvOpenPPTs.Items.Add(imgBtn);
+            //}
         }
 
         private void BtnInfoSync_ButtonClick(object sender)

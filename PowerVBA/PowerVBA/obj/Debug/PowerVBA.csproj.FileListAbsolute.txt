@@ -251,3 +251,5 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\ControlTest.baml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\Outline.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\Outline.baml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\ControlTest.g.cs
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\Outline.g.cs
