@@ -1,6 +1,6 @@
 # PowerVBA
 
-This Tool Is PowerPoint VBA IDE
+This Program Is PowerPoint VBA IDE
 
 ## Feature
 
