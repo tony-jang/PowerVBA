@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerVBA.Core.Connector;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -84,12 +85,12 @@ namespace PowerVBA.Controls.Tools
         }
 
 
-        public void SlideSync(V2013.Connector.PPTConnector2013 Connector)
+        public void SlideSync(PPTConnectorBase Connector)
         {
             runSelSlideShape.Text = Connector.Presentation
                                     .Slides[Connector.Application.ActiveWindow.Selection.SlideRange.SlideIndex]
                                     .Shapes.Count.ToString();
-            runSelShapeName.Text = Connector.Application.ActiveWindow.Selection.ShapeRange.Name;
+            runSelShapeName.Text = Connector.SelectionShapeName;
         }
         private void btnSync_ButtonClick(object sender)
         {

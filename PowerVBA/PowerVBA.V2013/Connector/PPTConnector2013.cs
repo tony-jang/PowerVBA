@@ -464,10 +464,31 @@ namespace PowerVBA.V2013.Connector
         public override string ProjectName { get => VBProject.Name; set => VBProject.Name = value; }
         public override string ProjectDescription { get => VBProject.Description; set => VBProject.Description = value; }
 
+        public override bool AddMacro(string name, ShapeWrappingBase shape, bool IsMouseOver)
+        {
+            try
+            {
+                PpMouseActivation act = (IsMouseOver ? PpMouseActivation.ppMouseOver : PpMouseActivation.ppMouseClick);
+
+                var HyperlinkSet = ((ShapeWrapping)shape).ActionSettings[act];
+
+                HyperlinkSet.Action = PpActionType.ppActionRunMacro;
+                HyperlinkSet.Run = name;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override List<ReferenceWrappingBase> References => VBProject.References
             .Cast<Reference>()
             .Select(i => new ReferenceWrapping(i) as ReferenceWrappingBase)
             .ToList();
+
+        public override int SelectSlideShapeCount => Presentation.Slides[Application.ActiveWindow.Selection.SlideRange.SlideIndex].Shapes.Count;
 
         public override List<ShapeWrappingBase> Shapes()
         {

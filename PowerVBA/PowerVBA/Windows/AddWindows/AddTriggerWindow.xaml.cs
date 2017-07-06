@@ -1,23 +1,13 @@
-﻿using ICSharpCode.AvalonEdit;
-using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+
 using PowerVBA.Codes;
 using PowerVBA.Core.AvalonEdit;
 using PowerVBA.Core.Connector;
 using PowerVBA.Core.Wrap.WrapBase;
 using PowerVBA.Wrap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PowerVBA.Windows.AddWindows
 {
@@ -92,23 +82,7 @@ End Sub{Environment.NewLine}");
 
                 Editor.Save();
 
-                switch (VersionSelector.GetPPTVersion())
-                {
-                    case PPTVersion.PPT2016:
-                        break;
-                    case PPTVersion.PPT2013:
-                        PpMouseActivation act = (btnMouseClick.IsChecked.Value ? PpMouseActivation.ppMouseClick : PpMouseActivation.ppMouseOver);
-
-                        var HyperlinkSet = ReturnShape.ToShape2013().ActionSettings[act];
-
-                        HyperlinkSet.Action = PpActionType.ppActionRunMacro;
-                        HyperlinkSet.Run = MethodName;
-                        break;
-                    case PPTVersion.PPT2010:
-                        break;
-                    default:
-                        break;
-                }
+                Connector.AddMacro(MethodName, ReturnShape, btnMouseOver.IsChecked.Value);
 
                 Handled = true;
             }

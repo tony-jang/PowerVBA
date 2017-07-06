@@ -176,9 +176,17 @@ namespace PowerVBA.Core.Connector
         public abstract bool ContainsForm(string name);
 
         /// <summary>
+        /// 매크로를 추가합니다.
+        /// </summary>
+        /// <param name="IsMouseOver">해당 매크로가 'MouseOver'인지 확인합니다. 아니라면 'MouseClick'으로 인식됩니다.</param>
+        /// <returns></returns>
+        public abstract bool AddMacro(string name, ShapeWrappingBase shape, bool IsMouseOver);
+
+        /// <summary>
         /// 선택된 도형의 이름을 가져옵니다.
         /// </summary>
         public abstract string SelectionShapeName { get; }
+        public abstract int SelectSlideShapeCount { get; }
         public abstract List<ReferenceWrappingBase> References { get; }
 
         public abstract bool DeleteComponent(VBComponentWrappingBase comp);
