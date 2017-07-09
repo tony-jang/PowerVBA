@@ -78,9 +78,16 @@ namespace PowerVBA.Codes
             CodeFiles.Add(new CodeFile(fileName));
         }
 
-        public void AddFile(CodeFile codeFile)
+        public void AddFile(CodeFile codeFile, bool overrides = true)
         {
-            if (codeFile == null) return;
+            if (codeFile == null)
+                return;
+            var itm = CodeFiles.Where(i => i.FileName == codeFile.FileName);
+            if (itm.Count() != 0 && overrides)
+            {
+                itm.ToList()
+                   .ForEach(i => CodeFiles.Remove(i));
+            }
             CodeFiles.Add(codeFile);
         }
 

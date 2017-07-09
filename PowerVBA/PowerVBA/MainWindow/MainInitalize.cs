@@ -70,6 +70,12 @@ namespace PowerVBA
                 lvRecentFile2.Items.Clear();
 
                 dbConnector.FileTable.Get().ForEach((fl) => {
+                    if (!File.Exists(fl))
+                    {
+                        dbConnector.FileTable.Remove(fl);
+                        return;
+                    }
+                        
                     var itm = new RecentFileListViewItem(fl);
                     itm.OpenRequest += Itm_OpenRequest;
                     itm.CopyOpenRequest += Itm_CopyOpenRequest;

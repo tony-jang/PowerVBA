@@ -87,9 +87,7 @@ namespace PowerVBA.Controls.Tools
 
         public void SlideSync(PPTConnectorBase Connector)
         {
-            runSelSlideShape.Text = Connector.Presentation
-                                    .Slides[Connector.Application.ActiveWindow.Selection.SlideRange.SlideIndex]
-                                    .Shapes.Count.ToString();
+            runSelSlideShape.Text = Connector.SelectSlideShapeCount.ToString();
             runSelShapeName.Text = Connector.SelectionShapeName;
         }
         private void btnSync_ButtonClick(object sender)

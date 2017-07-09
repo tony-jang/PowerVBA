@@ -105,11 +105,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\LibPowerPoint.dll" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Microsoft.Office.Interop.PowerPoint.dll" />
+    <None Include="Resources\Microsoft.Vbe.Interop.dll" />
     <None Include="obj\Debug\Interop.VBA.dll" />
-    <Content Include="Resources\Interop.VBA.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

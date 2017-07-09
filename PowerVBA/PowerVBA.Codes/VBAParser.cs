@@ -37,8 +37,8 @@ namespace PowerVBA.Codes
 
         static VBAParser()
         {
-            AddNameSpace(Assembly.Load(Properties.Resources.LibPowerPoint));
-            AddNameSpace(Assembly.Load(Properties.Resources.Interop_VBA));
+            AddNameSpace(Assembly.Load(Properties.Resources.PPTLib));
+            AddNameSpace(Assembly.Load(Properties.Resources.VBELib));
         }
         public VBAParser(CodeInfo codeInfo)
         {
@@ -135,14 +135,13 @@ namespace PowerVBA.Codes
                             if (IsMultiLine)
                             {
                                 IsMultiLine = false;
-                                nHandledLine = seeker.GetLine(codeFile.Item1, spCode, CodeLine, ref LineInfo);
                             }
                             // 처리 - 일반 적인 처리
                             else
                             {
                                 CodeLine.StartInt = LineCount;
-                                nHandledLine = seeker.GetLine(codeFile.Item1, spCode, CodeLine, ref LineInfo);
                             }
+                            nHandledLine = seeker.GetLine(codeFile.Item1, spCode, CodeLine, ref LineInfo);
 
                             while (nHandledLine != NotHandledLine.Empty)
                             {

@@ -34,7 +34,6 @@ F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVB
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
 F:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\GeneratedInternalTypeHelper.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.ResolveComReference.cache
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\App.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Themes\ControlStyle.baml
@@ -139,9 +138,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2010.pdb
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\PowerVBA.V2013.pdb
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.xml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.dll.config
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ProjectListViewItemDesign.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ErrorList.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.g.cs
@@ -157,9 +153,6 @@ D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\AddWindows\
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\ConnectWindows.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\HelperWindow.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Windows\StartupWindow.g.cs
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ErrorToolTipDesign.baml
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\ProjectListViewItemDesign.baml
-D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Design\RecentFileListViewItemDesign.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ErrorList.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.baml
@@ -253,3 +246,5 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Control
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\Outline.baml
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\ControlTest.g.cs
 D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\Outline.g.cs
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\ControlTest.baml
+D:\YT's Files\C# Files\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\Outline.baml
