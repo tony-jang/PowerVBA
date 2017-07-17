@@ -27,7 +27,7 @@ using PowerVBA.Windows;
 using ICSharpCode.AvalonEdit.Folding;
 
 using static PowerVBA.Global.Globals;
-using System.Text;
+using PowerVBA.Resources;
 
 namespace PowerVBA
 {
@@ -54,7 +54,6 @@ namespace PowerVBA
         public MainWindow()
         {
             InitializeComponent();
-
 
             codeInfo = new CodeInfo();
 
@@ -197,7 +196,7 @@ namespace PowerVBA
             AddCommandBinding(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift), Comm_SaveAll);
             AddCommandBinding(new KeyGesture(Key.F1), Comm_Help);
             AddCommandBinding(new KeyGesture(Key.O, ModifierKeys.Control), Comm_Open);
-            AddCommandBinding(new KeyGesture(Key.D, ModifierKeys.Control), Comm_Debug);
+            AddCommandBinding(new KeyGesture(Key.B, ModifierKeys.Control), Comm_Debug);
 
             #endregion
         }
@@ -210,10 +209,9 @@ namespace PowerVBA
                     .Where(i => i.Header.ToString() == e.FileName).FirstOrDefault();
 
                 CodeEditor codeEditor = (CodeEditor)tabItm.Content;
-
                 
-
-                if (codeEditor == null) return;
+                if (codeEditor == null)
+                    return;
 
                 codeEditor.ScrollToLine(e.LinePoint.Line);
                 codeEditor.SelectionLength = 0;
@@ -231,21 +229,19 @@ namespace PowerVBA
 
         private void Comm_Debug(object sender, ExecutedRoutedEventArgs e)
         {
+#if DEBUG
             MessageBox.Show("Debug Action Activate");
 
-            //connector.ToConnector2013().Presentation.VBProject.
+            connector.ToConnector2013().DebugAction();
 
+            return;
             var itm = connector.GetFiles().Select(i => i.File);
 
             foreach(var codeFile in itm)
             {
                 MessageBox.Show(codeFile.FileName);
             }
-
-            return;
-
-            connector.ToConnector2013().VBProject.Name = "Test";
-            connector.ToConnector2013().VBProject.Description = "This Project Is Test Project";
+#endif
         }
 
         private void Comm_Help(object sender, ExecutedRoutedEventArgs e)
@@ -324,7 +320,7 @@ namespace PowerVBA
         {
             if (connector == null)
                 return;
-            
+
             Dispatcher.Invoke(() =>
             {
                 try
@@ -361,7 +357,7 @@ namespace PowerVBA
                 catch (Exception)
                 {
                 }
-            });   
+            });
         }
 
         #region [  Commands  ]
@@ -418,6 +414,10 @@ namespace PowerVBA
                 var itm = GetAllCodeTabs().Where(i => i.Header.ToString() == Name);
                 if (itm.Count() != 0)
                     codeTabControl.Items.Remove(itm.First());
+
+                codeInfo.RemoveFile(Name);
+
+                outline.RemoveFile(Name);
             }
         }
         
@@ -442,7 +442,7 @@ namespace PowerVBA
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());   
+                MessageBox.Show(ex.ToString());
             }   
         }
 
@@ -659,8 +659,10 @@ namespace PowerVBA
         private void Buttons_MouseLeave(object sender, MouseEventArgs e)
         {
             TextBlock tb = null;
-            if (((Control)sender).Name.ToLower().Contains("openanotherppt")) tb = tbBOpenAnotherPpt;
-            else if (((Control)sender).Name.ToLower().Contains("connectpresentation")) tb = tbConnectPresentation;
+            if (((Control)sender).Name.ToLower().Contains("openanotherppt"))
+                tb = tbBOpenAnotherPpt;
+            else if (((Control)sender).Name.ToLower().Contains("connectpresentation"))
+                tb = tbConnectPresentation;
 
             if (tb != null)
             {
@@ -697,12 +699,6 @@ namespace PowerVBA
         private void SlideChangedDetect()
         {
             projAnalyzer.SlideCount = connector.SlideCount;
-        }
-
-        // 동기화 버튼
-        private void BtnInfoSync_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            runClass.Text = connector.GetClasses().Count.ToString();
         }
                 
         void SetProgramTab(ProgramTabMenu programTabMenu)
@@ -748,5 +744,14 @@ namespace PowerVBA
             e.Handled = true;
         }
 
+        private void BtnTemplateCalculator_Click(object sender, RoutedEventArgs e)
+        {
+            var path = Path.GetTempPath() + "Template_Calculator.pptm";
+            var stream = ResourceManager.GetStreamResource("Templates/CalculatorTemplate.pptm");
+            File.WriteAllBytes(path, ResourceManager.ReadFully(stream));
+            InitalizeConnector(path, true);
+
+            File.Delete(path);
+        }
     }
 }

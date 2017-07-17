@@ -73,7 +73,7 @@
                 x:Name="HelpFrame"
                 Margin="15"
                 Grid.Column="1"
-                Content="{StaticResource h_SupportFunctions}"
+                Content="{StaticResource h_Error}"
                 NavigationUIVisibility="Hidden" />
         </ScrollViewer>
 

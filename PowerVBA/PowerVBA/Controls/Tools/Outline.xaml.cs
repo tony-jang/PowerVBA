@@ -111,7 +111,7 @@ namespace PowerVBA.Controls.Tools
             outlineItems.Items.Remove(itm);
         }
 
-        public void DeleteFile(params string[] fileNames)
+        public void RemoveFile(params string[] fileNames)
         {
             foreach (var fileName in fileNames)
             {

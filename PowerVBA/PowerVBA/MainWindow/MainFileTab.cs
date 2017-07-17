@@ -123,13 +123,6 @@ namespace PowerVBA
             //}
         }
 
-        private void BtnInfoSync_ButtonClick(object sender)
-        {
-            runFunc.Text = codeInfo.FunctionCount.ToString();
-            runSub.Text = codeInfo.SubCount.ToString();
-            runError.Text = codeInfo.ErrorList.Count.ToString();
-        }
-
         public void OpenAnotherPPT(string initDirectory = "")
         {
             OpenFileDialog ofd = new OpenFileDialog()

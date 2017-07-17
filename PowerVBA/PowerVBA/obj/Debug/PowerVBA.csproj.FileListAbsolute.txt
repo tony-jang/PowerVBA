@@ -190,7 +190,6 @@ H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\ICSharp
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.xml
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\bin\Debug\System.Data.SQLite.dll.config
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csprojResolveAssemblyReference.cache
-H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\PowerVBA.csproj.ResolveComReference.cache
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\APIManager.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\ErrorList.g.cs
 H:\장유탁 파일\Github Project\PowerVBA_\PowerVBA\PowerVBA\obj\Debug\Controls\Tools\PreDeclareFuncManager.g.cs

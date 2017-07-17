@@ -155,6 +155,7 @@ namespace PowerVBA
                 programTabControl.SelectedIndex = 0;
                 NameSet();
 
+                
                 IsConnected = true;
 
                 //GC.Collect();

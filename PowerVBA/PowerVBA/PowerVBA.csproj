@@ -283,6 +283,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Resources\Templates\CalculatorTemplate.pptm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -507,6 +508,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\HelpImages\editor1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon\CalculatorImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

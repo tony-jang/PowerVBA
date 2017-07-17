@@ -96,14 +96,16 @@ namespace PowerVBA.Codes
             return CodeFiles.Where(i => i.FileName == fileName).FirstOrDefault();
         }
 
-        public void RemoveFile(string fileName)
+        public bool RemoveFile(string fileName)
         {
             var itm = CodeFiles.Where(i => i.FileName == fileName);
 
             if (itm.FirstOrDefault() != null)
             {
                 CodeFiles.Remove(itm.FirstOrDefault());
+                return true;
             }
+            return false;
         }
 
         public int FunctionCount

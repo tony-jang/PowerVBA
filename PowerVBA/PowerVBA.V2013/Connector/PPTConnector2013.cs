@@ -92,7 +92,6 @@ namespace PowerVBA.V2013.Connector
                             LastSelection = null;
                         }
 
-
                         DelayCounter++;
 
                         if (DelayCounter > 4)
@@ -122,9 +121,6 @@ namespace PowerVBA.V2013.Connector
 
                             DelayCounter = 0;
                         }
-
-                        //OnSectionChanged();
-
                     }
                     catch (Exception e)
                     {
@@ -159,6 +155,7 @@ namespace PowerVBA.V2013.Connector
                 }
             });
         }
+
         public PPTConnector2013(string FileLocation, bool NewFile = false, bool OpenWithWindow = true) : this()
         {
             var ppt = Application.Presentations.Cast<Presentation>().Where(i => i.FullName == FileLocation && !(Bool2)(int)i.ReadOnly).FirstOrDefault();
@@ -196,8 +193,7 @@ namespace PowerVBA.V2013.Connector
         {
             Presentation = ppt;
             VBProject = new VBProjectWrapping(Presentation.VBProject);
-
-
+            
             EventConnectThread?.Start();
         }
         public PPTConnector2013(bool OpenWithWindow = true) : this()
@@ -265,6 +261,11 @@ namespace PowerVBA.V2013.Connector
                     return "선택되지 않음";
                 }
             }
+        }
+
+        public void DebugAction()
+        {
+            //VBProject.VBE.Windows.Cast<VBA.Window>().First().SetFocus();
         }
 
         public override bool Saved => (Bool2)(int)Presentation.Saved;
